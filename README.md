@@ -1,5 +1,7 @@
 ## Rainbow Stream
-This is a Twitter timeline on the terminal, build on the top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter Streaming API](https://dev.twitter.com/docs/api/streaming)
+Terminal-based Twitter Client with Streaming API support. Only supports Python 2.7 or later.
+
+This package build on the top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter Streaming API](https://dev.twitter.com/docs/api/streaming) and inspired by [EarthQuake](https://github.com/jugyo/earthquake)
 
 ## Screenshot
 ![v0.0.1](https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamv0.0.1.png)
