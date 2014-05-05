@@ -43,22 +43,21 @@ def draw(t):
     user = green(name) + ' ' + yellow('@' + screen_name) + ' '
     clock = magenta('['+ time + ']')
     tweet = white(text)
-    userlen = len(name + screen_name) + 3
-    clocklen = len(time) + 2
 
     # Draw rainbow
     terminalrows, terminalcolumns = os.popen('stty size', 'r').read().split()
-    line1 = u"{u:>{uw}} {t:>{tw}}".format(
+    line1 = u"{u:>{uw}}:".format(
         u = user,
         uw = len(user) + 2,
-        t = clock,
-        tw = len(clock) + int(terminalcolumns) - userlen - 4 - clocklen
     )
+    line2 = u"{c:>{cw}}".format(
+        c = clock,
+        cw = len(clock) + 2,
+    )
+    line3 = '  ' + tweet
+    line4 = '\n'
 
-    line2 = '  ' + tweet
-    line3 = '\n'
-
-    return line1, line2, line3
+    return line1, line2, line3, line4
 
 
 def parse_arguments():
@@ -112,10 +111,11 @@ def main():
         elif tweet is Hangup:
             printNicely("-- Hangup --")
         elif tweet.get('text'):
-            line1, line2, line3 = draw(t = tweet)
+            line1, line2, line3, line4 = draw(t = tweet)
             printNicely(line1)
             printNicely(line2)
             printNicely(line3)
+            printNicely(line4)
 
 if __name__ == '__main__':
     main()
