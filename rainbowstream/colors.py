@@ -21,23 +21,23 @@ on_magenta = lambda x: colored(x, 'white', 'on_magenta', attrs=['bold'])
 on_cyan    = lambda x: colored(x, 'white', 'on_cyan', attrs=['bold'])
 on_white   = lambda x: colored(x, 'white', 'on_white', attrs=['bold'])
 
-colors_shufle = [grey, red, green, yellow, blue, magenta, cyan]
-background_shufle = [on_grey, on_red, on_green, on_yellow, on_blue, on_magenta, on_cyan]
-cyc = itertools.cycle(colors_shufle[1:])
+colors_shuffle = [grey, red, green, yellow, blue, magenta, cyan]
+background_shuffle = [on_grey, on_red, on_green, on_yellow, on_blue, on_magenta, on_cyan]
+cyc = itertools.cycle(colors_shuffle[1:])
 
 
 def order_rainbow(s):
     """
     Print a string with ordered color with each character
     """
-    c = [colors_shufle[i%7](s[i]) for i in xrange(len(s))]
+    c = [colors_shuffle[i%7](s[i]) for i in xrange(len(s))]
     return reduce(lambda x,y: x+y, c)
 
 def random_rainbow(s):
     """
     Print a string with random color with each character
     """
-    c = [random.choice(colors_shufle)(i) for i in s]
+    c = [random.choice(colors_shuffle)(i) for i in s]
     return reduce(lambda x,y: x+y, c)
 
 def Memoize(func):
@@ -55,7 +55,7 @@ def Memoize(func):
 @Memoize
 def cycle_color(s):
     """
-    Cycle the colors_shufle
+    Cycle the colors_shuffle
     """
     return next(cyc)(s)
 
