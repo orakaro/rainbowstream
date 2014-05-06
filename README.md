@@ -7,7 +7,7 @@ This package build on the top of [Python Twitter Tool](http://mike.verdone.ca/tw
 ![v0.0.1](https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamv0.0.1.png)
 
 ## Install
-*The easy way:*
+**The easy way:**
 * Clone this repo
 * Create virtualenv (optional but recommended)
 * Install dependencies
@@ -16,17 +16,17 @@ This package build on the top of [Python Twitter Tool](http://mike.verdone.ca/tw
 ```bash
 git clone https://github.com/DTVD/rainbowstream.git
 cd rainbowstream
-virtualenv venv
+virtualenv venv # Assume that you have virtualenv installed by "pip install virtualenv"
 source venv/bin/activate
 pip install -r requirements.txt
 pip install -e .
 ```
-*The quick way:*
+**The quick way:**
 * Install everything over the air
 
 ```bash
-pip install -r https://raw.githubusercontent.com/DTVD/rainbowstream/master/requirements.txt
-pip install git+https://github.com/DTVD/rainbowstream.git
+sudo pip install -r https://raw.githubusercontent.com/DTVD/rainbowstream/master/requirements.txt
+sudo pip install git+https://github.com/DTVD/rainbowstream.git
 ```
 **Note the I only support Python version 2.7+**
 
