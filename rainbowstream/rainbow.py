@@ -4,28 +4,17 @@ Colorful user's timeline stream
 
 from __future__ import print_function
 
-import os, os.path, argparse, random
+import os, os.path, argparse
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.oauth import OAuth, read_token_file
+from twitter.oauth_dance import oauth_dance
 from twitter.util import printNicely
+from twitter.ansi import *
 from dateutil import parser
-from pyfiglet import figlet_format
 
 from colors import *
 from config import *
-
-def asciiart():
-    """
-    Draw the Ascii Art
-    """
-    d = [red, green, yellow, blue, magenta, cyan, white]
-    fi = figlet_format('Rainbow Stream', font='doom')
-    print('\n'.join(
-            [random.choice(d)(i) for i in fi.split('\n')]
-        )
-    )
-
 
 def draw(t):
     """
@@ -40,9 +29,13 @@ def draw(t):
     time = date.strftime('%Y/%m/%d %H:%M:%S')
 
     # Format info
-    user = green(name) + ' ' + yellow('@' + screen_name) + ' '
-    clock = magenta('['+ time + ']')
-    tweet = white(text)
+    user = cycle_color(name + ' ' + '@' + screen_name + ' ')
+    clock = grey('['+ time + ']')
+    tweet = text.split()
+    tweet = map(lambda x: grey(x) if x=='RT' else x, tweet)
+    tweet = map(lambda x: cycle_color(x) if x[0]=='@' else x, tweet)
+    tweet = map(lambda x: cyan(x) if x[0:7]=='http://' else x, tweet)
+    tweet = ' '.join(tweet)
 
     # Draw rainbow
     terminalrows, terminalcolumns = os.popen('stty size', 'r').read().split()
@@ -78,11 +71,16 @@ def main():
     args = parse_arguments()
 
     # The Logo
-    asciiart()
+    ascii_art()
 
-    # When using twitter stream you must authorize.
-    oauth_filename = os.environ.get('HOME', os.environ.get('USERPROFILE', '')) + os.sep + '.twitter_oauth'
-    oauth_token, oauth_token_secret = read_token_file(oauth_filename)
+    # When using rainbow stream you must authorize.
+    twitter_credential = os.environ.get('HOME', os.environ.get('USERPROFILE', '')) + os.sep + '.rainbow_oauth'
+    if not os.path.exists(twitter_credential):
+        oauth_dance("Rainbow Stream",
+                    CONSUMER_KEY,
+                    CONSUMER_SECRET,
+                    twitter_credential)
+    oauth_token, oauth_token_secret = read_token_file(twitter_credential)
     auth = OAuth(oauth_token, oauth_token_secret, CONSUMER_KEY, CONSUMER_SECRET)
 
     # These arguments are optional:
