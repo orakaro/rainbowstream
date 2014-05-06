@@ -38,7 +38,6 @@ def draw(t):
     tweet = ' '.join(tweet)
 
     # Draw rainbow
-    terminalrows, terminalcolumns = os.popen('stty size', 'r').read().split()
     line1 = u"{u:>{uw}}:".format(
         u = user,
         uw = len(user) + 2,
