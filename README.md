@@ -36,7 +36,7 @@ rainbowstream
 ```
 In the first time you will be asked for authorization of Rainbow Stream app at Twitter.
 
-Allow access and enter granted PIN number to terminal so the home timeline stream will be start.
+Just click the "Authorize access" button and paste PIN number to the terminal, the rainbow will start.
 
 ## License
 Rainbow Stream are released under an MIT License. See below for details
