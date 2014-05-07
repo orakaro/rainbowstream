@@ -10,7 +10,6 @@ from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.oauth import OAuth, read_token_file
 from twitter.oauth_dance import oauth_dance
 from twitter.util import printNicely
-from twitter.ansi import *
 from dateutil import parser
 
 from colors import *
@@ -66,7 +65,7 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def main():
+def stream():
     args = parse_arguments()
 
     # The Logo
@@ -113,6 +112,3 @@ def main():
             printNicely(line2)
             printNicely(line3)
             printNicely(line4)
-
-if __name__ == '__main__':
-    main()

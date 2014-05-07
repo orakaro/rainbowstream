@@ -18,14 +18,12 @@ git clone https://github.com/DTVD/rainbowstream.git
 cd rainbowstream
 virtualenv venv # Assume that you have virtualenv installed by "pip install virtualenv"
 source venv/bin/activate
-pip install -r requirements.txt
 pip install -e .
 ```
 **The quick way:**
 * Install everything over the air
 
 ```bash
-sudo pip install -r https://raw.githubusercontent.com/DTVD/rainbowstream/master/requirements.txt
 sudo pip install git+https://github.com/DTVD/rainbowstream.git
 ```
 **Note the I only support Python version 2.7+**

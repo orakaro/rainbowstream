@@ -3,14 +3,17 @@ from setuptools import setup, find_packages
 version = '0.0.1'
 
 install_requires = [
-    # -*- Extra requirements: -*-
+    "colorama",
+    "pyfiglet",
+    "python-dateutil",
+    "termcolor",
+    "twitter"
     ]
 
 setup(name='rainbowstream',
       version=version,
       description="A rainbow streaming console for Twitter (twitter.com)",
       long_description=open("./README.md", "r").read(),
-      # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
           "Development Status :: 5 - Production/Stable",
           "Environment :: Console",
@@ -38,6 +41,6 @@ setup(name='rainbowstream',
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]
-      rainbowstream=rainbowstream.rainbow:main
+      rainbowstream=rainbowstream.rainbow:stream
       """,
       )
