@@ -4,7 +4,9 @@ Colorful user's timeline stream
 
 from __future__ import print_function
 
-import os, os.path, argparse
+import os
+import os.path
+import argparse
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.oauth import OAuth, read_token_file
@@ -12,8 +14,9 @@ from twitter.oauth_dance import oauth_dance
 from twitter.util import printNicely
 from dateutil import parser
 
-from colors import *
-from config import *
+from .colors import *
+from .config import *
+
 
 def draw(t):
     """
@@ -29,21 +32,21 @@ def draw(t):
 
     # Format info
     user = cycle_color(name + ' ' + '@' + screen_name + ' ')
-    clock = grey('['+ time + ']')
+    clock = grey('[' + time + ']')
     tweet = text.split()
-    tweet = map(lambda x: grey(x) if x=='RT' else x, tweet)
-    tweet = map(lambda x: cycle_color(x) if x[0]=='@' else x, tweet)
-    tweet = map(lambda x: cyan(x) if x[0:7]=='http://' else x, tweet)
+    tweet = map(lambda x: grey(x) if x == 'RT' else x, tweet)
+    tweet = map(lambda x: cycle_color(x) if x[0] == '@' else x, tweet)
+    tweet = map(lambda x: cyan(x) if x[0:7] == 'http://' else x, tweet)
     tweet = ' '.join(tweet)
 
     # Draw rainbow
     line1 = u"{u:>{uw}}:".format(
-        u = user,
-        uw = len(user) + 2,
+        u=user,
+        uw=len(user) + 2,
     )
     line2 = u"{c:>{cw}}".format(
-        c = clock,
-        cw = len(clock) + 2,
+        c=clock,
+        cw=len(clock) + 2,
     )
     line3 = '  ' + tweet
     line4 = '\n'
@@ -58,10 +61,24 @@ def parse_arguments():
 
     parser = argparse.ArgumentParser(description=__doc__ or "")
 
-    parser.add_argument('-to', '--timeout', help='Timeout for the stream (seconds).')
-    parser.add_argument('-ht', '--heartbeat-timeout', help='Set heartbeat timeout.', default=90)
-    parser.add_argument('-nb', '--no-block', action='store_true', help='Set stream to non-blocking.')
-    parser.add_argument('-tt', '--track-keywords', help='Search the stream for specific text.')
+    parser.add_argument(
+        '-to',
+        '--timeout',
+        help='Timeout for the stream (seconds).')
+    parser.add_argument(
+        '-ht',
+        '--heartbeat-timeout',
+        help='Set heartbeat timeout.',
+        default=90)
+    parser.add_argument(
+        '-nb',
+        '--no-block',
+        action='store_true',
+        help='Set stream to non-blocking.')
+    parser.add_argument(
+        '-tt',
+        '--track-keywords',
+        help='Search the stream for specific text.')
     return parser.parse_args()
 
 
@@ -72,14 +89,22 @@ def stream():
     ascii_art()
 
     # When using rainbow stream you must authorize.
-    twitter_credential = os.environ.get('HOME', os.environ.get('USERPROFILE', '')) + os.sep + '.rainbow_oauth'
+    twitter_credential = os.environ.get(
+        'HOME',
+        os.environ.get(
+            'USERPROFILE',
+            '')) + os.sep + '.rainbow_oauth'
     if not os.path.exists(twitter_credential):
         oauth_dance("Rainbow Stream",
                     CONSUMER_KEY,
                     CONSUMER_SECRET,
                     twitter_credential)
     oauth_token, oauth_token_secret = read_token_file(twitter_credential)
-    auth = OAuth(oauth_token, oauth_token_secret, CONSUMER_KEY, CONSUMER_SECRET)
+    auth = OAuth(
+        oauth_token,
+        oauth_token_secret,
+        CONSUMER_KEY,
+        CONSUMER_SECRET)
 
     # These arguments are optional:
     stream_args = dict(
@@ -93,7 +118,10 @@ def stream():
         query_args['track'] = args.track_keywords
 
     # Get stream
-    stream = TwitterStream(auth=auth, domain='userstream.twitter.com', **stream_args)
+    stream = TwitterStream(
+        auth=auth,
+        domain='userstream.twitter.com',
+        **stream_args)
     tweet_iter = stream.user(**query_args)
 
     # Iterate over the sample stream.
@@ -107,7 +135,7 @@ def stream():
         elif tweet is Hangup:
             printNicely("-- Hangup --")
         elif tweet.get('text'):
-            line1, line2, line3, line4 = draw(t = tweet)
+            line1, line2, line3, line4 = draw(t=tweet)
             printNicely(line1)
             printNicely(line2)
             printNicely(line3)
