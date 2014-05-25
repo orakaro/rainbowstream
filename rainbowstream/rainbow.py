@@ -68,9 +68,7 @@ def parse_arguments():
     """
     Parse the arguments
     """
-
     parser = argparse.ArgumentParser(description=__doc__ or "")
-
     parser.add_argument(
         '-to',
         '--timeout',
@@ -145,6 +143,32 @@ def search():
     printNicely(grey('**************************************************************************************\n'))
 
 
+def friend():
+    """
+    List of friend (following)
+    """
+    t = Twitter(auth=authen())
+    g['friends'] = t.friends.ids()['ids']
+    for i in g['friends']:
+        screen_name = t.users.lookup(user_id=i)[0]['screen_name']
+        user = cycle_color('@'+screen_name)
+        print(user, end=' ')
+    print('\n');
+
+
+def follower():
+    """
+    List of follower
+    """
+    t = Twitter(auth=authen())
+    g['followers'] = t.followers.ids()['ids']
+    for i in g['followers']:
+        screen_name = t.users.lookup(user_id=i)[0]['screen_name']
+        user = cycle_color('@'+screen_name)
+        print(user, end=' ')
+    print('\n');
+
+
 def help():
     """
     Print help
@@ -152,16 +176,25 @@ def help():
     usage = '''
     Hi boss! I'm ready to serve you right now!
     ----------------------------------------------------
-    "!" at the beginning will start to tweet immediately
-    "/" at the beginning will search for 5 newest tweet
-    "?" or "h" will print this help once again
+    "tweet" at the beginning will tweet immediately
+    "s" and follow by any word will search and return 5 newest tweet
+    "fr" will list out your following people
+    "fl" will list out your followers
+    "h" will print this help once again
     "c" will clear the terminal
     "q" will exit
     ----------------------------------------------------
-    Hvae fun and hang tight!
+    Have fun and hang tight!
     '''
     printNicely(usage)
     sys.stdout.write(g['decorated_name'])
+
+
+def clear():
+    """
+    Exit all
+    """
+    os.system('clear')
 
 
 def quit():
@@ -172,25 +205,19 @@ def quit():
     sys.exit()
 
 
-def clear():
-    """
-    Exit all
-    """
-    os.system('clear')
-
-
-def process(line):
+def process(cmd):
     """
     Process switch by start of line
     """
     return {
-        '!' : tweet,
-        '/' : search,
-        '?' : help,
-        'h' : help,
-        'c' : clear,
-        'q' : quit,
-    }.get(line[0],lambda: sys.stdout.write(g['decorated_name']))
+        'tweet' : tweet,
+        's'     : search,
+        'fr'    : friend,
+        'fl'    : follower,
+        'h'     : help,
+        'c'     : clear,
+        'q'     : quit,
+    }.get(cmd,lambda: sys.stdout.write(g['decorated_name']))
 
 
 def listen(stdin):
@@ -198,9 +225,13 @@ def listen(stdin):
     Listen to user's input
     """
     for line in iter(stdin.readline, ''):
+        try:
+            cmd = line.split()[0]
+        except:
+            cmd = ''
         # Save cmd to global variable and call process
-        g['stuff'] = line[1:]
-        process(line)()
+        g['stuff'] = ' '.join(line.split()[1:])
+        process(cmd)()
     stdin.close()
 
 
