@@ -19,7 +19,7 @@ from .config import *
 
 g = {}
 
-def draw(t):
+def draw(t,keyword=None):
     """
     Draw the rainbow
     """
@@ -35,9 +35,14 @@ def draw(t):
     user = cycle_color(name) + grey(' ' + '@' + screen_name + ' ')
     clock = grey('[' + time + ']')
     tweet = text.split()
+    # Highlight RT
     tweet = map(lambda x: grey(x) if x == 'RT' else x, tweet)
+    # Highlight screen_name
     tweet = map(lambda x: cycle_color(x) if x[0] == '@' else x, tweet)
+    # Highlight link
     tweet = map(lambda x: cyan(x) if x[0:7] == 'http://' else x, tweet)
+    # Highlight search keyword
+    tweet = map(lambda x: on_yellow(x) if ''.join(c for c in x if c.isalnum()).lower() == keyword.lower() else x, tweet)
     tweet = ' '.join(tweet)
 
     # Draw rainbow
@@ -135,7 +140,7 @@ def search():
     printNicely(grey('**************************************************************************************\n'))
     print('Newest',SEARCH_MAX_RECORD, 'tweet: \n')
     for i in xrange(5):
-        draw(t=rel[i])
+        draw(t=rel[i],keyword=g['stuff'].strip())
     printNicely(grey('**************************************************************************************\n'))
 
 
@@ -148,7 +153,8 @@ def help():
     ----------------------------------------------------
     "!" at the beginning will start to tweet immediately
     "/" at the beginning will search for 5 newest tweet
-    "?" will print this help once again
+    "?" or "h" will print this help once again
+    "c" will clear the terminal
     "q" will exit
     ----------------------------------------------------
     Hvae fun and hang tight!
@@ -165,6 +171,13 @@ def quit():
     sys.exit()
 
 
+def clear():
+    """
+    Exit all
+    """
+    os.system('clear')
+
+
 def process(line):
     """
     Process switch by start of line
@@ -173,6 +186,8 @@ def process(line):
         '!' : tweet,
         '/' : search,
         '?' : help,
+        'h' : help,
+        'c' : clear,
         'q' : quit,
     }.get(line[0],lambda: sys.stdout.write(g['decorated_name']))
 
