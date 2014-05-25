@@ -147,7 +147,7 @@ def help():
     Hi boss! I'm ready to serve you right now!
     ----------------------------------------------------
     "!" at the beginning will start to tweet immediately
-    "/" at the beginning will search for 5 lastest twwet
+    "/" at the beginning will search for 5 newest tweet
     "?" will print this help once again
     "q" will exit
     ----------------------------------------------------
