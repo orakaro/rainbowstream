@@ -133,7 +133,7 @@ def search():
     t = Twitter(auth=authen())
     rel = t.search.tweets(q='#' + g['stuff'])['statuses']
     printNicely(grey('**************************************************************************************\n'))
-    print('Newest ',SEARCH_MAX_RECORD, ' tweet: \n')
+    print('Newest',SEARCH_MAX_RECORD, 'tweet: \n')
     for i in xrange(5):
         draw(t=rel[i])
     printNicely(grey('**************************************************************************************\n'))
@@ -196,8 +196,6 @@ def stream():
 
     # The Logo
     ascii_art()
-    print("Tip: Press ENTER and type a '?' to see what command mode can do for you")
-    print('\n')
     # These arguments are optional:
     stream_args = dict(
         timeout=args.timeout,
