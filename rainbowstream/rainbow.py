@@ -42,7 +42,8 @@ def draw(t,keyword=None):
     # Highlight link
     tweet = map(lambda x: cyan(x) if x[0:7] == 'http://' else x, tweet)
     # Highlight search keyword
-    tweet = map(lambda x: on_yellow(x) if ''.join(c for c in x if c.isalnum()).lower() == keyword.lower() else x, tweet)
+    if keyword:
+        tweet = map(lambda x: on_yellow(x) if ''.join(c for c in x if c.isalnum()).lower() == keyword.lower() else x, tweet)
     tweet = ' '.join(tweet)
 
     # Draw rainbow
