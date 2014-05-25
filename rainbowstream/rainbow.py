@@ -5,7 +5,7 @@ Colorful user's timeline stream
 from __future__ import print_function
 from multiprocessing import Process
 
-import os, os.path, argparse, sys, time
+import os, os.path, argparse, sys, time, signal
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
@@ -17,7 +17,7 @@ from dateutil import parser
 from .colors import *
 from .config import *
 
-auth_obj = {}
+g = {}
 
 def draw(t):
     """
@@ -52,7 +52,10 @@ def draw(t):
     line3 = '  ' + tweet
     line4 = '\n'
 
-    return line1, line2, line3, line4
+    printNicely(line1)
+    printNicely(line2)
+    printNicely(line3)
+    printNicely(line4)
 
 
 def parse_arguments():
@@ -112,14 +115,66 @@ def get_decorated_name():
     """
     t = Twitter(auth=authen())
     name = '@' + t.statuses.user_timeline()[-1]['user']['screen_name']
-    auth_obj['decorated_name'] = grey('[') + grey(name) + grey(']: ')
+    g['decorated_name'] = grey('[') + grey(name) + grey(']: ')
 
-def tweet(stuff):
+
+def tweet():
     """
     Authen and tweet
     """
     t = Twitter(auth=authen())
-    t.statuses.update(status=stuff)
+    t.statuses.update(status=g['stuff'])
+
+
+def search():
+    """
+    Authen and search
+    """
+    t = Twitter(auth=authen())
+    rel = t.search.tweets(q='#' + g['stuff'])['statuses']
+    printNicely(grey('**************************************************************************************\n'))
+    print('Newest ',SEARCH_MAX_RECORD, ' tweet: \n')
+    for i in xrange(5):
+        draw(t=rel[i])
+    printNicely(grey('**************************************************************************************\n'))
+
+
+def help():
+    """
+    Print help
+    """
+    usage = '''
+    Hi boss! I'm ready to serve you right now!
+    ----------------------------------------------------
+    "!" at the beginning will start to tweet immediately
+    "/" at the beginning will search for 5 lastest twwet
+    "?" will print this help once again
+    "q" will exit
+    ----------------------------------------------------
+    Hvae fun and hang tight!
+    '''
+    printNicely(usage)
+    sys.stdout.write(g['decorated_name'])
+
+
+def quit():
+    """
+    Exit all
+    """
+    os.kill(g['stream_pid'], signal.SIGKILL)
+    sys.exit()
+
+
+def process(line):
+    """
+    Process switch by start of line
+    """
+    return {
+        '!' : tweet,
+        '/' : search,
+        '?' : help,
+        'q' : quit,
+    }.get(line[0],lambda: sys.stdout.write(g['decorated_name']))
 
 
 def listen(stdin):
@@ -127,23 +182,21 @@ def listen(stdin):
     Listen to user's input
     """
     for line in iter(stdin.readline, ''):
-        # Public tweet
-        if line.startswith('!'):
-            tweet(line[1:])
-        else:
-            sys.stdout.write(auth_obj['decorated_name'])
+        # Save cmd to global variable and call process
+        g['stuff'] = line[1:]
+        process(line)()
     stdin.close()
 
 
 def stream():
     """
-    Ouput the stream
+    Track the stream
     """
     args = parse_arguments()
 
     # The Logo
     ascii_art()
-    print("Tip: Press ENTER and put a '!' in the beginning to start composing a new tweet")
+    print("Tip: Press ENTER and type a '?' to see what command mode can do for you")
     print('\n')
     # These arguments are optional:
     stream_args = dict(
@@ -174,11 +227,7 @@ def stream():
         elif tweet is Hangup:
             printNicely("-- Hangup --")
         elif tweet.get('text'):
-            line1, line2, line3, line4 = draw(t=tweet)
-            printNicely(line1)
-            printNicely(line2)
-            printNicely(line3)
-            printNicely(line4)
+            draw(t=tweet)
 
 
 def fly():
@@ -188,5 +237,6 @@ def fly():
     get_decorated_name()
     p = Process(target = stream)
     p.start()
+    g['stream_pid'] = p.pid
     listen(sys.stdin)
 
