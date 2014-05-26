@@ -5,7 +5,12 @@ Colorful user's timeline stream
 from __future__ import print_function
 from multiprocessing import Process
 
-import os, os.path, argparse, sys, time, signal
+import os
+import os.path
+import argparse
+import sys
+import time
+import signal
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
@@ -19,7 +24,8 @@ from .config import *
 
 g = {}
 
-def draw(t,keyword=None):
+
+def draw(t, keyword=None):
     """
     Draw the rainbow
     """
@@ -43,7 +49,12 @@ def draw(t,keyword=None):
     tweet = map(lambda x: cyan(x) if x[0:7] == 'http://' else x, tweet)
     # Highlight search keyword
     if keyword:
-        tweet = map(lambda x: on_yellow(x) if ''.join(c for c in x if c.isalnum()).lower() == keyword.lower() else x, tweet)
+        tweet = map(
+            lambda x: on_yellow(x) if
+            ''.join(c for c in x if c.isalnum()).lower() == keyword.lower()
+            else x,
+            tweet
+        )
     tweet = ' '.join(tweet)
 
     # Draw rainbow
@@ -138,11 +149,11 @@ def search():
     rel = t.search.tweets(q='#' + g['stuff'])['statuses']
     h, w = os.popen('stty size', 'r').read().split()
 
-    printNicely(grey('*'*int(w)+'\n'))
-    print('Newest',SEARCH_MAX_RECORD, 'tweet: \n')
+    printNicely(grey('*' * int(w) + '\n'))
+    print('Newest', SEARCH_MAX_RECORD, 'tweet: \n')
     for i in xrange(5):
-        draw(t=rel[i],keyword=g['stuff'].strip())
-    printNicely(grey('*'*int(w)+'\n'))
+        draw(t=rel[i], keyword=g['stuff'].strip())
+    printNicely(grey('*' * int(w) + '\n'))
 
 
 def friend():
@@ -153,9 +164,9 @@ def friend():
     g['friends'] = t.friends.ids()['ids']
     for i in g['friends']:
         screen_name = t.users.lookup(user_id=i)[0]['screen_name']
-        user = cycle_color('@'+screen_name)
+        user = cycle_color('@' + screen_name)
         print(user, end=' ')
-    print('\n');
+    print('\n')
 
 
 def follower():
@@ -166,9 +177,9 @@ def follower():
     g['followers'] = t.followers.ids()['ids']
     for i in g['followers']:
         screen_name = t.users.lookup(user_id=i)[0]['screen_name']
-        user = cycle_color('@'+screen_name)
+        user = cycle_color('@' + screen_name)
         print(user, end=' ')
-    print('\n');
+    print('\n')
 
 
 def help():
@@ -219,7 +230,7 @@ def process(cmd):
         'h'     : help,
         'c'     : clear,
         'q'     : quit,
-    }.get(cmd,lambda: sys.stdout.write(g['decorated_name']))
+    }.get(cmd, lambda: sys.stdout.write(g['decorated_name']))
 
 
 def listen(stdin):
@@ -258,8 +269,8 @@ def stream():
 
     # Get stream
     stream = TwitterStream(
-        auth = authen(),
-        domain = 'userstream.twitter.com',
+        auth=authen(),
+        domain='userstream.twitter.com',
         **stream_args)
     tweet_iter = stream.user(**query_args)
 
@@ -282,8 +293,7 @@ def fly():
     Main function
     """
     get_decorated_name()
-    p = Process(target = stream)
+    p = Process(target=stream)
     p.start()
     g['stream_pid'] = p.pid
     listen(sys.stdin)
-
