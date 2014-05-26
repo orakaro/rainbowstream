@@ -136,11 +136,13 @@ def search():
     """
     t = Twitter(auth=authen())
     rel = t.search.tweets(q='#' + g['stuff'])['statuses']
-    printNicely(grey('**************************************************************************************\n'))
+    h, w = os.popen('stty size', 'r').read().split()
+
+    printNicely(grey('*'*int(w)+'\n'))
     print('Newest',SEARCH_MAX_RECORD, 'tweet: \n')
     for i in xrange(5):
         draw(t=rel[i],keyword=g['stuff'].strip())
-    printNicely(grey('**************************************************************************************\n'))
+    printNicely(grey('*'*int(w)+'\n'))
 
 
 def friend():
