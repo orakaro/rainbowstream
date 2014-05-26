@@ -30,6 +30,7 @@ def draw(t, keyword=None):
     Draw the rainbow
     """
     # Retrieve tweet
+    tid = t['id']
     text = t['text']
     screen_name = t['user']['screen_name']
     name = t['user']['name']
@@ -39,7 +40,7 @@ def draw(t, keyword=None):
 
     # Format info
     user = cycle_color(name) + grey(' ' + '@' + screen_name + ' ')
-    clock = grey('[' + time + ']')
+    meta = grey('[' + time + '] ['+ str(tid) +']')
     tweet = text.split()
     # Highlight RT
     tweet = map(lambda x: grey(x) if x == 'RT' else x, tweet)
@@ -63,16 +64,16 @@ def draw(t, keyword=None):
         uw=len(user) + 2,
     )
     line2 = u"{c:>{cw}}".format(
-        c=clock,
-        cw=len(clock) + 2,
+        c=meta,
+        cw=len(meta) + 2,
     )
     line3 = '  ' + tweet
-    line4 = '\n'
+    line4 = ''
 
     printNicely(line1)
     printNicely(line2)
     printNicely(line3)
-    printNicely(line4)
+    printNicely('')
 
 
 def parse_arguments():
@@ -141,6 +142,18 @@ def tweet():
     t.statuses.update(status=g['stuff'])
 
 
+def timeline():
+    """
+    Authen and get timeline
+    """
+    t = Twitter(auth=authen())
+    count = HOME_TWEET_NUM
+    if g['stuff'].isdigit():
+        count = g['stuff']
+    for tweet in reversed(t.statuses.home_timeline(count=count)):
+        draw(t=tweet)
+
+
 def search():
     """
     Authen and search
@@ -189,11 +202,12 @@ def help():
     usage = '''
     Hi boss! I'm ready to serve you right now!
     ----------------------------------------------------
-    "tweet" at the beginning will tweet immediately
+    "t" at the beginning will tweet immediately
+    "tl" at the beginning will tweet immediately
     "s" and follow by any word will search and return 5 newest tweet
     "fr" will list out your following people
     "fl" will list out your followers
-    "h" will print this help once again
+    "h" or "help" will print this help once again
     "c" will clear the terminal
     "q" will exit
     ----------------------------------------------------
@@ -223,13 +237,15 @@ def process(cmd):
     Process switch by start of line
     """
     return {
-        'tweet' : tweet,
-        's'     : search,
-        'fr'    : friend,
-        'fl'    : follower,
-        'h'     : help,
-        'c'     : clear,
-        'q'     : quit,
+        't'    : tweet,
+        'tl'   : timeline,
+        's'    : search,
+        'fr'   : friend,
+        'fl'   : follower,
+        'h'    : help,
+        'help' : help,
+        'c'    : clear,
+        'q'    : quit,
     }.get(cmd, lambda: sys.stdout.write(g['decorated_name']))
 
 
