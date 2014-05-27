@@ -151,12 +151,16 @@ def view():
     """
     t = Twitter(auth=authen())
     user = g['stuff'].split()[0]
-    try:
-        count = int(g['stuff'].split()[1])
-    except:
-        count = HOME_TWEET_NUM
-    for tweet in reversed(t.statuses.user_timeline(count=count, screen_name=user)):
-        draw(t=tweet)
+    if user[0] == '@':
+        try:
+            count = int(g['stuff'].split()[1])
+        except:
+            count = HOME_TWEET_NUM
+        for tweet in reversed(t.statuses.user_timeline(count=count, screen_name=user[1:])):
+            draw(t=tweet)
+    else:
+        print(red('A name should begin with a \'@\''))
+        sys.stdout.write(g['decorated_name'])
 
 
 def tweet():
@@ -180,6 +184,7 @@ def reply():
         t.statuses.update(status=status, in_reply_to_status_id=id)
     except:
         print(red('Sorry I can\'t understand.'))
+        sys.stdout.write(g['decorated_name'])
 
 
 def delete():
@@ -193,6 +198,7 @@ def delete():
         print(green('Okay it\'s gone.'))
     except:
         print(red('Sorry I can\'t delete this tweet for you.'))
+        sys.stdout.write(g['decorated_name'])
 
 
 def search():
@@ -200,14 +206,17 @@ def search():
     Search
     """
     t = Twitter(auth=authen())
-    rel = t.search.tweets(q='#' + g['stuff'])['statuses']
     h, w = os.popen('stty size', 'r').read().split()
-
-    printNicely(grey('*' * int(w) + '\n'))
-    print('Newest', SEARCH_MAX_RECORD, 'tweet: \n')
-    for i in xrange(5):
-        draw(t=rel[i], keyword=g['stuff'].strip())
-    printNicely(grey('*' * int(w) + '\n'))
+    if g['stuff'][0] == '#':
+        rel = t.search.tweets(q=g['stuff'])['statuses']
+        printNicely(grey('*' * int(w) + '\n'))
+        print('Newest', SEARCH_MAX_RECORD, 'tweet: \n')
+        for i in xrange(5):
+            draw(t=rel[i], keyword=g['stuff'].strip())
+        printNicely(grey('*' * int(w) + '\n'))
+    else:
+        print(red('A keyword should be a hashtag (like \'#AKB48\')'))
+        sys.stdout.write(g['decorated_name'])
 
 
 def friend():
@@ -244,11 +253,11 @@ def help():
     Hi boss! I'm ready to serve you right now!
     ----------------------------------------------------
     "home" will show your timeline. "home 7" will print 7 tweet.
-    "view bob" will show your friend @bob's home.
+    "view @bob" will show your friend @bob's home.
     "t oops" will tweet "oops" immediately.
     "rep 12345 oops" will reply "oops" to tweet with id "12345".
     "del 12345" will delete tweet with id "12345".
-    "s AKB48" will search for "AKB48" and return 5 newest tweet.
+    "s #AKB48" will search for "AKB48" and return 5 newest tweet.
     "fr" will list out your following people.
     "fl" will list out your followers.
     "h" or "help" will print this help once again.
