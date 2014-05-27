@@ -8,7 +8,7 @@ install_requires = [
     "python-dateutil",
     "termcolor",
     "twitter"
-    ]
+]
 
 setup(name='rainbowstream',
       version=version,
@@ -28,12 +28,12 @@ setup(name='rainbowstream',
           "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: CGI Tools/Libraries",
           "Topic :: Utilities",
           "License :: OSI Approved :: MIT License",
-          ],
+      ],
       keywords='twitter, command-line tools, web 2.0, stream API',
       author='Vu Nhat Minh',
       author_email='nhatminh_179@hotmail.com',
       url='https://github.com/DTVD/rainbowstream',
-      download_url = 'https://github.com/DTVD/rainbowstream/tarball/0.0.1',
+      download_url='https://github.com/DTVD/rainbowstream/tarball/0.0.1',
       license='MIT License',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
@@ -42,6 +42,6 @@ setup(name='rainbowstream',
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]
-      rainbowstream=rainbowstream.rainbow:fly
+      rainbow=rainbowstream.rainbow:fly
       """,
       )

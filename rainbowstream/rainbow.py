@@ -40,7 +40,7 @@ def draw(t, keyword=None):
 
     # Format info
     user = cycle_color(name) + grey(' ' + '@' + screen_name + ' ')
-    meta = grey('[' + time + '] ['+ str(tid) +']')
+    meta = grey('[' + time + '] [id=' + str(tid) + ']')
     tweet = text.split()
     # Highlight RT
     tweet = map(lambda x: grey(x) if x == 'RT' else x, tweet)
@@ -68,7 +68,6 @@ def draw(t, keyword=None):
         cw=len(meta) + 2,
     )
     line3 = '  ' + tweet
-    line4 = ''
 
     printNicely(line1)
     printNicely(line2)
@@ -104,7 +103,7 @@ def parse_arguments():
 
 def authen():
     """
-    authenticate with Twitter OAuth
+    Authenticate with Twitter OAuth
     """
     # When using rainbow stream you must authorize.
     twitter_credential = os.environ.get(
@@ -134,17 +133,9 @@ def get_decorated_name():
     g['decorated_name'] = grey('[') + grey(name) + grey(']: ')
 
 
-def tweet():
+def home():
     """
-    Authen and tweet
-    """
-    t = Twitter(auth=authen())
-    t.statuses.update(status=g['stuff'])
-
-
-def timeline():
-    """
-    Authen and get timeline
+    Home
     """
     t = Twitter(auth=authen())
     count = HOME_TWEET_NUM
@@ -154,9 +145,59 @@ def timeline():
         draw(t=tweet)
 
 
+def view():
+    """
+    Friend view
+    """
+    t = Twitter(auth=authen())
+    user = g['stuff'].split()[0]
+    try:
+        count = int(g['stuff'].split()[1])
+    except:
+        count = HOME_TWEET_NUM
+    for tweet in reversed(t.statuses.user_timeline(count=count, screen_name=user)):
+        draw(t=tweet)
+
+
+def tweet():
+    """
+    Tweet
+    """
+    t = Twitter(auth=authen())
+    t.statuses.update(status=g['stuff'])
+
+
+def reply():
+    """
+    Reply
+    """
+    t = Twitter(auth=authen())
+    try:
+        id = int(g['stuff'].split()[0])
+        user = t.statuses.show(id=id)['user']['screen_name']
+        status = ' '.join(g['stuff'].split()[1:])
+        status = '@' + user + ' ' + status.decode('utf-8')
+        t.statuses.update(status=status, in_reply_to_status_id=id)
+    except:
+        print(red('Sorry I can\'t understand.'))
+
+
+def delete():
+    """
+    Delete
+    """
+    t = Twitter(auth=authen())
+    try:
+        id = int(g['stuff'].split()[0])
+        t.statuses.destroy(id=id)
+        print(green('Okay it\'s gone.'))
+    except:
+        print(red('Sorry I can\'t delete this tweet for you.'))
+
+
 def search():
     """
-    Authen and search
+    Search
     """
     t = Twitter(auth=authen())
     rel = t.search.tweets(q='#' + g['stuff'])['statuses']
@@ -197,14 +238,17 @@ def follower():
 
 def help():
     """
-    Print help
+    Help
     """
     usage = '''
     Hi boss! I'm ready to serve you right now!
     ----------------------------------------------------
-    "t" at the beginning will tweet immediately
-    "tl" at the beginning will tweet immediately
-    "s" and follow by any word will search and return 5 newest tweet
+    "home" will show your timeline. "home 7" will print 7 tweet.
+    "view bob" will show your friend @bob's home.
+    "t oops" will tweet "oops" immediately.
+    "rep 12345 oops" will reply "oops" to tweet with id "12345" .
+    "del 12345" will delete tweet with id "12345".
+    "s AKB48" will search for "AKB48" and return 5 newest tweet
     "fr" will list out your following people
     "fl" will list out your followers
     "h" or "help" will print this help once again
@@ -219,7 +263,7 @@ def help():
 
 def clear():
     """
-    Exit all
+    Clear screen
     """
     os.system('clear')
 
@@ -234,18 +278,21 @@ def quit():
 
 def process(cmd):
     """
-    Process switch by start of line
+    Process switch
     """
     return {
-        't'    : tweet,
-        'tl'   : timeline,
-        's'    : search,
-        'fr'   : friend,
-        'fl'   : follower,
-        'h'    : help,
-        'help' : help,
-        'c'    : clear,
-        'q'    : quit,
+        'home': home,
+        'view': view,
+        't': tweet,
+        'rep': reply,
+        'del': delete,
+        's': search,
+        'fr': friend,
+        'fl': follower,
+        'h': help,
+        'help': help,
+        'c': clear,
+        'q': quit,
     }.get(cmd, lambda: sys.stdout.write(g['decorated_name']))
 
 
