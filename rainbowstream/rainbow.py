@@ -178,6 +178,20 @@ def tweet():
     t.statuses.update(status=g['stuff'])
 
 
+def retweet():
+    """
+    ReTweet
+    """
+    t = Twitter(auth=authen())
+    try:
+        id = int(g['stuff'].split()[0])
+        tid = db.rainbow_query(id)[0].tweet_id
+        t.statuses.retweet(id=tid,include_entities=False,trim_user=True)
+    except:
+        print(red('Sorry I can\'t retweet for you.'))
+        sys.stdout.write(g['decorated_name'])
+
+
 def reply():
     """
     Reply
@@ -264,12 +278,13 @@ def help():
     "home" will show your timeline. "home 7" will print 7 tweet.
     "view @bob" will show your friend @bob's home.
     "t oops" will tweet "oops" immediately.
+    "rt 12345" will retweet to tweet with id "12345".
     "rep 12345 oops" will reply "oops" to tweet with id "12345".
     "del 12345" will delete tweet with id "12345".
     "s #AKB48" will search for "AKB48" and return 5 newest tweet.
     "fr" will list out your following people.
     "fl" will list out your followers.
-    "h" or "help" will print this help once again.
+    "h" will print this help once again.
     "c" will clear the terminal.
     "q" will exit.
     ----------------------------------------------------
@@ -299,18 +314,18 @@ def process(cmd):
     Process switch
     """
     return {
-        'home': home,
-        'view': view,
-        't': tweet,
-        'rep': reply,
-        'del': delete,
-        's': search,
-        'fr': friend,
-        'fl': follower,
-        'h': help,
-        'help': help,
-        'c': clear,
-        'q': quit,
+        'home'  : home,
+        'view'  : view,
+        't'     : tweet,
+        'rt'    : retweet,
+        'rep'   : reply,
+        'del'   : delete,
+        's'     : search,
+        'fr'    : friend,
+        'fl'    : follower,
+        'h'     : help,
+        'c'     : clear,
+        'q'     : quit,
     }.get(cmd, lambda: sys.stdout.write(g['decorated_name']))
 
 
