@@ -246,14 +246,14 @@ def help():
     "home" will show your timeline. "home 7" will print 7 tweet.
     "view bob" will show your friend @bob's home.
     "t oops" will tweet "oops" immediately.
-    "rep 12345 oops" will reply "oops" to tweet with id "12345" .
+    "rep 12345 oops" will reply "oops" to tweet with id "12345".
     "del 12345" will delete tweet with id "12345".
-    "s AKB48" will search for "AKB48" and return 5 newest tweet
-    "fr" will list out your following people
-    "fl" will list out your followers
-    "h" or "help" will print this help once again
-    "c" will clear the terminal
-    "q" will exit
+    "s AKB48" will search for "AKB48" and return 5 newest tweet.
+    "fr" will list out your following people.
+    "fl" will list out your followers.
+    "h" or "help" will print this help once again.
+    "c" will clear the terminal.
+    "q" will exit.
     ----------------------------------------------------
     Have fun and hang tight!
     '''
