@@ -14,4 +14,5 @@ class Map(Base):
     def __init__(self, tweet_id):
         self.tweet_id = tweet_id
 
-Base.metadata.create_all(engine)
+def init_db():
+    Base.metadata.create_all(engine)

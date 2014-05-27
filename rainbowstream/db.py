@@ -1,13 +1,16 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from table_def import Map
-
+from .table_def import *
 
 class RainbowDB():
 
     engine=None
 
     def __init__(self):
+        if not os.path.isfile('rainbow.db'):
+            init_db()
         self.engine = create_engine('sqlite:///rainbow.db', echo=False)
 
     def store(self, tweet_id):
