@@ -37,8 +37,9 @@ rainbowstream
 In the first time you will be asked for authorization of Rainbow Stream app at Twitter.
 Just click the "Authorize access" button and paste PIN number to the terminal, the rainbow will start.
 
-While the rainbow stream is continued, you can search, list follower, following user, tweet directly from console, etc...
+While the rainbow stream is continued, you can search, reply, retweet, tweet directly from terminal ...
 Type 'h' to view help or see screenshot above.
+
 
 ## License
 Rainbow Stream are released under an MIT License. See LICENSE.txt for details
