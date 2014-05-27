@@ -21,9 +21,10 @@ from dateutil import parser
 
 from .colors import *
 from .config import *
+from .db import *
 
 g = {}
-
+db = RainbowDB()
 
 def draw(t, keyword=None):
     """
@@ -38,9 +39,15 @@ def draw(t, keyword=None):
     date = parser.parse(created_at)
     time = date.strftime('%Y/%m/%d %H:%M:%S')
 
+    res = db.tweet_query(tid)
+    if not res:
+        db.store(tid)
+        res = db.tweet_query(tid)
+    rid = res[0].rainbow_id
+
     # Format info
     user = cycle_color(name) + grey(' ' + '@' + screen_name + ' ')
-    meta = grey('[' + time + '] [id=' + str(tid) + ']')
+    meta = grey('[' + time + '] [id=' + str(rid) + ']')
     tweet = text.split()
     # Highlight RT
     tweet = map(lambda x: grey(x) if x == 'RT' else x, tweet)
@@ -178,10 +185,11 @@ def reply():
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
-        user = t.statuses.show(id=id)['user']['screen_name']
+        tid = db.rainbow_query(id)[0].tweet_id
+        user = t.statuses.show(id=tid)['user']['screen_name']
         status = ' '.join(g['stuff'].split()[1:])
         status = '@' + user + ' ' + status.decode('utf-8')
-        t.statuses.update(status=status, in_reply_to_status_id=id)
+        t.statuses.update(status=status, in_reply_to_status_id=tid)
     except:
         print(red('Sorry I can\'t understand.'))
         sys.stdout.write(g['decorated_name'])
@@ -194,11 +202,12 @@ def delete():
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
-        t.statuses.destroy(id=id)
+        tid = db.rainbow_query(id)[0].tweet_id
+        t.statuses.destroy(id=tid)
         print(green('Okay it\'s gone.'))
     except:
         print(red('Sorry I can\'t delete this tweet for you.'))
-        sys.stdout.write(g['decorated_name'])
+    sys.stdout.write(g['decorated_name'])
 
 
 def search():
@@ -365,6 +374,7 @@ def fly():
     Main function
     """
     get_decorated_name()
+
     p = Process(target=stream)
     p.start()
     g['stream_pid'] = p.pid

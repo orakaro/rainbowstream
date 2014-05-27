@@ -4,3 +4,4 @@ python-dateutil==2.2
 six==1.6.1
 termcolor==1.1.0
 twitter==1.14.3
+SQLAlchemy=0.9.4
