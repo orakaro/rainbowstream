@@ -9,7 +9,6 @@ import os
 import os.path
 import argparse
 import sys
-import time
 import signal
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
@@ -366,7 +365,7 @@ def stream():
     # Get stream
     stream = TwitterStream(
         auth=authen(),
-        domain='userstream.twitter.com',
+        domain=DOMAIN,
         **stream_args)
     tweet_iter = stream.user(**query_args)
 
