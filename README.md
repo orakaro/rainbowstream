@@ -112,5 +112,9 @@ Quit.
 
 For example see the screenshot above.
 
+## Bug Report
+Please [create an issue](https://github.com/DTVD/rainbowstream/issues/new) 
+or contact me at [@dtvd88](https://twitter.com/dtvd88)
+
 ## License
 Rainbow Stream are released under an MIT License. See LICENSE.txt for details
