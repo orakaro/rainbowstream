@@ -9,6 +9,8 @@ This package build on the top of [Python Twitter Tool](http://mike.verdone.ca/tw
 ![v0.0.1](https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamvSS.png)
 
 ## Install
+You will need Python 2.7+ and pip to install
+
 **The recommened way:**
 * Clone this repo
 * Create virtualenv (optional but recommended)
@@ -28,7 +30,6 @@ pip install -e .
 ```bash
 sudo pip install git+https://github.com/DTVD/rainbowstream.git
 ```
-**Note the I only support Python version 2.7+**
 
 ## Usage
 #### The stream
