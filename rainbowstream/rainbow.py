@@ -274,7 +274,7 @@ def help():
     usage = '''
     Hi boss! I'm ready to serve you right now!
     ----------------------------------------------------
-    "home" will show your timeline. "home 7" will print 7 tweet.
+    "home" will show your timeline. "home 7" will show 7 tweet.
     "view @bob" will show your friend @bob's home.
     "t oops" will tweet "oops" immediately.
     "rt 12345" will retweet to tweet with id "12345".
@@ -283,7 +283,7 @@ def help():
     "s #AKB48" will search for "AKB48" and return 5 newest tweet.
     "fr" will list out your following people.
     "fl" will list out your followers.
-    "h" will print this help once again.
+    "h" will show this help again.
     "c" will clear the terminal.
     "q" will exit.
     ----------------------------------------------------
