@@ -110,5 +110,7 @@ Clear the screen.
 ```
 Quit.
 
+For example see the screenshot above.
+
 ## License
 Rainbow Stream are released under an MIT License. See LICENSE.txt for details
