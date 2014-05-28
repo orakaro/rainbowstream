@@ -49,66 +49,29 @@ Input is in interactive mode. It means that you can use arrow key to move up and
 
 Here is full list of supported command
 
-```bash
-[@dtvd88]home 
-```
-Show your timeline. A number come after will decide number of tweets to print. Ex 'home 10'.
+* ```home```will show your timeline. A number come after will decide number of tweets to print. Ex 'home 10'.
 
-```bash
-[@dtvd88]view @mdo 
-```
-Show @mdo 's timeline.
+* ```view @mdo```will show @mdo 's timeline.
 
-```bash
-[@dtvd88]t the rainbow is god's promise to noah
-```
-Tweet exactly 'the rainbow is god's promise to noah'
+* ```t the rainbow is god's promise to noah```will tweet exactly **'the rainbow is god's promise to noah'**
 
-```bash
-[@dtvd88]rt 1
-```
-Retweet the tweet with [id=1]. You can see id of each tweet beside the time.
+* ```rt 12```will retweet the tweet with *[id=12]*. You can see id of each tweet beside the time.
 
-```bash
-[@dtvd88]rep 1 Really
-```
-Reply 'Really' to the tweet with [id=1].
+* ```rep 12 Really```will reply **'Really'** to the tweet with *[id=12]*.
 
-```bash
-[@dtvd88]del 1
-```
-Delete thw tweet with [id=1].
+* ```del 12```will delete thw tweet with *[id=12]*.
 
-```bash
-[@dtvd88]s #noah
-```
-Search the word 'noah'. Result will come back with highlight.
+* ```s #noah```will search the word **'noah'**. Result will come back with highlight.
 
-```bash
-[@dtvd88]fr
-```
-List all friend (You are following people).
+* ```fr```will list all friend (You are following people).
 
-```bash
-[@dtvd88]fl
-```
-List all follower.
+* ```fl```will list all follower.
 
-```bash
-[@dtvd88]h
-```
-SHow the help.
+* ```h```will show the help.
 
-```bash
-[@dtvd88]c
-```
-Clear the screen.
+* ```c```will clear the screen.
 
-
-```bash
-[@dtvd88]q
-```
-Quit.
+* ```q```will quit.
 
 For example see the screenshot above.
 
