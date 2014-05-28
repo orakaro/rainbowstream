@@ -16,7 +16,7 @@ This package build on the top of [Python Twitter Tool](http://mike.verdone.ca/tw
 * Install the package itself
 
 ```bash
-git clone https://github.com/DTVD/rainbowstream.git
+git clone git@github.com:DTVD/rainbowstream.git
 cd rainbowstream
 virtualenv venv # Assume that you have virtualenv installed by "pip install virtualenv"
 source venv/bin/activate
