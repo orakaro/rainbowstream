@@ -1,5 +1,5 @@
 import readline
-
+import rlcompleter
 
 class RainbowCompleter(object):
 
@@ -35,5 +35,8 @@ def init_interactive_shell(set):
     Init the rainbow shell
     """
     readline.set_completer(RainbowCompleter(set).complete)
-    readline.parse_and_bind('tab: complete')
     readline.parse_and_bind('set editing-mode vi')
+    if 'libedit' in readline.__doc__:
+        readline.parse_and_bind("bind ^I rl_complete")
+    else:
+        readline.parse_and_bind("tab: complete")

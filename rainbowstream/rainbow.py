@@ -56,6 +56,7 @@ def draw(t, keyword=None):
     date = date - datetime.timedelta(seconds=time.timezone)
     clock = date.strftime('%Y/%m/%d %H:%M:%S')
 
+    print('before search')
     res = db.tweet_query(tid)
     if not res:
         db.store(tid)
@@ -383,8 +384,6 @@ def stream():
 
     # The Logo
     ascii_art()
-    g['stuff'] = '1'
-    home()
     # These arguments are optional:
     stream_args = dict(
         timeout=args.timeout,
