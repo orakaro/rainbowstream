@@ -5,11 +5,8 @@ Colorful user's timeline stream
 from __future__ import print_function
 from multiprocessing import Process
 
-import os
-import os.path
-import argparse
-import sys
-import signal
+import os, os.path, sys,signal
+import argparse, time, datetime
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
@@ -36,7 +33,8 @@ def draw(t, keyword=None):
     name = t['user']['name']
     created_at = t['created_at']
     date = parser.parse(created_at)
-    time = date.strftime('%Y/%m/%d %H:%M:%S')
+    date = date - datetime.timedelta(seconds=time.timezone)
+    clock = date.strftime('%Y/%m/%d %H:%M:%S')
 
     res = db.tweet_query(tid)
     if not res:
@@ -46,7 +44,7 @@ def draw(t, keyword=None):
 
     # Format info
     user = cycle_color(name) + grey(' ' + '@' + screen_name + ' ')
-    meta = grey('[' + time + '] [id=' + str(rid) + ']')
+    meta = grey('[' + clock + '] [id=' + str(rid) + ']')
     tweet = text.split()
     # Highlight RT
     tweet = map(lambda x: grey(x) if x == 'RT' else x, tweet)
