@@ -49,9 +49,9 @@ Input is in interactive mode. It means that you can use arrow key to move up and
 
 Here is full list of supported command
 
-* ```home```will show your timeline. A number come after will decide number of tweets to print. Ex 'home 10'.
+* ```home```will show your timeline. A number come after will decide number of tweets to print. Ex ```home 10```.
 
-* ```view @mdo```will show @mdo 's timeline.
+* ```view @mdo```will show @mdo 's timeline. ```view @dmo 9``` also print 9 tweet exactly.
 
 * ```t the rainbow is god's promise to noah```will tweet exactly **'the rainbow is god's promise to noah'**
 
