@@ -32,13 +32,13 @@ sudo pip install git+https://github.com/DTVD/rainbowstream.git
 
 ## Usage
 ```bash
-rainbowstream
+rainbow
 ```
 In the first time you will be asked for authorization of Rainbow Stream app at Twitter.
 Just click the "Authorize access" button and paste PIN number to the terminal, the rainbow will start.
 
 While the rainbow stream is continued, you can search, reply, retweet, tweet directly from terminal ...
-Type 'h' to view help or see screenshot above.
+Type 'h' to view full help or use TAB auto-completion to see what is available. 
 
 
 ## License
