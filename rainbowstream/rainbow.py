@@ -1,6 +1,10 @@
 """
 Colorful user's timeline stream
 """
+from __future__ import print_function
+from multiprocessing import Process
+from dateutil import parser
+
 import os
 import os.path
 import sys
@@ -8,10 +12,6 @@ import signal
 import argparse
 import time
 import datetime
-
-from __future__ import print_function
-from multiprocessing import Process
-from dateutil import parser
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
