@@ -292,7 +292,7 @@ def help():
     """
     usage = '''
     Hi boss! I'm ready to serve you right now!
-    ----------------------------------------------------
+    -------------------------------------------------------------
     "home" will show your timeline. "home 7" will show 7 tweet.
     "view @bob" will show your friend @bob's home.
     "t oops" will tweet "oops" immediately.
@@ -305,7 +305,7 @@ def help():
     "h" will show this help again.
     "c" will clear the terminal.
     "q" will exit.
-    ----------------------------------------------------
+    -------------------------------------------------------------
     Have fun and hang tight!
     '''
     printNicely(usage)
