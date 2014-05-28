@@ -153,7 +153,7 @@ def get_decorated_name():
     Beginning of every line
     """
     t = Twitter(auth=authen())
-    name = '@' + t.statuses.user_timeline()[-1]['user']['screen_name']
+    name = '@' + t.account.verify_credentials()['screen_name']
     g['decorated_name'] = grey('[') + grey(name) + grey(']: ')
 
 
