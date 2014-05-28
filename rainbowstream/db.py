@@ -4,9 +4,10 @@ from sqlalchemy.orm import sessionmaker
 from table_def import Map
 from .table_def import *
 
+
 class RainbowDB():
 
-    engine=None
+    engine = None
 
     def __init__(self):
         if not os.path.isfile('rainbow.db'):
@@ -29,7 +30,8 @@ class RainbowDB():
         """
         Session = sessionmaker(bind=self.engine)
         session = Session()
-        res = session.query(Map).filter("rainbow_id =:rid").params(rid=rid).all()
+        res = session.query(Map)
+            .filter("rainbow_id =:rid").params(rid=rid).all()
         return res
 
     def tweet_query(self, tid):
@@ -38,7 +40,8 @@ class RainbowDB():
         """
         Session = sessionmaker(bind=self.engine)
         session = Session()
-        res = session.query(Map).filter("tweet_id =:tid").params(tid=tid).all()
+        res = session.query(Map)
+            .filter("tweet_id =:tid").params(tid=tid).all()
         return res
 
     def truncate(self):

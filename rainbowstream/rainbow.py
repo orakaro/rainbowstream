@@ -1,19 +1,23 @@
 """
 Colorful user's timeline stream
 """
+import os
+import os.path
+import sys
+import signal
+import argparse
+import time
+import datetime
 
 from __future__ import print_function
 from multiprocessing import Process
-
-import os, os.path, sys,signal
-import argparse, time, datetime 
+from dateutil import parser
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
 from twitter.oauth import OAuth, read_token_file
 from twitter.oauth_dance import oauth_dance
 from twitter.util import printNicely
-from dateutil import parser
 
 from .colors import *
 from .config import *
@@ -36,6 +40,7 @@ cmdset = [
     'c',
     'q'
 ]
+
 
 def draw(t, keyword=None):
     """
@@ -191,6 +196,7 @@ def tweet():
     t.statuses.update(status=g['stuff'])
     g['prefix'] = False
 
+
 def retweet():
     """
     ReTweet
@@ -199,7 +205,7 @@ def retweet():
     try:
         id = int(g['stuff'].split()[0])
         tid = db.rainbow_query(id)[0].tweet_id
-        t.statuses.retweet(id=tid,include_entities=False,trim_user=True)
+        t.statuses.retweet(id=tid, include_entities=False, trim_user=True)
     except:
         print(red('Sorry I can\'t retweet for you.'))
     g['prefix'] = False
@@ -252,7 +258,7 @@ def search():
             print(red('A keyword should be a hashtag (like \'#AKB48\')'))
     except:
         print(red('Sorry I can\'t understand.'))
-    
+
 
 def friend():
     """
@@ -316,7 +322,7 @@ def quit():
     """
     Exit all
     """
-    db.truncate() 
+    db.truncate()
     os.kill(g['stream_pid'], signal.SIGKILL)
     sys.exit()
 
@@ -334,14 +340,27 @@ def process(cmd):
     """
     return dict(zip(
         cmdset,
-        [home,view,tweet,retweet,reply,delete,search,friend,follower,help,clear,quit] 
+        [
+            home,
+            view,
+            tweet,
+            retweet,
+            reply,
+            delete,
+            search,
+            friend,
+            follower,
+            help,
+            clear,
+            quit
+        ]
     )).get(cmd, reset)
 
 
 def listen():
     init_interactive_shell(cmdset)
-    first = True 
-    while True: 
+    first = True
+    while True:
         if g['prefix'] and not first:
             line = raw_input(g['decorated_name'])
         else:

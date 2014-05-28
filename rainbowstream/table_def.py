@@ -4,6 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 engine = create_engine('sqlite:///rainbow.db', echo=False)
 Base = declarative_base()
 
+
 class Map(Base):
 
     __tablename__ = "map"
@@ -13,6 +14,7 @@ class Map(Base):
 
     def __init__(self, tweet_id):
         self.tweet_id = tweet_id
+
 
 def init_db():
     Base.metadata.create_all(engine)
