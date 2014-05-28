@@ -6,7 +6,7 @@ from __future__ import print_function
 from multiprocessing import Process
 
 import os, os.path, sys,signal
-import argparse, time, datetime
+import argparse, time, datetime 
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
@@ -17,10 +17,25 @@ from dateutil import parser
 
 from .colors import *
 from .config import *
+from .interactive import *
 from .db import *
 
 g = {}
 db = RainbowDB()
+cmdset = [
+    'home',
+    'view',
+    't',
+    'rt',
+    'rep',
+    'del',
+    's',
+    'fr',
+    'fl',
+    'h',
+    'c',
+    'q'
+]
 
 def draw(t, keyword=None):
     """
@@ -73,10 +88,10 @@ def draw(t, keyword=None):
     )
     line3 = '  ' + tweet
 
+    printNicely('')
     printNicely(line1)
     printNicely(line2)
     printNicely(line3)
-    printNicely('')
 
 
 def parse_arguments():
@@ -142,11 +157,12 @@ def home():
     Home
     """
     t = Twitter(auth=authen())
-    count = HOME_TWEET_NUM
+    num = HOME_TWEET_NUM
     if g['stuff'].isdigit():
-        count = g['stuff']
-    for tweet in reversed(t.statuses.home_timeline(count=count)):
+        num = g['stuff']
+    for tweet in reversed(t.statuses.home_timeline(count=num)):
         draw(t=tweet)
+    printNicely('')
 
 
 def view():
@@ -157,14 +173,14 @@ def view():
     user = g['stuff'].split()[0]
     if user[0] == '@':
         try:
-            count = int(g['stuff'].split()[1])
+            num = int(g['stuff'].split()[1])
         except:
-            count = HOME_TWEET_NUM
-        for tweet in reversed(t.statuses.user_timeline(count=count, screen_name=user[1:])):
+            num = HOME_TWEET_NUM
+        for tweet in reversed(t.statuses.user_timeline(count=num, screen_name=user[1:])):
             draw(t=tweet)
+        printNicely('')
     else:
         print(red('A name should begin with a \'@\''))
-        sys.stdout.write(g['decorated_name'])
 
 
 def tweet():
@@ -173,7 +189,7 @@ def tweet():
     """
     t = Twitter(auth=authen())
     t.statuses.update(status=g['stuff'])
-
+    g['prefix'] = False
 
 def retweet():
     """
@@ -186,7 +202,7 @@ def retweet():
         t.statuses.retweet(id=tid,include_entities=False,trim_user=True)
     except:
         print(red('Sorry I can\'t retweet for you.'))
-        sys.stdout.write(g['decorated_name'])
+    g['prefix'] = False
 
 
 def reply():
@@ -203,7 +219,7 @@ def reply():
         t.statuses.update(status=status, in_reply_to_status_id=tid)
     except:
         print(red('Sorry I can\'t understand.'))
-        sys.stdout.write(g['decorated_name'])
+    g['prefix'] = False
 
 
 def delete():
@@ -218,7 +234,6 @@ def delete():
         print(green('Okay it\'s gone.'))
     except:
         print(red('Sorry I can\'t delete this tweet for you.'))
-    sys.stdout.write(g['decorated_name'])
 
 
 def search():
@@ -226,18 +241,18 @@ def search():
     Search
     """
     t = Twitter(auth=authen())
-    h, w = os.popen('stty size', 'r').read().split()
-    if g['stuff'][0] == '#':
-        rel = t.search.tweets(q=g['stuff'])['statuses']
-        printNicely(grey('*' * int(w) + '\n'))
-        print('Newest', SEARCH_MAX_RECORD, 'tweet: \n')
-        for i in xrange(5):
-            draw(t=rel[i], keyword=g['stuff'].strip())
-        printNicely(grey('*' * int(w) + '\n'))
-    else:
-        print(red('A keyword should be a hashtag (like \'#AKB48\')'))
-        sys.stdout.write(g['decorated_name'])
-
+    try:
+        if g['stuff'][0] == '#':
+            rel = t.search.tweets(q=g['stuff'])['statuses']
+            print('Newest', SEARCH_MAX_RECORD, 'tweet:')
+            for i in xrange(5):
+                draw(t=rel[i], keyword=g['stuff'].strip()[1:])
+            printNicely('')
+        else:
+            print(red('A keyword should be a hashtag (like \'#AKB48\')'))
+    except:
+        print(red('Sorry I can\'t understand.'))
+    
 
 def friend():
     """
@@ -288,7 +303,6 @@ def help():
     Have fun and hang tight!
     '''
     printNicely(usage)
-    sys.stdout.write(g['decorated_name'])
 
 
 def clear():
@@ -307,31 +321,31 @@ def quit():
     sys.exit()
 
 
+def reset():
+    """
+    Reset prefix of line
+    """
+    g['prefix'] = True
+
+
 def process(cmd):
     """
     Process switch
     """
-    return {
-        'home'  : home,
-        'view'  : view,
-        't'     : tweet,
-        'rt'    : retweet,
-        'rep'   : reply,
-        'del'   : delete,
-        's'     : search,
-        'fr'    : friend,
-        'fl'    : follower,
-        'h'     : help,
-        'c'     : clear,
-        'q'     : quit,
-    }.get(cmd, lambda: sys.stdout.write(g['decorated_name']))
+    return dict(zip(
+        cmdset,
+        [home,view,tweet,retweet,reply,delete,search,friend,follower,help,clear,quit] 
+    )).get(cmd, reset)
 
 
-def listen(stdin):
-    """
-    Listen to user's input
-    """
-    for line in iter(stdin.readline, ''):
+def listen():
+    init_interactive_shell(cmdset)
+    first = True 
+    while True: 
+        if g['prefix'] and not first:
+            line = raw_input(g['decorated_name'])
+        else:
+            line = raw_input()
         try:
             cmd = line.split()[0]
         except:
@@ -339,7 +353,7 @@ def listen(stdin):
         # Save cmd to global variable and call process
         g['stuff'] = ' '.join(line.split()[1:])
         process(cmd)()
-    stdin.close()
+        first = False
 
 
 def stream():
@@ -389,8 +403,8 @@ def fly():
     Main function
     """
     get_decorated_name()
-
+    g['prefix'] = True
     p = Process(target=stream)
     p.start()
     g['stream_pid'] = p.pid
-    listen(sys.stdin)
+    listen()
