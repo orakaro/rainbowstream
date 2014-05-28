@@ -322,7 +322,7 @@ def quit():
     """
     Exit all
     """
-    db.truncate()
+    os.system('rm -rf rainbow.db')
     os.kill(g['stream_pid'], signal.SIGKILL)
     sys.exit()
 

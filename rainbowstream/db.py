@@ -30,7 +30,7 @@ class RainbowDB():
         """
         Session = sessionmaker(bind=self.engine)
         session = Session()
-        res = session.query(Map).filter("rainbow_id =:rid").params(rid=rid).all()
+        res = session.query(Map).filter_by(rainbow_id=rid).all()
         return res
 
     def tweet_query(self, tid):
@@ -39,14 +39,5 @@ class RainbowDB():
         """
         Session = sessionmaker(bind=self.engine)
         session = Session()
-        res = session.query(Map).filter("tweet_id =:tid").params(tid=tid).all()
+        res = session.query(Map).filter_by(tweet_id=tid).all()
         return res
-
-    def truncate(self):
-        """
-        Truncate table
-        """
-        Session = sessionmaker(bind=self.engine)
-        session = Session()
-        session.query(Map).delete()
-        session.commit()
