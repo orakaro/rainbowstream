@@ -49,19 +49,19 @@ Input is in interactive mode. It means that you can use arrow key to move up and
 
 Here is full list of supported command
 
-* ```home```will show your timeline. A number come after will decide number of tweets to print. Ex ```home 10```.
+* ```home```will show your timeline. ```home 10``` will print exactly 10 tweet.
 
-* ```view @mdo```will show @mdo 's timeline. ```view @dmo 9``` also print 9 tweet exactly.
+* ```view @mdo```will show @mdo 's timeline. ```view @dmo 9``` will print exactly 9 tweet.
 
-* ```t the rainbow is god's promise to noah```will tweet exactly **'the rainbow is god's promise to noah'**
+* ```t the rainbow is god's promise to noah```will tweet exactly *'the rainbow is god's promise to noah'*
 
 * ```rt 12```will retweet the tweet with *[id=12]*. You can see id of each tweet beside the time.
 
-* ```rep 12 Really```will reply **'Really'** to the tweet with *[id=12]*.
+* ```rep 12 Really```will reply *'Really'* to the tweet with *[id=12]*.
 
 * ```del 12```will delete thw tweet with *[id=12]*.
 
-* ```s #noah```will search the word **'noah'**. Result will come back with highlight.
+* ```s #noah```will search the word *'noah'*. Result will come back with highlight.
 
 * ```fr```will list all friend (You are following people).
 
