@@ -56,7 +56,6 @@ def draw(t, keyword=None):
     date = date - datetime.timedelta(seconds=time.timezone)
     clock = date.strftime('%Y/%m/%d %H:%M:%S')
 
-    print('before search')
     res = db.tweet_query(tid)
     if not res:
         db.store(tid)
