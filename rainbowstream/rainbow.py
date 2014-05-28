@@ -304,6 +304,7 @@ def quit():
     """
     Exit all
     """
+    db.truncate() 
     os.kill(g['stream_pid'], signal.SIGKILL)
     sys.exit()
 
@@ -351,6 +352,8 @@ def stream():
 
     # The Logo
     ascii_art()
+    g['stuff'] = '1'
+    home()
     # These arguments are optional:
     stream_args = dict(
         timeout=args.timeout,
