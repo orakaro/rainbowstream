@@ -251,7 +251,7 @@ def search():
         if g['stuff'][0] == '#':
             rel = t.search.tweets(q=g['stuff'])['statuses']
             print('Newest', SEARCH_MAX_RECORD, 'tweet:')
-            for i in xrange(SEARCH_MAX_RECORD):
+            for i in reversed(xrange(SEARCH_MAX_RECORD)):
                 draw(t=rel[i], keyword=g['stuff'].strip()[1:])
             printNicely('')
         else:
