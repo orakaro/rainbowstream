@@ -36,6 +36,9 @@ def init_interactive_shell(set):
     """
     readline.set_completer(RainbowCompleter(set).complete)
     readline.parse_and_bind('set editing-mode vi')
+    readline.parse_and_bind("set input-meta on")
+    readline.parse_and_bind("set convert-meta off")
+    readline.parse_and_bind("set output-meta on")
     if 'libedit' in readline.__doc__:
         readline.parse_and_bind("bind ^I rl_complete")
     else:
