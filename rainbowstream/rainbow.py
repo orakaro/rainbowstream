@@ -316,6 +316,7 @@ def clear():
     Clear screen
     """
     os.system('clear')
+    g['prefix'] = False
 
 
 def quit():
