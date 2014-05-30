@@ -7,7 +7,8 @@ class RainbowCompleter(object):
         """
         Init
         """
-        self.options = sorted(options)
+        self.options = options
+        self.current_candidates = []
         return
 
     def complete(self, text, state):
@@ -16,25 +17,43 @@ class RainbowCompleter(object):
         """
         response = None
         if state == 0:
-            if text:
-                self.matches = [s
-                                for s in self.options
-                                if s and s.startswith(text)]
+            origline = readline.get_line_buffer()
+            begin = readline.get_begidx()
+            end = readline.get_endidx()
+            being_completed = origline[begin:end]
+            words = origline.split()
+
+            if not words:
+                self.current_candidates = sorted(self.options.keys())
             else:
-                self.matches = self.options
+                try:
+                    if begin == 0:
+                        candidates = self.options.keys()
+                    else:
+                        first = words[0]
+                        candidates = self.options[first]
+
+                    if being_completed:
+                        self.current_candidates = [ w for w in candidates
+                                                    if w.startswith(being_completed) ]
+                    else:
+                        self.current_candidates = candidates
+
+                except (KeyError, IndexError), err:
+                    self.current_candidates = []
 
         try:
-            response = self.matches[state]
+            response = self.current_candidates[state]
         except IndexError:
             response = None
         return response
 
 
-def init_interactive_shell(set):
+def init_interactive_shell(d):
     """
     Init the rainbow shell
     """
-    readline.set_completer(RainbowCompleter(set).complete)
+    readline.set_completer(RainbowCompleter(d).complete)
     readline.parse_and_bind('set editing-mode vi')
     readline.parse_and_bind("set input-meta on")
     readline.parse_and_bind("set convert-meta off")

@@ -43,10 +43,11 @@ cmdset = [
 ]
 
 
-def draw(t, keyword=None):
+def draw(t, keyword=None, fil=[], ig=[]):
     """
     Draw the rainbow
     """
+
     # Retrieve tweet
     tid = t['id']
     text = t['text']
@@ -57,6 +58,13 @@ def draw(t, keyword=None):
     date = date - datetime.timedelta(seconds=time.timezone)
     clock = date.strftime('%Y/%m/%d %H:%M:%S')
 
+    # Filter and ignore
+    screen_name = '@' + screen_name
+    if fil and screen_name not in fil:
+        return
+    if ig and screen_name in ig:
+        return
+
     res = db.tweet_query(tid)
     if not res:
         db.store(tid)
@@ -64,7 +72,7 @@ def draw(t, keyword=None):
     rid = res[0].rainbow_id
 
     # Format info
-    user = cycle_color(name) + grey(' ' + '@' + screen_name + ' ')
+    user = cycle_color(name) + grey(' ' + screen_name + ' ')
     meta = grey('[' + clock + '] [id=' + str(rid) + ']')
     tweet = text.split()
     # Highlight RT
@@ -123,6 +131,14 @@ def parse_arguments():
         '-tt',
         '--track-keywords',
         help='Search the stream for specific text.')
+    parser.add_argument(
+        '-fil',
+        '--filter',
+        help='Filter specific screen_name.')
+    parser.add_argument(
+        '-ig',
+        '--ignore',
+        help='Ignore specific screen_name.')
     return parser.parse_args()
 
 
@@ -166,6 +182,21 @@ def switch():
     try:
         target = g['stuff'].split()[0]
 
+        # Filter and ignore
+        args = parse_arguments()
+        try :
+            if g['stuff'].split()[-1] == '-f':
+                only = raw_input('Only nicks: ')
+                ignore = raw_input('Ignore nicks: ')
+                args.filter = only.split(',')
+                args.ignore = ignore.split(',')
+            elif g['stuff'].split()[-1] == '-d':
+                args.filter = ONLY_LIST
+                args.ignore = IGNORE_LIST
+        except:
+            printNicely(red('Sorry, wrong format.'))
+            return
+
         # Public stream
         if target == 'public':
             keyword = g['stuff'].split()[1]
@@ -173,13 +204,12 @@ def switch():
                 keyword = keyword[1:]
             # Kill old process
             os.kill(g['stream_pid'], signal.SIGKILL)
-            args = parse_arguments()
             args.track_keywords = keyword
             # Start new process
             p = Process(
-                target=stream, 
+                target=stream,
                 args=(
-                    PUBLIC_DOMAIN, 
+                    PUBLIC_DOMAIN,
                     args))
             p.start()
             g['stream_pid'] = p.pid
@@ -188,7 +218,6 @@ def switch():
         elif target == 'mine':
             # Kill old process
             os.kill(g['stream_pid'], signal.SIGKILL)
-            args = parse_arguments()
             # Start new process
             p = Process(
                 target=stream,
@@ -198,7 +227,13 @@ def switch():
                     g['original_name']))
             p.start()
             g['stream_pid'] = p.pid
+        printNicely('')
         printNicely(green('Stream switched.'))
+        if args.filter:
+            printNicely(cyan('Only: ' + str(args.filter)))
+        if args.ignore:
+            printNicely(red('Ignore: ' + str(args.ignore)))
+        printNicely('')
     except:
         printNicely(red('Sorry I can\'t understand.'))
     g['prefix'] = False
@@ -346,6 +381,10 @@ def help():
     You are already on your personal stream:
       "switch public #AKB" will switch to public stream and follow "AKB" keyword.
       "switch mine" will switch back to your personal stream.
+      "switch mine -f" will prompt to enter the filter.
+        "Only nicks" filter will decide nicks will be INCLUDE ONLY.
+        "Ignore nicks" filter will decide nicks will be EXCLUDE.
+      "switch mine -d" will use the config's ONLY_LIST and IGNORE_LIST(see config.py).
     For more action:
       "home" will show your timeline. "home 7" will show 7 tweet.
       "view @bob" will show your friend @bob's home.
@@ -420,7 +459,25 @@ def listen():
     """
     Listen to user's input
     """
-    init_interactive_shell(cmdset)
+    d = dict(zip(
+        cmdset,
+        [
+            ['public #','mine'], # switch
+            [], # home
+            ['@'], # view
+            [], # tweet
+            [], # retweet
+            [], # reply
+            [], # delete
+            ['#'], # search
+            [], # friend
+            [], # follower
+            [], # help
+            [], # clear
+            [], # quit
+        ]
+        ))
+    init_interactive_shell(d)
     first = True
     while True:
         if g['prefix'] and not first:
@@ -441,6 +498,7 @@ def stream(domain, args, name='Rainbow Stream'):
     """
     Track the stream
     """
+
     # The Logo
     art_dict = {
         USER_DOMAIN: name,
@@ -448,6 +506,7 @@ def stream(domain, args, name='Rainbow Stream'):
         SITE_DOMAIN: 'Site Stream',
     }
     ascii_art(art_dict[domain])
+
     # These arguments are optional:
     stream_args = dict(
         timeout=args.timeout,
@@ -486,7 +545,7 @@ def stream(domain, args, name='Rainbow Stream'):
         elif tweet is Hangup:
             printNicely("-- Hangup --")
         elif tweet.get('text'):
-            draw(t=tweet, keyword=args.track_keywords)
+            draw(t=tweet, keyword=args.track_keywords, fil=args.filter, ig=args.ignore)
 
 
 def fly():
