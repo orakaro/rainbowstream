@@ -347,7 +347,7 @@ def help():
     usage = '''
     Hi boss! I'm ready to serve you right now!
     -------------------------------------------------------------
-    You are already see your personal stream:
+    You are already on your personal stream:
       "switch public #AKB" will switch to public stream and follow "AKB" keyword.
       "switch mine" will switch back to your personal stream.
     For more action:
