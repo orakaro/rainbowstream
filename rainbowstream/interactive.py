@@ -21,7 +21,7 @@ class RainbowCompleter(object):
                                 for s in self.options
                                 if s and s.startswith(text)]
             else:
-                self.matches = self.options[:]
+                self.matches = self.options
 
         try:
             response = self.matches[state]
@@ -43,3 +43,4 @@ def init_interactive_shell(set):
         readline.parse_and_bind("bind ^I rl_complete")
     else:
         readline.parse_and_bind("tab: complete")
+

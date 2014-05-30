@@ -185,7 +185,7 @@ def view():
             draw(t=tweet)
         printNicely('')
     else:
-        print(red('A name should begin with a \'@\''))
+        printNicely(red('A name should begin with a \'@\''))
 
 
 def tweet():
@@ -207,7 +207,7 @@ def retweet():
         tid = db.rainbow_query(id)[0].tweet_id
         t.statuses.retweet(id=tid, include_entities=False, trim_user=True)
     except:
-        print(red('Sorry I can\'t retweet for you.'))
+        printNicely(red('Sorry I can\'t retweet for you.'))
     g['prefix'] = False
 
 
@@ -224,7 +224,7 @@ def reply():
         status = '@' + user + ' ' + status.decode('utf-8')
         t.statuses.update(status=status, in_reply_to_status_id=tid)
     except:
-        print(red('Sorry I can\'t understand.'))
+        printNicely(red('Sorry I can\'t understand.'))
     g['prefix'] = False
 
 
@@ -237,9 +237,9 @@ def delete():
         id = int(g['stuff'].split()[0])
         tid = db.rainbow_query(id)[0].tweet_id
         t.statuses.destroy(id=tid)
-        print(green('Okay it\'s gone.'))
+        printNicely(green('Okay it\'s gone.'))
     except:
-        print(red('Sorry I can\'t delete this tweet for you.'))
+        printNicely(red('Sorry I can\'t delete this tweet for you.'))
 
 
 def search():
@@ -250,14 +250,17 @@ def search():
     try:
         if g['stuff'][0] == '#':
             rel = t.search.tweets(q=g['stuff'])['statuses']
-            print('Newest', SEARCH_MAX_RECORD, 'tweet:')
-            for i in reversed(xrange(SEARCH_MAX_RECORD)):
-                draw(t=rel[i], keyword=g['stuff'].strip()[1:])
-            printNicely('')
+            if len(rel):
+                printNicely('Newest tweets:')
+                for i in reversed(xrange(SEARCH_MAX_RECORD)):
+                    draw(t=rel[i], keyword=g['stuff'].strip()[1:])
+                printNicely('')
+            else:
+                printNicely(magenta('I\'m afraid there is no result'))
         else:
-            print(red('A keyword should be a hashtag (like \'#AKB48\')'))
+            printNicely(red('A keyword should be a hashtag (like \'#AKB48\')'))
     except:
-        print(red('Sorry I can\'t understand.'))
+        printNicely(red('Sorry I can\'t understand.'))
 
 
 def friend():
@@ -270,7 +273,7 @@ def friend():
         screen_name = t.users.lookup(user_id=i)[0]['screen_name']
         user = cycle_color('@' + screen_name)
         print(user, end=' ')
-    print('\n')
+    printNicely('');
 
 
 def follower():
@@ -283,7 +286,7 @@ def follower():
         screen_name = t.users.lookup(user_id=i)[0]['screen_name']
         user = cycle_color('@' + screen_name)
         print(user, end=' ')
-    print('\n')
+    printNicely('');
 
 
 def help():
@@ -332,7 +335,10 @@ def reset():
     """
     Reset prefix of line
     """
+    if g['reset']:
+        printNicely(green('Need tips ? Type "h" and hit Enter key!'))
     g['prefix'] = True
+    g['reset'] = False
 
 
 def process(cmd):
@@ -422,6 +428,7 @@ def fly():
     """
     get_decorated_name()
     g['prefix'] = True
+    g['reset'] = True
     p = Process(target=stream)
     p.start()
     g['stream_pid'] = p.pid
