@@ -198,7 +198,7 @@ def switch():
                     g['original_name']))
             p.start()
             g['stream_pid'] = p.pid
-        printNicely(green('stream switched.'))
+        printNicely(green('Stream switched.'))
     except:
         printNicely(red('Sorry I can\'t understand.'))
     g['prefix'] = False
@@ -486,7 +486,7 @@ def stream(domain, args, name='Rainbow Stream'):
         elif tweet is Hangup:
             printNicely("-- Hangup --")
         elif tweet.get('text'):
-            draw(t=tweet)
+            draw(t=tweet, keyword=args.track_keywords)
 
 
 def fly():
