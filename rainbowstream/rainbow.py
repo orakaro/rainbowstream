@@ -504,3 +504,10 @@ def fly():
     g['reset'] = True
     g['stream_pid'] = p.pid
     listen()
+
+
+def multiplexer():
+    """
+    Multiplexer
+    """
+    os.system('screen -S rainbow fly')    
