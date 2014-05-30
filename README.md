@@ -50,6 +50,22 @@ Input is in interactive mode. It means that you can use arrow key to move up and
 
 Here is full list of supported command
 
+__Stream Command__
+* ```switch public #AKB48``` will switch current stream to public stream and track keyword ```AKB48```
+
+* ```switch public #AKB48 -f ``` will do exactly as above but will ask you to provide 2 list:
+
+    ```Only nicks``` decide what nicks will be include only.
+
+    ```Ignore nicks```decide what nicks will be exclude.
+
+* ```switch public #AKB48 -d ``` will apply filter to *ONLY_LIST* and *IGNORE_LIST*.
+You can setup 2 list above at ```config.py```
+
+* ```switch mine``` will switch current stream to personal stream. ```-f``` and ```-d``` will work as well.
+
+__Action Command__
+
 * ```home```will show your timeline. ```home 10``` will print exactly 10 tweet.
 
 * ```view @mdo```will show @mdo 's timeline. ```view @dmo 9``` will print exactly 9 tweet.
