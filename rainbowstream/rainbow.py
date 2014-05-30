@@ -27,6 +27,7 @@ from .db import *
 g = {}
 db = RainbowDB()
 cmdset = [
+    'switch',
     'home',
     'view',
     't',
@@ -154,7 +155,57 @@ def get_decorated_name():
     """
     t = Twitter(auth=authen())
     name = '@' + t.account.verify_credentials()['screen_name']
+    g['original_name'] = name[1:]
     g['decorated_name'] = grey('[') + grey(name) + grey(']: ')
+
+
+def switch():
+    """
+    Switch stream
+    """
+    try:
+        target = g['stuff'].split()[0]
+
+        # Public stream
+        if target == 'public':
+            keyword = g['stuff'].split()[1]
+            if keyword[0] == '#':
+                keyword = keyword[1:]
+
+            # Kill old process
+            os.kill(g['stream_pid'], signal.SIGKILL)
+            args = parse_arguments()
+            args.track_keywords = keyword
+
+            # Start new process
+            p = Process(
+                target=stream, 
+                args=(
+                    PUBLIC_DOMAIN, 
+                    args))
+            p.start()
+            g['stream_pid'] = p.pid
+
+        # Personal stream
+        elif target == 'mine':
+
+            # Kill old process
+            os.kill(g['stream_pid'], signal.SIGKILL)
+            args = parse_arguments()
+
+            # Start new process
+            p = Process(
+                target=stream,
+                args=(
+                    USER_DOMAIN,
+                    args,
+                    g['original_name']))
+            p.start()
+            g['stream_pid'] = p.pid
+        printNicely(green('stream switched.'))
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+    g['prefix'] = False
 
 
 def home():
@@ -273,7 +324,7 @@ def friend():
         screen_name = t.users.lookup(user_id=i)[0]['screen_name']
         user = cycle_color('@' + screen_name)
         print(user, end=' ')
-    printNicely('');
+    printNicely('')
 
 
 def follower():
@@ -286,7 +337,7 @@ def follower():
         screen_name = t.users.lookup(user_id=i)[0]['screen_name']
         user = cycle_color('@' + screen_name)
         print(user, end=' ')
-    printNicely('');
+    printNicely('')
 
 
 def help():
@@ -296,18 +347,22 @@ def help():
     usage = '''
     Hi boss! I'm ready to serve you right now!
     -------------------------------------------------------------
-    "home" will show your timeline. "home 7" will show 7 tweet.
-    "view @bob" will show your friend @bob's home.
-    "t oops" will tweet "oops" immediately.
-    "rt 12345" will retweet to tweet with id "12345".
-    "rep 12345 oops" will reply "oops" to tweet with id "12345".
-    "del 12345" will delete tweet with id "12345".
-    "s #AKB48" will search for "AKB48" and return 5 newest tweet.
-    "fr" will list out your following people.
-    "fl" will list out your followers.
-    "h" will show this help again.
-    "c" will clear the terminal.
-    "q" will exit.
+    You are already see your personal stream:
+      "switch public #AKB" will switch to public stream and follow "AKB" keyword.
+      "switch mine" will switch back to your personal stream.
+    For more action:
+      "home" will show your timeline. "home 7" will show 7 tweet.
+      "view @bob" will show your friend @bob's home.
+      "t oops" will tweet "oops" immediately.
+      "rt 12345" will retweet to tweet with id "12345".
+      "rep 12345 oops" will reply "oops" to tweet with id "12345".
+      "del 12345" will delete tweet with id "12345".
+      "s #AKB48" will search for "AKB48" and return 5 newest tweet.
+      "fr" will list out your following people.
+      "fl" will list out your followers.
+      "h" will show this help again.
+      "c" will clear the terminal.
+      "q" will exit.
     -------------------------------------------------------------
     Have fun and hang tight!
     '''
@@ -348,6 +403,7 @@ def process(cmd):
     return dict(zip(
         cmdset,
         [
+            switch,
             home,
             view,
             tweet,
@@ -365,6 +421,9 @@ def process(cmd):
 
 
 def listen():
+    """
+    Listen to user's input
+    """
     init_interactive_shell(cmdset)
     first = True
     while True:
@@ -382,14 +441,17 @@ def listen():
         first = False
 
 
-def stream():
+def stream(domain, args, name='Rainbow Stream'):
     """
     Track the stream
     """
-    args = parse_arguments()
-
     # The Logo
-    ascii_art()
+    art_dict = {
+        USER_DOMAIN: name,
+        PUBLIC_DOMAIN: args.track_keywords,
+        SITE_DOMAIN: 'Site Stream',
+    }
+    ascii_art(art_dict[domain])
     # These arguments are optional:
     stream_args = dict(
         timeout=args.timeout,
@@ -404,11 +466,20 @@ def stream():
     # Get stream
     stream = TwitterStream(
         auth=authen(),
-        domain=DOMAIN,
+        domain=domain,
         **stream_args)
-    tweet_iter = stream.user(**query_args)
 
-    # Iterate over the sample stream.
+    if domain == USER_DOMAIN:
+        tweet_iter = stream.user(**query_args)
+    elif domain == SITE_DOMAIN:
+        tweet_iter = stream.site(**query_args)
+    else:
+        if args.track_keywords:
+            tweet_iter = stream.statuses.filter(**query_args)
+        else:
+            tweet_iter = stream.statuses.sample()
+
+    # Iterate over the stream.
     for tweet in tweet_iter:
         if tweet is None:
             printNicely("-- None --")
@@ -426,10 +497,14 @@ def fly():
     """
     Main function
     """
+    # Spawn stream process
+    args = parse_arguments()
     get_decorated_name()
+    p = Process(target=stream, args=(USER_DOMAIN, args, g['original_name']))
+    p.start()
+
+    # Start listen process
     g['prefix'] = True
     g['reset'] = True
-    p = Process(target=stream)
-    p.start()
     g['stream_pid'] = p.pid
     listen()

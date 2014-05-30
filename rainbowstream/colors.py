@@ -73,11 +73,11 @@ def cycle_color(s):
     return next(cyc)(s)
 
 
-def ascii_art():
+def ascii_art(text):
     """
     Draw the Ascii Art
     """
-    fi = figlet_format('Rainbow Stream', font='doom')
+    fi = figlet_format(text, font='doom')
     print('\n'.join(
         [next(cyc)(i) for i in fi.split('\n')]
     )
