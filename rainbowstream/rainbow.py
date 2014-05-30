@@ -171,12 +171,10 @@ def switch():
             keyword = g['stuff'].split()[1]
             if keyword[0] == '#':
                 keyword = keyword[1:]
-
             # Kill old process
             os.kill(g['stream_pid'], signal.SIGKILL)
             args = parse_arguments()
             args.track_keywords = keyword
-
             # Start new process
             p = Process(
                 target=stream, 
@@ -188,11 +186,9 @@ def switch():
 
         # Personal stream
         elif target == 'mine':
-
             # Kill old process
             os.kill(g['stream_pid'], signal.SIGKILL)
             args = parse_arguments()
-
             # Start new process
             p = Process(
                 target=stream,
