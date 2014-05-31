@@ -188,8 +188,8 @@ def switch():
             if g['stuff'].split()[-1] == '-f':
                 only = raw_input('Only nicks: ')
                 ignore = raw_input('Ignore nicks: ')
-                args.filter = only.split(',')
-                args.ignore = ignore.split(',')
+                args.filter = only.split(',')[0]
+                args.ignore = ignore.split(',')[0]
             elif g['stuff'].split()[-1] == '-d':
                 args.filter = ONLY_LIST
                 args.ignore = IGNORE_LIST
@@ -380,7 +380,8 @@ def help():
       "switch mine -f" will prompt to enter the filter.
         "Only nicks" filter will decide nicks will be INCLUDE ONLY.
         "Ignore nicks" filter will decide nicks will be EXCLUDE.
-      "switch mine -d" will use the config's ONLY_LIST and IGNORE_LIST(see config.py).
+      "switch mine -d" will use the config's ONLY_LIST and IGNORE_LIST
+        (see rainbowstream/config.py).
     For more action:
       "home" will show your timeline. "home 7" will show 7 tweet.
       "view @bob" will show your friend @bob's home.
@@ -474,7 +475,10 @@ def listen():
     init_interactive_shell(d)
     reset()
     while True:
-        line = raw_input(g['decorated_name'])
+        if g['prefix']:
+            line = raw_input(g['decorated_name'])
+        else:
+            line = raw_input()
         try:
             cmd = line.split()[0]
         except:
@@ -482,6 +486,10 @@ def listen():
         # Save cmd to global variable and call process
         g['stuff'] = ' '.join(line.split()[1:])
         process(cmd)()
+        if cmd in ['switch','t','rt','rep']:
+            g['prefix'] = False
+        else:
+            g['prefix'] = True
 
 
 def stream(domain, args, name='Rainbow Stream'):
@@ -551,6 +559,7 @@ def fly():
     # Start listen process
     time.sleep(0.5)
     g['reset'] = True
+    g['prefix'] = True
     g['stream_pid'] = p.pid
     listen()
 
