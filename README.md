@@ -43,8 +43,8 @@ In the first time you will be asked for authorization of Rainbow Stream app at T
 Just click the "Authorize access" button and paste PIN number to the terminal, the rainbow will start.
 
 #### The interactive mode
-While the rainbow stream is continued, you are also ready to tweet, search, reply, retweet... directly from console.
-Simply hit Enter key and type "h" to view the help
+While your personal stream is continued, you are also ready to tweet, search, reply, retweet... directly from console.
+Simply type "h" and hit the Enter key to see the help
 
 Input is in interactive mode. It means that you can use arrow key to move up and down history, tab-autocomplete or 2 tab to view available suggestion
 
