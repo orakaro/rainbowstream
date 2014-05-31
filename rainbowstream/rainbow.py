@@ -236,7 +236,6 @@ def switch():
         printNicely('')
     except:
         printNicely(red('Sorry I can\'t understand.'))
-    g['prefix'] = False
 
 
 def home():
@@ -276,7 +275,6 @@ def tweet():
     """
     t = Twitter(auth=authen())
     t.statuses.update(status=g['stuff'])
-    g['prefix'] = False
 
 
 def retweet():
@@ -290,7 +288,6 @@ def retweet():
         t.statuses.retweet(id=tid, include_entities=False, trim_user=True)
     except:
         printNicely(red('Sorry I can\'t retweet for you.'))
-    g['prefix'] = False
 
 
 def reply():
@@ -307,7 +304,6 @@ def reply():
         t.statuses.update(status=status, in_reply_to_status_id=tid)
     except:
         printNicely(red('Sorry I can\'t understand.'))
-    g['prefix'] = False
 
 
 def delete():
@@ -409,7 +405,6 @@ def clear():
     Clear screen
     """
     os.system('clear')
-    g['prefix'] = False
 
 
 def quit():
@@ -427,7 +422,6 @@ def reset():
     """
     if g['reset']:
         printNicely(green('Need tips ? Type "h" and hit Enter key!'))
-    g['prefix'] = True
     g['reset'] = False
 
 
@@ -478,12 +472,9 @@ def listen():
         ]
         ))
     init_interactive_shell(d)
-    first = True
+    reset()
     while True:
-        if g['prefix'] and not first:
-            line = raw_input(g['decorated_name'])
-        else:
-            line = raw_input()
+        line = raw_input(g['decorated_name'])
         try:
             cmd = line.split()[0]
         except:
@@ -491,7 +482,6 @@ def listen():
         # Save cmd to global variable and call process
         g['stuff'] = ' '.join(line.split()[1:])
         process(cmd)()
-        first = False
 
 
 def stream(domain, args, name='Rainbow Stream'):
@@ -559,7 +549,7 @@ def fly():
     p.start()
 
     # Start listen process
-    g['prefix'] = True
+    time.sleep(0.5)
     g['reset'] = True
     g['stream_pid'] = p.pid
     listen()
