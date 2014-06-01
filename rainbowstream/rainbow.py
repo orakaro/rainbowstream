@@ -382,7 +382,7 @@ def help():
     usage += s*2 + green('switch mine -f ') + ' will prompt to enter the filter.\n'
     usage += s*3 + yellow('Only nicks') + ' filter will decide nicks will be INCLUDE ONLY.\n'
     usage += s*3 + yellow('Ignore nicks') + ' filter will decide nicks will be EXCLUDE.\n'
-    usage += s*2 + green('switch mine -d') + ' will use the config\'s ONLY_LIST and IGNORE_LIST\n'
+    usage += s*2 + green('switch mine -d') + ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
     usage += s*3 + '(see ' + grey('rainbowstream/config.py') + ').\n'
 
     usage += s + 'For more action: \n'
