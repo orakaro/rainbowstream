@@ -370,33 +370,37 @@ def help():
     """
     Help
     """
-    usage = '''
-    Hi boss! I'm ready to serve you right now!
-    -------------------------------------------------------------
-    You are already on your personal stream:
-      "switch public #AKB" will switch to public stream and follow "AKB" keyword.
-      "switch mine" will switch back to your personal stream.
-      "switch mine -f" will prompt to enter the filter.
-        "Only nicks" filter will decide nicks will be INCLUDE ONLY.
-        "Ignore nicks" filter will decide nicks will be EXCLUDE.
-      "switch mine -d" will use the config's ONLY_LIST and IGNORE_LIST
-        (see rainbowstream/config.py).
-    For more action:
-      "home" will show your timeline. "home 7" will show 7 tweet.
-      "view @bob" will show your friend @bob's home.
-      "t oops" will tweet "oops" immediately.
-      "rt 12345" will retweet to tweet with id "12345".
-      "rep 12345 oops" will reply "oops" to tweet with id "12345".
-      "del 12345" will delete tweet with id "12345".
-      "s #AKB48" will search for "AKB48" and return 5 newest tweet.
-      "fr" will list out your following people.
-      "fl" will list out your followers.
-      "h" will show this help again.
-      "c" will clear the terminal.
-      "q" will exit.
-    -------------------------------------------------------------
-    Have fun and hang tight!
-    '''
+    s = ' '*2
+
+    usage = '\n'
+    usage += s + 'Hi boss! I\'m ready to serve you right now!\n'
+    usage += s + '-'*70 + '\n'
+
+    usage += s + 'You are ' + yellow('already') +' on your personal stream.\n'
+    usage += s*2 + green('switch public #AKB') +  ' will switch to public stream and follow "' + yellow('AKB') + '" keyword.\n'
+    usage += s*2 + green('switch mine') + ' will switch to your personal stream.\n'
+    usage += s*2 + green('switch mine -f ') + ' will prompt to enter the filter.\n'
+    usage += s*3 + yellow('Only nicks') + ' filter will decide nicks will be INCLUDE ONLY.\n'
+    usage += s*3 + yellow('Ignore nicks') + ' filter will decide nicks will be EXCLUDE.\n'
+    usage += s*2 + green('switch mine -d') + ' will use the config\'s ONLY_LIST and IGNORE_LIST\n'
+    usage += s*3 + '(see ' + grey('rainbowstream/config.py') + ').\n'
+
+    usage += s + 'For more action: \n'
+    usage += s*2 + green('home') + ' will show your timeline. ' + green('home 7') + ' will show 7 tweet.\n'
+    usage += s*2 + green('view @mdo') + ' will show @mdo\'s home.\n'
+    usage += s*2 + green('t oops ') + 'will tweet "' + yellow('oops') + '"" immediately.\n'
+    usage += s*2 + green('rt 12 ') + ' will retweet to tweet with '+ yellow('[id=12]') + '.\n'
+    usage += s*2 + green('rep 12 oops') + ' will reply "' + yellow('oops') + '" to tweet with ' + yellow('[id=12]') + '.\n'
+    usage += s*2 + green('del 12 ') + ' will delete tweet with ' + yellow('[id=12]') + '.\n'
+    usage += s*2 + green('s #AKB48') + ' will search for "'+yellow('AKB48') + '" and return 5 newest tweet.\n'
+    usage += s*2 + green('fr') + ' will list out your following people.\n'
+    usage += s*2 + green('fl') + ' will list out your follower.\n'
+    usage += s*2 + green('h') + ' will show this help again.\n'
+    usage += s*2 + green('c') + ' will clear the screen.\n'
+    usage += s*2 + green('q') + ' will quit.\n'
+
+    usage += s + '-'*70 + '\n'
+    usage += s + 'Have fun and hang tight!\n'
     printNicely(usage)
 
 
@@ -421,7 +425,7 @@ def reset():
     Reset prefix of line
     """
     if g['reset']:
-        printNicely(green('Need tips ? Type "h" and hit Enter key!'))
+        printNicely(magenta('Need tips ? Type "h" and hit Enter key!'))
     g['reset'] = False
 
 
