@@ -1,7 +1,6 @@
 """
 Colorful user's timeline stream
 """
-from __future__ import print_function
 from multiprocessing import Process
 from dateutil import parser
 
@@ -188,8 +187,8 @@ def switch():
             if g['stuff'].split()[-1] == '-f':
                 only = raw_input('Only nicks: ')
                 ignore = raw_input('Ignore nicks: ')
-                args.filter = only.split(',')[0]
-                args.ignore = ignore.split(',')[0]
+                args.filter = filter(None,only.split(','))
+                args.ignore = filter(None,ignore.split(','))
             elif g['stuff'].split()[-1] == '-d':
                 args.filter = ONLY_LIST
                 args.ignore = IGNORE_LIST
@@ -348,10 +347,10 @@ def friend():
     t = Twitter(auth=authen())
     g['friends'] = t.friends.ids()['ids']
     for i in g['friends']:
-        screen_name = t.users.lookup(user_id=i)[0]['screen_name']
-        user = cycle_color('@' + screen_name)
-        print(user, end=' ')
-    printNicely('')
+        name = t.users.lookup(user_id=i)[0]['name']
+        screen_name = '@' + t.users.lookup(user_id=i)[0]['screen_name']
+        user = cycle_color(name) + grey(' ' + screen_name + ' ')
+        print user
 
 
 def follower():
@@ -361,10 +360,10 @@ def follower():
     t = Twitter(auth=authen())
     g['followers'] = t.followers.ids()['ids']
     for i in g['followers']:
-        screen_name = t.users.lookup(user_id=i)[0]['screen_name']
-        user = cycle_color('@' + screen_name)
-        print(user, end=' ')
-    printNicely('')
+        name = t.users.lookup(user_id=i)[0]['name']
+        screen_name = '@' + t.users.lookup(user_id=i)[0]['screen_name']
+        user = cycle_color(name) + grey(' ' + screen_name + ' ')
+        print user
 
 
 def help():

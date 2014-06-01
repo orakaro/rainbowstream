@@ -3,7 +3,6 @@ import itertools
 from functools import wraps
 from termcolor import *
 from pyfiglet import figlet_format
-from functools import reduce
 
 grey = lambda x: colored(x, 'grey', attrs=['bold'])
 red = lambda x: colored(x, 'red', attrs=['bold'])
