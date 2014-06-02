@@ -74,9 +74,13 @@ __Action Command__
 
 * ```rt 12```will retweet the tweet with *[id=12]*. You can see id of each tweet beside the time.
 
+* ```fav 12```will favorite the tweet with *[id=12]*.
+
 * ```rep 12 Really```will reply *'Really'* to the tweet with *[id=12]*.
 
-* ```del 12```will delete thw tweet with *[id=12]*.
+* ```del 12```will delete tweet with *[id=12]*.
+
+* ```ufav 12```will unfavorite tweet with *[id=12]*.
 
 * ```s #noah```will search the word *'noah'*. Result will come back with highlight.
 
