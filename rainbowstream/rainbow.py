@@ -31,8 +31,10 @@ cmdset = [
     'view',
     't',
     'rt',
+    'fav',
     'rep',
     'del',
+    'ufav',
     's',
     'fr',
     'fl',
@@ -53,6 +55,7 @@ def draw(t, keyword=None, fil=[], ig=[]):
     screen_name = t['user']['screen_name']
     name = t['user']['name']
     created_at = t['created_at']
+    favorited = t['favorited']
     date = parser.parse(created_at)
     date = date - datetime.timedelta(seconds=time.timezone)
     clock = date.strftime('%Y/%m/%d %H:%M:%S')
@@ -72,7 +75,9 @@ def draw(t, keyword=None, fil=[], ig=[]):
 
     # Format info
     user = cycle_color(name) + grey(' ' + screen_name + ' ')
-    meta = grey('[' + clock + '] [id=' + str(rid) + ']')
+    meta = grey('[' + clock + '] [id=' + str(rid) + '] ')
+    if favorited:
+        meta = meta + green(u'\u2605')
     tweet = text.split()
     # Highlight RT
     tweet = map(lambda x: grey(x) if x == 'RT' else x, tweet)
@@ -183,12 +188,12 @@ def switch():
 
         # Filter and ignore
         args = parse_arguments()
-        try :
+        try:
             if g['stuff'].split()[-1] == '-f':
                 only = raw_input('Only nicks: ')
                 ignore = raw_input('Ignore nicks: ')
-                args.filter = filter(None,only.split(','))
-                args.ignore = filter(None,ignore.split(','))
+                args.filter = filter(None, only.split(','))
+                args.ignore = filter(None, ignore.split(','))
             elif g['stuff'].split()[-1] == '-d':
                 args.filter = ONLY_LIST
                 args.ignore = IGNORE_LIST
@@ -289,6 +294,21 @@ def retweet():
         printNicely(red('Sorry I can\'t retweet for you.'))
 
 
+def favorite():
+    """
+    Favorite
+    """
+    t = Twitter(auth=authen())
+    try:
+        id = int(g['stuff'].split()[0])
+        tid = db.rainbow_query(id)[0].tweet_id
+        t.favorites.create(_id=tid, include_entities=False)
+        printNicely(green('Favorited.'))
+        draw(t.statuses.show(id=tid))
+    except:
+        printNicely(red('Omg some syntax is wrong.'))
+
+
 def reply():
     """
     Reply
@@ -317,6 +337,21 @@ def delete():
         printNicely(green('Okay it\'s gone.'))
     except:
         printNicely(red('Sorry I can\'t delete this tweet for you.'))
+
+
+def unfavorite():
+    """
+    Unfavorite
+    """
+    t = Twitter(auth=authen())
+    try:
+        id = int(g['stuff'].split()[0])
+        tid = db.rainbow_query(id)[0].tweet_id
+        t.favorites.destroy(_id=tid)
+        printNicely(green('Okay it\'s unfavorited.'))
+        draw(t.statuses.show(id=tid))
+    except:
+        printNicely(red('Sorry I can\'t unfavorite this tweet for you.'))
 
 
 def search():
@@ -370,37 +405,59 @@ def help():
     """
     Help
     """
-    s = ' '*2
-    h,w = os.popen('stty size', 'r').read().split()
+    s = ' ' * 2
+    h, w = os.popen('stty size', 'r').read().split()
 
     usage = '\n'
     usage += s + 'Hi boss! I\'m ready to serve you right now!\n'
-    usage += s + '-'*(int(w)-4) + '\n'
+    usage += s + '-' * (int(w) - 4) + '\n'
 
-    usage += s + 'You are ' + yellow('already') +' on your personal stream.\n'
-    usage += s*2 + green('switch public #AKB') +  ' will switch to public stream and follow "' + yellow('AKB') + '" keyword.\n'
-    usage += s*2 + green('switch mine') + ' will switch to your personal stream.\n'
-    usage += s*2 + green('switch mine -f ') + ' will prompt to enter the filter.\n'
-    usage += s*3 + yellow('Only nicks') + ' filter will decide nicks will be INCLUDE ONLY.\n'
-    usage += s*3 + yellow('Ignore nicks') + ' filter will decide nicks will be EXCLUDE.\n'
-    usage += s*2 + green('switch mine -d') + ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
-    usage += s*3 + '(see ' + grey('rainbowstream/config.py') + ').\n'
+    usage += s + 'You are ' + yellow('already') + ' on your personal stream.\n'
+    usage += s * 2 + green('switch public #AKB') + \
+        ' will switch to public stream and follow "' + \
+        yellow('AKB') + '" keyword.\n'
+    usage += s * 2 + green('switch mine') + \
+        ' will switch to your personal stream.\n'
+    usage += s * 2 + green('switch mine -f ') + \
+        ' will prompt to enter the filter.\n'
+    usage += s * 3 + yellow('Only nicks') + \
+        ' filter will decide nicks will be INCLUDE ONLY.\n'
+    usage += s * 3 + yellow('Ignore nicks') + \
+        ' filter will decide nicks will be EXCLUDE.\n'
+    usage += s * 2 + green('switch mine -d') + \
+        ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
+    usage += s * 3 + '(see ' + grey('rainbowstream/config.py') + ').\n'
 
     usage += s + 'For more action: \n'
-    usage += s*2 + green('home') + ' will show your timeline. ' + green('home 7') + ' will show 7 tweet.\n'
-    usage += s*2 + green('view @mdo') + ' will show ' + yellow('@mdo') + '\'s home.\n'
-    usage += s*2 + green('t oops ') + 'will tweet "' + yellow('oops') + '" immediately.\n'
-    usage += s*2 + green('rt 12 ') + ' will retweet to tweet with '+ yellow('[id=12]') + '.\n'
-    usage += s*2 + green('rep 12 oops') + ' will reply "' + yellow('oops') + '" to tweet with ' + yellow('[id=12]') + '.\n'
-    usage += s*2 + green('del 12 ') + ' will delete tweet with ' + yellow('[id=12]') + '.\n'
-    usage += s*2 + green('s #AKB48') + ' will search for "'+yellow('AKB48') + '" and return 5 newest tweet.\n'
-    usage += s*2 + green('fr') + ' will list out your following people.\n'
-    usage += s*2 + green('fl') + ' will list out your follower.\n'
-    usage += s*2 + green('h') + ' will show this help again.\n'
-    usage += s*2 + green('c') + ' will clear the screen.\n'
-    usage += s*2 + green('q') + ' will quit.\n'
+    usage += s * 2 + green('home') + ' will show your timeline. ' + \
+        green('home 7') + ' will show 7 tweet.\n'
+    usage += s * 2 + green('view @mdo') + \
+        ' will show ' + yellow('@mdo') + '\'s home.\n'
+    usage += s * 2 + green('t oops ') + \
+        'will tweet "' + yellow('oops') + '" immediately.\n'
+    usage += s * 2 + \
+        green('rt 12 ') + ' will retweet to tweet with ' + \
+        yellow('[id=12]') + '.\n'
+    usage += s * 2 + \
+        green('fav 12 ') + ' will favorite the tweet with ' + \
+        yellow('[id=12]') + '.\n'
+    usage += s * 2 + green('rep 12 oops') + ' will reply "' + \
+        yellow('oops') + '" to tweet with ' + yellow('[id=12]') + '.\n'
+    usage += s * 2 + \
+        green('del 12 ') + ' will delete tweet with ' + \
+        yellow('[id=12]') + '.\n'
+    usage += s * 2 + \
+        green('ufav 12 ') + ' will unfavorite tweet with ' + \
+        yellow('[id=12]') + '.\n'
+    usage += s * 2 + green('s #AKB48') + ' will search for "' + \
+        yellow('AKB48') + '" and return 5 newest tweet.\n'
+    usage += s * 2 + green('fr') + ' will list out your following people.\n'
+    usage += s * 2 + green('fl') + ' will list out your follower.\n'
+    usage += s * 2 + green('h') + ' will show this help again.\n'
+    usage += s * 2 + green('c') + ' will clear the screen.\n'
+    usage += s * 2 + green('q') + ' will quit.\n'
 
-    usage += s + '-'*(int(w)-4) + '\n'
+    usage += s + '-' * (int(w) - 4) + '\n'
     usage += s + 'Have fun and hang tight!\n'
     printNicely(usage)
 
@@ -442,8 +499,10 @@ def process(cmd):
             view,
             tweet,
             retweet,
+            favorite,
             reply,
             delete,
+            unfavorite,
             search,
             friend,
             follower,
@@ -461,21 +520,21 @@ def listen():
     d = dict(zip(
         cmdset,
         [
-            ['public #','mine'], # switch
-            [], # home
-            ['@'], # view
-            [], # tweet
-            [], # retweet
-            [], # reply
-            [], # delete
-            ['#'], # search
-            [], # friend
-            [], # follower
-            [], # help
-            [], # clear
-            [], # quit
+            ['public #', 'mine'],  # switch
+            [],  # home
+            ['@'],  # view
+            [],  # tweet
+            [],  # retweet
+            [],  # reply
+            [],  # delete
+            ['#'],  # search
+            [],  # friend
+            [],  # follower
+            [],  # help
+            [],  # clear
+            [],  # quit
         ]
-        ))
+    ))
     init_interactive_shell(d)
     reset()
     while True:
@@ -490,7 +549,7 @@ def listen():
         # Save cmd to global variable and call process
         g['stuff'] = ' '.join(line.split()[1:])
         process(cmd)()
-        if cmd in ['switch','t','rt','rep']:
+        if cmd in ['switch', 't', 'rt', 'rep']:
             g['prefix'] = False
         else:
             g['prefix'] = True
@@ -547,7 +606,11 @@ def stream(domain, args, name='Rainbow Stream'):
         elif tweet is Hangup:
             printNicely("-- Hangup --")
         elif tweet.get('text'):
-            draw(t=tweet, keyword=args.track_keywords, fil=args.filter, ig=args.ignore)
+            draw(
+                t=tweet,
+                keyword=args.track_keywords,
+                fil=args.filter,
+                ig=args.ignore)
 
 
 def fly():
@@ -566,4 +629,3 @@ def fly():
     g['prefix'] = True
     g['stream_pid'] = p.pid
     listen()
-
