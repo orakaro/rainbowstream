@@ -371,10 +371,11 @@ def help():
     Help
     """
     s = ' '*2
+    h,w = os.popen('stty size', 'r').read().split()
 
     usage = '\n'
     usage += s + 'Hi boss! I\'m ready to serve you right now!\n'
-    usage += s + '-'*70 + '\n'
+    usage += s + '-'*(int(w)-4) + '\n'
 
     usage += s + 'You are ' + yellow('already') +' on your personal stream.\n'
     usage += s*2 + green('switch public #AKB') +  ' will switch to public stream and follow "' + yellow('AKB') + '" keyword.\n'
@@ -387,8 +388,8 @@ def help():
 
     usage += s + 'For more action: \n'
     usage += s*2 + green('home') + ' will show your timeline. ' + green('home 7') + ' will show 7 tweet.\n'
-    usage += s*2 + green('view @mdo') + ' will show @mdo\'s home.\n'
-    usage += s*2 + green('t oops ') + 'will tweet "' + yellow('oops') + '"" immediately.\n'
+    usage += s*2 + green('view @mdo') + ' will show ' + yellow('@mdo') + '\'s home.\n'
+    usage += s*2 + green('t oops ') + 'will tweet "' + yellow('oops') + '" immediately.\n'
     usage += s*2 + green('rt 12 ') + ' will retweet to tweet with '+ yellow('[id=12]') + '.\n'
     usage += s*2 + green('rep 12 oops') + ' will reply "' + yellow('oops') + '" to tweet with ' + yellow('[id=12]') + '.\n'
     usage += s*2 + green('del 12 ') + ' will delete tweet with ' + yellow('[id=12]') + '.\n'
@@ -399,7 +400,7 @@ def help():
     usage += s*2 + green('c') + ' will clear the screen.\n'
     usage += s*2 + green('q') + ' will quit.\n'
 
-    usage += s + '-'*70 + '\n'
+    usage += s + '-'*(int(w)-4) + '\n'
     usage += s + 'Have fun and hang tight!\n'
     printNicely(usage)
 
