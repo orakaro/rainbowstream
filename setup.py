@@ -4,6 +4,7 @@ version = '0.0.1'
 
 install_requires = [
     "SQLAlchemy",
+    "pysqlite",
     "colorama",
     "pyfiglet",
     "python-dateutil",
@@ -13,8 +14,7 @@ install_requires = [
 
 setup(name='rainbowstream',
       version=version,
-      description="A rainbow streaming console for Twitter (twitter.com)",
-      long_description=open("./README.md", "r").read(),
+      description="A terminal-based rainbow streaming client for Twitter",
       classifiers=[
           "Development Status :: 5 - Production/Stable",
           "Environment :: Console",
