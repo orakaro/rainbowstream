@@ -20,6 +20,7 @@ from twitter.util import printNicely
 
 from .colors import *
 from .config import *
+from .consumer import *
 from .interactive import *
 from .db import *
 
