@@ -1,7 +1,6 @@
 ## Rainbow Stream
-Terminal-based Twitter Client with Streaming API support. 
-Realtime tweetstream, compose, search ... and much more fun directly from terminal.
-Only supports Python 2.7 or later.
+Terminal-based Twitter Client. 
+Realtime tweetstream, compose, search , favorite ... and much more fun directly from terminal.
 
 This package build on the top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter Streaming API](https://dev.twitter.com/docs/api/streaming) and inspired by [EarthQuake](https://github.com/jugyo/earthquake)
 
