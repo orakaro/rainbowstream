@@ -111,8 +111,7 @@ For example see the screenshot above.
 Bug Report
 ----------
 
-Please `create an issue`_ or contact me at
-[@dtvd88](https://twitter.com/dtvd88)
+Please `create an issue`_ or contact me at `@dtvd88`_
 
 License
 -------
@@ -125,3 +124,4 @@ details
 .. _Twitter Streaming API: https://dev.twitter.com/docs/api/streaming
 .. _EarthQuake: https://github.com/jugyo/earthquake
 .. _create an issue: https://github.com/DTVD/rainbowstream/issues/new
+.. _@dtvd88: https://twitter.com/dtvd88
