@@ -54,7 +54,7 @@ suggestion
 
 Here is full list of supported command
 
-**Stream Command** ** 
+**Stream Command**
 
 -  ``switch public #AKB48`` will switch current stream to public stream and track keyword ``AKB48``
 
