@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+from PIL import Image
 
 """ Convert values between RGB hex codes and xterm-256 color codes.
 
@@ -321,6 +321,14 @@ def print_all():
     print "Printed all codes."
     print "You can translate a hex or 0-255 code by providing an argument."
 
+def hex_to_rgb(value):
+    value = value.lstrip('#')
+    lv = len(value)
+    return tuple(int(value[i:i+lv/3], 16) for i in range(0, lv, lv/3))
+
+def rgb_to_hex(rgb):
+    return '#%02x%02x%02x' % rgb
+
 def rgb2short(rgb):
     """ Find the closest xterm-256 approximation to the given RGB value.
     @param rgb: Hex code representing an RGB value, eg, 'abcdef'
@@ -356,6 +364,10 @@ def rgb2short(rgb):
     return equiv, res
 
 RGB2SHORT_DICT, SHORT2RGB_DICT = _create_dicts()
+
+def imgge_to_display(path):
+    i = Image.open(path) 
+    return
 
 #---------------------------------------------------------------------
 
