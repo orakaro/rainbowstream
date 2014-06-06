@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.0.1'
+version = '0.0.2'
 
 install_requires = [
     "SQLAlchemy",
@@ -37,7 +37,7 @@ setup(name='rainbowstream',
       author='Vu Nhat Minh',
       author_email='nhatminh_179@hotmail.com',
       url='https://github.com/DTVD/rainbowstream',
-      download_url='https://github.com/DTVD/rainbowstream/archive/v0.0.1.zip',
+      download_url='https://github.com/DTVD/rainbowstream/archive/v0.0.2.zip',
       license='MIT License',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
       include_package_data=True,
