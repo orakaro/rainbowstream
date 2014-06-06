@@ -13,6 +13,8 @@ Screenshot
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamvSS.png
    :alt: v0.0.1
 
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamvSS(Image).png
+   :alt: v0.0.2
 
 Install
 -------
@@ -36,6 +38,12 @@ Just type
     rainbow
 
 and see your stream.
+
+In the case you want to see photos directly in terminal, the command is 
+
+.. code:: bash
+
+    rainbow -img 1 # Or rainbow --image 1
 
 In the first time you will be asked for authorization of Rainbow Stream
 app at Twitter. Just click the “Authorize access” button and paste PIN
