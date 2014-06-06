@@ -1,29 +1,7 @@
 from PIL import Image,ImageFilter
-import sys,os
 from functools import partial
 
-""" Convert values between RGB hex codes and xterm-256 color codes.
-
-Nice long listing of all 256 colors and their codes. Useful for
-developing console color themes, or even script output schemes.
-
-Resources:
-* http://en.wikipedia.org/wiki/8-bit_color
-* http://en.wikipedia.org/wiki/ANSI_escape_code
-* /usr/share/X11/rgb.txt
-
-I'm not sure where this script was inspired from. I think I must have
-written it from scratch, though it's been several years now.
-"""
-
-__author__    = 'Micah Elliott http://MicahElliott.com'
-__version__   = '0.1'
-__copyright__ = 'Copyright (C) 2011 Micah Elliott.  All rights reserved.'
-__license__   = 'WTFPL http://sam.zoy.org/wtfpl/'
-
-#---------------------------------------------------------------------
-
-import sys, re
+import sys,os
 
 CLUT = [  # color look-up table
 #    8-bit, RGB hex
@@ -276,32 +254,22 @@ CLUT = [  # color look-up table
     ('238', '444444'),
     ('239', '4e4e4e'),
     ('240', '585858'),
-
     ('241', '626262'),
     ('242', '6c6c6c'),
     ('243', '767676'),
     ('244', '808080'),
-
     ('245', '8a8a8a'),
     ('246', '949494'),
     ('247', '9e9e9e'),
     ('248', 'a8a8a8'),
-
     ('249', 'b2b2b2'),
     ('250', 'bcbcbc'),
     ('251', 'c6c6c6'),
     ('252', 'd0d0d0'),
     ('253', 'dadada'),
-
     ('254', 'e4e4e4'),
     ('255', 'eeeeee'),
 ]
-
-def _strip_hash(rgb):
-    # Strip leading `#` if exists.
-    if rgb.startswith('#'):
-        rgb = rgb.lstrip('#')
-    return rgb
 
 def _create_dicts():
     short2rgb_dict = dict(CLUT)
@@ -310,72 +278,32 @@ def _create_dicts():
         rgb2short_dict[v] = k
     return rgb2short_dict, short2rgb_dict
 
+RGB2SHORT_DICT, SHORT2RGB_DICT = _create_dicts()
+
+
 def short2rgb(short):
     return SHORT2RGB_DICT[short]
 
+
 def pixel_print(ansicolor):
     sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
+
 
 def hex_to_rgb(value):
     value = value.lstrip('#')
     lv = len(value)
     return tuple(int(value[i:i+lv/3], 16) for i in range(0, lv, lv/3))
 
+
 def rgb_to_hex(rgb):
-    return '#%02x%02x%02x' % rgb
+    return '%02x%02x%02x' % rgb
 
-def binary_search(ary,(r,g,b)):
-    ary.sort()
-    if len(ary) == 1 : return ary[0]
-    mid = len(ary)//2
-    left = binary_search(ary[:mid],(r,g,b))
-    right = binary_search(ary[mid:],(r,g,b))
-    ld = (left[0]-r)**2 + (left[1]-g)**2 + (left[2]-b)**2
-    rd = (right[0]-r)**2 + (right[1]-g)**2 + (right[2]-b)**2
-    if ld < rd :
-        return left
-    else:
-        return right
- 
 
-def rgb2short(rgb):
-    """ Find the closest xterm-256 approximation to the given RGB value.
-    @param rgb: Hex code representing an RGB value, eg, 'abcdef'
-    @returns: String between 0 and 255, compatible with xterm.
-    """
-    rgb = _strip_hash(rgb)
-    r = int(rgb[:2],16)
-    g = int(rgb[2:4],16)
-    b = int(rgb[4:],16)
+def rgb2short(r, g, b):
     dist = lambda s,d: (s[0]-d[0])**2+(s[1]-d[1])**2+(s[2]-d[2])**2
     ary = [hex_to_rgb(hex) for hex in RGB2SHORT_DICT]
-    m = binary_search(ary,(r,g,b))
     m = min(ary, key=partial(dist, (r,g,b)))
-    return RGB2SHORT_DICT[_strip_hash(rgb_to_hex(m))]
-
-   
-#    incs = (0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff)
-#    parts = [ int(h, 16) for h in re.split(r'(..)(..)(..)', rgb)[1:4] ]
-#    res = []
-#    for part in parts:
-#        i = 0
-#        while i < len(incs)-1:
-#            s, b = incs[i], incs[i+1]  # smaller, bigger
-#            if s <= part <= b:
-#                s1 = abs(s - part)
-#                b1 = abs(b - part)
-#                if s1 < b1: closest = s
-#                else: closest = b
-#                res.append(closest)
-#                break
-#            i += 1
-#    #print '***', res
-#    res = ''.join([ ('%02.x' % i) for i in res ])
-#    equiv = RGB2SHORT_DICT[ res ]
-#    #print '***', res, equiv
-#    return equiv 
-#
-RGB2SHORT_DICT, SHORT2RGB_DICT = _create_dicts()
+    return RGB2SHORT_DICT[rgb_to_hex(m)]
 
 def image_to_display(path):
     i = Image.open(path) 
@@ -387,19 +315,16 @@ def image_to_display(path):
     height = int(float(h) * (float(width) / float(w)))
     height //= 2
     i = i.resize((width, height), Image.BICUBIC)
+    height = min(height,30)
 
     for y in xrange(height):
         print ' '*6 ,
         for x in xrange(width):
             p = i.getpixel((x,y))
             r, g, b = p[:3]
-            hex = rgb_to_hex((r,g,b))
-            pixel_print(rgb2short(hex))
+            pixel_print(rgb2short(r,g,b))
         print ''
 
-#---------------------------------------------------------------------
-
 if __name__ == '__main__':
-    path = sys.argv[1]
-    image_to_display(path)
+    image_to_display(sys.argv[1])
 
