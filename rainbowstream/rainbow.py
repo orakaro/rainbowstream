@@ -48,7 +48,7 @@ cmdset = [
 ]
 
 
-def draw(t, keyword=None, fil=[], ig=[]):
+def draw(t, imgflg = 0, keyword=None, fil=[], ig=[]):
     """
     Draw the rainbow
     """
@@ -144,7 +144,7 @@ def draw(t, keyword=None, fil=[], ig=[]):
     printNicely(line3)
 
     # Display Image
-    if media_url:
+    if imgflg and media_url:
         response = requests.get(media_url)
         image_to_display(StringIO(response.content))
 
@@ -180,6 +180,10 @@ def parse_arguments():
         '-ig',
         '--ignore',
         help='Ignore specific screen_name.')
+    parser.add_argument(
+        '-img',
+        '--image',
+        help='Display all photo on terminal.')
     return parser.parse_args()
 
 
@@ -288,7 +292,7 @@ def home():
     if g['stuff'].isdigit():
         num = g['stuff']
     for tweet in reversed(t.statuses.home_timeline(count=num)):
-        draw(t=tweet)
+        draw(t=tweet, imgflg=g['image'])
     printNicely('')
 
 
@@ -304,7 +308,7 @@ def view():
         except:
             num = HOME_TWEET_NUM
         for tweet in reversed(t.statuses.user_timeline(count=num, screen_name=user[1:])):
-            draw(t=tweet)
+            draw(t=tweet, imgflg=g['image'])
         printNicely('')
     else:
         printNicely(red('A name should begin with a \'@\''))
@@ -341,7 +345,7 @@ def favorite():
         tid = db.rainbow_query(id)[0].tweet_id
         t.favorites.create(_id=tid, include_entities=False)
         printNicely(green('Favorited.'))
-        draw(t.statuses.show(id=tid))
+        draw(t.statuses.show(id=tid), imgflg=g['image'])
     except:
         printNicely(red('Omg some syntax is wrong.'))
 
@@ -386,7 +390,7 @@ def unfavorite():
         tid = db.rainbow_query(id)[0].tweet_id
         t.favorites.destroy(_id=tid)
         printNicely(green('Okay it\'s unfavorited.'))
-        draw(t.statuses.show(id=tid))
+        draw(t.statuses.show(id=tid), imgflg=g['image'])
     except:
         printNicely(red('Sorry I can\'t unfavorite this tweet for you.'))
 
@@ -402,7 +406,9 @@ def search():
             if len(rel):
                 printNicely('Newest tweets:')
                 for i in reversed(xrange(SEARCH_MAX_RECORD)):
-                    draw(t=rel[i], keyword=g['stuff'].strip()[1:])
+                    draw(t=rel[i],
+                        imgflg=g['image'],
+                        keyword=g['stuff'].strip()[1:])
                 printNicely('')
             else:
                 printNicely(magenta('I\'m afraid there is no result'))
@@ -645,9 +651,11 @@ def stream(domain, args, name='Rainbow Stream'):
         elif tweet.get('text'):
             draw(
                 t=tweet,
+                imgflg=args.image,
                 keyword=args.track_keywords,
                 fil=args.filter,
-                ig=args.ignore)
+                ig=args.ignore,
+                )
 
 
 def fly():
@@ -665,4 +673,5 @@ def fly():
     g['reset'] = True
     g['prefix'] = True
     g['stream_pid'] = p.pid
+    g['image'] = args.image
     listen()
