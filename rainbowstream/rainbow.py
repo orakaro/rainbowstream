@@ -11,18 +11,21 @@ import signal
 import argparse
 import time
 import datetime
+import requests
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
 from twitter.oauth import OAuth, read_token_file
 from twitter.oauth_dance import oauth_dance
 from twitter.util import printNicely
+from StringIO import StringIO
 
 from .colors import *
 from .config import *
 from .consumer import *
 from .interactive import *
 from .db import *
+from .c_image import *
 
 g = {}
 db = RainbowDB()
@@ -61,6 +64,27 @@ def draw(t, keyword=None, fil=[], ig=[]):
     date = date - datetime.timedelta(seconds=time.timezone)
     clock = date.strftime('%Y/%m/%d %H:%M:%S')
 
+    # Get expanded url
+    try:
+        expanded_url = []
+        url = []
+        urls = t['entities']['urls']
+        for u in urls:
+            expanded_url.append(u['expanded_url'])
+            url.append(u['url'])
+    except:
+        expanded_url = None
+        url = None
+
+    # Get media
+    try:
+        media_url = []
+        media = t['entities']['media']
+        for m in media:
+            media_url = m['media_url']
+    except:
+        media_url = None
+
     # Filter and ignore
     screen_name = '@' + screen_name
     if fil and screen_name not in fil:
@@ -80,6 +104,12 @@ def draw(t, keyword=None, fil=[], ig=[]):
     if favorited:
         meta = meta + green(u'\u2605')
     tweet = text.split()
+    # Replace url
+    if expanded_url:
+        for index in range(len(expanded_url)):
+            tweet = map(
+                lambda x: expanded_url[index] if x == url[index] else x,
+                tweet)
     # Highlight RT
     tweet = map(lambda x: grey(x) if x == 'RT' else x, tweet)
     # Highlight screen_name
@@ -94,6 +124,7 @@ def draw(t, keyword=None, fil=[], ig=[]):
             else x,
             tweet
         )
+    # Recreate tweet
     tweet = ' '.join(tweet)
 
     # Draw rainbow
@@ -111,6 +142,11 @@ def draw(t, keyword=None, fil=[], ig=[]):
     printNicely(line1)
     printNicely(line2)
     printNicely(line3)
+
+    # Display Image
+    if media_url:
+        response = requests.get(media_url)
+        image_to_display(StringIO(response.content))
 
 
 def parse_arguments():

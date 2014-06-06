@@ -9,7 +9,9 @@ install_requires = [
     "pyfiglet",
     "python-dateutil",
     "termcolor",
-    "twitter"
+    "twitter",
+    "Pillow",
+    "requests",
 ]
 
 setup(name='rainbowstream',

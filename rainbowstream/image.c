@@ -4,7 +4,7 @@ typedef struct {
         int b;
 } rgb_t;
 int CUBE_STEPS[] = { 0x00, 0x5F, 0x87, 0xAF, 0xD7, 0xFF };
-rgb_t BASIC16[] = 
+rgb_t BASIC16[] =
       { {   0,   0,   0 }, { 205,   0,   0}, {   0, 205,   0 },
         { 205, 205,   0 }, {   0,   0, 238}, { 205,   0, 205 },
         {   0, 205, 205 }, { 229, 229, 229}, { 127, 127, 127 },
@@ -14,7 +14,7 @@ rgb_t BASIC16[] =
 rgb_t COLOR_TABLE[256];
 
 
-rgb_t xterm_to_rgb(int xcolor)
+rgb_t ansi_to_rgb(int xcolor)
 {
   rgb_t res;
   if (xcolor < 16) {
@@ -34,7 +34,7 @@ int init()
 {
   int c;
   for (c = 0; c < 256; c++) {
-    COLOR_TABLE[c] = xterm_to_rgb(c);
+    COLOR_TABLE[c] = ansi_to_rgb(c);
   }
   return 0;
 }
