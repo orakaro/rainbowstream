@@ -1,5 +1,6 @@
-from PIL import Image
+from PIL import Image,ImageFilter
 import sys,os
+from functools import partial
 
 """ Convert values between RGB hex codes and xterm-256 color codes.
 
@@ -275,19 +276,23 @@ CLUT = [  # color look-up table
     ('238', '444444'),
     ('239', '4e4e4e'),
     ('240', '585858'),
+
     ('241', '626262'),
     ('242', '6c6c6c'),
     ('243', '767676'),
     ('244', '808080'),
+
     ('245', '8a8a8a'),
     ('246', '949494'),
     ('247', '9e9e9e'),
     ('248', 'a8a8a8'),
+
     ('249', 'b2b2b2'),
     ('250', 'bcbcbc'),
     ('251', 'c6c6c6'),
     ('252', 'd0d0d0'),
     ('253', 'dadada'),
+
     ('254', 'e4e4e4'),
     ('255', 'eeeeee'),
 ]
@@ -311,17 +316,6 @@ def short2rgb(short):
 def pixel_print(ansicolor):
     sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
 
-def print_all():
-    """ Print all 256 xterm color codes.
-    """
-    for short, rgb in CLUT:
-        sys.stdout.write('\033[48;5;%sm%s:%s' % (short, short, rgb))
-        sys.stdout.write("\033[0m  ")
-        sys.stdout.write('\033[38;5;%sm%s:%s' % (short, short, rgb))
-        sys.stdout.write("\033[0m\n")
-    print "Printed all codes."
-    print "You can translate a hex or 0-255 code by providing an argument."
-
 def hex_to_rgb(value):
     value = value.lstrip('#')
     lv = len(value)
@@ -329,6 +323,20 @@ def hex_to_rgb(value):
 
 def rgb_to_hex(rgb):
     return '#%02x%02x%02x' % rgb
+
+def binary_search(ary,(r,g,b)):
+    ary.sort()
+    if len(ary) == 1 : return ary[0]
+    mid = len(ary)//2
+    left = binary_search(ary[:mid],(r,g,b))
+    right = binary_search(ary[mid:],(r,g,b))
+    ld = (left[0]-r)**2 + (left[1]-g)**2 + (left[2]-b)**2
+    rd = (right[0]-r)**2 + (right[1]-g)**2 + (right[2]-b)**2
+    if ld < rd :
+        return left
+    else:
+        return right
+ 
 
 def rgb2short(rgb):
     """ Find the closest xterm-256 approximation to the given RGB value.
@@ -339,16 +347,13 @@ def rgb2short(rgb):
     r = int(rgb[:2],16)
     g = int(rgb[2:4],16)
     b = int(rgb[4:],16)
-    match = 0
-    min_distance = 1000000000
+    dist = lambda s,d: (s[0]-d[0])**2+(s[1]-d[1])**2+(s[2]-d[2])**2
     ary = [hex_to_rgb(hex) for hex in RGB2SHORT_DICT]
-    for ri,gi,bi in ary:
-        d = (ri -r)**2 + (gi-g)**2 + (bi-b)**2
-        if d < min_distance:
-            min_distance = d
-            match = rgb_to_hex((ri,gi,bi))
-    return RGB2SHORT_DICT[_strip_hash(match)]
+    m = binary_search(ary,(r,g,b))
+    m = min(ary, key=partial(dist, (r,g,b)))
+    return RGB2SHORT_DICT[_strip_hash(rgb_to_hex(m))]
 
+   
 #    incs = (0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff)
 #    parts = [ int(h, 16) for h in re.split(r'(..)(..)(..)', rgb)[1:4] ]
 #    res = []
@@ -369,7 +374,7 @@ def rgb2short(rgb):
 #    equiv = RGB2SHORT_DICT[ res ]
 #    #print '***', res, equiv
 #    return equiv 
-
+#
 RGB2SHORT_DICT, SHORT2RGB_DICT = _create_dicts()
 
 def image_to_display(path):
@@ -397,17 +402,4 @@ def image_to_display(path):
 if __name__ == '__main__':
     path = sys.argv[1]
     image_to_display(path)
-#    import doctest
-#    doctest.testmod()
-#    if len(sys.argv) == 1:
-#        print_all()
-#        raise SystemExit
-#    arg = sys.argv[1]
-#    if len(arg) < 4 and int(arg) < 256:
-#        rgb = short2rgb(arg)
-#        sys.stdout.write('xterm color \033[38;5;%sm%s\033[0m -> RGB exact \033[38;5;%sm%s\033[0m' % (arg, arg, arg, rgb))
-#        sys.stdout.write("\033[0m\n")
-#    else:
-#        short = rgb2short(arg)
-#        sys.stdout.write('RGB %s -> xterm color approx \033[38;5;%sm%s ' % (arg, short, short ))
-#        sys.stdout.write("\033[0m\n")
+
