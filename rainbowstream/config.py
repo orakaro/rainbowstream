@@ -13,3 +13,7 @@ DOMAIN = USER_DOMAIN
 # Filter and Ignore list ex: ['@fat','@mdo']
 ONLY_LIST = []
 IGNORE_LIST = []
+
+# Image size
+IMAGE_SHIFT = 10
+IMAGE_MAX_HEIGHT = 30

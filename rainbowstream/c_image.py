@@ -1,6 +1,7 @@
 from PIL import Image
 from functools import partial
 from os.path import join, dirname, getmtime, exists, expanduser
+from .config import *
 
 import ctypes
 import sys
@@ -30,14 +31,14 @@ def image_to_display(path):
     w, h = i.size
     i.load()
     rows, columns = os.popen('stty size', 'r').read().split()
-    width = min(w, int(columns) - 2 * 6)
+    width = min(w, int(columns) - 2 * IMAGE_SHIFT)
     height = int(float(h) * (float(width) / float(w)))
     height //= 2
     i = i.resize((width, height), Image.BICUBIC)
-    height = min(height, 30)
+    height = min(height, IMAGE_MAX_HEIGHT)
 
     for y in xrange(height):
-        print ' ' * 6,
+        print ' ' * IMAGE_SHIFT,
         for x in xrange(width):
             p = i.getpixel((x, y))
             r, g, b = p[:3]
