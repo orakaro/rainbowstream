@@ -1,4 +1,5 @@
 from PIL import Image
+import sys,os
 
 """ Convert values between RGB hex codes and xterm-256 color codes.
 
@@ -291,9 +292,6 @@ CLUT = [  # color look-up table
     ('255', 'eeeeee'),
 ]
 
-def _str2hex(hexstr):
-    return int(hexstr, 16)
-
 def _strip_hash(rgb):
     # Strip leading `#` if exists.
     if rgb.startswith('#'):
@@ -309,6 +307,9 @@ def _create_dicts():
 
 def short2rgb(short):
     return SHORT2RGB_DICT[short]
+
+def pixel_print(ansicolor):
+    sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
 
 def print_all():
     """ Print all 256 xterm color codes.
@@ -333,56 +334,80 @@ def rgb2short(rgb):
     """ Find the closest xterm-256 approximation to the given RGB value.
     @param rgb: Hex code representing an RGB value, eg, 'abcdef'
     @returns: String between 0 and 255, compatible with xterm.
-    >>> rgb2short('123456')
-    ('23', '005f5f')
-    >>> rgb2short('ffffff')
-    ('231', 'ffffff')
-    >>> rgb2short('0DADD6') # vimeo logo
-    ('38', '00afd7')
     """
     rgb = _strip_hash(rgb)
-    incs = (0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff)
-    # Break 6-char RGB code into 3 integer vals.
-    parts = [ int(h, 16) for h in re.split(r'(..)(..)(..)', rgb)[1:4] ]
-    res = []
-    for part in parts:
-        i = 0
-        while i < len(incs)-1:
-            s, b = incs[i], incs[i+1]  # smaller, bigger
-            if s <= part <= b:
-                s1 = abs(s - part)
-                b1 = abs(b - part)
-                if s1 < b1: closest = s
-                else: closest = b
-                res.append(closest)
-                break
-            i += 1
-    #print '***', res
-    res = ''.join([ ('%02.x' % i) for i in res ])
-    equiv = RGB2SHORT_DICT[ res ]
-    #print '***', res, equiv
-    return equiv, res
+    r = int(rgb[:2],16)
+    g = int(rgb[2:4],16)
+    b = int(rgb[4:],16)
+    match = 0
+    min_distance = 1000000000
+    ary = [hex_to_rgb(hex) for hex in RGB2SHORT_DICT]
+    for ri,gi,bi in ary:
+        d = (ri -r)**2 + (gi-g)**2 + (bi-b)**2
+        if d < min_distance:
+            min_distance = d
+            match = rgb_to_hex((ri,gi,bi))
+    return RGB2SHORT_DICT[_strip_hash(match)]
+
+#    incs = (0x00, 0x5f, 0x87, 0xaf, 0xd7, 0xff)
+#    parts = [ int(h, 16) for h in re.split(r'(..)(..)(..)', rgb)[1:4] ]
+#    res = []
+#    for part in parts:
+#        i = 0
+#        while i < len(incs)-1:
+#            s, b = incs[i], incs[i+1]  # smaller, bigger
+#            if s <= part <= b:
+#                s1 = abs(s - part)
+#                b1 = abs(b - part)
+#                if s1 < b1: closest = s
+#                else: closest = b
+#                res.append(closest)
+#                break
+#            i += 1
+#    #print '***', res
+#    res = ''.join([ ('%02.x' % i) for i in res ])
+#    equiv = RGB2SHORT_DICT[ res ]
+#    #print '***', res, equiv
+#    return equiv 
 
 RGB2SHORT_DICT, SHORT2RGB_DICT = _create_dicts()
 
-def imgge_to_display(path):
+def image_to_display(path):
     i = Image.open(path) 
-    return
+    i = i.convert('RGBA')
+    w,h = i.size
+    i.load()
+    rows, columns = os.popen('stty size', 'r').read().split()
+    width = min(w, int(columns)-2*6)
+    height = int(float(h) * (float(width) / float(w)))
+    height //= 2
+    i = i.resize((width, height), Image.BICUBIC)
+
+    for y in xrange(height):
+        print ' '*6 ,
+        for x in xrange(width):
+            p = i.getpixel((x,y))
+            r, g, b = p[:3]
+            hex = rgb_to_hex((r,g,b))
+            pixel_print(rgb2short(hex))
+        print ''
 
 #---------------------------------------------------------------------
 
 if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
-    if len(sys.argv) == 1:
-        print_all()
-        raise SystemExit
-    arg = sys.argv[1]
-    if len(arg) < 4 and int(arg) < 256:
-        rgb = short2rgb(arg)
-        sys.stdout.write('xterm color \033[38;5;%sm%s\033[0m -> RGB exact \033[38;5;%sm%s\033[0m' % (arg, arg, arg, rgb))
-        sys.stdout.write("\033[0m\n")
-    else:
-        short, rgb = rgb2short(arg)
-        sys.stdout.write('RGB %s -> xterm color approx \033[38;5;%sm%s (%s)' % (arg, short, short, rgb))
-        sys.stdout.write("\033[0m\n")
+    path = sys.argv[1]
+    image_to_display(path)
+#    import doctest
+#    doctest.testmod()
+#    if len(sys.argv) == 1:
+#        print_all()
+#        raise SystemExit
+#    arg = sys.argv[1]
+#    if len(arg) < 4 and int(arg) < 256:
+#        rgb = short2rgb(arg)
+#        sys.stdout.write('xterm color \033[38;5;%sm%s\033[0m -> RGB exact \033[38;5;%sm%s\033[0m' % (arg, arg, arg, rgb))
+#        sys.stdout.write("\033[0m\n")
+#    else:
+#        short = rgb2short(arg)
+#        sys.stdout.write('RGB %s -> xterm color approx \033[38;5;%sm%s ' % (arg, short, short ))
+#        sys.stdout.write("\033[0m\n")
