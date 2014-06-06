@@ -5,8 +5,8 @@ Realtime tweetstream, compose, search , favorite ... and much more fun directly 
 This package build on the top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter Streaming API](https://dev.twitter.com/docs/api/streaming) and inspired by [EarthQuake](https://github.com/jugyo/earthquake)
 
 ## Screenshot
-![v0.0.1](https://raw.githubusercontent.com/DTVD/rainbowstream/develop/screenshot/RainbowStreamvSS.png)
-![v0.0.2](https://raw.githubusercontent.com/DTVD/rainbowstream/develop/screenshot/RainbowStreamvSS(Image).png)
+![v0.0.1](https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamvSS.png)
+![v0.0.2](https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamvSS(Image).png)
 
 ## Install
 You will need Python 2.7+ and pip.
@@ -25,7 +25,7 @@ and see your stream.
 
 In the case you want to see photos directly in terminal, the command is 
 ```bash
-rainbow -img 1 # or rainbow --image 1
+rainbow -img 1 # Or rainbow --image 1
 ```
 
 In the first time you will be asked for authorization of Rainbow Stream app at Twitter.
