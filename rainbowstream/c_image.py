@@ -1,4 +1,4 @@
-from PIL import Image,ImageFilter
+from PIL import Image
 from functools import partial
 from os.path import join, dirname, getmtime, exists, expanduser
 
