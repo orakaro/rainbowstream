@@ -18,4 +18,4 @@ IGNORE_LIST = []
 
 # Image shift and size
 IMAGE_SHIFT = 10
-IMAGE_MAX_HEIGHT = 300
+IMAGE_MAX_HEIGHT = 40
