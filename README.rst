@@ -10,11 +10,11 @@ Streaming API`_ and inspired by `EarthQuake`_
 Screenshot
 ----------
 
-.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamvSS.png
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStream.png
    :alt: v0.0.1
 
-.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamvSS(Image).png
-   :alt: v0.0.2
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamIOT.png
+   :alt: v0.0.3
 
 Install
 -------
