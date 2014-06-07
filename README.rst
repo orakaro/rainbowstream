@@ -39,11 +39,12 @@ Just type
 
 and see your stream.
 
-In the case you want to see photos directly in terminal, the command is
+I shipped a feature which can display **tweet's images directly on terminal**.
+You can try it with:
 
 .. code:: bash
 
-    rainbow -img 1 # Or rainbow --image 1
+    rainbow -iot # Or rainbow --image-on-term
 
 In the first time you will be asked for authorization of Rainbow Stream
 app at Twitter. Just click the “Authorize access” button and paste PIN
