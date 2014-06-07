@@ -39,7 +39,7 @@ Just type
 
 and see your stream.
 
-In the case you want to see photos directly in terminal, the command is 
+In the case you want to see photos directly in terminal, the command is
 
 .. code:: bash
 
@@ -54,11 +54,11 @@ The interactive mode
 
 While your personal stream is continued, you are also ready to tweet,
 search, reply, retweet… directly from console. Simply type “h” and hit
-the Enter key to see the help
+the Enter key to see the help.
 
 Input is in interactive mode. It means that you can use arrow key to
 move up and down history, tab-autocomplete or 2 tab to view available
-suggestion
+suggestion. Input history from previous run is available as well.
 
 Here is full list of supported command
 
@@ -104,9 +104,11 @@ Here is full list of supported command
 -  ``s #noah`` will search the word *‘noah’*. Result will come back
    with highlight.
 
--  ``fr`` will list all friend (You are following people).
+-  ``show image 12`` will show the image in tweet with *[id=12]* in your OS's image viewer.
 
--  ``fl`` will list all follower.
+-  ``fl @dtvd88`` will follow @dtvd88.
+
+-  ``ufl @dtvd88`` will unfollow @dtvd88.
 
 -  ``h`` will show the help.
 

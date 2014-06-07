@@ -2,6 +2,8 @@
 SEARCH_MAX_RECORD = 5
 # Default home tweet
 HOME_TWEET_NUM = 5
+# Autocomplete history
+HISTORY_FILENAME = 'completer.hist'
 
 # Stream Domain
 USER_DOMAIN = 'userstream.twitter.com'
@@ -14,6 +16,6 @@ DOMAIN = USER_DOMAIN
 ONLY_LIST = []
 IGNORE_LIST = []
 
-# Image size
+# Image shift and size
 IMAGE_SHIFT = 10
-IMAGE_MAX_HEIGHT = 30
+IMAGE_MAX_HEIGHT = 300

@@ -1,5 +1,9 @@
 import readline
 import rlcompleter
+import os.path
+
+from .config import *
+
 
 class RainbowCompleter(object):
 
@@ -47,6 +51,31 @@ class RainbowCompleter(object):
         except IndexError:
             response = None
         return response
+
+
+def get_history_items():
+    """
+    Get all history item
+    """
+    return [
+        readline.get_history_item(i)
+        for i in xrange(1, readline.get_current_history_length() + 1)
+    ]
+
+
+def read_history():
+    """
+    Read history file
+    """
+    if os.path.isfile(HISTORY_FILENAME):
+        readline.read_history_file(HISTORY_FILENAME)
+
+
+def save_history():
+    """
+    Save history to file
+    """
+    readline.write_history_file(HISTORY_FILENAME)
 
 
 def init_interactive_shell(d):

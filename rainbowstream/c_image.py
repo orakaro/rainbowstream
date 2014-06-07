@@ -1,5 +1,4 @@
 from PIL import Image
-from functools import partial
 from os.path import join, dirname, getmtime, exists, expanduser
 from .config import *
 
@@ -34,7 +33,7 @@ def image_to_display(path):
     width = min(w, int(columns) - 2 * IMAGE_SHIFT)
     height = int(float(h) * (float(width) / float(w)))
     height //= 2
-    i = i.resize((width, height), Image.BICUBIC)
+    i = i.resize((width, height), Image.ANTIALIAS)
     height = min(height, IMAGE_MAX_HEIGHT)
 
     for y in xrange(height):

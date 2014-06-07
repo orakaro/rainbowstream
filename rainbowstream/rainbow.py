@@ -40,8 +40,9 @@ cmdset = [
     'del',
     'ufav',
     's',
-    'fr',
+    'show',
     'fl',
+    'ufl',
     'h',
     'c',
     'q'
@@ -81,7 +82,7 @@ def draw(t, imgflg = 0, keyword=None, fil=[], ig=[]):
         media_url = []
         media = t['entities']['media']
         for m in media:
-            media_url = m['media_url']
+            media_url.append(m['media_url'])
     except:
         media_url = None
 
@@ -145,8 +146,9 @@ def draw(t, imgflg = 0, keyword=None, fil=[], ig=[]):
 
     # Display Image
     if imgflg and media_url:
-        response = requests.get(media_url)
-        image_to_display(StringIO(response.content))
+        for mu in media_url:
+            response = requests.get(mu)
+            image_to_display(StringIO(response.content))
 
 
 def parse_arguments():
@@ -418,30 +420,57 @@ def search():
         printNicely(red('Sorry I can\'t understand.'))
 
 
-def friend():
+def show():
     """
-    List of friend (following)
-    """
-    t = Twitter(auth=authen())
-    g['friends'] = t.friends.ids()['ids']
-    for i in g['friends']:
-        name = t.users.lookup(user_id=i)[0]['name']
-        screen_name = '@' + t.users.lookup(user_id=i)[0]['screen_name']
-        user = cycle_color(name) + grey(' ' + screen_name + ' ')
-        print user
-
-
-def follower():
-    """
-    List of follower
+    Show image
     """
     t = Twitter(auth=authen())
-    g['followers'] = t.followers.ids()['ids']
-    for i in g['followers']:
-        name = t.users.lookup(user_id=i)[0]['name']
-        screen_name = '@' + t.users.lookup(user_id=i)[0]['screen_name']
-        user = cycle_color(name) + grey(' ' + screen_name + ' ')
-        print user
+    try:
+        target = g['stuff'].split()[0]
+        if target != 'image':
+            return
+        id = int(g['stuff'].split()[1])
+        tid = db.rainbow_query(id)[0].tweet_id
+        tweet = t.statuses.show(id=tid)
+        media = tweet['entities']['media']
+        for m in media:
+            res = requests.get(m['media_url'])
+            img = Image.open(StringIO(res.content))
+            img.show()
+    except:
+        printNicely(red('Sorry I can\'t show this image.'))
+
+
+def follow():
+    """
+    Follow a user
+    """
+    t = Twitter(auth=authen())
+    screen_name = g['stuff'].split()[0]
+    if screen_name[0] == '@':
+        try :
+            t.friendships.create(screen_name=screen_name[1:],follow=True)
+            printNicely(green('You are following ' + screen_name + ' now!'))
+        except:
+            printNicely(red('Sorry can not follow at this time.'))
+    else:
+        printNicely(red('Sorry I can\'t understand.'))
+
+
+def unfollow():
+    """
+    Unfollow a user
+    """
+    t = Twitter(auth=authen())
+    screen_name = g['stuff'].split()[0]
+    if screen_name[0] == '@':
+        try :
+            t.friendships.destroy(screen_name=screen_name[1:],include_entities=False)
+            printNicely(green('Unfollow ' + screen_name + ' success!'))
+        except:
+            printNicely(red('Sorry can not unfollow at this time.'))
+    else:
+        printNicely(red('Sorry I can\'t understand.'))
 
 
 def help():
@@ -494,8 +523,12 @@ def help():
         yellow('[id=12]') + '.\n'
     usage += s * 2 + green('s #AKB48') + ' will search for "' + \
         yellow('AKB48') + '" and return 5 newest tweet.\n'
-    usage += s * 2 + green('fr') + ' will list out your following people.\n'
-    usage += s * 2 + green('fl') + ' will list out your follower.\n'
+    usage += s * 2 + green('show image 12') + ' will show image in ' + \
+        yellow('[id=12]') + 'in your OS\'s image viewer.\n'
+    usage += s * 2 + green('fl @dtvd88') + ' will follow ' + \
+        yellow('@dtvd88') + '.\n'
+    usage += s * 2 + green('ufl @dtvd88') + ' will unfollow ' + \
+        yellow('@dtvd88') + '.\n'
     usage += s * 2 + green('h') + ' will show this help again.\n'
     usage += s * 2 + green('c') + ' will clear the screen.\n'
     usage += s * 2 + green('q') + ' will quit.\n'
@@ -516,6 +549,7 @@ def quit():
     """
     Exit all
     """
+    save_history()
     os.system('rm -rf rainbow.db')
     os.kill(g['stream_pid'], signal.SIGKILL)
     sys.exit()
@@ -547,8 +581,9 @@ def process(cmd):
             delete,
             unfavorite,
             search,
-            friend,
-            follower,
+            show,
+            follow,
+            unfollow,
             help,
             clear,
             quit
@@ -568,17 +603,21 @@ def listen():
             ['@'],  # view
             [],  # tweet
             [],  # retweet
+            [],  # favorite
             [],  # reply
             [],  # delete
+            [],  # unfavorite
             ['#'],  # search
-            [],  # friend
-            [],  # follower
+            ['image'],  # show image
+            [],  # follow
+            [],  # unfollow
             [],  # help
             [],  # clear
             [],  # quit
         ]
     ))
     init_interactive_shell(d)
+    read_history()
     reset()
     while True:
         if g['prefix']:

@@ -1,3 +1,8 @@
+/*
+ * This source is borrowed from folowwing link
+ * https://github.com/jart/fabulous/blob/master/fabulous/_xterm256.c
+ * I make a slightly change to fit my module here
+ */
 typedef struct {
         int r;
         int g;
