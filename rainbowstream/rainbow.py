@@ -524,8 +524,8 @@ def help():
         yellow('[id=12]') + '.\n'
     usage += s * 2 + green('s #AKB48') + ' will search for "' + \
         yellow('AKB48') + '" and return 5 newest tweet.\n'
-    usage += s * 2 + green('show image 12') + ' will show image in ' + \
-        yellow('[id=12]') + 'in your OS\'s image viewer.\n'
+    usage += s * 2 + green('show image 12') + ' will show image in tweet with ' + \
+        yellow('[id=12]') + ' in your OS\'s image viewer.\n'
     usage += s * 2 + green('fl @dtvd88') + ' will follow ' + \
         yellow('@dtvd88') + '.\n'
     usage += s * 2 + green('ufl @dtvd88') + ' will unfollow ' + \
