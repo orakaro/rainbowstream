@@ -1,5 +1,4 @@
 import readline
-import rlcompleter
 import os.path
 
 from .config import *
@@ -33,6 +32,8 @@ class RainbowCompleter(object):
                 try:
                     if begin == 0:
                         candidates = self.options.keys()
+                    elif words[-1] in self.options[words[0]]:
+                        candidates = []
                     else:
                         first = words[0]
                         candidates = self.options[first]
@@ -43,7 +44,7 @@ class RainbowCompleter(object):
                     else:
                         self.current_candidates = candidates
 
-                except (KeyError, IndexError), err:
+                except (KeyError, IndexError):
                     self.current_candidates = []
 
         try:
@@ -84,9 +85,9 @@ def init_interactive_shell(d):
     """
     readline.set_completer(RainbowCompleter(d).complete)
     readline.parse_and_bind('set editing-mode vi')
-    readline.parse_and_bind("set input-meta on")
-    readline.parse_and_bind("set convert-meta off")
-    readline.parse_and_bind("set output-meta on")
+    readline.parse_and_bind('set show-all-if-ambiguous on')
+    readline.parse_and_bind('set show-all-if-unmodified on')
+    readline.parse_and_bind('set skip-completed-text on')
     if 'libedit' in readline.__doc__:
         readline.parse_and_bind("bind ^I rl_complete")
     else:

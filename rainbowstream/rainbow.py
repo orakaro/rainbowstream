@@ -599,7 +599,7 @@ def listen():
     d = dict(zip(
         cmdset,
         [
-            ['public #', 'mine'],  # switch
+            ['public', 'mine'],  # switch
             [],  # home
             ['@'],  # view
             [],  # tweet
@@ -610,8 +610,8 @@ def listen():
             [],  # unfavorite
             ['#'],  # search
             ['image'],  # show image
-            [],  # follow
-            [],  # unfollow
+            ['@'],  # follow
+            ['@'],  # unfollow
             [],  # help
             [],  # clear
             [],  # quit
