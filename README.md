@@ -1,5 +1,8 @@
 ## Rainbow Stream 
 
+[![Download](http://img.shields.io/pypi/dm/rainbowstream.svg)](https://pypi.python.org/pypi/rainbowstream/0.0.3)
+[![Version](http://img.shields.io/pypi/v/rainbowstream.svg)](https://pypi.python.org/pypi/rainbowstream/0.0.3)
+
 Terminal-based Twitter Client. 
 Realtime tweetstream, compose, search , favorite ... and much more fun directly from terminal.
 
