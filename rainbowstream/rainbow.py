@@ -561,7 +561,7 @@ def help():
         yellow('[id=12]') + ' in your OS\'s image viewer.\n'
     usage += s * 2 + \
         green('ls fl') + \
-        ' will list all followers (people who is following you).\n'
+        ' will list all followers (people who are following you).\n'
     usage += s * 2 + \
         green('ls fr') + \
         ' will list all friends (people who you are following).\n'

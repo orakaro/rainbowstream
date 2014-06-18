@@ -3,7 +3,7 @@ Rainbow Stream
 
 .. image:: http://img.shields.io/pypi/dm/rainbowstream.svg?style=flat
    :target: https://pypi.python.org/pypi/rainbowstream
-   
+
 .. image:: http://img.shields.io/pypi/v/rainbowstream.svg?style=flat
    :target: https://pypi.python.org/pypi/rainbowstream
 
@@ -113,7 +113,7 @@ Here is full list of supported command
 
 -  ``show image 12`` will show the image in tweet with *[id=12]* in your OS's image viewer.
 
--  ``ls fl`` will list all your followers (people who is following you).
+-  ``ls fl`` will list all your followers (people who are following you).
 
 -  ``ls fr`` will list all your friends (people who you are following).
 
