@@ -41,6 +41,7 @@ cmdset = [
     'ufav',
     's',
     'show',
+    'ls',
     'fl',
     'ufl',
     'h',
@@ -410,8 +411,8 @@ def search():
                 printNicely('Newest tweets:')
                 for i in reversed(xrange(SEARCH_MAX_RECORD)):
                     draw(t=rel[i],
-                        iot=g['iot'],
-                        keyword=g['stuff'].strip()[1:])
+                         iot=g['iot'],
+                         keyword=g['stuff'].strip()[1:])
                 printNicely('')
             else:
                 printNicely(magenta('I\'m afraid there is no result'))
@@ -442,6 +443,35 @@ def show():
         printNicely(red('Sorry I can\'t show this image.'))
 
 
+def list():
+    """
+    List friends for followers
+    """
+    t = Twitter(auth=authen())
+    try:
+        target = g['stuff'].split()[0]
+        d = {'fl': 'followers', 'fr': 'friends'}
+        next_cursor = -1
+        rel = {}
+        # Cursor loop
+        while next_cursor != 0:
+            list = getattr(t, d[target]).list(screen_name=g['original_name'],
+                                              cursor=next_cursor,
+                                              skip_status=True,
+                                              include_entities=False,
+                                              )
+            for u in list['users']:
+                rel[u['name']] = '@' + u['screen_name']
+            next_cursor = list['next_cursor']
+        # Print out result
+        printNicely('All: ' + str(len(rel)) + ' people.')
+        for name in rel:
+            user = '  ' + cycle_color(name) + grey(' ' + rel[name] + ' ')
+            printNicely(user)
+    except:
+        printNicely(red('Omg some syntax is wrong.'))
+
+
 def follow():
     """
     Follow a user
@@ -449,8 +479,8 @@ def follow():
     t = Twitter(auth=authen())
     screen_name = g['stuff'].split()[0]
     if screen_name[0] == '@':
-        try :
-            t.friendships.create(screen_name=screen_name[1:],follow=True)
+        try:
+            t.friendships.create(screen_name=screen_name[1:], follow=True)
             printNicely(green('You are following ' + screen_name + ' now!'))
         except:
             printNicely(red('Sorry can not follow at this time.'))
@@ -465,8 +495,11 @@ def unfollow():
     t = Twitter(auth=authen())
     screen_name = g['stuff'].split()[0]
     if screen_name[0] == '@':
-        try :
-            t.friendships.destroy(screen_name=screen_name[1:],include_entities=False)
+        try:
+            t.friendships.destroy(
+                screen_name=screen_name[
+                    1:],
+                include_entities=False)
             printNicely(green('Unfollow ' + screen_name + ' success!'))
         except:
             printNicely(red('Sorry can not unfollow at this time.'))
@@ -526,6 +559,12 @@ def help():
         yellow('AKB48') + '" and return 5 newest tweet.\n'
     usage += s * 2 + green('show image 12') + ' will show image in tweet with ' + \
         yellow('[id=12]') + ' in your OS\'s image viewer.\n'
+    usage += s * 2 + \
+        green('ls fl') + \
+        ' will list all followers (people who is following you).\n'
+    usage += s * 2 + \
+        green('ls fr') + \
+        ' will list all friends (people who you are following).\n'
     usage += s * 2 + green('fl @dtvd88') + ' will follow ' + \
         yellow('@dtvd88') + '.\n'
     usage += s * 2 + green('ufl @dtvd88') + ' will unfollow ' + \
@@ -583,6 +622,7 @@ def process(cmd):
             unfavorite,
             search,
             show,
+            list,
             follow,
             unfollow,
             help,
@@ -610,6 +650,7 @@ def listen():
             [],  # unfavorite
             ['#'],  # search
             ['image'],  # show image
+            ['fl', 'fr'],  # show image
             ['@'],  # follow
             ['@'],  # unfollow
             [],  # help
@@ -695,7 +736,7 @@ def stream(domain, args, name='Rainbow Stream'):
                 keyword=args.track_keywords,
                 fil=args.filter,
                 ig=args.ignore,
-                )
+            )
 
 
 def fly():
