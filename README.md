@@ -80,6 +80,10 @@ __Action Command__
 
 * ```show image 12``` will show the image in tweet with *[id=12]* in your OS's image viewer.
 
+* ```ls fl```will list all your followers (people who is following you).
+
+* ```ls fr```will list all your friends (people who you are following).
+
 * ```fl @dtvd88```will follow @dtvd88.
 
 * ```ufl @dtvd88```will unfollow @dtvd88.
