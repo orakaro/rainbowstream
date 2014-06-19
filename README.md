@@ -80,6 +80,8 @@ __Action Command__
 
 * ```s #noah```will search the word *'noah'*. Result will come back with highlight.
 
+* ```mes @dtvd88 hi```will send a ```hi``` message to @dtvd88.
+
 * ```show image 12``` will show the image in tweet with *[id=12]* in your OS's image viewer.
 
 * ```ls fl```will list all your followers (people who are following you).
