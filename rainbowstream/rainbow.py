@@ -33,6 +33,7 @@ cmdset = [
     'switch',
     'home',
     'view',
+    'mentions',
     't',
     'rt',
     'fav',
@@ -40,10 +41,17 @@ cmdset = [
     'del',
     'ufav',
     's',
+    'mes',
     'show',
     'ls',
+    'inbox',
+    'sent',
+    'trash',
     'fl',
     'ufl',
+    'block',
+    'unblock',
+    'report',
     'h',
     'c',
     'q'
@@ -94,10 +102,11 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     if ig and screen_name in ig:
         return
 
-    res = db.tweet_query(tid)
+    # Get rainbow id
+    res = db.tweet_to_rainbow_query(tid)
     if not res:
-        db.store(tid)
-        res = db.tweet_query(tid)
+        db.tweet_store(tid)
+        res = db.tweet_to_rainbow_query(tid)
     rid = res[0].rainbow_id
 
     # Format info
@@ -151,6 +160,46 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
             response = requests.get(mu)
             image_to_display(StringIO(response.content))
 
+
+def print_message(m):
+    """
+    Print direct message
+    """
+    screen_name = '@' + m['sender_screen_name']
+    name = m['sender']['name']
+    text = m['text']
+    mid = m['id']
+    date = parser.parse(m['created_at'])
+    date = date - datetime.timedelta(seconds=time.timezone)
+    clock = date.strftime('%Y/%m/%d %H:%M:%S')
+
+    # Get rainbow id
+    res = db.message_to_rainbow_query(mid)
+    if not res:
+        db.message_store(mid)
+        res = db.message_to_rainbow_query(mid)
+    rid = res[0].rainbow_id
+
+    user = cycle_color(name) + grey(' ' + screen_name + ' ')
+    meta = grey('[' + clock + '] [message_id=' + str(rid) + '] ')
+    text = ''.join(map(lambda x: x+'  ' if x=='\n' else x,text))
+
+    line1 = u"{u:>{uw}}:".format(
+        u=user,
+        uw=len(user) + 2,
+    )
+    line2 = u"{c:>{cw}}".format(
+        c=meta,
+        cw=len(meta) + 2,
+    )
+    
+    line3 = '  ' + text
+
+    printNicely('')
+    printNicely(line1)
+    printNicely(line2)
+    printNicely(line3)
+ 
 
 def parse_arguments():
     """
@@ -294,7 +343,7 @@ def home():
     t = Twitter(auth=authen())
     num = HOME_TWEET_NUM
     if g['stuff'].isdigit():
-        num = g['stuff']
+        num = int(g['stuff'])
     for tweet in reversed(t.statuses.home_timeline(count=num)):
         draw(t=tweet, iot=g['iot'])
     printNicely('')
@@ -318,6 +367,19 @@ def view():
         printNicely(red('A name should begin with a \'@\''))
 
 
+def mentions():
+    """
+    Mentions timeline
+    """
+    t = Twitter(auth=authen())
+    num = HOME_TWEET_NUM
+    if g['stuff'].isdigit():
+        num = int(g['stuff'])
+    for tweet in reversed(t.statuses.mentions_timeline(count=num)):
+        draw(t=tweet, iot=g['iot'])
+    printNicely('')
+
+
 def tweet():
     """
     Tweet
@@ -333,7 +395,7 @@ def retweet():
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
-        tid = db.rainbow_query(id)[0].tweet_id
+        tid = db.rainbow_to_tweet_query(id)[0].tweet_id
         t.statuses.retweet(id=tid, include_entities=False, trim_user=True)
     except:
         printNicely(red('Sorry I can\'t retweet for you.'))
@@ -346,7 +408,7 @@ def favorite():
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
-        tid = db.rainbow_query(id)[0].tweet_id
+        tid = db.rainbow_to_tweet_query(id)[0].tweet_id
         t.favorites.create(_id=tid, include_entities=False)
         printNicely(green('Favorited.'))
         draw(t.statuses.show(id=tid), iot=g['iot'])
@@ -361,7 +423,7 @@ def reply():
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
-        tid = db.rainbow_query(id)[0].tweet_id
+        tid = db.rainbow_to_tweet_query(id)[0].tweet_id
         user = t.statuses.show(id=tid)['user']['screen_name']
         status = ' '.join(g['stuff'].split()[1:])
         status = '@' + user + ' ' + status.decode('utf-8')
@@ -376,12 +438,12 @@ def delete():
     """
     t = Twitter(auth=authen())
     try:
-        id = int(g['stuff'].split()[0])
-        tid = db.rainbow_query(id)[0].tweet_id
+        rid = int(g['stuff'].split()[0])
+        tid = db.rainbow_to_tweet_query(rid)[0].tweet_id
         t.statuses.destroy(id=tid)
         printNicely(green('Okay it\'s gone.'))
     except:
-        printNicely(red('Sorry I can\'t delete this tweet for you.'))
+        printNicely(red('Sorry I can\'t understand.'))
 
 
 def unfavorite():
@@ -391,7 +453,7 @@ def unfavorite():
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
-        tid = db.rainbow_query(id)[0].tweet_id
+        tid = db.rainbow_to_tweet_query(id)[0].tweet_id
         t.favorites.destroy(_id=tid)
         printNicely(green('Okay it\'s unfavorited.'))
         draw(t.statuses.show(id=tid), iot=g['iot'])
@@ -422,6 +484,26 @@ def search():
         printNicely(red('Sorry I can\'t understand.'))
 
 
+def message():
+    """
+    Send a direct message
+    """
+    t = Twitter(auth=authen())
+    user = g['stuff'].split()[0]
+    if user[0] == '@':
+        try:
+            content = g['stuff'].split()[1]
+            t.direct_messages.new(
+                screen_name=user[1:],
+                text=content
+                )
+            printNicely(green('Message sent.'))
+        except:
+            printNicely(red('Sorry I can\'t understand.'))
+    else:
+        printNicely(red('A name should begin with a \'@\''))
+
+
 def show():
     """
     Show image
@@ -432,7 +514,7 @@ def show():
         if target != 'image':
             return
         id = int(g['stuff'].split()[1])
-        tid = db.rainbow_query(id)[0].tweet_id
+        tid = db.rainbow_to_tweet_query(id)[0].tweet_id
         tweet = t.statuses.show(id=tid)
         media = tweet['entities']['media']
         for m in media:
@@ -455,11 +537,12 @@ def list():
         rel = {}
         # Cursor loop
         while next_cursor != 0:
-            list = getattr(t, d[target]).list(screen_name=g['original_name'],
-                                              cursor=next_cursor,
-                                              skip_status=True,
-                                              include_entities=False,
-                                              )
+            list = getattr(t, d[target]).list(
+                screen_name=g['original_name'],
+                cursor=next_cursor,
+                skip_status=True,
+                include_entities=False,
+                )
             for u in list['users']:
                 rel[u['name']] = '@' + u['screen_name']
             next_cursor = list['next_cursor']
@@ -470,6 +553,86 @@ def list():
             printNicely(user)
     except:
         printNicely(red('Omg some syntax is wrong.'))
+
+
+def inbox():
+    """
+    Inbox direct messages
+    """
+    t = Twitter(auth=authen())
+    num = MESSAGES_DISPLAY
+    rel = []
+    if g['stuff'].isdigit():
+        num = g['stuff']
+    cur_page = 1
+    # Max message per page is 20 so we have to loop
+    while num > 20:
+        rel = rel + t.direct_messages(
+            count=20,
+            page=cur_page,
+            include_entities=False,
+            skip_status=False
+            )
+        num -= 20
+        cur_page += 1
+    rel = rel + t.direct_messages(
+        count=num,
+        page=cur_page,
+        include_entities=False,
+        skip_status=False
+        )
+    # Display  
+    printNicely('Inbox: newest ' + str(len(rel)) + ' messages.')
+    for m in reversed(rel):
+        print_message(m)
+    printNicely('')
+
+ 
+def sent():
+    """
+    Sent direct messages
+    """
+    t = Twitter(auth=authen())
+    num = MESSAGES_DISPLAY
+    rel = []
+    if g['stuff'].isdigit():
+        num = int(g['stuff'])
+    cur_page = 1
+    # Max message per page is 20 so we have to loop
+    while num > 20:
+        rel = rel + t.direct_messages.sent(
+            count=20,
+            page=cur_page,
+            include_entities=False,
+            skip_status=False
+            )
+        num -= 20
+        cur_page += 1
+    rel = rel + t.direct_messages.sent(
+        count=num,
+        page=cur_page,
+        include_entities=False,
+        skip_status=False
+        )
+    # Display  
+    printNicely('Sent: newest ' + str(len(rel)) + ' messages.')
+    for m in reversed(rel):
+        print_message(m)
+    printNicely('')
+    
+
+def trash():
+    """
+    Remove message
+    """
+    t = Twitter(auth=authen())
+    try:
+        rid = int(g['stuff'].split()[0])
+        mid = db.rainbow_to_message_query(rid)[0].message_id
+        t.direct_messages.destroy(id=mid)
+        printNicely(green('Message deleted.'))
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
 
 
 def follow():
@@ -497,12 +660,66 @@ def unfollow():
     if screen_name[0] == '@':
         try:
             t.friendships.destroy(
-                screen_name=screen_name[
-                    1:],
+                screen_name=screen_name[1:],
                 include_entities=False)
             printNicely(green('Unfollow ' + screen_name + ' success!'))
         except:
             printNicely(red('Sorry can not unfollow at this time.'))
+    else:
+        printNicely(red('Sorry I can\'t understand.'))
+
+
+def block():
+    """
+    Block a user
+    """
+    t = Twitter(auth=authen())
+    screen_name = g['stuff'].split()[0]
+    if screen_name[0] == '@':
+        try:
+            t.blocks.create(
+                screen_name=screen_name[1:], 
+                include_entities=False,
+                skip_status=True)
+            printNicely(green('You blocked ' + screen_name + '.'))
+        except:
+            printNicely(red('Sorry something went wrong.'))
+    else:
+        printNicely(red('Sorry I can\'t understand.'))
+
+
+def unblock():
+    """
+    Unblock a user
+    """
+    t = Twitter(auth=authen())
+    screen_name = g['stuff'].split()[0]
+    if screen_name[0] == '@':
+        try:
+            t.blocks.destroy(
+                screen_name=screen_name[1:],
+                include_entities=False,
+                skip_status=True)
+            printNicely(green('Unblock ' + screen_name + ' success!'))
+        except:
+            printNicely(red('Sorry something went wrong.'))
+    else:
+        printNicely(red('Sorry I can\'t understand.'))
+
+
+def report():
+    """
+    Report a user as a spam account
+    """
+    t = Twitter(auth=authen())
+    screen_name = g['stuff'].split()[0]
+    if screen_name[0] == '@':
+        try:
+            t.users.report_spam(
+                screen_name=screen_name[1:]) 
+            printNicely(green('You reported ' + screen_name + '.'))
+        except:
+            printNicely(red('Sorry something went wrong.'))
     else:
         printNicely(red('Sorry I can\'t understand.'))
 
@@ -536,9 +753,11 @@ def help():
 
     usage += s + 'For more action: \n'
     usage += s * 2 + green('home') + ' will show your timeline. ' + \
-        green('home 7') + ' will show 7 tweet.\n'
+        green('home 7') + ' will show 7 tweets.\n'
     usage += s * 2 + green('view @mdo') + \
-        ' will show ' + yellow('@mdo') + '\'s home.\n'
+        ' will show ' + magenta('@mdo') + '\'s home.\n'
+    usage += s * 2 + green('mentions') + ' will show mentions timeline. ' + \
+        green('mentions 7') + ' will show 7 mentions tweets.\n'
     usage += s * 2 + green('t oops ') + \
         'will tweet "' + yellow('oops') + '" immediately.\n'
     usage += s * 2 + \
@@ -557,6 +776,8 @@ def help():
         yellow('[id=12]') + '.\n'
     usage += s * 2 + green('s #AKB48') + ' will search for "' + \
         yellow('AKB48') + '" and return 5 newest tweet.\n'
+    usage += s * 2 + green('mes @dtvd88 hi') + ' will send a "hi" messege to ' + \
+        magenta('@dtvd88') + '.\n'
     usage += s * 2 + green('show image 12') + ' will show image in tweet with ' + \
         yellow('[id=12]') + ' in your OS\'s image viewer.\n'
     usage += s * 2 + \
@@ -565,10 +786,22 @@ def help():
     usage += s * 2 + \
         green('ls fr') + \
         ' will list all friends (people who you are following).\n'
+    usage += s * 2 + green('inbox') + ' will show inbox messages. ' + \
+        green('inbox 7') + ' will show newest 7 messages.\n'
+    usage += s * 2 + green('sent') + ' will show sent messages. ' + \
+        green('sent 7') + ' will show newest 7 messages.\n'
+    usage += s * 2 + green('trash 5') + ' will remove message with ' + \
+        yellow('[message_id=5]') + '.\n'
     usage += s * 2 + green('fl @dtvd88') + ' will follow ' + \
-        yellow('@dtvd88') + '.\n'
+        magenta('@dtvd88') + '.\n'
     usage += s * 2 + green('ufl @dtvd88') + ' will unfollow ' + \
-        yellow('@dtvd88') + '.\n'
+        magenta('@dtvd88') + '.\n'
+    usage += s * 2 + green('block @dtvd88') + ' will block ' + \
+        magenta('@dtvd88') + '.\n'
+    usage += s * 2 + green('unblock @dtvd88') + ' will unblock ' + \
+        magenta('@dtvd88') + '.\n'
+    usage += s * 2 + green('report @dtvd88') + ' will report ' + \
+        magenta('@dtvd88') + ' as a spam account.\n'
     usage += s * 2 + green('h') + ' will show this help again.\n'
     usage += s * 2 + green('c') + ' will clear the screen.\n'
     usage += s * 2 + green('q') + ' will quit.\n'
@@ -614,6 +847,7 @@ def process(cmd):
             switch,
             home,
             view,
+            mentions,
             tweet,
             retweet,
             favorite,
@@ -621,10 +855,17 @@ def process(cmd):
             delete,
             unfavorite,
             search,
+            message,
             show,
             list,
+            inbox,
+            sent,
+            trash,
             follow,
             unfollow,
+            block,
+            unblock,
+            report,
             help,
             clear,
             quit
@@ -642,6 +883,7 @@ def listen():
             ['public', 'mine'],  # switch
             [],  # home
             ['@'],  # view
+            [],  # mentions
             [],  # tweet
             [],  # retweet
             [],  # favorite
@@ -649,10 +891,17 @@ def listen():
             [],  # delete
             [],  # unfavorite
             ['#'],  # search
+            ['@'],  # message
             ['image'],  # show image
-            ['fl', 'fr'],  # show image
+            ['fl', 'fr'],  # list
+            [],  # inbox
+            [],  # sent
+            [],  # trash
             ['@'],  # follow
             ['@'],  # unfollow
+            ['@'],  # block
+            ['@'],  # unblock
+            ['@'],  # report
             [],  # help
             [],  # clear
             [],  # quit
