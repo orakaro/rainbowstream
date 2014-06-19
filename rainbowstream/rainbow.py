@@ -47,6 +47,7 @@ cmdset = [
     'inbox',
     'sent',
     'trash',
+    'whois',
     'fl',
     'ufl',
     'block',
@@ -165,9 +166,11 @@ def print_message(m):
     """
     Print direct message
     """
-    screen_name = '@' + m['sender_screen_name']
-    name = m['sender']['name']
+    sender_screen_name = '@' + m['sender_screen_name']
+    sender_name = m['sender']['name']
     text = m['text']
+    recipient_screen_name = '@' + m['recipient_screen_name']
+    recipient_name = m['recipient']['name']
     mid = m['id']
     date = parser.parse(m['created_at'])
     date = date - datetime.timedelta(seconds=time.timezone)
@@ -180,7 +183,9 @@ def print_message(m):
         res = db.message_to_rainbow_query(mid)
     rid = res[0].rainbow_id
 
-    user = cycle_color(name) + grey(' ' + screen_name + ' ')
+    sender = cycle_color(sender_name) + grey(' ' + sender_screen_name + ' ')
+    recipient = cycle_color(recipient_name) + grey(' ' + recipient_screen_name + ' ')
+    user = sender + magenta(' >>> ') + recipient
     meta = grey('[' + clock + '] [message_id=' + str(rid) + '] ')
     text = ''.join(map(lambda x: x+'  ' if x=='\n' else x,text))
 
@@ -192,14 +197,73 @@ def print_message(m):
         c=meta,
         cw=len(meta) + 2,
     )
-    
+
     line3 = '  ' + text
 
     printNicely('')
     printNicely(line1)
     printNicely(line2)
     printNicely(line3)
- 
+
+
+def show_profile(u):
+    """
+    Show a profile
+    """
+    # Retrieve info
+    name = u['name']
+    screen_name = u['screen_name']
+    description = u['description']
+    profile_image_url = u['profile_image_url']
+    location = u['location']
+    url = u['url']
+    created_at = u['created_at']
+    statuses_count = u['statuses_count']
+    friends_count = u['friends_count']
+    followers_count = u['followers_count']
+    # Create content
+    statuses_count = green(str(statuses_count) + ' tweets')
+    friends_count = green(str(friends_count) + ' following')
+    followers_count = green(str(followers_count) + ' followers')
+    count = statuses_count + '  ' + friends_count + '  ' + followers_count
+    user = cycle_color(name) + grey(' ' + screen_name + ' : ') + count
+    profile_image_url = 'Profile photo: ' + cyan(profile_image_url)
+    description = ''.join(map(lambda x: x+' '*4 if x=='\n' else x,description))
+    description = yellow(description)
+    location = 'Location : ' + magenta(location)
+    url = 'URL : ' + (cyan(url) if url else '')
+    created_at = 'Join at ' + white(created_at)
+    # Format
+    line1 = u"{u:>{uw}}".format(
+        u=user,
+        uw=len(user) + 2,
+    )
+    line2 = u"{p:>{pw}}".format(
+        p=profile_image_url,
+        pw=len(profile_image_url) + 4,
+    )
+    line3 = u"{d:>{dw}}".format(
+        d=description,
+        dw=len(description) + 4,
+    )
+    line4 = u"{l:>{lw}}".format(
+        l=location,
+        lw=len(location) + 4,
+    )
+    line5 = u"{u:>{uw}}".format(
+        u=url,
+        uw=len(url) + 4,
+    )
+    line6 = u"{j:>{jw}}".format(
+        j=created_at,
+        jw=len(created_at) + 4,
+    )
+    # Display
+    printNicely('')
+    for line in [line1,line2,line3,line4,line5,line6]:
+        printNicely(line)
+    printNicely('')
+
 
 def parse_arguments():
     """
@@ -530,6 +594,17 @@ def list():
     List friends for followers
     """
     t = Twitter(auth=authen())
+    # Get name
+    try:
+        name = g['stuff'].split()[1]
+        if name[0] == '@':
+            name = name[1:]
+        else:
+            printNicely(red('A name should begin with a \'@\''))
+            raise Exception('Invalid name')
+    except:
+        name = g['original_name']
+    # Get list followers or friends
     try:
         target = g['stuff'].split()[0]
         d = {'fl': 'followers', 'fr': 'friends'}
@@ -538,7 +613,7 @@ def list():
         # Cursor loop
         while next_cursor != 0:
             list = getattr(t, d[target]).list(
-                screen_name=g['original_name'],
+                screen_name=name,
                 cursor=next_cursor,
                 skip_status=True,
                 include_entities=False,
@@ -581,13 +656,13 @@ def inbox():
         include_entities=False,
         skip_status=False
         )
-    # Display  
+    # Display
     printNicely('Inbox: newest ' + str(len(rel)) + ' messages.')
     for m in reversed(rel):
         print_message(m)
     printNicely('')
 
- 
+
 def sent():
     """
     Sent direct messages
@@ -614,12 +689,12 @@ def sent():
         include_entities=False,
         skip_status=False
         )
-    # Display  
+    # Display
     printNicely('Sent: newest ' + str(len(rel)) + ' messages.')
     for m in reversed(rel):
         print_message(m)
     printNicely('')
-    
+
 
 def trash():
     """
@@ -632,6 +707,24 @@ def trash():
         t.direct_messages.destroy(id=mid)
         printNicely(green('Message deleted.'))
     except:
+        printNicely(red('Sorry I can\'t understand.'))
+
+
+def whois():
+    """
+    Show profile of a specific user
+    """
+    t = Twitter(auth=authen())
+    screen_name = g['stuff'].split()[0]
+    if screen_name[0] == '@':
+        try:
+            user = t.users.show(
+                screen_name=screen_name[1:],
+                include_entities=False)
+            show_profile(user)
+        except:
+            printNicely(red('Omg no user.'))
+    else:
         printNicely(red('Sorry I can\'t understand.'))
 
 
@@ -678,7 +771,7 @@ def block():
     if screen_name[0] == '@':
         try:
             t.blocks.create(
-                screen_name=screen_name[1:], 
+                screen_name=screen_name[1:],
                 include_entities=False,
                 skip_status=True)
             printNicely(green('You blocked ' + screen_name + '.'))
@@ -716,7 +809,7 @@ def report():
     if screen_name[0] == '@':
         try:
             t.users.report_spam(
-                screen_name=screen_name[1:]) 
+                screen_name=screen_name[1:])
             printNicely(green('You reported ' + screen_name + '.'))
         except:
             printNicely(red('Sorry something went wrong.'))
@@ -757,7 +850,7 @@ def help():
     usage += s * 2 + green('view @mdo') + \
         ' will show ' + magenta('@mdo') + '\'s home.\n'
     usage += s * 2 + green('mentions') + ' will show mentions timeline. ' + \
-        green('mentions 7') + ' will show 7 mentions tweets.\n'
+        green('mentions 7') + ' will show 7 mention tweets.\n'
     usage += s * 2 + green('t oops ') + \
         'will tweet "' + yellow('oops') + '" immediately.\n'
     usage += s * 2 + \
@@ -792,6 +885,8 @@ def help():
         green('sent 7') + ' will show newest 7 messages.\n'
     usage += s * 2 + green('trash 5') + ' will remove message with ' + \
         yellow('[message_id=5]') + '.\n'
+    usage += s * 2 + green('whois @dtvd88') + ' will show profile  of ' + \
+        magenta('@dtvd88') + '.\n'
     usage += s * 2 + green('fl @dtvd88') + ' will follow ' + \
         magenta('@dtvd88') + '.\n'
     usage += s * 2 + green('ufl @dtvd88') + ' will unfollow ' + \
@@ -861,6 +956,7 @@ def process(cmd):
             inbox,
             sent,
             trash,
+            whois,
             follow,
             unfollow,
             block,
@@ -897,6 +993,7 @@ def listen():
             [],  # inbox
             [],  # sent
             [],  # trash
+            ['@'],  # whois
             ['@'],  # follow
             ['@'],  # unfollow
             ['@'],  # block

@@ -89,10 +89,13 @@ Here is full list of supported command
 **Action Command**
 
 -  ``home`` will show your timeline. ``home 10`` will print exactly 10
-   tweet.
+   tweets.
 
 -  ``view @mdo`` will show @mdo ’s timeline. ``view @dmo 9`` will print
-   exactly 9 tweet.
+   exactly 9 tweets.
+
+-  ``mentions`` will show mentions timeline. ``mentions 7`` will show
+   7 mention tweets.
 
 -  ``t the rainbow is god's promise to noah`` will tweet exactly *‘the
    rainbow is god’s promise to noah’*
@@ -116,6 +119,16 @@ Here is full list of supported command
 -  ``ls fl`` will list all your followers (people who are following you).
 
 -  ``ls fr`` will list all your friends (people who you are following).
+
+-  ``inbox`` will show inbox messages. ``inbox 7`` will show newest
+   7 message.
+
+-  ``sent`` will show sent messages. ``sent 7`` will show newest
+   7 message.
+
+-  ``trash 5`` will remove message with *[message_id=5]*.
+
+-  ``whois @dtvd88`` will show profile of @dtvd88.
 
 -  ``fl @dtvd88`` will follow @dtvd88.
 
