@@ -537,6 +537,7 @@ def favorite():
         t.favorites.create(_id=tid, include_entities=False)
         printNicely(green('Favorited.'))
         draw(t.statuses.show(id=tid), iot=g['iot'])
+        printNicely('')
     except:
         printNicely(red('Omg some syntax is wrong.'))
 
@@ -582,6 +583,7 @@ def unfavorite():
         t.favorites.destroy(_id=tid)
         printNicely(green('Okay it\'s unfavorited.'))
         draw(t.statuses.show(id=tid), iot=g['iot'])
+        printNicely('')
     except:
         printNicely(red('Sorry I can\'t unfavorite this tweet for you.'))
 
