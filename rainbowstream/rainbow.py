@@ -890,7 +890,7 @@ def help():
     usage += s + '-' * (int(w) - 4) + '\n'
     usage += s + 'You are ' + yellow('already') + ' on your personal stream.\n'
 
-    usage += s * 2 + green('trend') + ' will show global trending topic. ' + \
+    usage += s * 2 + green('trend') + ' will show global trending topics. ' + \
         'You can try ' + green('trend US') + ' or ' + \
         green('trend JP Tokyo') + '.\n'
     usage += s * 2 + green('home') + ' will show your timeline. ' + \
