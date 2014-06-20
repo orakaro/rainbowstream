@@ -185,10 +185,11 @@ def print_message(m):
     rid = res[0].rainbow_id
 
     sender = cycle_color(sender_name) + grey(' ' + sender_screen_name + ' ')
-    recipient = cycle_color(recipient_name) + grey(' ' + recipient_screen_name + ' ')
+    recipient = cycle_color(
+        recipient_name) + grey(' ' + recipient_screen_name + ' ')
     user = sender + magenta(' >>> ') + recipient
     meta = grey('[' + clock + '] [message_id=' + str(rid) + '] ')
-    text = ''.join(map(lambda x: x+'  ' if x=='\n' else x,text))
+    text = ''.join(map(lambda x: x + '  ' if x == '\n' else x, text))
 
     line1 = u"{u:>{uw}}:".format(
         u=user,
@@ -229,7 +230,8 @@ def show_profile(u):
     count = statuses_count + '  ' + friends_count + '  ' + followers_count
     user = cycle_color(name) + grey(' ' + screen_name + ' : ') + count
     profile_image_raw_url = 'Profile photo: ' + cyan(profile_image_url)
-    description = ''.join(map(lambda x: x+' '*4 if x=='\n' else x,description))
+    description = ''.join(
+        map(lambda x: x + ' ' * 4 if x == '\n' else x, description))
     description = yellow(description)
     location = 'Location : ' + magenta(location)
     url = 'URL : ' + (cyan(url) if url else '')
@@ -267,10 +269,10 @@ def show_profile(u):
     printNicely(line1)
     if g['iot']:
         response = requests.get(profile_image_url)
-        image_to_display(StringIO(response.content),2,20)
+        image_to_display(StringIO(response.content), 2, 20)
     else:
         printNicely(line2)
-    for line in [line3,line4,line5,line6]:
+    for line in [line3, line4, line5, line6]:
         printNicely(line)
     printNicely('')
 
@@ -282,10 +284,10 @@ def print_trends(trends):
     for topic in trends[:TREND_MAX]:
         name = topic['name']
         url = topic['url']
-        line = cycle_color("#" + name) + ': ' + cyan(url)
+        line = cycle_color(name) + ': ' + cyan(url)
         printNicely(line)
     printNicely('')
-    
+
 
 def parse_arguments():
     """
@@ -427,15 +429,36 @@ def trend():
     Trend
     """
     t = Twitter(auth=authen())
-    avail = t.trends.available()
+    # Get country and town
     try:
         country = g['stuff'].split()[0]
     except:
         country = ''
-    for location in avail:
-        if location['country'] == country:
-            trends = t.trends.place(_id=location['woeid'])[0]['trends']
-            print_trends(trends)
+    try:
+        town = g['stuff'].split()[1]
+    except:
+        town = ''
+
+    avail = t.trends.available()
+    # World wide
+    if not country:
+        trends = t.trends.place(_id=1)[0]['trends']
+        print_trends(trends)
+    else:
+        for location in avail:
+            # Search for country and Town
+            if town:
+                if location['countryCode'] == country \
+                        and location['placeType']['name'] == 'Town' \
+                        and location['name'] == town:
+                    trends = t.trends.place(_id=location['woeid'])[0]['trends']
+                    print_trends(trends)
+            # Search for country only
+            else:
+                if location['countryCode'] == country \
+                        and location['placeType']['name'] == 'Country':
+                    trends = t.trends.place(_id=location['woeid'])[0]['trends']
+                    print_trends(trends)
 
 
 def home():
@@ -598,7 +621,7 @@ def message():
             t.direct_messages.new(
                 screen_name=user[1:],
                 text=content
-                )
+            )
             printNicely(green('Message sent.'))
         except:
             printNicely(red('Sorry I can\'t understand.'))
@@ -655,7 +678,7 @@ def list():
                 cursor=next_cursor,
                 skip_status=True,
                 include_entities=False,
-                )
+            )
             for u in list['users']:
                 rel[u['name']] = '@' + u['screen_name']
             next_cursor = list['next_cursor']
@@ -685,7 +708,7 @@ def inbox():
             page=cur_page,
             include_entities=False,
             skip_status=False
-            )
+        )
         num -= 20
         cur_page += 1
     rel = rel + t.direct_messages(
@@ -693,7 +716,7 @@ def inbox():
         page=cur_page,
         include_entities=False,
         skip_status=False
-        )
+    )
     # Display
     printNicely('Inbox: newest ' + str(len(rel)) + ' messages.')
     for m in reversed(rel):
@@ -718,7 +741,7 @@ def sent():
             page=cur_page,
             include_entities=False,
             skip_status=False
-            )
+        )
         num -= 20
         cur_page += 1
     rel = rel + t.direct_messages.sent(
@@ -726,7 +749,7 @@ def sent():
         page=cur_page,
         include_entities=False,
         skip_status=False
-        )
+    )
     # Display
     printNicely('Sent: newest ' + str(len(rel)) + ' messages.')
     for m in reversed(rel):
@@ -865,25 +888,11 @@ def help():
     usage = '\n'
     usage += s + 'Hi boss! I\'m ready to serve you right now!\n'
     usage += s + '-' * (int(w) - 4) + '\n'
-
     usage += s + 'You are ' + yellow('already') + ' on your personal stream.\n'
-    usage += s * 2 + green('switch public #AKB') + \
-        ' will switch to public stream and follow "' + \
-        yellow('AKB') + '" keyword.\n'
-    usage += s * 2 + green('switch mine') + \
-        ' will switch to your personal stream.\n'
-    usage += s * 2 + green('switch mine -f ') + \
-        ' will prompt to enter the filter.\n'
-    usage += s * 3 + yellow('Only nicks') + \
-        ' filter will decide nicks will be INCLUDE ONLY.\n'
-    usage += s * 3 + yellow('Ignore nicks') + \
-        ' filter will decide nicks will be EXCLUDE.\n'
-    usage += s * 2 + green('switch mine -d') + \
-        ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
-    usage += s * 3 + '(see ' + grey('rainbowstream/config.py') + ').\n'
 
-    usage += s + 'For more action: \n'
-    usage += s * 2 + green('trend') + ' will show closet trending topic.\n'
+    usage += s * 2 + green('trend') + ' will show global trending topic. ' + \
+        'You can try ' + green('trend US') + ' or ' + \
+        green('trend JP Tokyo') + '.\n'
     usage += s * 2 + green('home') + ' will show your timeline. ' + \
         green('home 7') + ' will show 7 tweets.\n'
     usage += s * 2 + green('view @mdo') + \
@@ -939,6 +948,22 @@ def help():
     usage += s * 2 + green('h') + ' will show this help again.\n'
     usage += s * 2 + green('c') + ' will clear the screen.\n'
     usage += s * 2 + green('q') + ' will quit.\n'
+
+    usage += s + 'For switching streams: \n'
+    usage += s * 2 + green('switch public #AKB') + \
+        ' will switch to public stream and follow "' + \
+        yellow('AKB') + '" keyword.\n'
+    usage += s * 2 + green('switch mine') + \
+        ' will switch to your personal stream.\n'
+    usage += s * 2 + green('switch mine -f ') + \
+        ' will prompt to enter the filter.\n'
+    usage += s * 3 + yellow('Only nicks') + \
+        ' filter will decide nicks will be INCLUDE ONLY.\n'
+    usage += s * 3 + yellow('Ignore nicks') + \
+        ' filter will decide nicks will be EXCLUDE.\n'
+    usage += s * 2 + green('switch mine -d') + \
+        ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
+    usage += s * 3 + '(see ' + grey('rainbowstream/config.py') + ').\n'
 
     usage += s + '-' * (int(w) - 4) + '\n'
     usage += s + 'Have fun and hang tight!\n'
