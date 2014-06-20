@@ -31,6 +31,7 @@ g = {}
 db = RainbowDB()
 cmdset = [
     'switch',
+    'trend',
     'home',
     'view',
     'mentions',
@@ -227,20 +228,23 @@ def show_profile(u):
     followers_count = green(str(followers_count) + ' followers')
     count = statuses_count + '  ' + friends_count + '  ' + followers_count
     user = cycle_color(name) + grey(' ' + screen_name + ' : ') + count
-    profile_image_url = 'Profile photo: ' + cyan(profile_image_url)
+    profile_image_raw_url = 'Profile photo: ' + cyan(profile_image_url)
     description = ''.join(map(lambda x: x+' '*4 if x=='\n' else x,description))
     description = yellow(description)
     location = 'Location : ' + magenta(location)
     url = 'URL : ' + (cyan(url) if url else '')
-    created_at = 'Join at ' + white(created_at)
+    date = parser.parse(created_at)
+    date = date - datetime.timedelta(seconds=time.timezone)
+    clock = date.strftime('%Y/%m/%d %H:%M:%S')
+    clock = 'Join at ' + white(clock)
     # Format
     line1 = u"{u:>{uw}}".format(
         u=user,
         uw=len(user) + 2,
     )
     line2 = u"{p:>{pw}}".format(
-        p=profile_image_url,
-        pw=len(profile_image_url) + 4,
+        p=profile_image_raw_url,
+        pw=len(profile_image_raw_url) + 4,
     )
     line3 = u"{d:>{dw}}".format(
         d=description,
@@ -254,16 +258,34 @@ def show_profile(u):
         u=url,
         uw=len(url) + 4,
     )
-    line6 = u"{j:>{jw}}".format(
-        j=created_at,
-        jw=len(created_at) + 4,
+    line6 = u"{c:>{cw}}".format(
+        c=clock,
+        cw=len(clock) + 4,
     )
     # Display
     printNicely('')
-    for line in [line1,line2,line3,line4,line5,line6]:
+    printNicely(line1)
+    if g['iot']:
+        response = requests.get(profile_image_url)
+        image_to_display(StringIO(response.content),2,20)
+    else:
+        printNicely(line2)
+    for line in [line3,line4,line5,line6]:
         printNicely(line)
     printNicely('')
 
+
+def print_trends(trends):
+    """
+    Display topics
+    """
+    for topic in trends[:TREND_MAX]:
+        name = topic['name']
+        url = topic['url']
+        line = cycle_color("#" + name) + ': ' + cyan(url)
+        printNicely(line)
+    printNicely('')
+    
 
 def parse_arguments():
     """
@@ -398,6 +420,22 @@ def switch():
         printNicely('')
     except:
         printNicely(red('Sorry I can\'t understand.'))
+
+
+def trend():
+    """
+    Trend
+    """
+    t = Twitter(auth=authen())
+    avail = t.trends.available()
+    try:
+        country = g['stuff'].split()[0]
+    except:
+        country = ''
+    for location in avail:
+        if location['country'] == country:
+            trends = t.trends.place(_id=location['woeid'])[0]['trends']
+            print_trends(trends)
 
 
 def home():
@@ -845,6 +883,7 @@ def help():
     usage += s * 3 + '(see ' + grey('rainbowstream/config.py') + ').\n'
 
     usage += s + 'For more action: \n'
+    usage += s * 2 + green('trend') + ' will show closet trending topic.\n'
     usage += s * 2 + green('home') + ' will show your timeline. ' + \
         green('home 7') + ' will show 7 tweets.\n'
     usage += s * 2 + green('view @mdo') + \
@@ -940,6 +979,7 @@ def process(cmd):
         cmdset,
         [
             switch,
+            trend,
             home,
             view,
             mentions,
@@ -977,6 +1017,7 @@ def listen():
         cmdset,
         [
             ['public', 'mine'],  # switch
+            [],  # trend
             [],  # home
             ['@'],  # view
             [],  # mentions

@@ -24,20 +24,24 @@ def pixel_print(ansicolor):
     sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
 
 
-def image_to_display(path):
+def image_to_display(path,start=None,length=None):
+    rows, columns = os.popen('stty size', 'r').read().split()
+    if not start:
+        start = IMAGE_SHIFT
+    if not length:
+        length = int(columns) - 2 * start
     i = Image.open(path)
     i = i.convert('RGBA')
     w, h = i.size
     i.load()
-    rows, columns = os.popen('stty size', 'r').read().split()
-    width = min(w, int(columns) - 2 * IMAGE_SHIFT)
+    width = min(w, length)
     height = int(float(h) * (float(width) / float(w)))
     height //= 2
     i = i.resize((width, height), Image.ANTIALIAS)
     height = min(height, IMAGE_MAX_HEIGHT)
 
     for y in xrange(height):
-        print ' ' * IMAGE_SHIFT,
+        print ' ' * start,
         for x in xrange(width):
             p = i.getpixel((x, y))
             r, g, b = p[:3]

@@ -316,20 +316,24 @@ def rgb2short(r, g, b):
     return RGB2SHORT_DICT[rgb_to_hex(m)]
 
 
-def image_to_display(path):
+def image_to_display(path,start=None,length=None):
+    rows, columns = os.popen('stty size', 'r').read().split()
+    if not start:
+        start = IMAGE_SHIFT
+    if not length:
+        length = int(columns) - 2 * start
     i = Image.open(path)
     i = i.convert('RGBA')
     w, h = i.size
     i.load()
-    rows, columns = os.popen('stty size', 'r').read().split()
-    width = min(w, int(columns) - 2 * IMAGE_SHIFT)
+    width = min(w, length)
     height = int(float(h) * (float(width) / float(w)))
     height //= 2
     i = i.resize((width, height), Image.BICUBIC)
     height = min(height, IMAGE_MAX_HEIGHT)
 
     for y in xrange(height):
-        print ' ' * IMAGE_SHIFT,
+        print ' ' * start,
         for x in xrange(width):
             p = i.getpixel((x, y))
             r, g, b = p[:3]
