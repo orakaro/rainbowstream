@@ -46,7 +46,7 @@ Here is full list of supported command
 
 __Action Commands__
 
-* ```trend```will show global trending topic. ```trend US``` will show trend in US while ```trend JP Tokyo``` will show trend in Tokyo/Japan.
+* ```trend```will show global trending topic. ```trend US``` will show trends in United States while ```trend JP Tokyo``` will show trends in Tokyo/Japan.
 
 * ```home```will show your timeline. ```home 10``` will print exactly 10 tweets.
 
