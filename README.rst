@@ -69,24 +69,11 @@ suggestion. Input history from previous run is available as well.
 
 Here is full list of supported command
 
-**Stream Command**
+**Action Commands**
 
--  ``switch public #AKB48`` will switch current stream to public stream and track keyword ``AKB48``
-
--  ``switch public #AKB48 -f`` will do exactly as above but will ask you
-   to provide 2 list:
-
-   ``Only nicks`` decide what nicks will be include only.
-
-   ``Ignore nicks`` decide what nicks will be exclude.
-
--  ``switch public #AKB48 -d`` will apply filter to *ONLY\_LIST* and
-   *IGNORE\_LIST*. You can setup 2 list above at ``config.py``
-
--  ``switch mine`` will switch current stream to personal stream. ``-f``
-   and ``-d`` will work as well.
-
-**Action Command**
+-  ``trend`` will show global trending topics. ``trend US`` will show
+   trends in United States while ``trend JP Tokyo`` will show trends
+   in Tokyo/Japan.
 
 -  ``home`` will show your timeline. ``home 10`` will print exactly 10
    tweets.
@@ -141,6 +128,24 @@ Here is full list of supported command
 -  ``c`` will clear the screen.
 
 -  ``q`` will quit.
+
+**Stream Commands**
+
+-  ``switch public #AKB48`` will switch current stream to public stream and track keyword ``AKB48``
+
+-  ``switch public #AKB48 -f`` will do exactly as above but will ask you
+   to provide 2 list:
+
+   ``Only nicks`` decide what nicks will be include only.
+
+   ``Ignore nicks`` decide what nicks will be exclude.
+
+-  ``switch public #AKB48 -d`` will apply filter to *ONLY\_LIST* and
+   *IGNORE\_LIST*. You can setup 2 list above at ``config.py``
+
+-  ``switch mine`` will switch current stream to personal stream. ``-f``
+   and ``-d`` will work as well.
+
 
 For example see the screenshot above.
 
