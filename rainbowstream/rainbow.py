@@ -128,7 +128,7 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     # Highlight screen_name
     tweet = map(lambda x: cycle_color(x) if x[0] == '@' else x, tweet)
     # Highlight link
-    tweet = map(lambda x: cyan(x) if x[0:7] == 'http://' else x, tweet)
+    tweet = map(lambda x: cyan(x) if x[0:4] == 'http' else x, tweet)
     # Highlight search keyword
     if keyword:
         tweet = map(
