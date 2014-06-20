@@ -8,7 +8,7 @@ import os
 """
 This file is borrowed from following gist:
 https://gist.github.com/MicahElliott/719710
-It's too slow in compare with C program, so bot be used here
+It's too slow in compare with C program.
 """
 
 CLUT = [  # color look-up table
