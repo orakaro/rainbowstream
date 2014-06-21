@@ -6,11 +6,11 @@
 Terminal-based Twitter Client. 
 Realtime tweetstream, compose, search , favorite ... and much more fun directly from terminal.
 
-This package build on the top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter Streaming API](https://dev.twitter.com/docs/api/streaming) and inspired by [EarthQuake](https://github.com/jugyo/earthquake)
+This package build on the top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter API](https://dev.twitter.com/docs/api/1.1).
 
 ## Screenshot
-![v0.0.1](./screenshot/RainbowStream.png)
-![v0.0.3](./screenshot/RainbowStreamIOT.png)
+![rainbowstream](./screenshot/RainbowStream.png)
+![rainbowstreamIOT](./screenshot/RainbowStreamIOT.png)
 
 ## Install
 You will need Python 2.7+ and pip.
