@@ -10,17 +10,16 @@ Rainbow Stream
 Terminal-based Twitter Client. Realtime tweetstream, compose, search ,
 favorite … and much more fun directly from terminal.
 
-This package build on the top of `Python Twitter Tool`_ and `Twitter
-Streaming API`_ and inspired by `EarthQuake`_
+This package build on the top of `Python Twitter Tool`_ and `Twitter API`_.
 
 Screenshot
 ----------
 
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStream.png
-   :alt: v0.0.1
+   :alt: rainbowstream
 
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamIOT.png
-   :alt: v0.0.3
+   :alt: rainbowstreamIOT
 
 Install
 -------
@@ -162,7 +161,7 @@ details
 
 
 .. _Python Twitter Tool: http://mike.verdone.ca/twitter/
-.. _Twitter Streaming API: https://dev.twitter.com/docs/api/streaming
+.. _Twitter API: https://dev.twitter.com/docs/api/1.1
 .. _EarthQuake: https://github.com/jugyo/earthquake
 .. _create an issue: https://github.com/DTVD/rainbowstream/issues/new
 .. _@dtvd88: https://twitter.com/dtvd88
