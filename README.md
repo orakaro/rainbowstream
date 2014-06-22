@@ -1,9 +1,9 @@
-## Rainbow Stream 
+## Rainbow Stream
 
 [![Download](http://img.shields.io/pypi/dm/rainbowstream.svg?style=flat)](https://pypi.python.org/pypi/rainbowstream)
 [![Version](http://img.shields.io/pypi/v/rainbowstream.svg?style=flat)](https://pypi.python.org/pypi/rainbowstream)
 
-Terminal-based Twitter Client. 
+Terminal-based Twitter Client.
 Realtime tweetstream, compose, search , favorite ... and much more fun directly from terminal.
 
 This package build on the top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter API](https://dev.twitter.com/docs/api/1.1).
@@ -46,73 +46,73 @@ Here is full list of supported command
 
 __Action Commands__
 
-* ```trend```will show global trending topics. ```trend US``` will show trends in United States while ```trend JP Tokyo``` will show trends in Tokyo/Japan.
+* `trend` will show global trending topics. `trend US` will show trends in United States while `trend JP Tokyo` will show trends in Tokyo/Japan.
 
-* ```home```will show your timeline. ```home 10``` will print exactly 10 tweets.
+* `home` will show your timeline. `home 10` will print exactly 10 tweets.
 
-* ```view @mdo```will show @mdo 's timeline. ```view @dmo 9``` will print exactly 9 tweets.
+* `view @mdo` will show @mdo 's timeline. `view @dmo 9` will print exactly 9 tweets.
 
-* ```mentions```will show mentions timeline. ```mentions 7``` will show 7 mention tweets.
+* `mentions` will show mentions timeline. `mentions 7` will show 7 mention tweets.
 
-* ```t the rainbow is god's promise to noah```will tweet exactly *'the rainbow is god's promise to noah'*.
+* `t the rainbow is god's promise to noah` will tweet exactly *'the rainbow is god's promise to noah'*.
 
-* ```rt 12```will retweet the tweet with *[id=12]*. You can see id of each tweet beside the time.
+* `rt 12` will retweet the tweet with *[id=12]*. You can see id of each tweet beside the time.
 
-* ```fav 12```will favorite the tweet with *[id=12]*.
+* `fav 12` will favorite the tweet with *[id=12]*.
 
-* ```rep 12 Really```will reply *'Really'* to the tweet with *[id=12]*.
+* `rep 12 Really` will reply *'Really'* to the tweet with *[id=12]*.
 
-* ```del 12```will delete tweet with *[id=12]*.
+* `del 12` will delete tweet with *[id=12]*.
 
-* ```ufav 12```will unfavorite tweet with *[id=12]*.
+* `ufav 12` will unfavorite tweet with *[id=12]*.
 
-* ```s #noah```will search the word *'noah'*. Result will come back with highlight.
+* `s #noah` will search the word *'noah'*. Result will come back with highlight.
 
-* ```mes @dtvd88 hi```will send a ```hi``` message to @dtvd88.
+* `mes @dtvd88 hi` will send a `hi` message to @dtvd88.
 
-* ```show image 12``` will show the image in tweet with *[id=12]* in your OS's image viewer.
+* `show image 12` will show the image in tweet with *[id=12]* in your OS's image viewer.
 
-* ```ls fl```will list all your followers (people who are following you).
+* `ls fl` will list all your followers (people who are following you).
 
-* ```ls fr```will list all your friends (people who you are following).
+* `ls fr` will list all your friends (people who you are following).
 
-* ```inbox```will show inbox messages. ```inbox 7``` will show newest 7 messages.
+* `inbox` will show inbox messages. `inbox 7` will show newest 7 messages.
 
-* ```sent```will show sent messages. ```sent 7``` will show newest 7 messages.
+* `sent` will show sent messages. `sent 7` will show newest 7 messages.
 
-* ```trash 5```will remove message with *[message_id=5]*
+* `trash 5` will remove message with *[message_id=5]*
 
-* ```whois @dtvd88```will show profile of @dtvd88.
+* `whois @dtvd88` will show profile of @dtvd88.
 
-* ```fl @dtvd88```will follow @dtvd88.
+* `fl @dtvd88` will follow @dtvd88.
 
-* ```ufl @dtvd88```will unfollow @dtvd88.
+* `ufl @dtvd88` will unfollow @dtvd88.
 
-* ```h```will show the help.
+* `h` will show the help.
 
-* ```c```will clear the screen.
+* `c` will clear the screen.
 
-* ```q```will quit.
+* `q` will quit.
 
 __Stream Commands__
 
-* ```switch public #AKB48``` will switch current stream to public stream and track keyword ```AKB48```
+* `switch public #AKB48` will switch current stream to public stream and track keyword `AKB48`
 
-* ```switch public #AKB48 -f ``` will do exactly as above but will ask you to provide 2 list:
+* `switch public #AKB48 -f ` will do exactly as above but will ask you to provide 2 list:
 
-    ```Only nicks``` decide what nicks will be include only.
+    `Only nicks` decide what nicks will be include only.
 
-    ```Ignore nicks```decide what nicks will be exclude.
+    `Ignore nicks`decide what nicks will be exclude.
 
-* ```switch public #AKB48 -d ``` will apply filter to *ONLY_LIST* and *IGNORE_LIST*.
-You can setup 2 list above at ```config.py```
+* `switch public #AKB48 -d ` will apply filter to *ONLY_LIST* and *IGNORE_LIST*.
+You can setup 2 list above at `config.py`
 
-* ```switch mine``` will switch current stream to personal stream. ```-f``` and ```-d``` will work as well.
+* `switch mine` will switch current stream to personal stream. `-f` and `-d` will work as well.
 
 For example see the screenshot above.
 
 ## Bug Report
-Please [create an issue](https://github.com/DTVD/rainbowstream/issues/new) 
+Please [create an issue](https://github.com/DTVD/rainbowstream/issues/new)
 or contact me at [@dtvd88](https://twitter.com/dtvd88)
 
 ## License

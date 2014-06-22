@@ -520,10 +520,11 @@ def retweet():
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
-        tid = db.rainbow_to_tweet_query(id)[0].tweet_id
-        t.statuses.retweet(id=tid, include_entities=False, trim_user=True)
     except:
-        printNicely(red('Sorry I can\'t retweet for you.'))
+        printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    t.statuses.retweet(id=tid, include_entities=False, trim_user=True)
 
 
 def favorite():
@@ -533,13 +534,14 @@ def favorite():
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
-        tid = db.rainbow_to_tweet_query(id)[0].tweet_id
-        t.favorites.create(_id=tid, include_entities=False)
-        printNicely(green('Favorited.'))
-        draw(t.statuses.show(id=tid), iot=g['iot'])
-        printNicely('')
     except:
-        printNicely(red('Omg some syntax is wrong.'))
+        printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    t.favorites.create(_id=tid, include_entities=False)
+    printNicely(green('Favorited.'))
+    draw(t.statuses.show(id=tid), iot=g['iot'])
+    printNicely('')
 
 
 def reply():
@@ -549,13 +551,14 @@ def reply():
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
-        tid = db.rainbow_to_tweet_query(id)[0].tweet_id
-        user = t.statuses.show(id=tid)['user']['screen_name']
-        status = ' '.join(g['stuff'].split()[1:])
-        status = '@' + user + ' ' + status.decode('utf-8')
-        t.statuses.update(status=status, in_reply_to_status_id=tid)
     except:
         printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    user = t.statuses.show(id=tid)['user']['screen_name']
+    status = ' '.join(g['stuff'].split()[1:])
+    status = '@' + user + ' ' + status.decode('utf-8')
+    t.statuses.update(status=status, in_reply_to_status_id=tid)
 
 
 def delete():
@@ -565,11 +568,12 @@ def delete():
     t = Twitter(auth=authen())
     try:
         rid = int(g['stuff'].split()[0])
-        tid = db.rainbow_to_tweet_query(rid)[0].tweet_id
-        t.statuses.destroy(id=tid)
-        printNicely(green('Okay it\'s gone.'))
     except:
         printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = db.rainbow_to_tweet_query(rid)[0].tweet_id
+    t.statuses.destroy(id=tid)
+    printNicely(green('Okay it\'s gone.'))
 
 
 def unfavorite():
@@ -579,13 +583,14 @@ def unfavorite():
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
-        tid = db.rainbow_to_tweet_query(id)[0].tweet_id
-        t.favorites.destroy(_id=tid)
-        printNicely(green('Okay it\'s unfavorited.'))
-        draw(t.statuses.show(id=tid), iot=g['iot'])
-        printNicely('')
     except:
-        printNicely(red('Sorry I can\'t unfavorite this tweet for you.'))
+        printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    t.favorites.destroy(_id=tid)
+    printNicely(green('Okay it\'s unfavorited.'))
+    draw(t.statuses.show(id=tid), iot=g['iot'])
+    printNicely('')
 
 
 def search():
@@ -593,22 +598,19 @@ def search():
     Search
     """
     t = Twitter(auth=authen())
-    try:
-        if g['stuff'][0] == '#':
-            rel = t.search.tweets(q=g['stuff'])['statuses']
-            if len(rel):
-                printNicely('Newest tweets:')
-                for i in reversed(xrange(SEARCH_MAX_RECORD)):
-                    draw(t=rel[i],
-                         iot=g['iot'],
-                         keyword=g['stuff'].strip()[1:])
-                printNicely('')
-            else:
-                printNicely(magenta('I\'m afraid there is no result'))
+    if g['stuff'].startswith('#'):
+        rel = t.search.tweets(q=g['stuff'])['statuses']
+        if len(rel):
+            printNicely('Newest tweets:')
+            for i in reversed(xrange(SEARCH_MAX_RECORD)):
+                draw(t=rel[i],
+                     iot=g['iot'],
+                     keyword=g['stuff'].strip()[1:])
+            printNicely('')
         else:
-            printNicely(red('A keyword should be a hashtag (like \'#AKB48\')'))
-    except:
-        printNicely(red('Sorry I can\'t understand.'))
+            printNicely(magenta('I\'m afraid there is no result'))
+    else:
+        printNicely(red('A keyword should be a hashtag (like \'#AKB48\')'))
 
 
 def message():
@@ -617,16 +619,16 @@ def message():
     """
     t = Twitter(auth=authen())
     user = g['stuff'].split()[0]
-    if user[0] == '@':
+    if user[0].startswith('@'):
         try:
             content = g['stuff'].split()[1]
-            t.direct_messages.new(
-                screen_name=user[1:],
-                text=content
-            )
-            printNicely(green('Message sent.'))
         except:
             printNicely(red('Sorry I can\'t understand.'))
+        t.direct_messages.new(
+            screen_name=user[1:],
+            text=content
+        )
+        printNicely(green('Message sent.'))
     else:
         printNicely(red('A name should begin with a \'@\''))
 
@@ -660,7 +662,7 @@ def list():
     # Get name
     try:
         name = g['stuff'].split()[1]
-        if name[0] == '@':
+        if name.startswith('@'):
             name = name[1:]
         else:
             printNicely(red('A name should begin with a \'@\''))
@@ -670,27 +672,28 @@ def list():
     # Get list followers or friends
     try:
         target = g['stuff'].split()[0]
-        d = {'fl': 'followers', 'fr': 'friends'}
-        next_cursor = -1
-        rel = {}
-        # Cursor loop
-        while next_cursor != 0:
-            list = getattr(t, d[target]).list(
-                screen_name=name,
-                cursor=next_cursor,
-                skip_status=True,
-                include_entities=False,
-            )
-            for u in list['users']:
-                rel[u['name']] = '@' + u['screen_name']
-            next_cursor = list['next_cursor']
-        # Print out result
-        printNicely('All: ' + str(len(rel)) + ' people.')
-        for name in rel:
-            user = '  ' + cycle_color(name) + grey(' ' + rel[name] + ' ')
-            printNicely(user)
     except:
         printNicely(red('Omg some syntax is wrong.'))
+    # Init cursor
+    d = {'fl': 'followers', 'fr': 'friends'}
+    next_cursor = -1
+    rel = {}
+    # Cursor loop
+    while next_cursor != 0:
+        list = getattr(t, d[target]).list(
+            screen_name=name,
+            cursor=next_cursor,
+            skip_status=True,
+            include_entities=False,
+        )
+        for u in list['users']:
+            rel[u['name']] = '@' + u['screen_name']
+        next_cursor = list['next_cursor']
+    # Print out result
+    printNicely('All: ' + str(len(rel)) + ' people.')
+    for name in rel:
+        user = '  ' + cycle_color(name) + grey(' ' + rel[name] + ' ')
+        printNicely(user)
 
 
 def inbox():
@@ -766,11 +769,11 @@ def trash():
     t = Twitter(auth=authen())
     try:
         rid = int(g['stuff'].split()[0])
-        mid = db.rainbow_to_message_query(rid)[0].message_id
-        t.direct_messages.destroy(id=mid)
-        printNicely(green('Message deleted.'))
     except:
         printNicely(red('Sorry I can\'t understand.'))
+    mid = db.rainbow_to_message_query(rid)[0].message_id
+    t.direct_messages.destroy(id=mid)
+    printNicely(green('Message deleted.'))
 
 
 def whois():
@@ -779,7 +782,7 @@ def whois():
     """
     t = Twitter(auth=authen())
     screen_name = g['stuff'].split()[0]
-    if screen_name[0] == '@':
+    if screen_name.startswith('@'):
         try:
             user = t.users.show(
                 screen_name=screen_name[1:],
@@ -788,7 +791,7 @@ def whois():
         except:
             printNicely(red('Omg no user.'))
     else:
-        printNicely(red('Sorry I can\'t understand.'))
+        printNicely(red('A name should begin with a \'@\''))
 
 
 def follow():
@@ -797,14 +800,11 @@ def follow():
     """
     t = Twitter(auth=authen())
     screen_name = g['stuff'].split()[0]
-    if screen_name[0] == '@':
-        try:
-            t.friendships.create(screen_name=screen_name[1:], follow=True)
-            printNicely(green('You are following ' + screen_name + ' now!'))
-        except:
-            printNicely(red('Sorry can not follow at this time.'))
+    if screen_name.startswith('@'):
+        t.friendships.create(screen_name=screen_name[1:], follow=True)
+        printNicely(green('You are following ' + screen_name + ' now!'))
     else:
-        printNicely(red('Sorry I can\'t understand.'))
+        printNicely(red('A name should begin with a \'@\''))
 
 
 def unfollow():
@@ -813,16 +813,13 @@ def unfollow():
     """
     t = Twitter(auth=authen())
     screen_name = g['stuff'].split()[0]
-    if screen_name[0] == '@':
-        try:
-            t.friendships.destroy(
-                screen_name=screen_name[1:],
-                include_entities=False)
-            printNicely(green('Unfollow ' + screen_name + ' success!'))
-        except:
-            printNicely(red('Sorry can not unfollow at this time.'))
+    if screen_name.startswith('@'):
+        t.friendships.destroy(
+            screen_name=screen_name[1:],
+            include_entities=False)
+        printNicely(green('Unfollow ' + screen_name + ' success!'))
     else:
-        printNicely(red('Sorry I can\'t understand.'))
+        printNicely(red('A name should begin with a \'@\''))
 
 
 def block():
@@ -831,17 +828,14 @@ def block():
     """
     t = Twitter(auth=authen())
     screen_name = g['stuff'].split()[0]
-    if screen_name[0] == '@':
-        try:
-            t.blocks.create(
-                screen_name=screen_name[1:],
-                include_entities=False,
-                skip_status=True)
-            printNicely(green('You blocked ' + screen_name + '.'))
-        except:
-            printNicely(red('Sorry something went wrong.'))
+    if screen_name.startswith('@'):
+        t.blocks.create(
+           screen_name=screen_name[1:],
+           include_entities=False,
+           skip_status=True)
+        printNicely(green('You blocked ' + screen_name + '.'))
     else:
-        printNicely(red('Sorry I can\'t understand.'))
+        printNicely(red('A name should begin with a \'@\''))
 
 
 def unblock():
@@ -850,17 +844,14 @@ def unblock():
     """
     t = Twitter(auth=authen())
     screen_name = g['stuff'].split()[0]
-    if screen_name[0] == '@':
-        try:
-            t.blocks.destroy(
-                screen_name=screen_name[1:],
-                include_entities=False,
-                skip_status=True)
-            printNicely(green('Unblock ' + screen_name + ' success!'))
-        except:
-            printNicely(red('Sorry something went wrong.'))
+    if screen_name.startswith('@'):
+        t.blocks.destroy(
+            screen_name=screen_name[1:],
+            include_entities=False,
+            skip_status=True)
+        printNicely(green('Unblock ' + screen_name + ' success!'))
     else:
-        printNicely(red('Sorry I can\'t understand.'))
+        printNicely(red('A name should begin with a \'@\''))
 
 
 def report():
@@ -869,13 +860,10 @@ def report():
     """
     t = Twitter(auth=authen())
     screen_name = g['stuff'].split()[0]
-    if screen_name[0] == '@':
-        try:
-            t.users.report_spam(
-                screen_name=screen_name[1:])
-            printNicely(green('You reported ' + screen_name + '.'))
-        except:
-            printNicely(red('Sorry something went wrong.'))
+    if screen_name.startswith('@'):
+        t.users.report_spam(
+            screen_name=screen_name[1:])
+        printNicely(green('You reported ' + screen_name + '.'))
     else:
         printNicely(red('Sorry I can\'t understand.'))
 
@@ -1085,8 +1073,12 @@ def listen():
         except:
             cmd = ''
         # Save cmd to global variable and call process
-        g['stuff'] = ' '.join(line.split()[1:])
-        process(cmd)()
+        try:
+            g['stuff'] = ' '.join(line.split()[1:])
+            process(cmd)()
+        except Exception:
+            printNicely(red('OMG something is wrong with Twitter right now.'))
+        # Not redisplay prefix
         if cmd in ['switch', 't', 'rt', 'rep']:
             g['prefix'] = False
         else:
