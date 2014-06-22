@@ -6,7 +6,7 @@
 Terminal-based Twitter Client.
 Realtime tweetstream, compose, search , favorite ... and much more fun directly from terminal.
 
-This package build on the top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter API](https://dev.twitter.com/docs/api/1.1).
+This package is built on top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter API](https://dev.twitter.com/docs/api/1.1).
 
 ## Screenshot
 ![rainbowstream](./screenshot/RainbowStream.png)
