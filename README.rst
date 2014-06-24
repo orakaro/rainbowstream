@@ -66,61 +66,83 @@ Input is in interactive mode. It means that you can use arrow key to
 move up and down history, tab-autocomplete or 2 tab to view available
 suggestion. Input history from previous run is available as well.
 
-Here is full list of supported command
+Here is full list of supported command:
 
-**Action Commands**
+**Explore Commands**
 
 -  ``trend`` will show global trending topics. ``trend US`` will show
-   trends in United States while ``trend JP Tokyo`` will show trends
-   in Tokyo/Japan.
+   trends in United States while ``trend JP Tokyo`` will show trends in
+   Tokyo/Japan.
 
 -  ``home`` will show your timeline. ``home 10`` will print exactly 10
    tweets.
 
+-  ``mentions`` will show mentions timeline. ``mentions 7`` will show 7
+   mention tweets.
+
+-  ``whois @dtvd88`` will show profile of @dtvd88.
+
 -  ``view @mdo`` will show @mdo ’s timeline. ``view @dmo 9`` will print
    exactly 9 tweets.
 
--  ``mentions`` will show mentions timeline. ``mentions 7`` will show
-   7 mention tweets.
+-  ``s #noah`` will search the word *‘noah’*. Result will come back with
+   highlight.
+
+**Tweet Commands**
 
 -  ``t the rainbow is god's promise to noah`` will tweet exactly *‘the
-   rainbow is god’s promise to noah’*
+   rainbow is god’s promise to noah’*.
 
 -  ``rt 12`` will retweet the tweet with *[id=12]*. You can see id of
    each tweet beside the time.
 
--  ``fav 12`` will favorite the tweet with *[id=12]*.
-
 -  ``rep 12 Really`` will reply *‘Really’* to the tweet with *[id=12]*.
 
--  ``del 12`` will delete tweet with *[id=12]*.
+-  ``fav 12`` will favorite the tweet with *[id=12]*.
 
 -  ``ufav 12`` will unfavorite tweet with *[id=12]*.
 
--  ``s #noah`` will search the word *‘noah’*. Result will come back
-   with highlight.
+-  ``del 12`` will delete tweet with *[id=12]*.
+
+-  ``show image 12`` will show the image in tweet with *[id=12]* in your
+   OS’s image viewer.
+
+**Direct Messages Commands**
+
+-  ``inbox`` will show inbox messages. ``inbox 7`` will show newest 7
+   messages.
+
+-  ``sent`` will show sent messages. ``sent 7`` will show newest 7
+   messages.
 
 -  ``mes @dtvd88 hi`` will send a ``hi`` message to @dtvd88.
 
--  ``show image 12`` will show the image in tweet with *[id=12]* in your OS's image viewer.
+-  ``trash 5`` will remove message with *[message\_id=5]*
 
--  ``ls fl`` will list all your followers (people who are following you).
+**Friends and followers Commands**
+
+-  ``ls fl`` will list all your followers (people who are following
+   you).
 
 -  ``ls fr`` will list all your friends (people who you are following).
-
--  ``inbox`` will show inbox messages. ``inbox 7`` will show newest
-   7 message.
-
--  ``sent`` will show sent messages. ``sent 7`` will show newest
-   7 message.
-
--  ``trash 5`` will remove message with *[message_id=5]*.
-
--  ``whois @dtvd88`` will show profile of @dtvd88.
 
 -  ``fl @dtvd88`` will follow @dtvd88.
 
 -  ``ufl @dtvd88`` will unfollow @dtvd88.
+
+-  ``mute @dtvd88`` will mute @dtvd88.
+
+-  ``unmute @dtvd88`` will unmute @dtvd88.
+
+-  ``muting`` will list muting users.
+
+-  ``block @dtvd88`` will block @dtvd88.
+
+-  ``unblock @dtvd88`` will unblock @dtvd88.
+
+-  ``report @dtvd88`` will report @dtvd88 as a spam account.
+
+**Screening Commands**
 
 -  ``h`` will show the help.
 
@@ -128,22 +150,24 @@ Here is full list of supported command
 
 -  ``q`` will quit.
 
-**Stream Commands**
+**Switching Stream Commands**
 
--  ``switch public #AKB48`` will switch current stream to public stream and track keyword ``AKB48``
+-  ``switch public #AKB48`` will switch current stream to public stream
+   and track keyword ``AKB48``
 
 -  ``switch public #AKB48 -f`` will do exactly as above but will ask you
    to provide 2 list:
 
    ``Only nicks`` decide what nicks will be include only.
 
-   ``Ignore nicks`` decide what nicks will be exclude.
+   ``Ignore nicks``\ decide what nicks will be exclude.
 
 -  ``switch public #AKB48 -d`` will apply filter to *ONLY\_LIST* and
    *IGNORE\_LIST*. You can setup 2 list above at ``config.py``
 
 -  ``switch mine`` will switch current stream to personal stream. ``-f``
    and ``-d`` will work as well.
+
 
 
 For example see the screenshot above.
