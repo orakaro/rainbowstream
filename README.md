@@ -44,49 +44,69 @@ Input is in interactive mode. It means that you can use arrow key to move up and
 
 Here is full list of supported command
 
-__Action Commands__
+__Explore Commands__
 
 * `trend` will show global trending topics. `trend US` will show trends in United States while `trend JP Tokyo` will show trends in Tokyo/Japan.
 
 * `home` will show your timeline. `home 10` will print exactly 10 tweets.
 
+* `mentions` will show mentions timeline. `mentions 7` will show 7 mention tweets.
+
+* `whois @dtvd88` will show profile of @dtvd88.
+
 * `view @mdo` will show @mdo 's timeline. `view @dmo 9` will print exactly 9 tweets.
 
-* `mentions` will show mentions timeline. `mentions 7` will show 7 mention tweets.
+* `s #noah` will search the word *'noah'*. Result will come back with highlight.
+
+__Tweet Commands__
 
 * `t the rainbow is god's promise to noah` will tweet exactly *'the rainbow is god's promise to noah'*.
 
 * `rt 12` will retweet the tweet with *[id=12]*. You can see id of each tweet beside the time.
 
-* `fav 12` will favorite the tweet with *[id=12]*.
-
 * `rep 12 Really` will reply *'Really'* to the tweet with *[id=12]*.
 
-* `del 12` will delete tweet with *[id=12]*.
+* `fav 12` will favorite the tweet with *[id=12]*.
 
 * `ufav 12` will unfavorite tweet with *[id=12]*.
 
-* `s #noah` will search the word *'noah'*. Result will come back with highlight.
-
-* `mes @dtvd88 hi` will send a `hi` message to @dtvd88.
+* `del 12` will delete tweet with *[id=12]*.
 
 * `show image 12` will show the image in tweet with *[id=12]* in your OS's image viewer.
 
-* `ls fl` will list all your followers (people who are following you).
-
-* `ls fr` will list all your friends (people who you are following).
+__Direct Messages Commands__
 
 * `inbox` will show inbox messages. `inbox 7` will show newest 7 messages.
 
 * `sent` will show sent messages. `sent 7` will show newest 7 messages.
 
+* `mes @dtvd88 hi` will send a `hi` message to @dtvd88.
+
 * `trash 5` will remove message with *[message_id=5]*
 
-* `whois @dtvd88` will show profile of @dtvd88.
+__Friends and followers Commands__
+
+* `ls fl` will list all your followers (people who are following you).
+
+* `ls fr` will list all your friends (people who you are following).
 
 * `fl @dtvd88` will follow @dtvd88.
 
 * `ufl @dtvd88` will unfollow @dtvd88.
+
+* `mute @dtvd88` will mute @dtvd88.
+
+* `unmute @dtvd88` will unmute @dtvd88.
+
+* `muting` will list muting users.
+
+* `block @dtvd88` will block @dtvd88.
+
+* `unblock @dtvd88` will unblock @dtvd88.
+
+* `report @dtvd88` will report @dtvd88 as a spam account.
+
+__Screening Commands__
 
 * `h` will show the help.
 
@@ -94,7 +114,7 @@ __Action Commands__
 
 * `q` will quit.
 
-__Stream Commands__
+__Switching Stream Commands__
 
 * `switch public #AKB48` will switch current stream to public stream and track keyword `AKB48`
 
