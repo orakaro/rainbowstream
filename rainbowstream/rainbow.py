@@ -1018,9 +1018,9 @@ def help():
         magenta('@dtvd88') + '.\n'
     usage += s * 2 + green('ufl @dtvd88') + ' will unfollow ' + \
         magenta('@dtvd88') + '.\n'
-    usage += s * 2 + green('mute @dtvd88') + ' will mute' + \
+    usage += s * 2 + green('mute @dtvd88') + ' will mute ' + \
         magenta('@dtvd88') + '.\n'
-    usage += s * 2 + green('unmute @dtvd88') + ' will unfollow ' + \
+    usage += s * 2 + green('unmute @dtvd88') + ' will unmute ' + \
         magenta('@dtvd88') + '.\n'
     usage += s * 2 + green('muting') + ' will list muting users.\n'
     usage += s * 2 + green('block @dtvd88') + ' will block ' + \
