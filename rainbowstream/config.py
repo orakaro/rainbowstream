@@ -5,7 +5,7 @@ HOME_TWEET_NUM = 5
 # Default direct message's number
 MESSAGES_DISPLAY = 5
 # Max trending topics display
-TREND_MAX = 5
+TREND_MAX = 10
 # Autocomplete history
 HISTORY_FILENAME = 'completer.hist'
 

@@ -51,6 +51,9 @@ cmdset = [
     'whois',
     'fl',
     'ufl',
+    'mute',
+    'unmute',
+    'muting',
     'block',
     'unblock',
     'report',
@@ -600,7 +603,7 @@ def search():
     t = Twitter(auth=authen())
     if g['stuff'].startswith('#'):
         rel = t.search.tweets(q=g['stuff'])['statuses']
-        if len(rel):
+        if rel:
             printNicely('Newest tweets:')
             for i in reversed(xrange(SEARCH_MAX_RECORD)):
                 draw(t=rel[i],
@@ -822,6 +825,73 @@ def unfollow():
         printNicely(red('A name should begin with a \'@\''))
 
 
+def mute():
+    """
+    Mute a user
+    """
+    t = Twitter(auth=authen())
+    try:
+        screen_name = g['stuff'].split()[0]
+    except:
+        printNicely(red('A name should be specified. '))
+        return
+    if screen_name.startswith('@'):
+        rel = t.mutes.users.create(screen_name=screen_name[1:])
+        if isinstance(rel, dict):
+            printNicely(green(screen_name + ' is muted.'))
+        else:
+            printNicely(red(rel))
+    else:
+        printNicely(red('A name should begin with a \'@\''))
+
+
+def unmute():
+    """
+    Unmute a user
+    """
+    t = Twitter(auth=authen())
+    try:
+        screen_name = g['stuff'].split()[0]
+    except:
+        printNicely(red('A name should be specified. '))
+        return
+    if screen_name.startswith('@'):
+        rel = t.mutes.users.destroy(screen_name=screen_name[1:])
+        if isinstance(rel, dict):
+            printNicely(green(screen_name + ' is unmuted.'))
+        else:
+            printNicely(red(rel))
+    else:
+        printNicely(red('A name should begin with a \'@\''))
+
+
+def muting():
+    """
+    List muting user
+    """
+    t = Twitter(auth=authen())
+    # Init cursor
+    d = {'fl': 'followers', 'fr': 'friends'}
+    next_cursor = -1
+    rel = {}
+    # Cursor loop
+    while next_cursor != 0:
+        list = t.mutes.users.list(
+            screen_name=g['original_name'],
+            cursor=next_cursor,
+            skip_status=True,
+            include_entities=False,
+        )
+        for u in list['users']:
+            rel[u['name']] = '@' + u['screen_name']
+        next_cursor = list['next_cursor']
+    # Print out result
+    printNicely('All: ' + str(len(rel)) + ' people.')
+    for name in rel:
+        user = '  ' + cycle_color(name) + grey(' ' + rel[name] + ' ')
+        printNicely(user)
+
+
 def block():
     """
     Block a user
@@ -830,9 +900,9 @@ def block():
     screen_name = g['stuff'].split()[0]
     if screen_name.startswith('@'):
         t.blocks.create(
-           screen_name=screen_name[1:],
-           include_entities=False,
-           skip_status=True)
+            screen_name=screen_name[1:],
+            include_entities=False,
+            skip_status=True)
         printNicely(green('You blocked ' + screen_name + '.'))
     else:
         printNicely(red('A name should begin with a \'@\''))
@@ -880,10 +950,11 @@ def help():
     usage += s + 'Hi boss! I\'m ready to serve you right now!\n'
     usage += s + '-' * (int(w) - 4) + '\n'
     usage += s + 'You are ' + yellow('already') + ' on your personal stream.\n'
-    usage +=s + 'Any update from Twitter will show up ' + yellow('immediately')+ '.\n'
-    usage +=s + 'In addtion, following commands are available right now:\n'
+    usage += s + 'Any update from Twitter will show up ' + \
+        yellow('immediately') + '.\n'
+    usage += s + 'In addtion, following commands are available right now:\n'
 
-    # Discover 
+    # Discover
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Discover the world \n')
     usage += s * 2 + green('trend') + ' will show global trending topics. ' + \
@@ -900,7 +971,7 @@ def help():
     usage += s * 2 + green('s #AKB48') + ' will search for "' + \
         yellow('AKB48') + '" and return 5 newest tweet.\n'
 
-    # Action 
+    # Action
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Tweets \n')
     usage += s * 2 + green('t oops ') + \
@@ -922,7 +993,7 @@ def help():
     usage += s * 2 + green('show image 12') + ' will show image in tweet with ' + \
         yellow('[id=12]') + ' in your OS\'s image viewer.\n'
 
-    # Direct message 
+    # Direct message
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Direct messages \n')
     usage += s * 2 + green('inbox') + ' will show inbox messages. ' + \
@@ -947,6 +1018,11 @@ def help():
         magenta('@dtvd88') + '.\n'
     usage += s * 2 + green('ufl @dtvd88') + ' will unfollow ' + \
         magenta('@dtvd88') + '.\n'
+    usage += s * 2 + green('mute @dtvd88') + ' will mute' + \
+        magenta('@dtvd88') + '.\n'
+    usage += s * 2 + green('unmute @dtvd88') + ' will unfollow ' + \
+        magenta('@dtvd88') + '.\n'
+    usage += s * 2 + green('muting') + ' will list muting users.\n'
     usage += s * 2 + green('block @dtvd88') + ' will block ' + \
         magenta('@dtvd88') + '.\n'
     usage += s * 2 + green('unblock @dtvd88') + ' will unblock ' + \
@@ -1040,6 +1116,9 @@ def process(cmd):
             whois,
             follow,
             unfollow,
+            mute,
+            unmute,
+            muting,
             block,
             unblock,
             report,
@@ -1078,6 +1157,9 @@ def listen():
             ['@'],  # whois
             ['@'],  # follow
             ['@'],  # unfollow
+            ['@'],  # mute
+            ['@'],  # unmute
+            ['@'],  # muting
             ['@'],  # block
             ['@'],  # unblock
             ['@'],  # report
