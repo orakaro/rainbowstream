@@ -875,56 +875,74 @@ def help():
     s = ' ' * 2
     h, w = os.popen('stty size', 'r').read().split()
 
+    # Start
     usage = '\n'
     usage += s + 'Hi boss! I\'m ready to serve you right now!\n'
     usage += s + '-' * (int(w) - 4) + '\n'
     usage += s + 'You are ' + yellow('already') + ' on your personal stream.\n'
+    usage +=s + 'Any update from Twitter will show up ' + yellow('immediately')+ '.\n'
+    usage +=s + 'In addtion, following commands are available right now:\n'
 
+    # Discover 
+    usage += '\n'
+    usage += s + grey(u'\u266A' + ' Discover the world \n')
     usage += s * 2 + green('trend') + ' will show global trending topics. ' + \
         'You can try ' + green('trend US') + ' or ' + \
         green('trend JP Tokyo') + '.\n'
     usage += s * 2 + green('home') + ' will show your timeline. ' + \
         green('home 7') + ' will show 7 tweets.\n'
-    usage += s * 2 + green('view @mdo') + \
-        ' will show ' + magenta('@mdo') + '\'s home.\n'
     usage += s * 2 + green('mentions') + ' will show mentions timeline. ' + \
         green('mentions 7') + ' will show 7 mention tweets.\n'
+    usage += s * 2 + green('whois @mdo') + ' will show profile  of ' + \
+        magenta('@mdo') + '.\n'
+    usage += s * 2 + green('view @mdo') + \
+        ' will show ' + magenta('@mdo') + '\'s home.\n'
+    usage += s * 2 + green('s #AKB48') + ' will search for "' + \
+        yellow('AKB48') + '" and return 5 newest tweet.\n'
+
+    # Action 
+    usage += '\n'
+    usage += s + grey(u'\u266A' + ' Tweets \n')
     usage += s * 2 + green('t oops ') + \
         'will tweet "' + yellow('oops') + '" immediately.\n'
     usage += s * 2 + \
         green('rt 12 ') + ' will retweet to tweet with ' + \
         yellow('[id=12]') + '.\n'
-    usage += s * 2 + \
-        green('fav 12 ') + ' will favorite the tweet with ' + \
-        yellow('[id=12]') + '.\n'
     usage += s * 2 + green('rep 12 oops') + ' will reply "' + \
         yellow('oops') + '" to tweet with ' + yellow('[id=12]') + '.\n'
     usage += s * 2 + \
-        green('del 12 ') + ' will delete tweet with ' + \
+        green('fav 12 ') + ' will favorite the tweet with ' + \
         yellow('[id=12]') + '.\n'
     usage += s * 2 + \
         green('ufav 12 ') + ' will unfavorite tweet with ' + \
         yellow('[id=12]') + '.\n'
-    usage += s * 2 + green('s #AKB48') + ' will search for "' + \
-        yellow('AKB48') + '" and return 5 newest tweet.\n'
-    usage += s * 2 + green('mes @dtvd88 hi') + ' will send a "hi" messege to ' + \
-        magenta('@dtvd88') + '.\n'
+    usage += s * 2 + \
+        green('del 12 ') + ' will delete tweet with ' + \
+        yellow('[id=12]') + '.\n'
     usage += s * 2 + green('show image 12') + ' will show image in tweet with ' + \
         yellow('[id=12]') + ' in your OS\'s image viewer.\n'
+
+    # Direct message 
+    usage += '\n'
+    usage += s + grey(u'\u266A' + ' Direct messages \n')
+    usage += s * 2 + green('inbox') + ' will show inbox messages. ' + \
+        green('inbox 7') + ' will show newest 7 messages.\n'
+    usage += s * 2 + green('sent') + ' will show sent messages. ' + \
+        green('sent 7') + ' will show newest 7 messages.\n'
+    usage += s * 2 + green('mes @dtvd88 hi') + ' will send a "hi" messege to ' + \
+        magenta('@dtvd88') + '.\n'
+    usage += s * 2 + green('trash 5') + ' will remove message with ' + \
+        yellow('[message_id=5]') + '.\n'
+
+    # Follower and following
+    usage += '\n'
+    usage += s + grey(u'\u266A' + ' Fiends and followers \n')
     usage += s * 2 + \
         green('ls fl') + \
         ' will list all followers (people who are following you).\n'
     usage += s * 2 + \
         green('ls fr') + \
         ' will list all friends (people who you are following).\n'
-    usage += s * 2 + green('inbox') + ' will show inbox messages. ' + \
-        green('inbox 7') + ' will show newest 7 messages.\n'
-    usage += s * 2 + green('sent') + ' will show sent messages. ' + \
-        green('sent 7') + ' will show newest 7 messages.\n'
-    usage += s * 2 + green('trash 5') + ' will remove message with ' + \
-        yellow('[message_id=5]') + '.\n'
-    usage += s * 2 + green('whois @dtvd88') + ' will show profile  of ' + \
-        magenta('@dtvd88') + '.\n'
     usage += s * 2 + green('fl @dtvd88') + ' will follow ' + \
         magenta('@dtvd88') + '.\n'
     usage += s * 2 + green('ufl @dtvd88') + ' will unfollow ' + \
@@ -935,11 +953,17 @@ def help():
         magenta('@dtvd88') + '.\n'
     usage += s * 2 + green('report @dtvd88') + ' will report ' + \
         magenta('@dtvd88') + ' as a spam account.\n'
+
+    # Screening
+    usage += '\n'
+    usage += s + grey(u'\u266A' + ' Screening \n')
     usage += s * 2 + green('h') + ' will show this help again.\n'
     usage += s * 2 + green('c') + ' will clear the screen.\n'
     usage += s * 2 + green('q') + ' will quit.\n'
 
-    usage += s + 'For switching streams: \n'
+    # Switch
+    usage += '\n'
+    usage += s + grey(u'\u266A' + ' Switching streams \n')
     usage += s * 2 + green('switch public #AKB') + \
         ' will switch to public stream and follow "' + \
         yellow('AKB') + '" keyword.\n'
@@ -955,8 +979,10 @@ def help():
         ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
     usage += s * 3 + '(see ' + grey('rainbowstream/config.py') + ').\n'
 
+    # End
+    usage += '\n'
     usage += s + '-' * (int(w) - 4) + '\n'
-    usage += s + 'Have fun and hang tight!\n'
+    usage += s + 'Have fun and hang tight! \n'
     printNicely(usage)
 
 
