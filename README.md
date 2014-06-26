@@ -12,6 +12,9 @@ This package is built on top of [Python Twitter Tool](http://mike.verdone.ca/twi
 ![rainbowstream](./screenshot/RainbowStream.png)
 ![rainbowstreamIOT](./screenshot/RainbowStreamIOT.png)
 
+Screencast:
+<a href="https://www.youtube.com/watch?v=tykCvPMJq8s" target="_blank">https://www.youtube.com/watch?v=tykCvPMJq8s</a>
+
 ## Install
 You will need Python 2.7+ and pip.
 
