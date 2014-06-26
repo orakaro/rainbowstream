@@ -8,9 +8,12 @@ Realtime tweetstream, compose, search , favorite ... and much more fun directly 
 
 This package is built on top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter API](https://dev.twitter.com/docs/api/1.1).
 
-## Screenshot
-Screencast: https://www.youtube.com/watch?v=tykCvPMJq8s
+## Showcase
+Screencast: 
+https://www.youtube.com/watch?v=tykCvPMJq8s
+<br>
 
+Screenshot:
 ![rainbowstream](./screenshot/RainbowStream.png)
 ![rainbowstreamIOT](./screenshot/RainbowStreamIOT.png)
 
