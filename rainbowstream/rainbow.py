@@ -231,7 +231,7 @@ def show_profile(u):
     friends_count = green(str(friends_count) + ' following')
     followers_count = green(str(followers_count) + ' followers')
     count = statuses_count + '  ' + friends_count + '  ' + followers_count
-    user = cycle_color(name) + grey(' ' + screen_name + ' : ') + count
+    user = cycle_color(name) + grey(' @' + screen_name + ' : ') + count
     profile_image_raw_url = 'Profile photo: ' + cyan(profile_image_url)
     description = ''.join(
         map(lambda x: x + ' ' * 4 if x == '\n' else x, description))
