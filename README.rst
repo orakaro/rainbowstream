@@ -12,8 +12,11 @@ favorite … and much more fun directly from terminal.
 
 This package is built on the top of `Python Twitter Tool`_ and `Twitter API`_.
 
-Screenshot
+Showcase
 ----------
+Screencast: https://www.youtube.com/watch?v=tykCvPMJq8s 
+
+Screenshot: 
 
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStream.png
    :alt: rainbowstream
