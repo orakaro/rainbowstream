@@ -9,11 +9,11 @@ Realtime tweetstream, compose, search , favorite ... and much more fun directly 
 This package is built on top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter API](https://dev.twitter.com/docs/api/1.1).
 
 ## Screenshot
+Screencast: https://www.youtube.com/watch?v=tykCvPMJq8s
+
 ![rainbowstream](./screenshot/RainbowStream.png)
 ![rainbowstreamIOT](./screenshot/RainbowStreamIOT.png)
 
-Screencast:
-<a href="https://www.youtube.com/watch?v=tykCvPMJq8s" target="_blank">https://www.youtube.com/watch?v=tykCvPMJq8s</a>
 
 ## Install
 You will need Python 2.7+ and pip.
