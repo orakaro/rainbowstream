@@ -171,6 +171,13 @@ Here is full list of supported command:
 -  ``switch mine`` will switch current stream to personal stream. ``-f``
    and ``-d`` will work as well.
 
+**Smart shell**
+
+- Put anything to terminal, the app will try to eval and display result as a python interactive shell.
+
+  + ``142857*2`` or ``101**3`` like a calculator.
+  + Even ``cal`` will show the calendar for current month.
+  + Put ``order_rainbow('anything')`` or ``random_rainow('wahahaha')`` will make more fun :)
 
 
 For example see the screenshot above.
