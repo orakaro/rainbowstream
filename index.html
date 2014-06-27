@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Rainbowstream by DTVD</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Rainbowstream</h1>
+          <h2>Twitter client on terminal with colourful stream, fancy command line tool available in interactive mode.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/DTVD/rainbowstream/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/DTVD/rainbowstream/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/DTVD/rainbowstream" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h2>
+<a name="rainbow-stream" class="anchor" href="#rainbow-stream"><span class="octicon octicon-link"></span></a>Rainbow Stream</h2>
+
+<p><a href="https://pypi.python.org/pypi/rainbowstream"><img src="http://img.shields.io/pypi/dm/rainbowstream.svg?style=flat" alt="Download"></a>
+<a href="https://pypi.python.org/pypi/rainbowstream"><img src="http://img.shields.io/pypi/v/rainbowstream.svg?style=flat" alt="Version"></a></p>
+
+<p>Terminal-based Twitter Client.
+Realtime tweetstream, compose, search , favorite ... and much more fun directly from terminal.</p>
+
+<p>This package is built on top of <a href="http://mike.verdone.ca/twitter/">Python Twitter Tool</a> and <a href="https://dev.twitter.com/docs/api/1.1">Twitter API</a>.</p>
+
+<h2>
+<a name="showcase" class="anchor" href="#showcase"><span class="octicon octicon-link"></span></a>Showcase</h2>
+
+<p>Screencast: 
+<a href="https://www.youtube.com/watch?v=tykCvPMJq8s">https://www.youtube.com/watch?v=tykCvPMJq8s</a>
+<br></p>
+
+<p>Screenshot:
+<img src="./screenshot/RainbowStream.png" alt="rainbowstream"><img src="./screenshot/RainbowStreamIOT.png" alt="rainbowstreamIOT"></p>
+
+<h2>
+<a name="install" class="anchor" href="#install"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<p>You will need Python 2.7+ and pip.</p>
+
+<div class="highlight highlight-bash"><pre>pip install rainbowstream
+</pre></div>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h4>
+<a name="the-stream" class="anchor" href="#the-stream"><span class="octicon octicon-link"></span></a>The stream</h4>
+
+<p>Just type</p>
+
+<div class="highlight highlight-bash"><pre>rainbow
+</pre></div>
+
+<p>and see your stream.</p>
+
+<p>I shipped a feature which can display <strong>tweet's images directly on terminal</strong>.
+You can try it with:</p>
+
+<div class="highlight highlight-bash"><pre>rainbow -iot <span class="c"># Or rainbow --image-on-term</span>
+</pre></div>
+
+<p>In the first time you will be asked for authorization of Rainbow Stream app at Twitter.
+Just click the "Authorize access" button and paste PIN number to the terminal, the rainbow will start.</p>
+
+<h4>
+<a name="the-interactive-mode" class="anchor" href="#the-interactive-mode"><span class="octicon octicon-link"></span></a>The interactive mode</h4>
+
+<p>While your personal stream is continued, you are also ready to tweet, search, reply, retweet... directly from console.
+Simply type "h" and hit the Enter key to see the help.</p>
+
+<p>Input is in interactive mode. It means that you can use arrow key to move up and down history, tab-autocomplete or 2 tab to view available suggestion. Input history from previous run is available as well.</p>
+
+<p>Here is full list of supported command</p>
+
+<p><strong>Explore Commands</strong></p>
+
+<ul>
+<li><p><code>trend</code> will show global trending topics. <code>trend US</code> will show trends in United States while <code>trend JP Tokyo</code> will show trends in Tokyo/Japan.</p></li>
+<li><p><code>home</code> will show your timeline. <code>home 10</code> will print exactly 10 tweets.</p></li>
+<li><p><code>mentions</code> will show mentions timeline. <code>mentions 7</code> will show 7 mention tweets.</p></li>
+<li><p><code>whois @dtvd88</code> will show profile of @dtvd88.</p></li>
+<li><p><code>view @mdo</code> will show <a href="https://github.com/mdo" class="user-mention">@mdo</a> 's timeline. <code>view @dmo 9</code> will print exactly 9 tweets.</p></li>
+<li><p><code>s #noah</code> will search the word <em>'noah'</em>. Result will come back with highlight.</p></li>
+</ul><p><strong>Tweet Commands</strong></p>
+
+<ul>
+<li><p><code>t the rainbow is god's promise to noah</code> will tweet exactly <em>'the rainbow is god's promise to noah'</em>.</p></li>
+<li><p><code>rt 12</code> will retweet the tweet with <em>[id=12]</em>. You can see id of each tweet beside the time.</p></li>
+<li><p><code>rep 12 Really</code> will reply <em>'Really'</em> to the tweet with <em>[id=12]</em>.</p></li>
+<li><p><code>fav 12</code> will favorite the tweet with <em>[id=12]</em>.</p></li>
+<li><p><code>ufav 12</code> will unfavorite tweet with <em>[id=12]</em>.</p></li>
+<li><p><code>del 12</code> will delete tweet with <em>[id=12]</em>.</p></li>
+<li><p><code>show image 12</code> will show the image in tweet with <em>[id=12]</em> in your OS's image viewer.</p></li>
+</ul><p><strong>Direct Messages Commands</strong></p>
+
+<ul>
+<li><p><code>inbox</code> will show inbox messages. <code>inbox 7</code> will show newest 7 messages.</p></li>
+<li><p><code>sent</code> will show sent messages. <code>sent 7</code> will show newest 7 messages.</p></li>
+<li><p><code>mes @dtvd88 hi</code> will send a <code>hi</code> message to @dtvd88.</p></li>
+<li><p><code>trash 5</code> will remove message with <em>[message_id=5]</em></p></li>
+</ul><p><strong>Friends and followers Commands</strong></p>
+
+<ul>
+<li><p><code>ls fl</code> will list all your followers (people who are following you).</p></li>
+<li><p><code>ls fr</code> will list all your friends (people who you are following).</p></li>
+<li><p><code>fl @dtvd88</code> will follow @dtvd88.</p></li>
+<li><p><code>ufl @dtvd88</code> will unfollow @dtvd88.</p></li>
+<li><p><code>mute @dtvd88</code> will mute @dtvd88.</p></li>
+<li><p><code>unmute @dtvd88</code> will unmute @dtvd88.</p></li>
+<li><p><code>muting</code> will list muting users.</p></li>
+<li><p><code>block @dtvd88</code> will block @dtvd88.</p></li>
+<li><p><code>unblock @dtvd88</code> will unblock @dtvd88.</p></li>
+<li><p><code>report @dtvd88</code> will report @dtvd88 as a spam account.</p></li>
+</ul><p><strong>Screening Commands</strong></p>
+
+<ul>
+<li><p><code>h</code> will show the help.</p></li>
+<li><p><code>c</code> will clear the screen.</p></li>
+<li><p><code>q</code> will quit.</p></li>
+</ul><p><strong>Switching Stream Commands</strong></p>
+
+<ul>
+<li><p><code>switch public #AKB48</code> will switch current stream to public stream and track keyword <code>AKB48</code></p></li>
+<li>
+<p><code>switch public #AKB48 -f</code> will do exactly as above but will ask you to provide 2 list:</p>
+
+<p><code>Only nicks</code> decide what nicks will be include only.</p>
+
+<p><code>Ignore nicks</code>decide what nicks will be exclude.</p>
+</li>
+<li><p><code>switch public #AKB48 -d</code> will apply filter to <em>ONLY_LIST</em> and <em>IGNORE_LIST</em>.
+You can setup 2 list above at <code>config.py</code></p></li>
+<li><p><code>switch mine</code> will switch current stream to personal stream. <code>-f</code> and <code>-d</code> will work as well.</p></li>
+</ul><p>For example see the screenshot above.</p>
+
+<h2>
+<a name="bug-and-feature-requests" class="anchor" href="#bug-and-feature-requests"><span class="octicon octicon-link"></span></a>Bug and feature requests</h2>
+
+<p>Found a bug or a feature request ? 
+Please <a href="https://github.com/DTVD/rainbowstream/issues/new">create an issue</a>
+or contact me at <a href="https://twitter.com/dtvd88">@dtvd88</a></p>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>I appreciate any help and support. Feel free to 
+<a href="https://github.com/DTVD/rainbowstream/fork">fork</a> 
+and 
+<a href="https://github.com/DTVD/rainbowstream/compare/">create a pull request</a>.
+You will be listed as contributor.</p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Rainbow Stream are released under an MIT License. See LICENSE.txt for details</p>
+        </section>
+
+        <footer>
+          Rainbowstream is maintained by <a href="https://github.com/DTVD">DTVD</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
