@@ -175,10 +175,16 @@ Here is full list of supported command:
 
 For example see the screenshot above.
 
-Bug Report
+Bug and feature requests
 ----------
 
+Found a bug or a feature request ? 
 Please `create an issue`_ or contact me at `@dtvd88`_
+
+Contributing
+----------
+I appreciate any help and support. Feel free to `fork`_ and `create a pull request`_.
+You will be listed as contributor.
 
 License
 -------
@@ -192,3 +198,5 @@ details
 .. _EarthQuake: https://github.com/jugyo/earthquake
 .. _create an issue: https://github.com/DTVD/rainbowstream/issues/new
 .. _@dtvd88: https://twitter.com/dtvd88
+.. _fork: https://github.com/DTVD/rainbowstream/fork
+.. _create a pull request: https://github.com/DTVD/rainbowstream/compare/
