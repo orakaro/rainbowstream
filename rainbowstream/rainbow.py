@@ -1086,6 +1086,10 @@ def reset():
     if g['reset']:
         printNicely(magenta('Need tips ? Type "h" and hit Enter key!'))
     g['reset'] = False
+    try:
+        print eval(g['cmd'])
+    except:
+        pass
 
 
 def process(cmd):
@@ -1180,6 +1184,7 @@ def listen():
             cmd = line.split()[0]
         except:
             cmd = ''
+        g['cmd'] = cmd
         # Save cmd to global variable and call process
         try:
             g['stuff'] = ' '.join(line.split()[1:])
