@@ -57,6 +57,7 @@ cmdset = [
     'block',
     'unblock',
     'report',
+    'cal',
     'h',
     'c',
     'q'
@@ -938,6 +939,26 @@ def report():
         printNicely(red('Sorry I can\'t understand.'))
 
 
+def cal():
+    """
+    Unix's command `cal`
+    """
+    # Format
+    rel = os.popen('cal').read().split('\n')
+    month = rel.pop(0)
+    month = random_rainbow(month)
+    date = rel.pop(0)
+    date = ' '.join([cycle_color(i) for i in date.split(' ')])
+    today = os.popen('date +\'%d\'').read().strip()
+    # Display
+    print month
+    print date
+    for line in rel:
+        ary = line.split(' ')
+        ary = map(lambda x:on_grey(x) if x==today else grey(x),ary) 
+        print ' '.join(ary) 
+
+
 def help():
     """
     Help
@@ -1126,6 +1147,7 @@ def process(cmd):
             block,
             unblock,
             report,
+            cal,
             help,
             clear,
             quit
@@ -1167,6 +1189,7 @@ def listen():
             ['@'],  # block
             ['@'],  # unblock
             ['@'],  # report
+            [],  # cal
             [],  # help
             [],  # clear
             [],  # quit
