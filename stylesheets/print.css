@@ -7,8 +7,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
   margin: 0;
@@ -19,7 +19,7 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
@@ -43,7 +43,7 @@ table {
 }
 body {
   font-size: 13px;
-  line-height: 1.5; 
+  line-height: 1.5;
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
   color: #000;
 }
@@ -118,14 +118,14 @@ th {
 
 td {
   border: 1px solid #ebebeb;
-  text-align: center; 
+  text-align: center;
   font-weight: 300;
 }
 
 form {
   background: #f2f2f2;
   padding: 20px;
-  
+
 }
 
 
@@ -133,43 +133,43 @@ form {
 
 h1 {
   font-size: 2.8em;
-} 
+}
 
 h2 {
   font-size: 22px;
   font-weight: bold;
   color: #303030;
   margin-bottom: 8px;
-} 
+}
 
 h3 {
   color: #d5000d;
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 8px;
-} 
- 
+}
+
 h4 {
   font-size: 16px;
   color: #303030;
   font-weight: bold;
-} 
+}
 
 h5 {
   font-size: 1em;
   color: #303030;
-} 
+}
 
 h6 {
   font-size: .8em;
   color: #303030;
-} 
+}
 
 p {
   font-weight: 300;
   margin-bottom: 20px;
 }
- 
+
 a {
   text-decoration: none;
 }
