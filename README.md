@@ -137,9 +137,17 @@ You can setup 2 list above at `config.py`
 
 For example see the screenshot above.
 
-## Bug Report
+## Bug and feature requests
+Found a bug or a feature request ? 
 Please [create an issue](https://github.com/DTVD/rainbowstream/issues/new)
 or contact me at [@dtvd88](https://twitter.com/dtvd88)
+
+## Contributing
+I appreciate any help and support. Feel free to 
+[fork](https://github.com/DTVD/rainbowstream/fork) 
+and 
+[create a pull request](https://github.com/DTVD/rainbowstream/compare/).
+You will be listed as contributor.
 
 ## License
 Rainbow Stream are released under an MIT License. See LICENSE.txt for details
