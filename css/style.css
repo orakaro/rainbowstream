@@ -852,14 +852,14 @@
 
 	#cta {
 		background-attachment: scroll, scroll, scroll, fixed;
-		background-color: #645862;
-		background-image: url("images/light-tl.svg"), url("images/light-tr.svg"), url("images/overlay.png"), url("../images/allscreen.png");
-		background-position: top left, top right, top left, bottom center;
-		background-repeat: no-repeat, no-repeat, repeat, no-repeat;
 		background-size: 25em, 25em, auto, cover;
 		color: white;
 		padding: 5em;
 		text-align: center;
+		background-color: #645862;
+		background-image: url("images/light-tl.svg"), url("images/light-tr.svg"), url("images/overlay.png"), url("../images/allscreen_blur.png");
+		background-position: top left, top right, top left, bottom center;
+		background-repeat: no-repeat, no-repeat, repeat, no-repeat;
 	}
 
 		#cta header {
@@ -1047,4 +1047,19 @@
 
 	  cmts {
 	  color :#BDB2B2;
+	  }
+
+	  .videoWrapper {
+	  	position: relative;
+	  	padding-bottom: 56.25%; /* 16:9 */
+	  	padding-top: 25px;
+	  	height: 0;
+	  }
+
+	  .videoWrapper iframe {
+	  	position: absolute;
+	  	top: 0;
+	  	left: 0;
+	  	width: 100%;
+	  	height: 100%;
 	  }

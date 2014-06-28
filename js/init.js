@@ -41,13 +41,7 @@ skel.init({
 					swipeToClose: false,
 					orientation: 'vertical'
 				},
-				topButton: {
-					states: 'global wide normal narrow narrower mobile',
-					position: 'top-center',
-					width: 120,
-					height: 50,
-					html: '<span class="toggle" data-action="toggleLayer" data-args="topPanel"></span>'
-				},
+
 				sidePanel: {
 					states: 'global wide normal narrow narrower',
 					position: 'top-left',
@@ -60,13 +54,6 @@ skel.init({
 					clickToClose: true,
 					orientation: 'vertical'
 				},
-				sideButton: {
-					states: 'global wide normal narrow narrower',
-					position: 'top-left',
-					width: 100,
-					height: 60,
-					html: '<span class="toggle" data-action="toggleLayer" data-args="sidePanel"></span>'
-				}
 			}
 	}
 });
