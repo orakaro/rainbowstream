@@ -1,0 +1,24 @@
+@import '../vars';
+@import '../mixins';
+
+/* Banner */
+
+	#banner {
+		background-image: url('../../images/banner.jpg');
+		background-repeat: no-repeat;
+		background-size: cover;
+		-ms-behavior: url('css/ie/backgroundsize.min.htc');
+	
+		.inner {
+			background: $color-banner-inner-bg;
+		}
+	}
+	
+/* CTA  */
+
+	#cta {
+		background-image: url('../../images/banner.jpg');
+		background-repeat: no-repeat;
+		background-size: cover;
+		-ms-behavior: url('css/ie/backgroundsize.min.htc');
+	}

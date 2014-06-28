@@ -1,0 +1,184 @@
+$pattern-background-size: 10em;
+
+/*
+	Twenty 1.0 by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
+
+/* Basic */
+
+	body {
+		min-width: 320px;
+	}
+
+	h2 {
+		font-size: 1.25em;
+		letter-spacing: 0.1em;
+	}
+
+	h3 {
+		font-size: 1em;
+		letter-spacing: 0.025em;
+	}
+	
+	p {
+		text-align: justify;
+	}
+
+	header {
+		text-align: center;
+
+		&.major {
+			padding-bottom: 0;
+		}
+		
+		&.special {
+			margin-bottom: 3em;
+			padding-left: 1.5em;
+			padding-right: 1.5em;
+
+			&:before,
+			&:after {
+				width: 38%;
+			}
+			
+			.icon {
+				font-size: 0.75em;
+				top: 1.5em;
+			}
+		}
+		
+		p {
+			text-align: center;
+		}
+	}
+	
+	footer {
+		&.major {
+			padding-top: 0;
+		}
+	}
+
+/* Icon */
+
+	.icon {
+		&.circle {
+			font-size: 1em;
+		}
+	}
+
+/* Button */
+
+	.button {
+		max-width: 20em;
+		width: 100%;
+		
+		&.fit {
+			width: auto;
+		}
+	}
+
+/* Lists */
+
+	ul {
+		&.icons {
+			li {
+				padding-left: 0.25em;
+			}		
+		}
+		
+		&.feature-icons {
+			li {
+				.icon {
+					width: 1.1em;
+				}
+			}		
+		}
+
+		&.buttons {
+			text-align: center;
+		}
+	}
+
+/* Wrapper */
+
+	.wrapper {
+		margin-bottom: 2.5em;
+		padding: 2.25em 1.5em;
+		
+		&.special {
+			br {
+				display: none;
+			}
+		}
+		
+		&.style1 {
+			padding: 0 1.5em;
+		}
+
+		&.style2 {
+			background-size: $pattern-background-size;
+			padding: 2.25em 1.5em;
+		}
+
+		&.style4 {
+			background-size: $pattern-background-size;
+			padding: 1.5em 1.5em 3em 1.5em;
+		}
+	}
+
+/* Banner */
+
+	#banner {
+		background-size: $pattern-background-size, $pattern-background-size, auto, cover;
+		padding: 6em 0;
+		
+		.inner {
+			background: none;
+			display: block;
+			padding: 0 1.5em;
+
+			header {
+				h2 {
+					font-size: 1.5em;
+				}
+			}
+			
+			p {
+				text-align: center;
+			}
+
+			br {
+				display: none;
+			}
+		}
+	}
+
+/* Main */
+
+	#main {
+		background-size: $pattern-background-size;
+		padding: 3.5em 0 2.5em 0;
+	}
+	
+	body.index #main {
+		padding: 2.5em 0 0 0;
+	}
+
+	body.contact #main {
+		padding-bottom: 0;
+	}
+
+/* CTA */
+
+	#cta {
+		background-size: $pattern-background-size, $pattern-background-size, auto, cover;
+		padding: 3em 1.5em;
+	}
+
+/* Footer */
+
+	#footer {
+		padding: 3em 1.5em;
+	}

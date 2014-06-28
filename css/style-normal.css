@@ -1,0 +1,61 @@
+/*
+	Twenty 1.0 by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
+
+/* Basic */
+
+	body, input, select, textarea {
+		font-size: 13pt;
+		letter-spacing: 0.025em;
+		line-height: 1.65em;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		line-height: 1.5em;
+	}
+
+	header.major {
+		padding-bottom: 1.5em;
+	}
+
+	footer.major {
+		padding-top: 2em;
+	}
+
+/* Wrapper */
+
+	.wrapper {
+		margin-bottom: 4em;
+		padding: 4em 3em;
+	}
+
+		.wrapper.style4 {
+			padding: 3em;
+		}
+
+/* Header */
+
+	#header nav ul li {
+		margin-left: 1em;
+	}
+
+/* Banner */
+
+	#banner {
+		background-attachment: scroll;
+	}
+
+/* CTA */
+
+	#cta {
+		padding: 4em;
+		background-attachment: scroll;
+	}
+
+/* Footer */
+
+	#footer {
+		padding: 4em;
+	}

@@ -1,0 +1,165 @@
+/*
+	Twenty 1.0 by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
+
+/* Basic */
+
+	body {
+		min-width: 320px;
+	}
+
+	h2 {
+		font-size: 1.25em;
+		letter-spacing: 0.1em;
+	}
+
+	h3 {
+		font-size: 1em;
+		letter-spacing: 0.025em;
+	}
+
+	p {
+		text-align: justify;
+	}
+
+	header {
+		text-align: center;
+	}
+
+		header.major {
+			padding-bottom: 0;
+		}
+
+		header.special {
+			margin-bottom: 3em;
+			padding-left: 1.5em;
+			padding-right: 1.5em;
+		}
+
+			header.special:before, header.special:after {
+				width: 38%;
+			}
+
+			header.special .icon {
+				font-size: 0.75em;
+				top: 1.5em;
+			}
+
+		header p {
+			text-align: center;
+		}
+
+	footer.major {
+		padding-top: 0;
+	}
+
+/* Icon */
+
+	.icon.circle {
+		font-size: 1em;
+	}
+
+/* Button */
+
+	.button {
+		max-width: 20em;
+		width: 100%;
+	}
+
+		.button.fit {
+			width: auto;
+		}
+
+/* Lists */
+
+	ul.icons li {
+		padding-left: 0.25em;
+	}
+
+	ul.feature-icons li .icon {
+		width: 1.1em;
+	}
+
+	ul.buttons {
+		text-align: center;
+	}
+
+/* Wrapper */
+
+	.wrapper {
+		margin-bottom: 2.5em;
+		padding: 2.25em 1.5em;
+	}
+
+		.wrapper.special br {
+			display: none;
+		}
+
+		.wrapper.style1 {
+			padding: 0 1.5em;
+		}
+
+		.wrapper.style2 {
+			background-size: 10em;
+			padding: 2.25em 1.5em;
+		}
+
+		.wrapper.style4 {
+			background-size: 10em;
+			padding: 1.5em 1.5em 3em 1.5em;
+		}
+
+/* Banner */
+
+	#banner {
+		background-size: 10em, 10em, auto, cover;
+		padding: 6em 0;
+	}
+
+		#banner .inner {
+			background: none;
+			display: block;
+			padding: 0 1.5em;
+		}
+
+			#banner .inner header h2 {
+				font-size: 1.5em;
+			}
+
+			#banner .inner p {
+				text-align: center;
+			}
+
+			#banner .inner br {
+				display: none;
+			}
+
+/* Main */
+
+	#main {
+		background-size: 10em;
+		padding: 3.5em 0 2.5em 0;
+	}
+
+	body.index #main {
+		padding: 2.5em 0 0 0;
+	}
+
+	body.contact #main {
+		padding-bottom: 0;
+	}
+
+/* CTA */
+
+	#cta {
+		background-size: 10em, 10em, auto, cover;
+		padding: 3em 1.5em;
+	}
+
+/* Footer */
+
+	#footer {
+		padding: 3em 1.5em;
+	}
