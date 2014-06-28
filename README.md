@@ -22,8 +22,17 @@ Screenshot:
 You will need Python 2.7+ and pip.
 
 ```bash
+sudo pip install rainbowstream
+```
+
+or try it with a virtualenv
+```bash
+pip install virtualenv # skip if you already have virtualenv
+virtualenv venv 
+source venv/bin/activate # use the brand new virtualenv.
 pip install rainbowstream
 ```
+
 
 ## Usage
 #### The stream
