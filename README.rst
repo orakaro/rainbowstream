@@ -33,6 +33,7 @@ You will need Python 2.7+ and pip.
 
     sudo pip install rainbowstream
     
+or try with a virtualenv
 
 .. code:: bash
 
