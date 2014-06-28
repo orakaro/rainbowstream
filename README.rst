@@ -186,7 +186,7 @@ Here is full list of supported command:
 
   + ``142857*2`` or ``101**3`` like a calculator.
   + Even ``cal`` will show the calendar for current month.
-  + Put ``order_rainbow('anything')`` or ``random_rainow('wahahaha')`` will make more fun :)
+  + Put ``order_rainbow('anything')`` or ``random_rainbow('wahahaha')`` will make more fun :)
 
 
 For example see the screenshot above.
