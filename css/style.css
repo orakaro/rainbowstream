@@ -760,7 +760,7 @@
 		cursor: default;
 		padding: 6em 0;
 		text-align: center;
-		background-image: url("images/light-bl.svg"), url("images/light-br.svg"), url("images/overlay.png"), url("../images/banner.jpg");
+		background-image: url("images/light-bl.svg"), url("images/light-br.svg"), url("images/overlay.png"), url("../images/allscreen.png");
 	}
 
 		#banner .inner {
@@ -853,7 +853,7 @@
 	#cta {
 		background-attachment: scroll, scroll, scroll, fixed;
 		background-color: #645862;
-		background-image: url("images/light-tl.svg"), url("images/light-tr.svg"), url("images/overlay.png"), url("../images/banner.jpg");
+		background-image: url("images/light-tl.svg"), url("images/light-tr.svg"), url("images/overlay.png"), url("../images/allscreen.png");
 		background-position: top left, top right, top left, bottom center;
 		background-repeat: no-repeat, no-repeat, repeat, no-repeat;
 		background-size: 25em, 25em, auto, cover;
@@ -871,8 +871,8 @@
 	#footer {
 		background: #e8eef4;
 		color: #7c8081;
-		padding: 5em 5em 10em 5em;
 		text-align: center;
+		padding: 5em 5em 5em 5em;
 	}
 
 		#footer .copyright {
@@ -1035,3 +1035,16 @@
 			display: inline-block;
 			width: 5em;
 		}
+
+		code {
+		border: 1px solid #1FBD25;
+		background-color: #f8f8f8;
+		color: #615353;
+		overflow: auto;
+		border-radius: 3px;
+		padding: 10px 10px;
+	  }
+
+	  cmts {
+	  color :#BDB2B2;
+	  }
