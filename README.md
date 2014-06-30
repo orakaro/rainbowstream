@@ -80,7 +80,7 @@ __Tweet Commands__
 * `rt 12` will retweet the tweet with *[id=12]*. You can see id of each tweet beside the time.
  
 * `allrt 12 20` will list 20 newest retweets of the tweet with *[id=12]*. 
-If the number of retweets is not specified, I will list 5 newest retweets instead.
+If the number of retweets is not specified, 5 newest retweets will be listed instead.
 
 * `rep 12 Really` will reply *'Really'* to the tweet with *[id=12]*.
 
