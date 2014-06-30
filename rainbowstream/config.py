@@ -2,6 +2,8 @@
 SEARCH_MAX_RECORD = 5
 # Default home tweet
 HOME_TWEET_NUM = 5
+# Default retweets show
+RETWEETS_SHOW_NUM = 5
 # Default direct message's number
 MESSAGES_DISPLAY = 5
 # Max trending topics display

@@ -37,6 +37,7 @@ cmdset = [
     'mentions',
     't',
     'rt',
+    'allrt',
     'fav',
     'rep',
     'del',
@@ -531,6 +532,33 @@ def retweet():
     t.statuses.retweet(id=tid, include_entities=False, trim_user=True)
 
 
+def allretweet():
+    """
+    List all retweet
+    """
+    t = Twitter(auth=authen())
+    # Get rainbow id
+    try:
+        id = int(g['stuff'].split()[0])
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    # Get display num if exist
+    try:
+        num = int(g['stuff'].split()[1])
+    except:
+        num = RETWEETS_SHOW_NUM
+    # Get result and display
+    rt_ary = t.statuses.retweets(id=tid,count=num)
+    if not rt_ary:
+        printNicely(magenta('This tweet has no retweet.'))
+        return
+    for tweet in reversed(rt_ary):
+        draw(t=tweet, iot=g['iot'])
+    printNicely('')
+
+
 def favorite():
     """
     Favorite
@@ -975,7 +1003,7 @@ def help():
         yellow('immediately') + '.\n'
     usage += s + 'In addtion, following commands are available right now:\n'
 
-    # Discover
+    # Discover the world
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Discover the world \n')
     usage += s * 2 + green('trend') + ' will show global trending topics. ' + \
@@ -992,13 +1020,16 @@ def help():
     usage += s * 2 + green('s #AKB48') + ' will search for "' + \
         yellow('AKB48') + '" and return 5 newest tweet.\n'
 
-    # Action
+    # Tweet
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Tweets \n')
     usage += s * 2 + green('t oops ') + \
         'will tweet "' + yellow('oops') + '" immediately.\n'
     usage += s * 2 + \
         green('rt 12 ') + ' will retweet to tweet with ' + \
+        yellow('[id=12]') + '.\n'
+    usage += s * 2 + \
+        green('allrt 12 20 ') + ' list 20 newest retweet of the tweet with ' + \
         yellow('[id=12]') + '.\n'
     usage += s * 2 + green('rep 12 oops') + ' will reply "' + \
         yellow('oops') + '" to tweet with ' + yellow('[id=12]') + '.\n'
@@ -1051,13 +1082,6 @@ def help():
     usage += s * 2 + green('report @dtvd88') + ' will report ' + \
         magenta('@dtvd88') + ' as a spam account.\n'
 
-    # Screening
-    usage += '\n'
-    usage += s + grey(u'\u266A' + ' Screening \n')
-    usage += s * 2 + green('h') + ' will show this help again.\n'
-    usage += s * 2 + green('c') + ' will clear the screen.\n'
-    usage += s * 2 + green('q') + ' will quit.\n'
-
     # Switch
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Switching streams \n')
@@ -1075,6 +1099,21 @@ def help():
     usage += s * 2 + green('switch mine -d') + \
         ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
     usage += s * 3 + '(see ' + grey('rainbowstream/config.py') + ').\n'
+
+    # Smart shell
+    usage += '\n'
+    usage += s + grey(u'\u266A' + ' Smart shell\n')
+    usage += s*2 + green('111111 * 9 / 7') + ' or any math expression ' + \
+        'will be evaluate by Python interpreter.\n'
+    usage += s*2 + 'Even ' + green('cal') + ' will show the calendar' + \
+        ' for current month.\n'
+
+    # Screening
+    usage += '\n'
+    usage += s + grey(u'\u266A' + ' Screening \n')
+    usage += s * 2 + green('h') + ' will show this help again.\n'
+    usage += s * 2 + green('c') + ' will clear the screen.\n'
+    usage += s * 2 + green('q') + ' will quit.\n'
 
     # End
     usage += '\n'
@@ -1127,6 +1166,7 @@ def process(cmd):
             mentions,
             tweet,
             retweet,
+            allretweet,
             favorite,
             reply,
             delete,
@@ -1169,6 +1209,7 @@ def listen():
             [],  # mentions
             [],  # tweet
             [],  # retweet
+            [],  # allretweet
             [],  # favorite
             [],  # reply
             [],  # delete

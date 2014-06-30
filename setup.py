@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.0.10'
+version = '0.1.0'
 
 install_requires = [
     "SQLAlchemy",
