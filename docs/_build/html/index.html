@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Rainbow Stream &mdash; Rainbow Stream 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Rainbow Stream 0.1.0 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="#">Rainbow Stream 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="rainbow-stream">
+<h1>Rainbow Stream<a class="headerlink" href="#rainbow-stream" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/rainbowstream"><img alt="http://img.shields.io/pypi/dm/rainbowstream.svg?style=flat" src="http://img.shields.io/pypi/dm/rainbowstream.svg?style=flat" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/rainbowstream"><img alt="http://img.shields.io/pypi/v/rainbowstream.svg?style=flat" src="http://img.shields.io/pypi/v/rainbowstream.svg?style=flat" /></a>
+<p>Terminal-based Twitter Client. Realtime tweetstream, compose, search ,
+favorite … and much more fun directly from terminal.</p>
+<p>This package is built on the top of <a class="reference external" href="http://mike.verdone.ca/twitter/">Python Twitter Tool</a> and <a class="reference external" href="https://dev.twitter.com/docs/api/1.1">Twitter API</a>.</p>
+</div>
+<div class="section" id="showcase">
+<h1>Showcase<a class="headerlink" href="#showcase" title="Permalink to this headline">¶</a></h1>
+<p>Screencast: <a class="reference external" href="https://www.youtube.com/watch?v=tykCvPMJq8s">https://www.youtube.com/watch?v=tykCvPMJq8s</a></p>
+<p>Screenshot:</p>
+<div class="figure">
+<img alt="rainbowstream" src="https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStream.png" />
+</div>
+<div class="figure">
+<img alt="rainbowstreamIOT" src="https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamIOT.png" />
+</div>
+</div>
+<div class="section" id="install">
+<h1>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h1>
+<p>You will need Python 2.7+ and pip.</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sudo pip install rainbowstream
+</pre></div>
+</div>
+<p>or try with a virtualenv</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>sudo pip install virtualenv # skip if you already have virtualenv
+virtualenv venv
+source venv/bin/activate # use the brand new virtualenv.
+pip install rainbowstream
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-stream">
+<h2>The stream<a class="headerlink" href="#the-stream" title="Permalink to this headline">¶</a></h2>
+<p>Just type</p>
+<div class="code bash highlight-python"><div class="highlight"><pre><span class="n">rainbow</span>
+</pre></div>
+</div>
+<p>and see your stream.</p>
+<p>I shipped a feature which can display <strong>tweet&#8217;s images directly on terminal</strong>.
+You can try it with:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre><span class="n">rainbow</span> <span class="o">-</span><span class="n">iot</span> <span class="c"># Or rainbow --image-on-term</span>
+</pre></div>
+</div>
+<p>In the first time you will be asked for authorization of Rainbow Stream
+app at Twitter. Just click the “Authorize access” button and paste PIN
+number to the terminal, the rainbow will start.</p>
+</div>
+<div class="section" id="the-interactive-mode">
+<h2>The interactive mode<a class="headerlink" href="#the-interactive-mode" title="Permalink to this headline">¶</a></h2>
+<p>While your personal stream is continued, you are also ready to tweet,
+search, reply, retweet… directly from console. Simply type “h” and hit
+the Enter key to see the help.</p>
+<p>Input is in interactive mode. It means that you can use arrow key to
+move up and down history, tab-autocomplete or 2 tab to view available
+suggestion. Input history from previous run is available as well.</p>
+<p>Here is full list of supported command:</p>
+<p><strong>Explore Commands</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">trend</span></tt> will show global trending topics. <tt class="docutils literal"><span class="pre">trend</span> <span class="pre">US</span></tt> will show
+trends in United States while <tt class="docutils literal"><span class="pre">trend</span> <span class="pre">JP</span> <span class="pre">Tokyo</span></tt> will show trends in
+Tokyo/Japan.</li>
+<li><tt class="docutils literal"><span class="pre">home</span></tt> will show your timeline. <tt class="docutils literal"><span class="pre">home</span> <span class="pre">10</span></tt> will print exactly 10
+tweets.</li>
+<li><tt class="docutils literal"><span class="pre">mentions</span></tt> will show mentions timeline. <tt class="docutils literal"><span class="pre">mentions</span> <span class="pre">7</span></tt> will show 7
+mention tweets.</li>
+<li><tt class="docutils literal"><span class="pre">whois</span> <span class="pre">&#64;dtvd88</span></tt> will show profile of &#64;dtvd88.</li>
+<li><tt class="docutils literal"><span class="pre">view</span> <span class="pre">&#64;mdo</span></tt> will show &#64;mdo ’s timeline. <tt class="docutils literal"><span class="pre">view</span> <span class="pre">&#64;dmo</span> <span class="pre">9</span></tt> will print
+exactly 9 tweets.</li>
+<li><tt class="docutils literal"><span class="pre">s</span> <span class="pre">#noah</span></tt> will search the word <em>‘noah’</em>. Result will come back with
+highlight.</li>
+</ul>
+<p><strong>Tweet Commands</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">t</span> <span class="pre">the</span> <span class="pre">rainbow</span> <span class="pre">is</span> <span class="pre">god's</span> <span class="pre">promise</span> <span class="pre">to</span> <span class="pre">noah</span></tt> will tweet exactly <em>‘the
+rainbow is god’s promise to noah’</em>.</li>
+<li><tt class="docutils literal"><span class="pre">rt</span> <span class="pre">12</span></tt> will retweet the tweet with <em>[id=12]</em>. You can see id of
+each tweet beside the time.</li>
+<li><tt class="docutils literal"><span class="pre">allrt</span> <span class="pre">12</span> <span class="pre">20</span></tt> will list 20 newest retweets of the tweet with <em>[id=12]</em>. If the number of retweets is not specified, 5 newest retweets will be listed instead.</li>
+<li><tt class="docutils literal"><span class="pre">rep</span> <span class="pre">12</span> <span class="pre">Really</span></tt> will reply <em>‘Really’</em> to the tweet with <em>[id=12]</em>.</li>
+<li><tt class="docutils literal"><span class="pre">fav</span> <span class="pre">12</span></tt> will favorite the tweet with <em>[id=12]</em>.</li>
+<li><tt class="docutils literal"><span class="pre">ufav</span> <span class="pre">12</span></tt> will unfavorite tweet with <em>[id=12]</em>.</li>
+<li><tt class="docutils literal"><span class="pre">del</span> <span class="pre">12</span></tt> will delete tweet with <em>[id=12]</em>.</li>
+<li><tt class="docutils literal"><span class="pre">show</span> <span class="pre">image</span> <span class="pre">12</span></tt> will show the image in tweet with <em>[id=12]</em> in your
+OS’s image viewer.</li>
+</ul>
+<p><strong>Direct Messages Commands</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">inbox</span></tt> will show inbox messages. <tt class="docutils literal"><span class="pre">inbox</span> <span class="pre">7</span></tt> will show newest 7
+messages.</li>
+<li><tt class="docutils literal"><span class="pre">sent</span></tt> will show sent messages. <tt class="docutils literal"><span class="pre">sent</span> <span class="pre">7</span></tt> will show newest 7
+messages.</li>
+<li><tt class="docutils literal"><span class="pre">mes</span> <span class="pre">&#64;dtvd88</span> <span class="pre">hi</span></tt> will send a <tt class="docutils literal"><span class="pre">hi</span></tt> message to &#64;dtvd88.</li>
+<li><tt class="docutils literal"><span class="pre">trash</span> <span class="pre">5</span></tt> will remove message with <em>[message_id=5]</em></li>
+</ul>
+<p><strong>Friends and followers Commands</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">ls</span> <span class="pre">fl</span></tt> will list all your followers (people who are following
+you).</li>
+<li><tt class="docutils literal"><span class="pre">ls</span> <span class="pre">fr</span></tt> will list all your friends (people who you are following).</li>
+<li><tt class="docutils literal"><span class="pre">fl</span> <span class="pre">&#64;dtvd88</span></tt> will follow &#64;dtvd88.</li>
+<li><tt class="docutils literal"><span class="pre">ufl</span> <span class="pre">&#64;dtvd88</span></tt> will unfollow &#64;dtvd88.</li>
+<li><tt class="docutils literal"><span class="pre">mute</span> <span class="pre">&#64;dtvd88</span></tt> will mute &#64;dtvd88.</li>
+<li><tt class="docutils literal"><span class="pre">unmute</span> <span class="pre">&#64;dtvd88</span></tt> will unmute &#64;dtvd88.</li>
+<li><tt class="docutils literal"><span class="pre">muting</span></tt> will list muting users.</li>
+<li><tt class="docutils literal"><span class="pre">block</span> <span class="pre">&#64;dtvd88</span></tt> will block &#64;dtvd88.</li>
+<li><tt class="docutils literal"><span class="pre">unblock</span> <span class="pre">&#64;dtvd88</span></tt> will unblock &#64;dtvd88.</li>
+<li><tt class="docutils literal"><span class="pre">report</span> <span class="pre">&#64;dtvd88</span></tt> will report &#64;dtvd88 as a spam account.</li>
+</ul>
+<p><strong>Switching Stream Commands</strong></p>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">switch</span> <span class="pre">public</span> <span class="pre">#AKB48</span></tt> will switch current stream to public stream
+and track keyword <tt class="docutils literal"><span class="pre">AKB48</span></tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">switch</span> <span class="pre">public</span> <span class="pre">#AKB48</span> <span class="pre">-f</span></tt> will do exactly as above but will ask you
+to provide 2 list:</p>
+<p><tt class="docutils literal"><span class="pre">Only</span> <span class="pre">nicks</span></tt> decide what nicks will be include only.</p>
+<p><tt class="docutils literal"><span class="pre">Ignore</span> <span class="pre">nicks</span></tt>decide what nicks will be exclude.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">switch</span> <span class="pre">public</span> <span class="pre">#AKB48</span> <span class="pre">-d</span></tt> will apply filter to <em>ONLY_LIST</em> and
+<em>IGNORE_LIST</em>. You can setup 2 list above at <tt class="docutils literal"><span class="pre">config.py</span></tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">switch</span> <span class="pre">mine</span></tt> will switch current stream to personal stream. <tt class="docutils literal"><span class="pre">-f</span></tt>
+and <tt class="docutils literal"><span class="pre">-d</span></tt> will work as well.</p>
+</li>
+</ul>
+<p><strong>Smart shell</strong></p>
+<ul class="simple">
+<li>Put anything to terminal, the app will try to eval and display result as a python interactive shell.<ul>
+<li><tt class="docutils literal"><span class="pre">142857*2</span></tt> or <tt class="docutils literal"><span class="pre">101**3</span></tt> like a calculator.</li>
+<li>Even <tt class="docutils literal"><span class="pre">cal</span></tt> will show the calendar for current month.</li>
+<li>Put <tt class="docutils literal"><span class="pre">order_rainbow('anything')</span></tt> or <tt class="docutils literal"><span class="pre">random_rainbow('wahahaha')</span></tt> will make more fun :)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Screening Commands</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">h</span></tt> will show the help.</li>
+<li><tt class="docutils literal"><span class="pre">c</span></tt> will clear the screen.</li>
+<li><tt class="docutils literal"><span class="pre">q</span></tt> will quit.</li>
+</ul>
+<p>For example see the screenshot above.</p>
+</div>
+</div>
+<div class="section" id="bug-and-feature-requests">
+<h1>Bug and feature requests<a class="headerlink" href="#bug-and-feature-requests" title="Permalink to this headline">¶</a></h1>
+<p>Found a bug or a feature request ?
+Please <a class="reference external" href="https://github.com/DTVD/rainbowstream/issues/new">create an issue</a> or contact me at <a class="reference external" href="https://twitter.com/dtvd88">&#64;dtvd88</a></p>
+</div>
+<div class="section" id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+<p>I appreciate any help and support. Feel free to <a class="reference external" href="https://github.com/DTVD/rainbowstream/fork">fork</a> and <a class="reference external" href="https://github.com/DTVD/rainbowstream/compare/">create a pull request</a>.
+You will be listed as contributor.</p>
+</div>
+<div class="section" id="license">
+<h1>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h1>
+<p>Rainbow Stream are released under an MIT License. See LICENSE.txt for
+details</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Rainbow Stream</a></li>
+<li><a class="reference internal" href="#showcase">Showcase</a></li>
+<li><a class="reference internal" href="#install">Install</a></li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#the-stream">The stream</a></li>
+<li><a class="reference internal" href="#the-interactive-mode">The interactive mode</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bug-and-feature-requests">Bug and feature requests</a></li>
+<li><a class="reference internal" href="#contributing">Contributing</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="#">Rainbow Stream 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Vu Nhat Minh.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
