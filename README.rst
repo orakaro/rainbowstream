@@ -108,6 +108,8 @@ Here is full list of supported command:
 -  ``rt 12`` will retweet the tweet with *[id=12]*. You can see id of
    each tweet beside the time.
 
+-  ``allrt 12 20`` will list 20 newest retweets of the tweet with *[id=12]*. If the number of retweets is not specified, 5 newest retweets will be listed instead.
+
 -  ``rep 12 Really`` will reply *‘Really’* to the tweet with *[id=12]*.
 
 -  ``fav 12`` will favorite the tweet with *[id=12]*.
@@ -154,14 +156,6 @@ Here is full list of supported command:
 
 -  ``report @dtvd88`` will report @dtvd88 as a spam account.
 
-**Screening Commands**
-
--  ``h`` will show the help.
-
--  ``c`` will clear the screen.
-
--  ``q`` will quit.
-
 **Switching Stream Commands**
 
 -  ``switch public #AKB48`` will switch current stream to public stream
@@ -187,6 +181,14 @@ Here is full list of supported command:
   + ``142857*2`` or ``101**3`` like a calculator.
   + Even ``cal`` will show the calendar for current month.
   + Put ``order_rainbow('anything')`` or ``random_rainbow('wahahaha')`` will make more fun :)
+
+**Screening Commands**
+
+-  ``h`` will show the help.
+
+-  ``c`` will clear the screen.
+
+-  ``q`` will quit.
 
 
 For example see the screenshot above.
