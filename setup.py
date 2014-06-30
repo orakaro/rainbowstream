@@ -16,7 +16,7 @@ install_requires = [
 
 setup(name='rainbowstream',
       version=version,
-      description="A colorful terminal-based Twitter client. Streaming API supportd.",
+      description="A smart and nice Twitter client on terminal.",
       long_description=open("./README.rst", "r").read(),
       classifiers=[
           "Development Status :: 5 - Production/Stable",
