@@ -550,7 +550,7 @@ def allretweet():
     except:
         num = RETWEETS_SHOW_NUM
     # Get result and display
-    rt_ary = t.statuses.retweets(id=tid,count=num)
+    rt_ary = t.statuses.retweets(id=tid, count=num)
     if not rt_ary:
         printNicely(magenta('This tweet has no retweet.'))
         return
@@ -983,8 +983,8 @@ def cal():
     print date
     for line in rel:
         ary = line.split(' ')
-        ary = map(lambda x:on_grey(x) if x==today else grey(x),ary) 
-        print ' '.join(ary) 
+        ary = map(lambda x: on_grey(x) if x == today else grey(x), ary)
+        print ' '.join(ary)
 
 
 def help():
@@ -1029,7 +1029,7 @@ def help():
         green('rt 12 ') + ' will retweet to tweet with ' + \
         yellow('[id=12]') + '.\n'
     usage += s * 2 + \
-        green('allrt 12 20 ') + ' list 20 newest retweet of the tweet with ' + \
+        green('allrt 12 20 ') + ' will list 20 newest retweet of the tweet with ' + \
         yellow('[id=12]') + '.\n'
     usage += s * 2 + green('rep 12 oops') + ' will reply "' + \
         yellow('oops') + '" to tweet with ' + yellow('[id=12]') + '.\n'
@@ -1103,9 +1103,9 @@ def help():
     # Smart shell
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Smart shell\n')
-    usage += s*2 + green('111111 * 9 / 7') + ' or any math expression ' + \
+    usage += s * 2 + green('111111 * 9 / 7') + ' or any math expression ' + \
         'will be evaluate by Python interpreter.\n'
-    usage += s*2 + 'Even ' + green('cal') + ' will show the calendar' + \
+    usage += s * 2 + 'Even ' + green('cal') + ' will show the calendar' + \
         ' for current month.\n'
 
     # Screening
