@@ -78,6 +78,9 @@ __Tweet Commands__
 * `t the rainbow is god's promise to noah` will tweet exactly *'the rainbow is god's promise to noah'*.
 
 * `rt 12` will retweet the tweet with *[id=12]*. You can see id of each tweet beside the time.
+ 
+* `allrt 12 20` will list 20 newest retweets of the tweet with *[id=12]*. 
+If the number of retweets is not specified, I will list 5 newest retweets instead.
 
 * `rep 12 Really` will reply *'Really'* to the tweet with *[id=12]*.
 
@@ -121,14 +124,6 @@ __Friends and followers Commands__
 
 * `report @dtvd88` will report @dtvd88 as a spam account.
 
-__Screening Commands__
-
-* `h` will show the help.
-
-* `c` will clear the screen.
-
-* `q` will quit.
-
 __Switching Stream Commands__
 
 * `switch public #AKB48` will switch current stream to public stream and track keyword `AKB48`
@@ -150,6 +145,14 @@ __Smart shell__
   * `142857*2` or `101**3` like a calculator.
   * Even `cal` will show the calendar for current month.
   * Put `order_rainbow('anything')` or `random_rainbow('wahahaha')` will make more fun :)
+
+__Screening Commands__
+
+* `h` will show the help.
+
+* `c` will clear the screen.
+
+* `q` will quit.
 
 For example see the screenshot above.
 
