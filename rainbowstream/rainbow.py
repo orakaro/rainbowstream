@@ -977,7 +977,7 @@ def cal():
     month = random_rainbow(month)
     date = rel.pop(0)
     date = ' '.join([cycle_color(i) for i in date.split(' ')])
-    today = os.popen('date +\'%d\'').read().strip()
+    today = str(int(os.popen('date +\'%d\'').read().strip()))
     # Display
     print month
     print date
