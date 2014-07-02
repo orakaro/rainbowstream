@@ -21,7 +21,7 @@ def color_func(func_name):
     Call color function base on name
     """
     pure = func_name.encode('utf8')
-    return locals()[pure]
+    return globals()[pure]
 
 
 def draw(t, iot=False, keyword=None, fil=[], ig=[]):
@@ -193,7 +193,7 @@ def show_profile(u, iot=False):
     friends_count = color_func(PROFILE['friends_count'])(str(friends_count) + ' following')
     followers_count = color_func(PROFILE['followers_count'])(str(followers_count) + ' followers')
     count = statuses_count + '  ' + friends_count + '  ' + followers_count
-    user = cycle_color(name) + color_func(PROFILE['nick']()' @' + screen_name + ' : ') + count
+    user = cycle_color(name) + color_func(PROFILE['nick'])(' @' + screen_name + ' : ') + count
     profile_image_raw_url = 'Profile photo: ' + color_func(PROFILE['profile_image_url'])(profile_image_url)
     description = ''.join(
         map(lambda x: x + ' ' * 4 if x == '\n' else x, description))
