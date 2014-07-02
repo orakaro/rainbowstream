@@ -1074,23 +1074,27 @@ def stream(domain, args, name='Rainbow Stream'):
             tweet_iter = stream.statuses.sample()
 
     # Iterate over the stream.
-    for tweet in tweet_iter:
-        if tweet is None:
-            printNicely("-- None --")
-        elif tweet is Timeout:
-            printNicely("-- Timeout --")
-        elif tweet is HeartbeatTimeout:
-            printNicely("-- Heartbeat Timeout --")
-        elif tweet is Hangup:
-            printNicely("-- Hangup --")
-        elif tweet.get('text'):
-            draw(
-                t=tweet,
-                iot=args.image_on_term,
-                keyword=args.track_keywords,
-                fil=args.filter,
-                ig=args.ignore,
-            )
+    try:
+        for tweet in tweet_iter:
+            if tweet is None:
+                printNicely("-- None --")
+            elif tweet is Timeout:
+                printNicely("-- Timeout --")
+            elif tweet is HeartbeatTimeout:
+                printNicely("-- Heartbeat Timeout --")
+            elif tweet is Hangup:
+                printNicely("-- Hangup --")
+            elif tweet.get('text'):
+                draw(
+                    t=tweet,
+                    iot=args.image_on_term,
+                    keyword=args.track_keywords,
+                    fil=args.filter,
+                    ig=args.ignore,
+                )
+    except:
+        printNicely(magenta("I'm afraid we have problem with twitter'S maximum connection."))
+        printNicely(magenta("Let's try again later."))
 
 
 def fly():

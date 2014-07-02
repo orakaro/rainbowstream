@@ -1,6 +1,8 @@
 import json
+import re
 import os
 import os.path
+from twitter.util import printNicely
 
 # Regular expression for comments
 comment_re = re.compile(
@@ -21,6 +23,12 @@ def load_config(filepath):
             globals()[d] = data[d]
     except:
         pass
+
+DOMAIN = USER_DOMAIN
+
+# Image config
+IMAGE_SHIFT = 10
+IMAGE_MAX_HEIGHT = 40
 
 # Load colorset
 default_config = 'rainbowstream/colorset/default.json'

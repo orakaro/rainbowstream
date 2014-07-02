@@ -17,6 +17,10 @@
     // Image config
     "IMAGE_SHIFT" : "10",
     "IMAGE_MAX_HEIGHT" : "40",
+    // Stream config
+    "USER_DOMAIN" : "userstream.twitter.com",
+    "PUBLIC_DOMAIN" : "stream.twitter.com",
+    "SITE_DOMAIN" : "sitestream.twitter.com",
 
     // Color config
     "TWEET" : {
