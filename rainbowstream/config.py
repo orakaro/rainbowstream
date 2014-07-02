@@ -24,8 +24,6 @@ def load_config(filepath):
     except:
         pass
 
-DOMAIN = USER_DOMAIN
-
 # Image config
 IMAGE_SHIFT = 10
 IMAGE_MAX_HEIGHT = 40
