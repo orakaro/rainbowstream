@@ -1,50 +1,66 @@
 import random
 import itertools
 from functools import wraps
-from termcolor import *
 from pyfiglet import figlet_format
 
-def color_code(code):
-    def inner(text, bold=False):
+
+def basic_color(code):
+    """
+    16 colors supported
+    """
+    def inner(text, bold=True):
         c = code
         if bold:
             c = "1;%s" % c
         return "\033[%sm%s\033[0m" % (c, text)
     return inner
 
-default          = color_code('39')
-black            = color_code('30')
-red              = color_code('31')
-green            = color_code('32')
-yellow           = color_code('33')
-blue             = color_code('34')
-magenta          = color_code('35')
-cyan             = color_code('36')
-grey             = color_code('90')
-light_red        = color_code('91')
-light_green      = color_code('92')
-light_yellow     = color_code('93')
-light_blue       = color_code('94')
-light_magenta    = color_code('95')
-light_cyan       = color_code('96')
-white            = color_code('97')
 
-on_default       = color_code('49')
-on_black         = color_code('40')
-on_red           = color_code('41')
-on_green         = color_code('42')
-on_yellow        = color_code('43')
-on_blue          = color_code('44')
-on_magenta       = color_code('45')
-on_cyan          = color_code('46')
-on_grey          = color_code('100')
-on_light_red     = color_code('101')
-on_light_green   = color_code('102')
-on_light_yellow  = color_code('103')
-on_light_blue    = color_code('104')
-on_light_magenta = color_code('105')
-on_light_cyan    = color_code('106')
-on_white         = color_code('107')
+def RGB(code):
+    """
+    256 colors supported
+    """
+    def inner(text, bold=True):
+        c = code
+        if bold:
+            c = "1;%s" % c
+        return "\033[38;5;%sm%s\033[0m" % (c, text)
+    return inner
+
+
+default          = basic_color('39')
+black            = basic_color('30')
+red              = basic_color('31')
+green            = basic_color('32')
+yellow           = basic_color('33')
+blue             = basic_color('34')
+magenta          = basic_color('35')
+cyan             = basic_color('36')
+grey             = basic_color('90')
+light_red        = basic_color('91')
+light_green      = basic_color('92')
+light_yellow     = basic_color('93')
+light_blue       = basic_color('94')
+light_magenta    = basic_color('95')
+light_cyan       = basic_color('96')
+white            = basic_color('97')
+
+on_default       = basic_color('49')
+on_black         = basic_color('40')
+on_red           = basic_color('41')
+on_green         = basic_color('42')
+on_yellow        = basic_color('43')
+on_blue          = basic_color('44')
+on_magenta       = basic_color('45')
+on_cyan          = basic_color('46')
+on_grey          = basic_color('100')
+on_light_red     = basic_color('101')
+on_light_green   = basic_color('102')
+on_light_yellow  = basic_color('103')
+on_light_blue    = basic_color('104')
+on_light_magenta = basic_color('105')
+on_light_cyan    = basic_color('106')
+on_white         = basic_color('107')
 
 colors_shuffle = [
     grey,

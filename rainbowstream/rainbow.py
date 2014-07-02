@@ -750,12 +750,12 @@ def cal():
     date = ' '.join([cycle_color(i) for i in date.split(' ')])
     today = str(int(os.popen('date +\'%d\'').read().strip()))
     # Display
-    print month
-    print date
+    printNicely(month)
+    printNicely(date)
     for line in rel:
         ary = line.split(' ')
         ary = map(lambda x: on_grey(x) if x == today else grey(x), ary)
-        print ' '.join(ary)
+        printNicely(' '.join(ary))
 
 
 def help():
@@ -918,7 +918,7 @@ def reset():
         printNicely(magenta('Need tips ? Type "h" and hit Enter key!'))
     g['reset'] = False
     try:
-        print eval(g['cmd'])
+        printNicely(eval(g['cmd']))
     except:
         pass
 

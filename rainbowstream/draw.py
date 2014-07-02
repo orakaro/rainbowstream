@@ -67,10 +67,10 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     rid = res[0].rainbow_id
 
     # Format info
-    user = cycle_color(name) + grey(' ' + screen_name + ' ')
-    meta = grey('[' + clock + '] [id=' + str(rid) + '] ')
+    user = cycle_color(name) + TWEET['nick'](' ' + screen_name + ' ')
+    meta = TWEET['clock']('[' + clock + '] ') + TWEET['id']('[id=' + str(rid) + '] ')
     if favorited:
-        meta = meta + light_green(u'\u2605')
+        meta = meta + TWEET['favorite'](u'\u2605')
     tweet = text.split()
     # Replace url
     if expanded_url:
@@ -79,15 +79,15 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
                 lambda x: expanded_url[index] if x == url[index] else x,
                 tweet)
     # Highlight RT
-    tweet = map(lambda x: grey(x) if x == 'RT' else x, tweet)
+    tweet = map(lambda x: TWEET['rt'](x) if x == 'RT' else x, tweet)
     # Highlight screen_name
     tweet = map(lambda x: cycle_color(x) if x[0] == '@' else x, tweet)
     # Highlight link
-    tweet = map(lambda x: light_cyan(x) if x[0:4] == 'http' else x, tweet)
+    tweet = map(lambda x: TWEET['link'](x) if x[0:4] == 'http' else x, tweet)
     # Highlight search keyword
     if keyword:
         tweet = map(
-            lambda x: on_light_yellow(x) if
+            lambda x: TWEET['keyword'](x) if
             ''.join(c for c in x if c.isalnum()).lower() == keyword.lower()
             else x,
             tweet
@@ -139,11 +139,12 @@ def print_message(m):
         res = db.message_to_rainbow_query(mid)
     rid = res[0].rainbow_id
 
-    sender = cycle_color(sender_name) + grey(' ' + sender_screen_name + ' ')
+    # Draw
+    sender = cycle_color(sender_name) + MESSAGE['sender'](' ' + sender_screen_name + ' ')
     recipient = cycle_color(
-        recipient_name) + grey(' ' + recipient_screen_name + ' ')
-    user = sender + light_magenta(' >>> ') + recipient
-    meta = grey('[' + clock + '] [message_id=' + str(rid) + '] ')
+        recipient_name) + MESSAGE['recipient'](' ' + recipient_screen_name + ' ')
+    user = sender + MESSAGE['to'](' >>> ') + recipient
+    meta = MESSAGE['clock']('[' + clock + ']' + MESSAGE['id'](' [message_id=' + str(rid) + '] ')
     text = ''.join(map(lambda x: x + '  ' if x == '\n' else x, text))
 
     line1 = u"{u:>{uw}}:".format(
@@ -178,22 +179,24 @@ def show_profile(u, iot=False):
     statuses_count = u['statuses_count']
     friends_count = u['friends_count']
     followers_count = u['followers_count']
+
     # Create content
-    statuses_count = light_green(str(statuses_count) + ' tweets')
-    friends_count = light_green(str(friends_count) + ' following')
-    followers_count = light_green(str(followers_count) + ' followers')
+    statuses_count = PROFILE['statuses_count'](str(statuses_count) + ' tweets')
+    friends_count = PROFILE['friends_count'](str(friends_count) + ' following')
+    followers_count = PROFILE['followers_count'](str(followers_count) + ' followers')
     count = statuses_count + '  ' + friends_count + '  ' + followers_count
-    user = cycle_color(name) + grey(' @' + screen_name + ' : ') + count
-    profile_image_raw_url = 'Profile photo: ' + light_cyan(profile_image_url)
+    user = cycle_color(name) + PROFILE['nick'](' @' + screen_name + ' : ') + count
+    profile_image_raw_url = 'Profile photo: ' + PROFILE['profile_image_url'](profile_image_url)
     description = ''.join(
         map(lambda x: x + ' ' * 4 if x == '\n' else x, description))
-    description = light_yellow(description)
-    location = 'Location : ' + light_magenta(location)
-    url = 'URL : ' + (light_cyan(url) if url else '')
+    description = PROFILE['description'](description)
+    location = 'Location : ' + PROFILE['location'](location)
+    url = 'URL : ' + (PROFILE['url'](url) if url else '')
     date = parser.parse(created_at)
     date = date - datetime.timedelta(seconds=time.timezone)
     clock = date.strftime('%Y/%m/%d %H:%M:%S')
-    clock = 'Join at ' + white(clock)
+    clock = 'Join at ' + PROFILE['clock'](clock)
+
     # Format
     line1 = u"{u:>{uw}}".format(
         u=user,
@@ -219,6 +222,7 @@ def show_profile(u, iot=False):
         c=clock,
         cw=len(clock) + 4,
     )
+
     # Display
     printNicely('')
     printNicely(line1)
@@ -239,7 +243,7 @@ def print_trends(trends):
     for topic in trends[:TREND_MAX]:
         name = topic['name']
         url = topic['url']
-        line = cycle_color(name) + ': ' + light_cyan(url)
+        line = cycle_color(name) + ': ' + TREND['url'](url)
         printNicely(line)
     printNicely('')
 

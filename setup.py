@@ -8,7 +8,6 @@ install_requires = [
     "colorama",
     "pyfiglet",
     "python-dateutil",
-    "termcolor",
     "twitter",
     "Pillow",
     "requests",
