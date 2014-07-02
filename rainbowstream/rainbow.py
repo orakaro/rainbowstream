@@ -2,7 +2,6 @@
 Colorful user's timeline stream
 """
 from multiprocessing import Process
-from dateutil import parser
 
 import os
 import os.path
@@ -10,7 +9,6 @@ import sys
 import signal
 import argparse
 import time
-import datetime
 import requests
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
@@ -60,6 +58,7 @@ cmdset = [
     'unblock',
     'report',
     'cal',
+    'theme',
     'h',
     'c',
     'q'
@@ -136,6 +135,10 @@ def get_decorated_name():
     g['original_name'] = name[1:]
     g['decorated_name'] = grey('[') + grey(name) + grey(']: ')
 
+    files = os.listdir('rainbowstream/colorset')
+    themes = [f.split('.')[0] for f in files if f.split('.')[-1]=='json']
+    g['themes'] = themes
+
 
 def switch():
     """
@@ -153,8 +156,8 @@ def switch():
                 args.filter = filter(None, only.split(','))
                 args.ignore = filter(None, ignore.split(','))
             elif g['stuff'].split()[-1] == '-d':
-                args.filter = ONLY_LIST
-                args.ignore = IGNORE_LIST
+                args.filter = c['ONLY_LIST']
+                args.ignore = c['IGNORE_LIST']
         except:
             printNicely(red('Sorry, wrong format.'))
             return
@@ -171,7 +174,7 @@ def switch():
             p = Process(
                 target=stream,
                 args=(
-                    PUBLIC_DOMAIN,
+                    c['PUBLIC_DOMAIN'],
                     args))
             p.start()
             g['stream_pid'] = p.pid
@@ -184,7 +187,7 @@ def switch():
             p = Process(
                 target=stream,
                 args=(
-                    USER_DOMAIN,
+                    c['USER_DOMAIN'],
                     args,
                     g['original_name']))
             p.start()
@@ -242,7 +245,7 @@ def home():
     Home
     """
     t = Twitter(auth=authen())
-    num = HOME_TWEET_NUM
+    num = c['HOME_TWEET_NUM']
     if g['stuff'].isdigit():
         num = int(g['stuff'])
     for tweet in reversed(t.statuses.home_timeline(count=num)):
@@ -260,7 +263,7 @@ def view():
         try:
             num = int(g['stuff'].split()[1])
         except:
-            num = HOME_TWEET_NUM
+            num = c['HOME_TWEET_NUM']
         for tweet in reversed(t.statuses.user_timeline(count=num, screen_name=user[1:])):
             draw(t=tweet, iot=g['iot'])
         printNicely('')
@@ -273,7 +276,7 @@ def mentions():
     Mentions timeline
     """
     t = Twitter(auth=authen())
-    num = HOME_TWEET_NUM
+    num = c['HOME_TWEET_NUM']
     if g['stuff'].isdigit():
         num = int(g['stuff'])
     for tweet in reversed(t.statuses.mentions_timeline(count=num)):
@@ -319,7 +322,7 @@ def allretweet():
     try:
         num = int(g['stuff'].split()[1])
     except:
-        num = RETWEETS_SHOW_NUM
+        num = c['RETWEETS_SHOW_NUM']
     # Get result and display
     rt_ary = t.statuses.retweets(id=tid, count=num)
     if not rt_ary:
@@ -405,7 +408,7 @@ def search():
         rel = t.search.tweets(q=g['stuff'])['statuses']
         if rel:
             printNicely('Newest tweets:')
-            for i in reversed(xrange(SEARCH_MAX_RECORD)):
+            for i in reversed(xrange(c['SEARCH_MAX_RECORD'])):
                 draw(t=rel[i],
                      iot=g['iot'],
                      keyword=g['stuff'].strip()[1:])
@@ -504,7 +507,7 @@ def inbox():
     Inbox direct messages
     """
     t = Twitter(auth=authen())
-    num = MESSAGES_DISPLAY
+    num = c['MESSAGES_DISPLAY']
     rel = []
     if g['stuff'].isdigit():
         num = g['stuff']
@@ -537,7 +540,7 @@ def sent():
     Sent direct messages
     """
     t = Twitter(auth=authen())
-    num = MESSAGES_DISPLAY
+    num = c['MESSAGES_DISPLAY']
     rel = []
     if g['stuff'].isdigit():
         num = int(g['stuff'])
@@ -671,7 +674,6 @@ def muting():
     """
     t = Twitter(auth=authen())
     # Init cursor
-    d = {'fl': 'followers', 'fr': 'friends'}
     next_cursor = -1
     rel = {}
     # Cursor loop
@@ -756,6 +758,27 @@ def cal():
         ary = line.split(' ')
         ary = map(lambda x: on_grey(x) if x == today else grey(x), ary)
         printNicely(' '.join(ary))
+
+
+def theme():
+    """
+    List and change theme
+    """
+    if not g['stuff']:
+        # List themes
+        for theme in g['themes']:
+            line = ' '*2 + magenta('* ' + theme)
+            printNicely(line)
+    else:
+        # Change theme
+        try :
+            new_config = 'rainbowstream/colorset/' + g['stuff'] + '.json'
+            new_config = load_config(new_config)
+            for nc in new_config:
+                c[nc] = new_config[nc]
+            printNicely(green('Theme changed.'))
+        except :
+            printNicely(red('Sorry, config file is broken!'))
 
 
 def help():
@@ -869,7 +892,6 @@ def help():
         ' filter will decide nicks will be EXCLUDE.\n'
     usage += s * 2 + green('switch mine -d') + \
         ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
-    usage += s * 3 + '(see ' + grey('rainbowstream/config.py') + ').\n'
 
     # Smart shell
     usage += '\n'
@@ -882,6 +904,9 @@ def help():
     # Screening
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Screening \n')
+    usage += s * 2 + green('theme') + ' will list available theme.' + \
+        green('theme monokai') + ' will apply '+ yellow('monokai') + \
+        ' theme immediately.\n'
     usage += s * 2 + green('h') + ' will show this help again.\n'
     usage += s * 2 + green('c') + ' will clear the screen.\n'
     usage += s * 2 + green('q') + ' will quit.\n'
@@ -959,6 +984,7 @@ def process(cmd):
             unblock,
             report,
             cal,
+            theme,
             help,
             clear,
             quit
@@ -1002,6 +1028,7 @@ def listen():
             ['@'],  # unblock
             ['@'],  # report
             [],  # cal
+            g['themes'],  # theme
             [],  # help
             [],  # clear
             [],  # quit
@@ -1040,9 +1067,9 @@ def stream(domain, args, name='Rainbow Stream'):
 
     # The Logo
     art_dict = {
-        USER_DOMAIN: name,
-        PUBLIC_DOMAIN: args.track_keywords,
-        SITE_DOMAIN: 'Site Stream',
+        c['USER_DOMAIN']: name,
+        c['PUBLIC_DOMAIN']: args.track_keywords,
+        c['SITE_DOMAIN']: 'Site Stream',
     }
     ascii_art(art_dict[domain])
 
@@ -1063,9 +1090,9 @@ def stream(domain, args, name='Rainbow Stream'):
         domain=domain,
         **stream_args)
 
-    if domain == USER_DOMAIN:
+    if domain == c['USER_DOMAIN']:
         tweet_iter = stream.user(**query_args)
-    elif domain == SITE_DOMAIN:
+    elif domain == c['SITE_DOMAIN']:
         tweet_iter = stream.site(**query_args)
     else:
         if args.track_keywords:
@@ -1104,7 +1131,7 @@ def fly():
     # Spawn stream process
     args = parse_arguments()
     get_decorated_name()
-    p = Process(target=stream, args=(USER_DOMAIN, args, g['original_name']))
+    p = Process(target=stream, args=(c['USER_DOMAIN'], args, g['original_name']))
     p.start()
 
     # Start listen process

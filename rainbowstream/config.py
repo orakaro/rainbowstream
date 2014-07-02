@@ -2,7 +2,6 @@ import json
 import re
 import os
 import os.path
-from twitter.util import printNicely
 
 # Regular expression for comments
 comment_re = re.compile(
@@ -21,14 +20,18 @@ def load_config(filepath):
             while match:
                 content = content[:match.start()] + content[match.end():]
                 match = comment_re.search(content)
-        data = json.loads(content)
-        for d in data:
-            globals()[d] = data[d]
+        return json.loads(content)
     except:
         pass
 
-# Load colorset
+# Load default colorset
+c = {}
 default_config = 'rainbowstream/colorset/default.json'
+data = load_config(default_config)
+for d in data:
+    c[d] = data[d]
+# Load user's colorset
 rainbow_config = os.environ.get('HOME', os.environ.get('USERPROFILE','')) + os.sep + '.rainbow_config.json'
-load_config(default_config)
-load_config(rainbow_config)
+data = load_config(rainbow_config)
+for d in data:
+    c[d] = data[d]

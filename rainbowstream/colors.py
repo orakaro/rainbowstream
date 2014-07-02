@@ -2,6 +2,7 @@ import random
 import itertools
 from functools import wraps
 from pyfiglet import figlet_format
+from .config import *
 
 
 def basic_color(code):
@@ -60,14 +61,8 @@ on_light_magenta = basic_color('105')
 on_light_cyan    = basic_color('106')
 on_white         = basic_color('107')
 
-colors_shuffle = [
-    grey,
-    light_red,
-    light_green,
-    light_yellow,
-    light_blue,
-    light_magenta,
-    light_cyan]
+colors_shuffle = [locals()[i.encode('utf8')] if not i.startswith('RGB_') else RGB(int(i[4:])) for i in c['CYCLE_COLOR']]
+
 background_shuffle = [
     on_grey,
     on_light_red,

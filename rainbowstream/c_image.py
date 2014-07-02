@@ -27,7 +27,7 @@ def pixel_print(ansicolor):
 def image_to_display(path,start=None,length=None):
     rows, columns = os.popen('stty size', 'r').read().split()
     if not start:
-        start = IMAGE_SHIFT
+        start = c['IMAGE_SHIFT']
     if not length:
         length = int(columns) - 2 * start
     i = Image.open(path)
@@ -38,7 +38,7 @@ def image_to_display(path,start=None,length=None):
     height = int(float(h) * (float(width) / float(w)))
     height //= 2
     i = i.resize((width, height), Image.ANTIALIAS)
-    height = min(height, IMAGE_MAX_HEIGHT)
+    height = min(height, c['IMAGE_MAX_HEIGHT'])
 
     for y in xrange(height):
         print ' ' * start,

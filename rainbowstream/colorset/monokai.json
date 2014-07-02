@@ -1,0 +1,59 @@
+{
+    /* Color config
+    There are 16 basic colors supported :
+        * default
+        * black
+        * red
+        * green
+        * yellow
+        * blue
+        * magenta
+        * cyan
+        * grey
+        * light_red
+        * light_green
+        * light_yellow
+        * light_blue
+        * light_magenta
+        * light_cyan
+        * white
+    and 256 colors from RGB_0 to RGB_255
+    Color code can be reference at
+    http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
+     */
+
+    "CYCLE_COLOR" :["RGB_198","RGB_57","RGB_166","RGB_50","RGB_179","RGB_74","RGB_112"],
+    "TWEET" : {
+        "nick"      : "RGB_198",
+        "clock"     : "RGB_57",
+        "id"        : "RGB_166",
+        "favourite" : "RGB_50",
+        "rt"        : "RGB_179",
+        "link"      : "RGB_74",
+        "keyword"   : "on_light_green"
+    },
+
+    "MESSAGE" : {
+        "sender"    : "RGB_198",
+        "recipient" : "RGB_112",
+        "to"        : "RGB_50",
+        "clock"     : "RGB_57",
+        "id"        : "RGB_166"
+    },
+
+    "PROFILE" : {
+        "statuses_count"    : "RGB_112",
+        "friends_count"     : "RGB_198",
+        "followers_count"   : "RGB_57",
+        "nick"              : "RGB_198",
+        "profile_image_url" : "RGB_74",
+        "description"       : "RGB_166",
+        "location"          : "RGB_112",
+        "url"               : "RGB_74",
+        "clock"             : "RGB_57"
+    },
+
+    "TREND" : {
+        "url": "RGB_74"
+    }
+}
