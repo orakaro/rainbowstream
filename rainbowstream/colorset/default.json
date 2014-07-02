@@ -45,6 +45,7 @@
     http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
      */
 
+    "DECORATED_NAME" : "grey",
     "CYCLE_COLOR" :["light_red","light_green","light_yellow","light_blue","light_magenta","light_cyan"],
     "TWEET" : {
         "nick"      : "grey",

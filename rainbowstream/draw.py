@@ -20,7 +20,6 @@ def color_func(func_name):
     """
     Call color function base on name
     """
-    print globals()['TWEET']
     pure = func_name.encode('utf8')
     if pure.startswith('RGB_') and pure[4:].isdigit():
         return RGB(int(pure[4:]))
@@ -79,8 +78,10 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     rid = res[0].rainbow_id
 
     # Format info
-    user = cycle_color(name) + color_func(c['TWEET']['nick'])(' ' + screen_name + ' ')
-    meta = color_func(c['TWEET']['clock'])('[' + clock + '] ') + color_func(c['TWEET']['id'])('[id=' + str(rid) + '] ')
+    user = cycle_color(
+        name) + color_func(c['TWEET']['nick'])(' ' + screen_name + ' ')
+    meta = color_func(c['TWEET']['clock'])(
+        '[' + clock + '] ') + color_func(c['TWEET']['id'])('[id=' + str(rid) + '] ')
     if favorited:
         meta = meta + color_func(c['TWEET']['favorite'])(u'\u2605')
     tweet = text.split()
@@ -91,11 +92,18 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
                 lambda x: expanded_url[index] if x == url[index] else x,
                 tweet)
     # Highlight RT
-    tweet = map(lambda x: color_func(c['TWEET']['rt'])(x) if x == 'RT' else x, tweet)
+    tweet = map(
+        lambda x: color_func(
+            c['TWEET']['rt'])(x) if x == 'RT' else x,
+        tweet)
     # Highlight screen_name
     tweet = map(lambda x: cycle_color(x) if x[0] == '@' else x, tweet)
     # Highlight link
-    tweet = map(lambda x: color_func(c['TWEET']['link'])(x) if x[0:4] == 'http' else x, tweet)
+    tweet = map(
+        lambda x: color_func(
+            c['TWEET']['link'])(x) if x[
+            0:4] == 'http' else x,
+        tweet)
     # Highlight search keyword
     if keyword:
         tweet = map(
@@ -152,10 +160,17 @@ def print_message(m):
     rid = res[0].rainbow_id
 
     # Draw
-    sender = cycle_color(sender_name) + color_func(c['MESSAGE']['sender'])(' ' + sender_screen_name + ' ')
-    recipient = cycle_color(recipient_name) + color_func(c['MESSAGE']['recipient'])(' ' + recipient_screen_name + ' ')
+    sender = cycle_color(
+        sender_name) + color_func(c['MESSAGE']['sender'])(' ' + sender_screen_name + ' ')
+    recipient = cycle_color(recipient_name) + color_func(
+        c['MESSAGE']['recipient'])(
+        ' ' + recipient_screen_name + ' ')
     user = sender + color_func(c['MESSAGE']['to'])(' >>> ') + recipient
-    meta = color_func(c['MESSAGE']['clock'])('[' + clock + ']') + color_func(c['MESSAGE']['id'])(' [message_id=' + str(rid) + '] ')
+    meta = color_func(
+        c['MESSAGE']['clock'])(
+        '[' + clock + ']') + color_func(
+            c['MESSAGE']['id'])(
+                ' [message_id=' + str(rid) + '] ')
     text = ''.join(map(lambda x: x + '  ' if x == '\n' else x, text))
 
     line1 = u"{u:>{uw}}:".format(
@@ -192,12 +207,23 @@ def show_profile(u, iot=False):
     followers_count = u['followers_count']
 
     # Create content
-    statuses_count = color_func(c['PROFILE']['statuses_count'])(str(statuses_count) + ' tweets')
-    friends_count = color_func(c['PROFILE']['friends_count'])(str(friends_count) + ' following')
-    followers_count = color_func(c['PROFILE']['followers_count'])(str(followers_count) + ' followers')
+    statuses_count = color_func(
+        c['PROFILE']['statuses_count'])(
+        str(statuses_count) +
+        ' tweets')
+    friends_count = color_func(
+        c['PROFILE']['friends_count'])(
+        str(friends_count) +
+        ' following')
+    followers_count = color_func(
+        c['PROFILE']['followers_count'])(
+        str(followers_count) +
+        ' followers')
     count = statuses_count + '  ' + friends_count + '  ' + followers_count
-    user = cycle_color(name) + color_func(c['PROFILE']['nick'])(' @' + screen_name + ' : ') + count
-    profile_image_raw_url = 'Profile photo: ' + color_func(c['PROFILE']['profile_image_url'])(profile_image_url)
+    user = cycle_color(
+        name) + color_func(c['PROFILE']['nick'])(' @' + screen_name + ' : ') + count
+    profile_image_raw_url = 'Profile photo: ' + \
+        color_func(c['PROFILE']['profile_image_url'])(profile_image_url)
     description = ''.join(
         map(lambda x: x + ' ' * 4 if x == '\n' else x, description))
     description = color_func(c['PROFILE']['description'])(description)
@@ -257,4 +283,3 @@ def print_trends(trends):
         line = cycle_color(name) + ': ' + color_func(TREND['url'])(url)
         printNicely(line)
     printNicely('')
-

@@ -3,6 +3,7 @@ import itertools
 from functools import wraps
 from pyfiglet import figlet_format
 from .config import *
+from functools import reduce
 
 
 def basic_color(code):
@@ -27,41 +28,42 @@ def RGB(code):
     return inner
 
 
-default          = basic_color('39')
-black            = basic_color('30')
-red              = basic_color('31')
-green            = basic_color('32')
-yellow           = basic_color('33')
-blue             = basic_color('34')
-magenta          = basic_color('35')
-cyan             = basic_color('36')
-grey             = basic_color('90')
-light_red        = basic_color('91')
-light_green      = basic_color('92')
-light_yellow     = basic_color('93')
-light_blue       = basic_color('94')
-light_magenta    = basic_color('95')
-light_cyan       = basic_color('96')
-white            = basic_color('97')
+default = basic_color('39')
+black = basic_color('30')
+red = basic_color('31')
+green = basic_color('32')
+yellow = basic_color('33')
+blue = basic_color('34')
+magenta = basic_color('35')
+cyan = basic_color('36')
+grey = basic_color('90')
+light_red = basic_color('91')
+light_green = basic_color('92')
+light_yellow = basic_color('93')
+light_blue = basic_color('94')
+light_magenta = basic_color('95')
+light_cyan = basic_color('96')
+white = basic_color('97')
 
-on_default       = basic_color('49')
-on_black         = basic_color('40')
-on_red           = basic_color('41')
-on_green         = basic_color('42')
-on_yellow        = basic_color('43')
-on_blue          = basic_color('44')
-on_magenta       = basic_color('45')
-on_cyan          = basic_color('46')
-on_grey          = basic_color('100')
-on_light_red     = basic_color('101')
-on_light_green   = basic_color('102')
-on_light_yellow  = basic_color('103')
-on_light_blue    = basic_color('104')
+on_default = basic_color('49')
+on_black = basic_color('40')
+on_red = basic_color('41')
+on_green = basic_color('42')
+on_yellow = basic_color('43')
+on_blue = basic_color('44')
+on_magenta = basic_color('45')
+on_cyan = basic_color('46')
+on_grey = basic_color('100')
+on_light_red = basic_color('101')
+on_light_green = basic_color('102')
+on_light_yellow = basic_color('103')
+on_light_blue = basic_color('104')
 on_light_magenta = basic_color('105')
-on_light_cyan    = basic_color('106')
-on_white         = basic_color('107')
+on_light_cyan = basic_color('106')
+on_white = basic_color('107')
 
-colors_shuffle = [locals()[i.encode('utf8')] if not i.startswith('RGB_') else RGB(int(i[4:])) for i in c['CYCLE_COLOR']]
+colors_shuffle = [locals()[i.encode('utf8')] if not i.startswith(
+    'RGB_') else RGB(int(i[4:])) for i in c['CYCLE_COLOR']]
 
 background_shuffle = [
     on_grey,

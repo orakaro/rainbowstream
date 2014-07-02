@@ -64,6 +64,7 @@ cmdset = [
     'q'
 ]
 
+
 def parse_arguments():
     """
     Parse the arguments
@@ -133,10 +134,11 @@ def get_decorated_name():
     t = Twitter(auth=authen())
     name = '@' + t.account.verify_credentials()['screen_name']
     g['original_name'] = name[1:]
-    g['decorated_name'] = grey('[') + grey(name) + grey(']: ')
+    g['decorated_name'] = color_func(c['DECORATED_NAME'])('[' + name + ']: ')
+    g['ascii_art'] = True
 
     files = os.listdir('rainbowstream/colorset')
-    themes = [f.split('.')[0] for f in files if f.split('.')[-1]=='json']
+    themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     g['themes'] = themes
 
 
@@ -193,12 +195,12 @@ def switch():
             p.start()
             g['stream_pid'] = p.pid
         printNicely('')
-        printNicely(green('Stream switched.'))
         if args.filter:
             printNicely(cyan('Only: ' + str(args.filter)))
         if args.ignore:
             printNicely(red('Ignore: ' + str(args.ignore)))
         printNicely('')
+        g['ascii_art'] = True
     except:
         printNicely(red('Sorry I can\'t understand.'))
 
@@ -767,17 +769,25 @@ def theme():
     if not g['stuff']:
         # List themes
         for theme in g['themes']:
-            line = ' '*2 + magenta('* ' + theme)
+            line = ' ' * 2 + light_yellow('* ' + theme)
             printNicely(line)
     else:
         # Change theme
-        try :
+        try:
+            # Load new config
             new_config = 'rainbowstream/colorset/' + g['stuff'] + '.json'
             new_config = load_config(new_config)
             for nc in new_config:
                 c[nc] = new_config[nc]
+            # Reset stream
+            g['stuff'] = 'mine'
+            g['ascii_art'] = False
+            switch()
+            g['decorated_name'] = color_func(
+                c['DECORATED_NAME'])(
+                '[@' + g['original_name'] + ']: ')
             printNicely(green('Theme changed.'))
-        except :
+        except:
             printNicely(red('Sorry, config file is broken!'))
 
 
@@ -792,124 +802,126 @@ def help():
     usage = '\n'
     usage += s + 'Hi boss! I\'m ready to serve you right now!\n'
     usage += s + '-' * (int(w) - 4) + '\n'
-    usage += s + 'You are ' + yellow('already') + ' on your personal stream.\n'
+    usage += s + 'You are ' + \
+        light_yellow('already') + ' on your personal stream.\n'
     usage += s + 'Any update from Twitter will show up ' + \
-        yellow('immediately') + '.\n'
+        light_yellow('immediately') + '.\n'
     usage += s + 'In addtion, following commands are available right now:\n'
 
     # Discover the world
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Discover the world \n')
-    usage += s * 2 + green('trend') + ' will show global trending topics. ' + \
-        'You can try ' + green('trend US') + ' or ' + \
-        green('trend JP Tokyo') + '.\n'
-    usage += s * 2 + green('home') + ' will show your timeline. ' + \
-        green('home 7') + ' will show 7 tweets.\n'
-    usage += s * 2 + green('mentions') + ' will show mentions timeline. ' + \
-        green('mentions 7') + ' will show 7 mention tweets.\n'
-    usage += s * 2 + green('whois @mdo') + ' will show profile  of ' + \
+    usage += s * 2 + light_green('trend') + ' will show global trending topics. ' + \
+        'You can try ' + light_green('trend US') + ' or ' + \
+        light_green('trend JP Tokyo') + '.\n'
+    usage += s * 2 + light_green('home') + ' will show your timeline. ' + \
+        light_green('home 7') + ' will show 7 tweets.\n'
+    usage += s * 2 + light_green('mentions') + ' will show mentions timeline. ' + \
+        light_green('mentions 7') + ' will show 7 mention tweets.\n'
+    usage += s * 2 + light_green('whois @mdo') + ' will show profile  of ' + \
         magenta('@mdo') + '.\n'
-    usage += s * 2 + green('view @mdo') + \
+    usage += s * 2 + light_green('view @mdo') + \
         ' will show ' + magenta('@mdo') + '\'s home.\n'
-    usage += s * 2 + green('s #AKB48') + ' will search for "' + \
-        yellow('AKB48') + '" and return 5 newest tweet.\n'
+    usage += s * 2 + light_green('s #AKB48') + ' will search for "' + \
+        light_yellow('AKB48') + '" and return 5 newest tweet.\n'
 
     # Tweet
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Tweets \n')
-    usage += s * 2 + green('t oops ') + \
-        'will tweet "' + yellow('oops') + '" immediately.\n'
+    usage += s * 2 + light_green('t oops ') + \
+        'will tweet "' + light_yellow('oops') + '" immediately.\n'
     usage += s * 2 + \
-        green('rt 12 ') + ' will retweet to tweet with ' + \
-        yellow('[id=12]') + '.\n'
+        light_green('rt 12 ') + ' will retweet to tweet with ' + \
+        light_yellow('[id=12]') + '.\n'
     usage += s * 2 + \
-        green('allrt 12 20 ') + ' will list 20 newest retweet of the tweet with ' + \
-        yellow('[id=12]') + '.\n'
-    usage += s * 2 + green('rep 12 oops') + ' will reply "' + \
-        yellow('oops') + '" to tweet with ' + yellow('[id=12]') + '.\n'
+        light_green('allrt 12 20 ') + ' will list 20 newest retweet of the tweet with ' + \
+        light_yellow('[id=12]') + '.\n'
+    usage += s * 2 + light_green('rep 12 oops') + ' will reply "' + \
+        light_yellow('oops') + '" to tweet with ' + \
+        light_yellow('[id=12]') + '.\n'
     usage += s * 2 + \
-        green('fav 12 ') + ' will favorite the tweet with ' + \
-        yellow('[id=12]') + '.\n'
+        light_green('fav 12 ') + ' will favorite the tweet with ' + \
+        light_yellow('[id=12]') + '.\n'
     usage += s * 2 + \
-        green('ufav 12 ') + ' will unfavorite tweet with ' + \
-        yellow('[id=12]') + '.\n'
+        light_green('ufav 12 ') + ' will unfavorite tweet with ' + \
+        light_yellow('[id=12]') + '.\n'
     usage += s * 2 + \
-        green('del 12 ') + ' will delete tweet with ' + \
-        yellow('[id=12]') + '.\n'
-    usage += s * 2 + green('show image 12') + ' will show image in tweet with ' + \
-        yellow('[id=12]') + ' in your OS\'s image viewer.\n'
+        light_green('del 12 ') + ' will delete tweet with ' + \
+        light_yellow('[id=12]') + '.\n'
+    usage += s * 2 + light_green('show image 12') + ' will show image in tweet with ' + \
+        light_yellow('[id=12]') + ' in your OS\'s image viewer.\n'
 
     # Direct message
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Direct messages \n')
-    usage += s * 2 + green('inbox') + ' will show inbox messages. ' + \
-        green('inbox 7') + ' will show newest 7 messages.\n'
-    usage += s * 2 + green('sent') + ' will show sent messages. ' + \
-        green('sent 7') + ' will show newest 7 messages.\n'
-    usage += s * 2 + green('mes @dtvd88 hi') + ' will send a "hi" messege to ' + \
+    usage += s * 2 + light_green('inbox') + ' will show inbox messages. ' + \
+        light_green('inbox 7') + ' will show newest 7 messages.\n'
+    usage += s * 2 + light_green('sent') + ' will show sent messages. ' + \
+        light_green('sent 7') + ' will show newest 7 messages.\n'
+    usage += s * 2 + light_green('mes @dtvd88 hi') + ' will send a "hi" messege to ' + \
         magenta('@dtvd88') + '.\n'
-    usage += s * 2 + green('trash 5') + ' will remove message with ' + \
-        yellow('[message_id=5]') + '.\n'
+    usage += s * 2 + light_green('trash 5') + ' will remove message with ' + \
+        light_yellow('[message_id=5]') + '.\n'
 
     # Follower and following
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Fiends and followers \n')
     usage += s * 2 + \
-        green('ls fl') + \
+        light_green('ls fl') + \
         ' will list all followers (people who are following you).\n'
     usage += s * 2 + \
-        green('ls fr') + \
+        light_green('ls fr') + \
         ' will list all friends (people who you are following).\n'
-    usage += s * 2 + green('fl @dtvd88') + ' will follow ' + \
+    usage += s * 2 + light_green('fl @dtvd88') + ' will follow ' + \
         magenta('@dtvd88') + '.\n'
-    usage += s * 2 + green('ufl @dtvd88') + ' will unfollow ' + \
+    usage += s * 2 + light_green('ufl @dtvd88') + ' will unfollow ' + \
         magenta('@dtvd88') + '.\n'
-    usage += s * 2 + green('mute @dtvd88') + ' will mute ' + \
+    usage += s * 2 + light_green('mute @dtvd88') + ' will mute ' + \
         magenta('@dtvd88') + '.\n'
-    usage += s * 2 + green('unmute @dtvd88') + ' will unmute ' + \
+    usage += s * 2 + light_green('unmute @dtvd88') + ' will unmute ' + \
         magenta('@dtvd88') + '.\n'
-    usage += s * 2 + green('muting') + ' will list muting users.\n'
-    usage += s * 2 + green('block @dtvd88') + ' will block ' + \
+    usage += s * 2 + light_green('muting') + ' will list muting users.\n'
+    usage += s * 2 + light_green('block @dtvd88') + ' will block ' + \
         magenta('@dtvd88') + '.\n'
-    usage += s * 2 + green('unblock @dtvd88') + ' will unblock ' + \
+    usage += s * 2 + light_green('unblock @dtvd88') + ' will unblock ' + \
         magenta('@dtvd88') + '.\n'
-    usage += s * 2 + green('report @dtvd88') + ' will report ' + \
+    usage += s * 2 + light_green('report @dtvd88') + ' will report ' + \
         magenta('@dtvd88') + ' as a spam account.\n'
 
     # Switch
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Switching streams \n')
-    usage += s * 2 + green('switch public #AKB') + \
+    usage += s * 2 + light_green('switch public #AKB') + \
         ' will switch to public stream and follow "' + \
-        yellow('AKB') + '" keyword.\n'
-    usage += s * 2 + green('switch mine') + \
+        light_yellow('AKB') + '" keyword.\n'
+    usage += s * 2 + light_green('switch mine') + \
         ' will switch to your personal stream.\n'
-    usage += s * 2 + green('switch mine -f ') + \
+    usage += s * 2 + light_green('switch mine -f ') + \
         ' will prompt to enter the filter.\n'
-    usage += s * 3 + yellow('Only nicks') + \
+    usage += s * 3 + light_yellow('Only nicks') + \
         ' filter will decide nicks will be INCLUDE ONLY.\n'
-    usage += s * 3 + yellow('Ignore nicks') + \
+    usage += s * 3 + light_yellow('Ignore nicks') + \
         ' filter will decide nicks will be EXCLUDE.\n'
-    usage += s * 2 + green('switch mine -d') + \
+    usage += s * 2 + light_green('switch mine -d') + \
         ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
 
     # Smart shell
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Smart shell\n')
-    usage += s * 2 + green('111111 * 9 / 7') + ' or any math expression ' + \
+    usage += s * 2 + light_green('111111 * 9 / 7') + ' or any math expression ' + \
         'will be evaluate by Python interpreter.\n'
-    usage += s * 2 + 'Even ' + green('cal') + ' will show the calendar' + \
+    usage += s * 2 + 'Even ' + light_green('cal') + ' will show the calendar' + \
         ' for current month.\n'
 
     # Screening
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Screening \n')
-    usage += s * 2 + green('theme') + ' will list available theme.' + \
-        green('theme monokai') + ' will apply '+ yellow('monokai') + \
+    usage += s * 2 + light_green('theme') + ' will list available theme.' + \
+        light_green('theme monokai') + ' will apply ' + light_yellow('monokai') + \
         ' theme immediately.\n'
-    usage += s * 2 + green('h') + ' will show this help again.\n'
-    usage += s * 2 + green('c') + ' will clear the screen.\n'
-    usage += s * 2 + green('q') + ' will quit.\n'
+    usage += s * 2 + light_green('h') + ' will show this help again.\n'
+    usage += s * 2 + light_green('c') + ' will clear the screen.\n'
+    usage += s * 2 + light_green('q') + ' will quit.\n'
 
     # End
     usage += '\n'
@@ -1051,7 +1063,8 @@ def listen():
         try:
             g['stuff'] = ' '.join(line.split()[1:])
             process(cmd)()
-        except Exception:
+        except Exception as e:
+            print e
             printNicely(red('OMG something is wrong with Twitter right now.'))
         # Not redisplay prefix
         if cmd in ['switch', 't', 'rt', 'rep']:
@@ -1071,7 +1084,8 @@ def stream(domain, args, name='Rainbow Stream'):
         c['PUBLIC_DOMAIN']: args.track_keywords,
         c['SITE_DOMAIN']: 'Site Stream',
     }
-    ascii_art(art_dict[domain])
+    if g['ascii_art']:
+        ascii_art(art_dict[domain])
 
     # These arguments are optional:
     stream_args = dict(
@@ -1120,7 +1134,8 @@ def stream(domain, args, name='Rainbow Stream'):
                     ig=args.ignore,
                 )
     except:
-        printNicely(magenta("I'm afraid we have problem with twitter'S maximum connection."))
+        printNicely(
+            magenta("I'm afraid we have problem with twitter'S maximum connection."))
         printNicely(magenta("Let's try again later."))
 
 
@@ -1131,7 +1146,12 @@ def fly():
     # Spawn stream process
     args = parse_arguments()
     get_decorated_name()
-    p = Process(target=stream, args=(c['USER_DOMAIN'], args, g['original_name']))
+    p = Process(
+        target=stream,
+        args=(
+            c['USER_DOMAIN'],
+            args,
+            g['original_name']))
     p.start()
 
     # Start listen process

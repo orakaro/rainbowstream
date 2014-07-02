@@ -9,6 +9,7 @@ comment_re = re.compile(
     re.DOTALL | re.MULTILINE
 )
 
+
 def load_config(filepath):
     """
     Load config from filepath
@@ -31,7 +32,11 @@ data = load_config(default_config)
 for d in data:
     c[d] = data[d]
 # Load user's colorset
-rainbow_config = os.environ.get('HOME', os.environ.get('USERPROFILE','')) + os.sep + '.rainbow_config.json'
+rainbow_config = os.environ.get(
+    'HOME',
+    os.environ.get(
+        'USERPROFILE',
+        '')) + os.sep + '.rainbow_config.json'
 data = load_config(rainbow_config)
 for d in data:
     c[d] = data[d]
