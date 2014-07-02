@@ -11,6 +11,9 @@ comment_re = re.compile(
 )
 
 def load_config(filepath):
+    """
+    Load config from filepath
+    """
     try:
         with open(filepath) as f:
             content = ''.join(f.readlines())
@@ -23,10 +26,6 @@ def load_config(filepath):
             globals()[d] = data[d]
     except:
         pass
-
-# Image config
-IMAGE_SHIFT = 10
-IMAGE_MAX_HEIGHT = 40
 
 # Load colorset
 default_config = 'rainbowstream/colorset/default.json'

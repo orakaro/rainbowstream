@@ -21,6 +21,8 @@ def color_func(func_name):
     Call color function base on name
     """
     pure = func_name.encode('utf8')
+    if pure.startswith('RGB_') and pure[4:].isdigit():
+        return RGB(int(pure[4:])
     return globals()[pure]
 
 

@@ -22,7 +22,26 @@
     "PUBLIC_DOMAIN" : "stream.twitter.com",
     "SITE_DOMAIN" : "sitestream.twitter.com",
 
-    // Color config
+    /* Color config
+    There are 16 basic colors supported :
+        * default
+        * black
+        * red
+        * green
+        * yellow
+        * blue
+        * magenta
+        * cyan
+        * grey
+        * light_red
+        * light_green
+        * light_yellow
+        * light_blue
+        * light_magenta
+        * light_cyan
+        * white
+
+     */
     "TWEET" : {
         "nick"      : "grey",
         "clock"     : "grey",
