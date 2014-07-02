@@ -15,6 +15,15 @@ from .db import *
 
 db = RainbowDB()
 
+
+def color_func(func_name):
+    """
+    Call color function base on name
+    """
+    pure = func_name.encode('utf8')
+    return locals()[pure]
+
+
 def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     """
     Draw the rainbow
@@ -67,10 +76,10 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     rid = res[0].rainbow_id
 
     # Format info
-    user = cycle_color(name) + TWEET['nick'](' ' + screen_name + ' ')
-    meta = TWEET['clock']('[' + clock + '] ') + TWEET['id']('[id=' + str(rid) + '] ')
+    user = cycle_color(name) + color_func(TWEET['nick'])(' ' + screen_name + ' ')
+    meta = color_func(TWEET['clock'])('[' + clock + '] ') + color_func(TWEET['id'])('[id=' + str(rid) + '] ')
     if favorited:
-        meta = meta + TWEET['favorite'](u'\u2605')
+        meta = meta + color_func(TWEET['favorite'])(u'\u2605')
     tweet = text.split()
     # Replace url
     if expanded_url:
@@ -79,15 +88,15 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
                 lambda x: expanded_url[index] if x == url[index] else x,
                 tweet)
     # Highlight RT
-    tweet = map(lambda x: TWEET['rt'](x) if x == 'RT' else x, tweet)
+    tweet = map(lambda x: color_func(TWEET['rt'])(x) if x == 'RT' else x, tweet)
     # Highlight screen_name
     tweet = map(lambda x: cycle_color(x) if x[0] == '@' else x, tweet)
     # Highlight link
-    tweet = map(lambda x: TWEET['link'](x) if x[0:4] == 'http' else x, tweet)
+    tweet = map(lambda x: color_func(TWEET['link'])(x) if x[0:4] == 'http' else x, tweet)
     # Highlight search keyword
     if keyword:
         tweet = map(
-            lambda x: TWEET['keyword'](x) if
+            lambda x: color_func(TWEET['keyword'])(x) if
             ''.join(c for c in x if c.isalnum()).lower() == keyword.lower()
             else x,
             tweet
@@ -140,11 +149,10 @@ def print_message(m):
     rid = res[0].rainbow_id
 
     # Draw
-    sender = cycle_color(sender_name) + MESSAGE['sender'](' ' + sender_screen_name + ' ')
-    recipient = cycle_color(
-        recipient_name) + MESSAGE['recipient'](' ' + recipient_screen_name + ' ')
-    user = sender + MESSAGE['to'](' >>> ') + recipient
-    meta = MESSAGE['clock']('[' + clock + ']') + MESSAGE['id'](' [message_id=' + str(rid) + '] ')
+    sender = cycle_color(sender_name) + color_func(MESSAGE['sender'])(' ' + sender_screen_name + ' ')
+    recipient = cycle_color(recipient_name) + color_func(MESSAGE['recipient'])(' ' + recipient_screen_name + ' ')
+    user = sender + color_func(MESSAGE['to'])(' >>> ') + recipient
+    meta = color_func(MESSAGE['clock'])('[' + clock + ']') + color_func(MESSAGE['id'])(' [message_id=' + str(rid) + '] ')
     text = ''.join(map(lambda x: x + '  ' if x == '\n' else x, text))
 
     line1 = u"{u:>{uw}}:".format(
@@ -181,21 +189,21 @@ def show_profile(u, iot=False):
     followers_count = u['followers_count']
 
     # Create content
-    statuses_count = PROFILE['statuses_count'](str(statuses_count) + ' tweets')
-    friends_count = PROFILE['friends_count'](str(friends_count) + ' following')
-    followers_count = PROFILE['followers_count'](str(followers_count) + ' followers')
+    statuses_count = color_func(PROFILE['statuses_count'])(str(statuses_count) + ' tweets')
+    friends_count = color_func(PROFILE['friends_count'])(str(friends_count) + ' following')
+    followers_count = color_func(PROFILE['followers_count'])(str(followers_count) + ' followers')
     count = statuses_count + '  ' + friends_count + '  ' + followers_count
-    user = cycle_color(name) + PROFILE['nick'](' @' + screen_name + ' : ') + count
-    profile_image_raw_url = 'Profile photo: ' + PROFILE['profile_image_url'](profile_image_url)
+    user = cycle_color(name) + color_func(PROFILE['nick']()' @' + screen_name + ' : ') + count
+    profile_image_raw_url = 'Profile photo: ' + color_func(PROFILE['profile_image_url'])(profile_image_url)
     description = ''.join(
         map(lambda x: x + ' ' * 4 if x == '\n' else x, description))
-    description = PROFILE['description'](description)
-    location = 'Location : ' + PROFILE['location'](location)
-    url = 'URL : ' + (PROFILE['url'](url) if url else '')
+    description = color_func(PROFILE['description'])(description)
+    location = 'Location : ' + color_func(PROFILE['location'])(location)
+    url = 'URL : ' + (color_func(PROFILE['url'])(url) if url else '')
     date = parser.parse(created_at)
     date = date - datetime.timedelta(seconds=time.timezone)
     clock = date.strftime('%Y/%m/%d %H:%M:%S')
-    clock = 'Join at ' + PROFILE['clock'](clock)
+    clock = 'Join at ' + color_func(PROFILE['clock'])(clock)
 
     # Format
     line1 = u"{u:>{uw}}".format(

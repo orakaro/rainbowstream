@@ -35,7 +35,7 @@ try:
     if os.path.exists(default_colorset):
         data = json.load(open(default_colorset))
         for d in data:
-            locals()[d] = local()[data[d]]
+            locals()[d] = data[d]
 except:
     pass
 
@@ -45,7 +45,7 @@ try:
     if os.path.exists(rainbow_config):
         data = json.load(open(rainbow_config))
         for d in data:
-            locals()[d] = local()[data[d]]
+            locals()[d] = data[d]
 except:
     pass
 

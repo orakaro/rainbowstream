@@ -1,22 +1,3 @@
-// Default color config for rainbowstream
-// Following 16 basic colors is supported:
-//  default
-//  black
-//  red
-//  green
-//  yellow
-//  blue
-//  magenta
-//  cyan
-//  grey
-//  light_red
-//  light_green
-//  light_yellow
-//  light_blue
-//  light_magenta
-//  light_cyan
-//  white
-
 {
     "TWEET" : {
         "nick"      : "grey",
