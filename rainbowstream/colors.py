@@ -20,10 +20,8 @@ def RGB(code):
     """
     256 colors supported
     """
-    def inner(text, bold=True):
+    def inner(text):
         c = code
-        if bold:
-            c = "1;%s" % c
         return "\033[38;5;%sm%s\033[0m" % (c, text)
     return inner
 
