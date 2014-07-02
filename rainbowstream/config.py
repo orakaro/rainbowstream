@@ -1,52 +1,29 @@
-from .colors import *
 import json
 import os
 import os.path
 
-# 'search': max search record
-SEARCH_MAX_RECORD = 5
-# 'home': default number of home's tweets
-HOME_TWEET_NUM = 5
-# 'allrt': default number of retweets
-RETWEETS_SHOW_NUM = 5
-# 'inbox','sent': default number of direct message
-MESSAGES_DISPLAY = 5
-# 'trend': max trending topics
-TREND_MAX = 10
-# 'switch': Filter and Ignore list ex: ['@fat','@mdo']
-ONLY_LIST = []
-IGNORE_LIST = []
+# Regular expression for comments
+comment_re = re.compile(
+    '(^)?[^\S\n]*/(?:\*(.*?)\*/[^\S\n]*|/[^\n]*)($)?',
+    re.DOTALL | re.MULTILINE
+)
 
-# Autocomplete history file name
-HISTORY_FILENAME = 'completer.hist'
-
-USER_DOMAIN = 'userstream.twitter.com'
-PUBLIC_DOMAIN = 'stream.twitter.com'
-SITE_DOMAIN = 'sitestream.twitter.com'
-DOMAIN = USER_DOMAIN
-
-# Image config
-IMAGE_SHIFT = 10
-IMAGE_MAX_HEIGHT = 40
+def load_config(filepath):
+    try:
+        with open(filepath) as f:
+            content = ''.join(f.readlines())
+            match = comment_re.search(content)
+            while match:
+                content = content[:match.start()] + content[match.end():]
+                match = comment_re.search(content)
+        data = json.loads(content)
+        for d in data:
+            globals()[d] = data[d]
+    except:
+        pass
 
 # Load colorset
-default_colorset = 'rainbowstream/colorset/default.json'
-try:
-    if os.path.exists(default_colorset):
-        data = json.load(open(default_colorset))
-        for d in data:
-            locals()[d] = data[d]
-except:
-    pass
-
-# Load json config
+default_config = 'rainbowstream/colorset/default.json'
 rainbow_config = os.environ.get('HOME', os.environ.get('USERPROFILE','')) + os.sep + '.rainbow_config.json'
-try:
-    if os.path.exists(rainbow_config):
-        data = json.load(open(rainbow_config))
-        for d in data:
-            locals()[d] = data[d]
-except:
-    pass
-
-
+load_config(default_config)
+load_config(rainbow_config)
