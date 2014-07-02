@@ -144,7 +144,7 @@ def print_message(m):
     recipient = cycle_color(
         recipient_name) + MESSAGE['recipient'](' ' + recipient_screen_name + ' ')
     user = sender + MESSAGE['to'](' >>> ') + recipient
-    meta = MESSAGE['clock']('[' + clock + ']' + MESSAGE['id'](' [message_id=' + str(rid) + '] ')
+    meta = MESSAGE['clock']('[' + clock + ']') + MESSAGE['id'](' [message_id=' + str(rid) + '] ')
     text = ''.join(map(lambda x: x + '  ' if x == '\n' else x, text))
 
     line1 = u"{u:>{uw}}:".format(
