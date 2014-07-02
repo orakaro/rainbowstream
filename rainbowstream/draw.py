@@ -5,8 +5,10 @@ import requests
 import datetime
 import time
 
+from twitter.util import printNicely
 from StringIO import StringIO
 from dateutil import parser
+from .c_image import *
 from .colors import *
 from .config import *
 from .db import *
