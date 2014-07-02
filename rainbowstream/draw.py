@@ -70,7 +70,7 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     user = cycle_color(name) + grey(' ' + screen_name + ' ')
     meta = grey('[' + clock + '] [id=' + str(rid) + '] ')
     if favorited:
-        meta = meta + green(u'\u2605')
+        meta = meta + light_green(u'\u2605')
     tweet = text.split()
     # Replace url
     if expanded_url:
@@ -83,11 +83,11 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     # Highlight screen_name
     tweet = map(lambda x: cycle_color(x) if x[0] == '@' else x, tweet)
     # Highlight link
-    tweet = map(lambda x: cyan(x) if x[0:4] == 'http' else x, tweet)
+    tweet = map(lambda x: light_cyan(x) if x[0:4] == 'http' else x, tweet)
     # Highlight search keyword
     if keyword:
         tweet = map(
-            lambda x: on_yellow(x) if
+            lambda x: on_light_yellow(x) if
             ''.join(c for c in x if c.isalnum()).lower() == keyword.lower()
             else x,
             tweet
@@ -142,7 +142,7 @@ def print_message(m):
     sender = cycle_color(sender_name) + grey(' ' + sender_screen_name + ' ')
     recipient = cycle_color(
         recipient_name) + grey(' ' + recipient_screen_name + ' ')
-    user = sender + magenta(' >>> ') + recipient
+    user = sender + light_magenta(' >>> ') + recipient
     meta = grey('[' + clock + '] [message_id=' + str(rid) + '] ')
     text = ''.join(map(lambda x: x + '  ' if x == '\n' else x, text))
 
@@ -179,17 +179,17 @@ def show_profile(u, iot=False):
     friends_count = u['friends_count']
     followers_count = u['followers_count']
     # Create content
-    statuses_count = green(str(statuses_count) + ' tweets')
-    friends_count = green(str(friends_count) + ' following')
-    followers_count = green(str(followers_count) + ' followers')
+    statuses_count = light_green(str(statuses_count) + ' tweets')
+    friends_count = light_green(str(friends_count) + ' following')
+    followers_count = light_green(str(followers_count) + ' followers')
     count = statuses_count + '  ' + friends_count + '  ' + followers_count
     user = cycle_color(name) + grey(' @' + screen_name + ' : ') + count
-    profile_image_raw_url = 'Profile photo: ' + cyan(profile_image_url)
+    profile_image_raw_url = 'Profile photo: ' + light_cyan(profile_image_url)
     description = ''.join(
         map(lambda x: x + ' ' * 4 if x == '\n' else x, description))
-    description = yellow(description)
-    location = 'Location : ' + magenta(location)
-    url = 'URL : ' + (cyan(url) if url else '')
+    description = light_yellow(description)
+    location = 'Location : ' + light_magenta(location)
+    url = 'URL : ' + (light_cyan(url) if url else '')
     date = parser.parse(created_at)
     date = date - datetime.timedelta(seconds=time.timezone)
     clock = date.strftime('%Y/%m/%d %H:%M:%S')
@@ -239,7 +239,7 @@ def print_trends(trends):
     for topic in trends[:TREND_MAX]:
         name = topic['name']
         url = topic['url']
-        line = cycle_color(name) + ': ' + cyan(url)
+        line = cycle_color(name) + ': ' + light_cyan(url)
         printNicely(line)
     printNicely('')
 

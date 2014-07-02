@@ -4,33 +4,64 @@ from functools import wraps
 from termcolor import *
 from pyfiglet import figlet_format
 
-grey = lambda x: colored(x, 'grey', attrs=['bold'])
-red = lambda x: colored(x, 'red', attrs=['bold'])
-green = lambda x: colored(x, 'green', attrs=['bold'])
-yellow = lambda x: colored(x, 'yellow', attrs=['bold'])
-blue = lambda x: colored(x, 'blue', attrs=['bold'])
-magenta = lambda x: colored(x, 'magenta', attrs=['bold'])
-cyan = lambda x: colored(x, 'cyan', attrs=['bold'])
-white = lambda x: colored(x, 'white', attrs=['bold'])
+def color_code(code):
+    def inner(text, bold=False):
+        c = code
+        if bold:
+            c = "1;%s" % c
+        return "\033[%sm%s\033[0m" % (c, text)
+    return inner
 
-on_grey = lambda x: colored(x, 'white', 'on_grey', attrs=['bold'])
-on_red = lambda x: colored(x, 'white', 'on_red', attrs=['bold'])
-on_green = lambda x: colored(x, 'white', 'on_green', attrs=['bold'])
-on_yellow = lambda x: colored(x, 'white', 'on_yellow', attrs=['bold'])
-on_blue = lambda x: colored(x, 'white', 'on_blue', attrs=['bold'])
-on_magenta = lambda x: colored(x, 'white', 'on_magenta', attrs=['bold'])
-on_cyan = lambda x: colored(x, 'white', 'on_cyan', attrs=['bold'])
-on_white = lambda x: colored(x, 'white', 'on_white', attrs=['bold'])
+default          = color_code('39')
+black            = color_code('30')
+red              = color_code('31')
+green            = color_code('32')
+yellow           = color_code('33')
+blue             = color_code('34')
+magenta          = color_code('35')
+cyan             = color_code('36')
+grey             = color_code('90')
+light_red        = color_code('91')
+light_green      = color_code('92')
+light_yellow     = color_code('103')
+light_blue       = color_code('104')
+light_magenta    = color_code('105')
+light_cyan       = color_code('106')
+white            = color_code('107')
 
-colors_shuffle = [grey, red, green, yellow, blue, magenta, cyan]
+on_default       = color_code('49')
+on_black         = color_code('40')
+on_red           = color_code('41')
+on_green         = color_code('42')
+on_yellow        = color_code('43')
+on_blue          = color_code('44')
+on_magenta       = color_code('45')
+on_cyan          = color_code('46')
+on_grey          = color_code('100')
+on_light_red     = color_code('101')
+on_light_green   = color_code('102')
+on_light_yellow  = color_code('103')
+on_light_blue    = color_code('104')
+on_light_magenta = color_code('105')
+on_light_cyan    = color_code('106')
+on_white         = color_code('107')
+
+colors_shuffle = [
+    grey,
+    light_red,
+    light_green,
+    light_yellow,
+    light_blue,
+    light_magenta,
+    light_cyan]
 background_shuffle = [
     on_grey,
-    on_red,
-    on_green,
-    on_yellow,
-    on_blue,
-    on_magenta,
-    on_cyan]
+    on_light_red,
+    on_light_green,
+    on_light_yellow,
+    on_light_blue,
+    on_light_magenta,
+    on_light_cyan]
 cyc = itertools.cycle(colors_shuffle[1:])
 
 

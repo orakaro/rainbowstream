@@ -1,27 +1,27 @@
-# Max Search record
+# 'search': max search record
 SEARCH_MAX_RECORD = 5
-# Default home tweet
+# 'home': default number of home's tweets
 HOME_TWEET_NUM = 5
-# Default retweets show
+# 'allrt': default number of retweets
 RETWEETS_SHOW_NUM = 5
-# Default direct message's number
+# 'inbox','sent': default number of direct message
 MESSAGES_DISPLAY = 5
-# Max trending topics display
+# 'trend': max trending topics
 TREND_MAX = 10
-# Autocomplete history
-HISTORY_FILENAME = 'completer.hist'
-
-# Stream Domain
-USER_DOMAIN = 'userstream.twitter.com'
-PUBLIC_DOMAIN = 'stream.twitter.com'
-SITE_DOMAIN = 'sitestream.twitter.com'
-# Actually called
-DOMAIN = USER_DOMAIN
-
-# Filter and Ignore list ex: ['@fat','@mdo']
+# 'switch': Filter and Ignore list ex: ['@fat','@mdo']
 ONLY_LIST = []
 IGNORE_LIST = []
 
-# Image shift and size
+# Autocomplete history file name
+HISTORY_FILENAME = 'completer.hist'
+
+USER_DOMAIN = 'userstream.twitter.com'
+PUBLIC_DOMAIN = 'stream.twitter.com'
+SITE_DOMAIN = 'sitestream.twitter.com'
+DOMAIN = USER_DOMAIN
+
 IMAGE_SHIFT = 10
 IMAGE_MAX_HEIGHT = 40
+
+# Color name can be 'grey', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', or 'white'
+SCREEN_NAME_COLOR = 'grey'
