@@ -1,23 +1,21 @@
-/*
-Default color config for rainbowstream
-Following 16 basic colors is supported:
-  default
-  black
-  red
-  green
-  yellow
-  blue
-  magenta
-  cyan
-  grey
-  light_red
-  light_green
-  light_yellow
-  light_blue
-  light_magenta
-  light_cyan
-  white
-*/
+// Default color config for rainbowstream
+// Following 16 basic colors is supported:
+//  default
+//  black
+//  red
+//  green
+//  yellow
+//  blue
+//  magenta
+//  cyan
+//  grey
+//  light_red
+//  light_green
+//  light_yellow
+//  light_blue
+//  light_magenta
+//  light_cyan
+//  white
 
 {
     "TWEET" : {
@@ -27,7 +25,7 @@ Following 16 basic colors is supported:
         "favourite" : "light_green",
         "rt"        : "grey",
         "link"      : "light_cyan",
-        "keyword"   : "on_light_yellow",
+        "keyword"   : "on_light_yellow"
     },
 
     "MESSAGE" : {
@@ -35,7 +33,7 @@ Following 16 basic colors is supported:
         "recipient" : "grey",
         "to"        : "light_magenta",
         "clock"     : "grey",
-        "id"        : "grey",
+        "id"        : "grey"
     },
 
     "PROFILE" : {
@@ -47,11 +45,10 @@ Following 16 basic colors is supported:
         "description"       : "light_yellow",
         "location"          : "light_magenta",
         "url"               : "light_cyan",
-        "clock"             : "white",
+        "clock"             : "white"
     },
 
     "TREND" : {
-        "url": "light_cyan",
+        "url": "light_cyan"
     }
-
 }

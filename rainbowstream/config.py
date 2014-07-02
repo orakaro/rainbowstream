@@ -30,7 +30,7 @@ IMAGE_SHIFT = 10
 IMAGE_MAX_HEIGHT = 40
 
 # Load colorset
-default_colorset = 'colorset/default.json'
+default_colorset = 'rainbowstream/colorset/default.json'
 try:
     if os.path.exists(default_colorset):
         data = json.load(open(default_colorset))
