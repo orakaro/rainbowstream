@@ -30,18 +30,22 @@ IMAGE_SHIFT = 10
 IMAGE_MAX_HEIGHT = 40
 
 # Load colorset
-COLOR_SET = ['colorset.default']
-modules = map(__import__, COLOR_SET)
+default_colorset = 'colorset/default.json'
+try:
+    if os.path.exists(default_colorset):
+        data = json.load(open(default_colorset))
+        for d in data:
+            locals()[d] = local()[data[d]]
+except:
+    pass
 
 # Load json config
-rainbow_config = os.environ.get(
-    'HOME', os.environ.get('USERPROFILE',''))
-    + os.sep + '.rainbow_config.json'
+rainbow_config = os.environ.get('HOME', os.environ.get('USERPROFILE','')) + os.sep + '.rainbow_config.json'
 try:
     if os.path.exists(rainbow_config):
         data = json.load(open(rainbow_config))
         for d in data:
-            locals()[d] = data[d]
+            locals()[d] = local()[data[d]]
 except:
     pass
 
