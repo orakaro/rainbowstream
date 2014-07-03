@@ -21,6 +21,7 @@ or
  * Here is an example
 
 ```json
+{
     "DECORATED_NAME" : "term_198",
     "CYCLE_COLOR" :["term_198","term_57","term_166","term_50","term_179","term_74","term_112"],
     "TWEET" : {
