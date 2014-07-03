@@ -305,6 +305,6 @@ def print_trends(trends):
     for topic in trends[:c['TREND_MAX']]:
         name = topic['name']
         url = topic['url']
-        line = cycle_color(name) + ': ' + color_func(TREND['url'])(url)
+        line = cycle_color(name) + ': ' + color_func(c['TREND']['url'])(url)
         printNicely(line)
     printNicely('')

@@ -25,10 +25,8 @@ def load_config(filepath):
             while match:
                 content = content[:match.start()] + content[match.end():]
                 match = comment_re.search(content)
-        db.theme_store('user')
         return json.loads(content)
     except IOError:
-        db.theme_store('default')
         return None
 
 # Load default colorset
@@ -38,6 +36,7 @@ data = load_config(default_config)
 if data:
     for d in data:
         c[d] = data[d]
+db.theme_store('default')
 # Load user's colorset
 rainbow_config = os.environ.get(
     'HOME',
@@ -48,3 +47,4 @@ data = load_config(rainbow_config)
 if data:
     for d in data:
         c[d] = data[d]
+    db.theme_update('user')
