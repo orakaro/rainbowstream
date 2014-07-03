@@ -10,6 +10,7 @@
 You are free to create your own themes.
 
 Create a file `~/.rainbow_config.json` and follow next instruction.
+
 Examples are available in 
 [Monokai theme](https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/monokai.json)
 or
@@ -102,6 +103,7 @@ There are 16 basic colors:
   * white
 
 These colors will be enough for almost terminals.
+
 But if your terminals can support 256 colors (check your `$XTERM` variable!), 
 you can even use `term_0` to `term_255` as sample above.
 
@@ -110,11 +112,34 @@ Color reference can be found at
 [256 xterm](http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html)
 
 ### Available options
-* DECORATED_NAME: color of your Twitter's _username_ which is placed at every line's begin.
-* CYCLE_COLOR: is a list of colors from which Twitter _real name_ 's color is selected. 
-
-⋅⋅* Color selection is cycle through this list but with a _memoization_. 
-⋅⋅* It's means that same names will appear in same colors.
-
-
+* `DECORATED_NAME`: color of your Twitter's __username__ which is placed at every line's begin.
+* `CYCLE_COLOR`: list of colors from which Twitter __real name__ 's color is selected. 
+  * Color selection is cycle through this list but with a _memoization_. 
+  * It's means that same names will appear in same colors.
+* `TWEET`: colors of various part in a tweet's ouput.
+  * `nick` : color for Twitter __username__.
+  * `clock`: color for time of tweet.
+  * `id`: color for Tweet's id
+  * `favorite`: color for the star symbol when a tweet is favorited by you
+  * `rt`: color for `RT` word in tweet's content.
+  * `link`: color for an url
+  * `keyword`: color for highlighted keyword (in tweets search) 
+* `MESSAGE`: colors of parts in message's output.
+  * `sender`: color for sender's __username__.
+  * `recipient`: color for recipient's __username__.
+  * `to`: color for the `>>>` symbol.
+  * `clock`: color for time of message.
+  * `id`: color for message's id
+* `PROFILE`: colors for parts in profile's ouput.
+  * `statuses_count`: color for statuses count.
+  * `friends_count`: color for friends count.
+  * `followers_count`: color for followers count.
+  * `nick`: color for Twitter __username__.
+  * `profile_image_url`: color for profile image url.
+  * `description`: color for description.
+  * `location`: color for location.
+  * `url`: color for url.
+  * `clock`: color for joined time.
+* `TREND`: colors for trend's output:
+  * `url`: color for url.
 
