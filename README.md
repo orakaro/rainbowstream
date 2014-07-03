@@ -64,6 +64,12 @@ Available commands are listed in [Read The Docs](http://rainbowstream.readthedoc
 Rainbow Stream is shipped with some default themes. 
 You can either change theme by `theme` command or create your favorite one.
 
+Theme's screenshot: 
+* Monokai
+![Monokai](./screenshot/themes/Monokai.png)
+* Solarized
+![Solarized](./screenshot/themes/Solarized.png)
+
 For detaile information, see [theme usage and customization](https://github.com/DTVD/rainbowstream/blob/master/theme.md)
 
 ## Bug and feature requests
