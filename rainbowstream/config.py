@@ -3,9 +3,6 @@ import re
 import os
 import os.path
 
-from .db import *
-
-db = RainbowDB()
 
 # Regular expression for comments
 comment_re = re.compile(

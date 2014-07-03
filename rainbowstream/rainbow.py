@@ -139,6 +139,7 @@ def get_decorated_name():
 
     files = os.listdir('rainbowstream/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
+    themes += ['custom']
     g['themes'] = themes
     db.theme_store(c['theme'])
 
