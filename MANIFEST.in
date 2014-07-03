@@ -1,3 +1,4 @@
 include README.rst
 include rainbowstream/image.c
+include rainbowstream/consumer.pyc
 recursive-include rainbowstream/colorset *.json
