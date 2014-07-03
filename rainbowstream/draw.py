@@ -15,8 +15,9 @@ from .colors import *
 from .config import *
 from .db import *
 
-
 db = RainbowDB()
+g = {}
+
 
 def init_cycle():
     """
@@ -27,7 +28,8 @@ def init_cycle():
         else RGB(int(i[4:]))
         for i in c['CYCLE_COLOR']]
     return itertools.cycle(colors_shuffle)
-cyc = init_cycle()
+g['cyc'] = init_cycle()
+
 
 def order_rainbow(s):
     """
@@ -64,7 +66,7 @@ def cycle_color(s):
     """
     Cycle the colors_shuffle
     """
-    return next(cyc)(s)
+    return next(g['cyc'])(s)
 
 
 def ascii_art(text):
@@ -73,7 +75,7 @@ def ascii_art(text):
     """
     fi = figlet_format(text, font='doom')
     print('\n'.join(
-        [next(cyc)(i) for i in fi.split('\n')]
+        [next(g['cyc'])(i) for i in fi.split('\n')]
     ))
 
 
@@ -99,7 +101,7 @@ def check_theme():
             for d in data:
                 c[d] = data[d]
         # Re-init color cycle
-        cyc = init_cycle()
+        g['cyc'] = init_cycle()
 
 
 def color_func(func_name):
