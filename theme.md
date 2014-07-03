@@ -120,3 +120,13 @@ Color reference can be found at
 * `TREND`: colors for trend's output:
   * `url`: color for trend's url.
 
+### Theme usage
+While entered Rainbow Stream:
+* `theme` and hit ENTER to see which is available.
+* `theme` + TAB twice will show themes list instantly.
+* `theme monokai` will apply `monokai` theme immediately. You can use TAB key for theme's name autocompletion.
+
+### Theme contribution
+I welcome any contribution for themes for this app. 
+Please add a file to [themes folder](https://github.com/DTVD/rainbowstream/tree/master/rainbowstream/colorset)
+(json format!) and create a [pull request](https://github.com/DTVD/rainbowstream/compare/) with a screenshot.
