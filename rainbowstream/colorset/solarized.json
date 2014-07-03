@@ -1,0 +1,58 @@
+{
+    /* Color config
+    There are 16 basic colors supported :
+        * default
+        * black
+        * red
+        * green
+        * yellow
+        * blue
+        * magenta
+        * cyan
+        * grey
+        * light_red
+        * light_green
+        * light_yellow
+        * light_blue
+        * light_magenta
+        * light_cyan
+        * white
+    and 256 terminal's colors from term_0 to term_255
+    */
+
+    "DECORATED_NAME" : "term_64",
+    "CYCLE_COLOR" :["term_124","term_32","term_64","term_66","term_130","term_23"],
+    "TWEET" : {
+        "nick"      : "term_64",
+        "clock"     : "term_32",
+        "id"        : "term_124",
+        "favourite" : "term_64",
+        "rt"        : "term_66",
+        "link"      : "term_23",
+        "keyword"   : "on_light_green"
+    },
+
+    "MESSAGE" : {
+        "sender"    : "term_64",
+        "recipient" : "term_64",
+        "to"        : "term_130",
+        "clock"     : "term_32",
+        "id"        : "term_124"
+    },
+
+    "PROFILE" : {
+        "statuses_count"    : "term_124",
+        "friends_count"     : "term_32",
+        "followers_count"   : "term_130",
+        "nick"              : "term_64",
+        "profile_image_url" : "term_23",
+        "description"       : "term_66",
+        "location"          : "term_64",
+        "url"               : "term_23",
+        "clock"             : "term_32"
+    },
+
+    "TREND" : {
+        "url": "term_23"
+    }
+}
