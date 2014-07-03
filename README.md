@@ -60,7 +60,7 @@ Input is in interactive mode. It means that you can use arrow key to move up and
 
 For available commands, please [Read The Docs](http://rainbowstream.readthedocs.org/en/latest/).
 
-For themes and color setting, see [config guide](#)
+For themes and color setting, see [config guide](#).
 
 ## Bug and feature requests
 Found a bug or a feature request ? 
