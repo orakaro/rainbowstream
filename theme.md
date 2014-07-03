@@ -9,7 +9,7 @@
 ## Customize:
 Create a file `~/.rainbow_config.json` and follow next instruction.
 
-Examples are available in 
+Examples are available in
 [Monokai theme](https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/monokai.json)
 or
 [Solarized theme](https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/solarized.json).
@@ -81,17 +81,17 @@ There are 16 basic colors:
   * white
 
 These colors will be enough for almost terminals.
-But if your terminal can support 256 colors (check your `$TERM` variable!), 
+But if your terminal can support 256 colors (check your `$TERM` variable!),
 you can even use `term_0` to `term_255` as the example above.
 
-Color reference can be found at 
-[bash colors](http://misc.flogisoft.com/bash/tip_colors_and_formatting) or 
+Color reference can be found at
+[bash colors](http://misc.flogisoft.com/bash/tip_colors_and_formatting) or
 [256 xterm colors](http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html).
 
 ### Available options
 * `DECORATED_NAME`: color of your Twitter's __username__ which is placed at every line's begin.
-* `CYCLE_COLOR`: list of colors from which Twitter __real name__ 's color is selected. 
-  * Color selection is cycle through this list but with _memoization_. 
+* `CYCLE_COLOR`: list of colors from which Twitter __real name__ 's color is selected.
+  * Color selection is cycle through this list but with _memoization_.
   * It's means that same names will appear in same colors.
 * `TWEET`: colors of parts in a tweet's ouput.
   * `nick` : color for Twitter __username__.
@@ -100,7 +100,7 @@ Color reference can be found at
   * `favorite`: color for the star symbol when a tweet is favorited by you
   * `rt`: color for `RT` word in tweet's content.
   * `link`: color for an url
-  * `keyword`: color for highlighted keyword (in tweets search) 
+  * `keyword`: color for highlighted keyword (in tweets search)
 * `MESSAGE`: colors of parts in message's output.
   * `sender`: color for sender's __username__.
   * `recipient`: color for recipient's __username__.
@@ -127,6 +127,6 @@ While entered Rainbow Stream:
 * `theme monokai` will apply `monokai` theme immediately. You can use TAB key for theme's name autocompletion.
 
 ### Theme contribution
-I welcome any contribution for themes for this app. 
+I welcome any contribution for themes for this app.
 Please add a file to [themes folder](https://github.com/DTVD/rainbowstream/tree/master/rainbowstream/colorset)
 (json format!) and create a [pull request](https://github.com/DTVD/rainbowstream/compare/) with a screenshot.
