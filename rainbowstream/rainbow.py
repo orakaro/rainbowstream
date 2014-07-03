@@ -813,7 +813,10 @@ def theme():
                 '[@' + g['original_name'] + ']: ')
             printNicely(green('Theme changed.'))
         except:
-            printNicely(red('Sorry, can not load config file!'))
+            if g['stuff'] == 'custom':
+                printNicely(red('Sorry you should create config file first!'))
+            else:
+                printNicely(red('No such theme exists.'))
 
 
 def help():
