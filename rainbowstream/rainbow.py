@@ -775,12 +775,14 @@ def theme():
             # Detect custom config
             if theme == 'custom':
                 line += light_magenta('custom')
-                exists = db.theme_query()
-                themes = [t.theme_name for t in exists]
-                if themes[0] == 'custom':
-                    line += light_magenta(' (applied)')
+                custom_path = os.environ.get(
+                    'HOME',
+                    os.environ.get('USERPROFILE',
+                        '')) + os.sep + '.rainbow_config.json'
+                if not os.path.exists(custom_path):
+                    line += light_magenta(' (create your own config at ~/.rainbow_config.json)')
                 else:
-                    line += light_magenta(' (not specified)')
+                    line += light_magenta(' (loaded)')
             else:
                 line += light_magenta(theme)
             if c['theme'] == theme :
@@ -797,14 +799,15 @@ def theme():
             if new_config:
                 for nc in new_config:
                     c[nc] = new_config[nc]
-            # Update db
+            # Update db and reset colors
             db.theme_update(g['stuff'])
+            init_cycle()
             g['decorated_name'] = color_func(
                 c['DECORATED_NAME'])(
                 '[@' + g['original_name'] + ']: ')
             printNicely(green('Theme changed.'))
         except:
-            printNicely(red('Sorry, config file is broken!'))
+            printNicely(red('Sorry, can not load config file!'))
 
 
 def help():

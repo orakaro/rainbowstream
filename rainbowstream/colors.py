@@ -62,19 +62,12 @@ on_light_magenta = basic_color('105')
 on_light_cyan = basic_color('106')
 on_white = basic_color('107')
 
-colors_shuffle = [locals()[i.encode('utf8')] if not i.startswith(
-    'RGB_') else RGB(int(i[4:])) for i in c['CYCLE_COLOR']]
+def init_cycle():
+    colors_shuffle = [locals()[i.encode('utf8')] if not i.startswith(
+        'RGB_') else RGB(int(i[4:])) for i in c['CYCLE_COLOR']]
+    cyc = itertools.cycle(colors_shuffle)
 
-background_shuffle = [
-    on_grey,
-    on_light_red,
-    on_light_green,
-    on_light_yellow,
-    on_light_blue,
-    on_light_magenta,
-    on_light_cyan]
-cyc = itertools.cycle(colors_shuffle[1:])
-
+init_cycle()
 
 def order_rainbow(s):
     """

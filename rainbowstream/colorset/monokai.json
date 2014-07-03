@@ -22,10 +22,10 @@
     http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
      */
 
-    "DECORATED_NAME" : "RGB_166",
+    "DECORATED_NAME" : "RGB_198",
     "CYCLE_COLOR" :["RGB_198","RGB_57","RGB_166","RGB_50","RGB_179","RGB_74","RGB_112"],
     "TWEET" : {
-        "nick"      : "RGB_198",
+        "nick"      : "RGB_112",
         "clock"     : "RGB_57",
         "id"        : "RGB_166",
         "favourite" : "RGB_50",
@@ -35,7 +35,7 @@
     },
 
     "MESSAGE" : {
-        "sender"    : "RGB_198",
+        "sender"    : "RGB_112",
         "recipient" : "RGB_112",
         "to"        : "RGB_50",
         "clock"     : "RGB_57",
