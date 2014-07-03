@@ -7,18 +7,16 @@
 ![Solarized](./screenshot/themes/Solarized.png)
 
 ## Customize:
-You are free to create your own themes.
-
 Create a file `~/.rainbow_config.json` and follow next instruction.
 
 Examples are available in 
 [Monokai theme](https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/monokai.json)
 or
-[Solarized theme](https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/solarized.json)
+[Solarized theme](https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/solarized.json).
 
 ### Custom config
- * Config file should be excatly named `.rainbow_config.json` and placed at home directory.
- * Config file's content should follow `Json` format.
+ * Config file's name should be excatly `.rainbow_config.json` and placed at home directory.
+ * Config file's content should follow json format.
  * Comments as `//` or `/*...*/` are allowed.
  * Here is an example
 
@@ -87,7 +85,7 @@ you can even use `term_0` to `term_255` as examples above.
 
 Color reference can be found at 
 [bash colors](http://misc.flogisoft.com/bash/tip_colors_and_formatting) or 
-[256 xterm colors](http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html)
+[256 xterm colors](http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html).
 
 ### Available options
 * `DECORATED_NAME`: color of your Twitter's __username__ which is placed at every line's begin.
