@@ -107,4 +107,4 @@ details
 .. _fork: https://github.com/DTVD/rainbowstream/fork
 .. _create a pull request: https://github.com/DTVD/rainbowstream/compare/
 .. _Read The Docs: http://rainbowstream.readthedocs.org/en/latest/
-.. _config guide: #
+.. _config guide: https://github.com/DTVD/rainbowstream/blob/master/theme.md
