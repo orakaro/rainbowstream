@@ -27,8 +27,7 @@ def check_theme():
         if c['theme'] == 'custom':
             config = os.environ.get(
                 'HOME',
-                os.environ.get(
-                'USERPROFILE',
+                os.environ.get('USERPROFILE',
                 '')) + os.sep + '.rainbow_config.json'
         else:
             config = 'rainbowstream/colorset/'+c['theme']+'.json'
@@ -37,6 +36,8 @@ def check_theme():
         if data:
             for d in data:
                 c[d] = data[d]
+        # Re-init color cycle
+        cyc = init_cycle()
 
 
 def color_func(func_name):

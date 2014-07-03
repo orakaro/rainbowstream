@@ -801,7 +801,7 @@ def theme():
                     c[nc] = new_config[nc]
             # Update db and reset colors
             db.theme_update(g['stuff'])
-            init_cycle()
+            cyc = init_cycle()
             g['decorated_name'] = color_func(
                 c['DECORATED_NAME'])(
                 '[@' + g['original_name'] + ']: ')
