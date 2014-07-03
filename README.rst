@@ -14,9 +14,9 @@ This package is built on the top of `Python Twitter Tool`_ and `Twitter API`_.
 
 Showcase
 ----------
-Screencast: https://www.youtube.com/watch?v=tykCvPMJq8s 
+Screencast: https://www.youtube.com/watch?v=tykCvPMJq8s
 
-Screenshot: 
+Screenshot:
 
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStream.png
    :alt: rainbowstream
@@ -32,13 +32,13 @@ You will need Python 2.7+ and pip.
 .. code:: bash
 
     sudo pip install rainbowstream
-    
+
 or try with a virtualenv
 
 .. code:: bash
 
     sudo pip install virtualenv # skip if you already have virtualenv
-    virtualenv venv 
+    virtualenv venv
     source venv/bin/activate # use the brand new virtualenv.
     pip install rainbowstream
 
@@ -85,7 +85,7 @@ For themes and color setting, see `config guide`_.
 Bug and feature requests
 ------------------------
 
-Found a bug or a feature request ? 
+Found a bug or a feature request ?
 Please `create an issue`_ or contact me at `@dtvd88`_
 
 Contributing

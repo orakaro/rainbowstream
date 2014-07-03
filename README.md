@@ -9,7 +9,7 @@ Realtime tweetstream, compose, search , favorite ... and much more fun directly 
 This package is built on top of [Python Twitter Tool](http://mike.verdone.ca/twitter/) and [Twitter API](https://dev.twitter.com/docs/api/1.1).
 
 ## Showcase
-Screencast: 
+Screencast:
 https://www.youtube.com/watch?v=tykCvPMJq8s
 <br>
 
@@ -28,7 +28,7 @@ sudo pip install rainbowstream
 or try with a virtualenv
 ```bash
 sudo pip install virtualenv # skip if you already have virtualenv
-virtualenv venv 
+virtualenv venv
 source venv/bin/activate # use the brand new virtualenv.
 pip install rainbowstream
 ```
@@ -63,14 +63,14 @@ For available commands, please [Read The Docs](http://rainbowstream.readthedocs.
 For themes and color setting, see [config guide](#).
 
 ## Bug and feature requests
-Found a bug or a feature request ? 
+Found a bug or a feature request ?
 Please [create an issue](https://github.com/DTVD/rainbowstream/issues/new)
 or contact me at [@dtvd88](https://twitter.com/dtvd88)
 
 ## Contributing
-I appreciate any help and support. Feel free to 
-[fork](https://github.com/DTVD/rainbowstream/fork) 
-and 
+I appreciate any help and support. Feel free to
+[fork](https://github.com/DTVD/rainbowstream/fork)
+and
 [create a pull request](https://github.com/DTVD/rainbowstream/compare/).
 You will be listed as contributor.
 

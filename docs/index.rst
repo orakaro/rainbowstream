@@ -20,13 +20,13 @@ You will need Python 2.7+ and pip.
 .. code:: bash
 
     sudo pip install rainbowstream
-    
+
 or try with a virtualenv
 
 .. code:: bash
 
     sudo pip install virtualenv # skip if you already have virtualenv
-    virtualenv venv 
+    virtualenv venv
     source venv/bin/activate # use the brand new virtualenv.
     pip install rainbowstream
 
@@ -171,6 +171,9 @@ Here is full list of supported command:
   + Put ``order_rainbow('anything')`` or ``random_rainbow('wahahaha')`` will make more fun :)
 
 **Screening Commands**
+
+-  ``theme`` will list available themes. ``theme monokai`` will apply *monokai*
+theme immedaitely.
 
 -  ``h`` will show the help.
 
