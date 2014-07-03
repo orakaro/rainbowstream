@@ -1,11 +1,13 @@
-"""
-Draw
-"""
+import random
+import itertools
 import requests
 import datetime
 import time
 
 from twitter.util import printNicely
+from functools import wraps
+from pyfiglet import figlet_format
+from functools import reduce
 from StringIO import StringIO
 from dateutil import parser
 from .c_image import *
@@ -13,7 +15,67 @@ from .colors import *
 from .config import *
 from .db import *
 
+
 db = RainbowDB()
+
+def init_cycle():
+    """
+    Init the cycle
+    """
+    colors_shuffle = [globals()[i.encode('utf8')]
+        if not i.startswith('RGB_')
+        else RGB(int(i[4:]))
+        for i in c['CYCLE_COLOR']]
+    return itertools.cycle(colors_shuffle)
+cyc = init_cycle()
+
+def order_rainbow(s):
+    """
+    Print a string with ordered color with each character
+    """
+    c = [colors_shuffle[i % 7](s[i]) for i in xrange(len(s))]
+    return reduce(lambda x, y: x + y, c)
+
+
+def random_rainbow(s):
+    """
+    Print a string with random color with each character
+    """
+    c = [random.choice(colors_shuffle)(i) for i in s]
+    return reduce(lambda x, y: x + y, c)
+
+
+def Memoize(func):
+    """
+    Memoize decorator
+    """
+    cache = {}
+
+    @wraps(func)
+    def wrapper(*args):
+        if args not in cache:
+            cache[args] = func(*args)
+        return cache[args]
+    return wrapper
+
+
+@Memoize
+def cycle_color(s):
+    """
+    Cycle the colors_shuffle
+    """
+    return next(cyc)(s)
+
+
+def ascii_art(text):
+    """
+    Draw the Ascii Art
+    """
+    fi = figlet_format(text, font='doom')
+    print('\n'.join(
+        [next(cyc)(i) for i in fi.split('\n')]
+    ))
+
 
 def check_theme():
     """
