@@ -101,7 +101,7 @@ def check_theme():
                 os.environ.get('USERPROFILE',
                 '')) + os.sep + '.rainbow_config.json'
         else:
-            config = 'rainbowstream/colorset/'+c['theme']+'.json'
+            config = os.path.dirname(__file__) + '/colorset/'+c['theme']+'.json'
         # Load new config
         data = load_config(config)
         if data:

@@ -25,7 +25,7 @@ def load_config(filepath):
 
 # Load default colorset
 c = {}
-default_config = 'rainbowstream/colorset/default.json'
+default_config = os.path.dirname(__file__) + '/colorset/default.json'
 data = load_config(default_config)
 for d in data:
     c[d] = data[d]

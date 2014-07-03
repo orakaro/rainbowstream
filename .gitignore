@@ -54,3 +54,13 @@ docs/_build/
 
 # DB files
 *.db
+
+# Editor
+*sublime*
+.tag*
+
+# Virtualenv
+/venv/*
+
+# History completer
+completer.hist

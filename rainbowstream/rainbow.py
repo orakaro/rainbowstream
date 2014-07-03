@@ -137,7 +137,7 @@ def get_decorated_name():
     g['decorated_name'] = color_func(c['DECORATED_NAME'])('[' + name + ']: ')
     g['ascii_art'] = True
 
-    files = os.listdir('rainbowstream/colorset')
+    files = os.listdir(os.path.dirname(__file__)+'/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     themes += ['custom']
     g['themes'] = themes
@@ -795,7 +795,7 @@ def theme():
         try:
             # Load new config
             if g['stuff'] != 'custom':
-                new_config = 'rainbowstream/colorset/' + g['stuff'] + '.json'
+                new_config = os.path.dirname(__file__) + '/colorset/' + g['stuff'] + '.json'
             else:
                 new_config = os.environ.get(
                     'HOME',os.environ.get(
