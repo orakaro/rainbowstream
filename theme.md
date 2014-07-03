@@ -19,31 +19,10 @@ or
 ### Custom config
  * Config file should be excatly named `.rainbow_config.json` and placed at home directory.
  * Config file's content should follow `Json` format.
- * Comment as `//` or `/*...*/` is accepted.
+ * Comments as `//` or `/*...*/` are allowed.
  * Here is an example
 
 ```json
- /* Color config
-    There are 16 basic colors supported :
-        * default
-        * black
-        * red
-        * green
-        * yellow
-        * blue
-        * magenta
-        * cyan
-        * grey
-        * light_red
-        * light_green
-        * light_yellow
-        * light_blue
-        * light_magenta
-        * light_cyan
-        * white
-    and 256 terminal's colors from term_0 to term_255
-    */
-
     "DECORATED_NAME" : "term_198",
     "CYCLE_COLOR" :["term_198","term_57","term_166","term_50","term_179","term_74","term_112"],
     "TWEET" : {
@@ -104,18 +83,18 @@ There are 16 basic colors:
 
 These colors will be enough for almost terminals.
 But if your terminals can support 256 colors (check your `$TERM` variable!), 
-you can even use `term_0` to `term_255` as sample above.
+you can even use `term_0` to `term_255` as examples above.
 
 Color reference can be found at 
-[bash color](http://misc.flogisoft.com/bash/tip_colors_and_formatting) or 
-[256 xterm](http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html)
+[bash colors](http://misc.flogisoft.com/bash/tip_colors_and_formatting) or 
+[256 xterm colors](http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html)
 
 ### Available options
 * `DECORATED_NAME`: color of your Twitter's __username__ which is placed at every line's begin.
 * `CYCLE_COLOR`: list of colors from which Twitter __real name__ 's color is selected. 
   * Color selection is cycle through this list but with a _memoization_. 
   * It's means that same names will appear in same colors.
-* `TWEET`: colors of various part in a tweet's ouput.
+* `TWEET`: colors of parts in a tweet's ouput.
   * `nick` : color for Twitter __username__.
   * `clock`: color for time of tweet.
   * `id`: color for Tweet's id
@@ -140,5 +119,5 @@ Color reference can be found at
   * `url`: color for url.
   * `clock`: color for joined time.
 * `TREND`: colors for trend's output:
-  * `url`: color for url.
+  * `url`: color for trend's url.
 
