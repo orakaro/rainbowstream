@@ -780,7 +780,7 @@ def theme():
                     os.environ.get('USERPROFILE',
                         '')) + os.sep + '.rainbow_config.json'
                 if not os.path.exists(custom_path):
-                    line += light_magenta(' (create your own config at ~/.rainbow_config.json)')
+                    line += light_magenta(' (create your own config file at ~/.rainbow_config.json)')
                 else:
                     line += light_magenta(' (loaded)')
             else:
@@ -814,7 +814,7 @@ def theme():
             printNicely(green('Theme changed.'))
         except:
             if g['stuff'] == 'custom':
-                printNicely(red('Sorry you should create config file first!'))
+                printNicely(light_magenta('~/.rainbow_config.json is not exists!'))
             else:
                 printNicely(red('No such theme exists.'))
 
