@@ -51,7 +51,7 @@ rainbow -iot # Or rainbow --image-on-term
 In the first time you will be asked for authorization of Rainbow Stream app at Twitter.
 Just click the "Authorize access" button and paste PIN number to the terminal, the rainbow will start.
 
-#### The interactive mode
+## Interactive mode
 
 While your personal stream is continued, you are also ready to tweet, search, reply, retweet... directly from console.
 Simply type "h" and hit the Enter key to see the help.
