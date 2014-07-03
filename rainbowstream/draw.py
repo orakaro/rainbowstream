@@ -31,6 +31,13 @@ def init_cycle():
 g['cyc'] = init_cycle()
 
 
+def notify_cycle():
+    """
+    Notify from rainbow
+    """
+    g['cyc'] = init_cycle()
+
+
 def order_rainbow(s):
     """
     Print a string with ordered color with each character
