@@ -6,7 +6,7 @@
 #### Solarized
 ![Solarized](./screenshot/themes/Solarized.png)
 
-## Customize:
+## Customization
 Create a file `~/.rainbow_config.json` and follow next instruction.
 
 Examples are available in
@@ -127,6 +127,6 @@ While entered Rainbow Stream:
 * `theme monokai` will apply `monokai` theme immediately. You can use TAB key for theme's name autocompletion.
 
 ### Theme contribution
-I welcome any contribution for themes for this app.
+I appreciate any contribution for themes for this app.
 Please add a file to [themes folder](https://github.com/DTVD/rainbowstream/tree/master/rainbowstream/colorset)
 (json format!) and create a [pull request](https://github.com/DTVD/rainbowstream/compare/) with a screenshot.
