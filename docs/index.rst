@@ -12,18 +12,6 @@ favorite … and much more fun directly from terminal.
 
 This package is built on the top of `Python Twitter Tool`_ and `Twitter API`_.
 
-Showcase
-----------
-Screencast: https://www.youtube.com/watch?v=tykCvPMJq8s 
-
-Screenshot: 
-
-.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStream.png
-   :alt: rainbowstream
-
-.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamIOT.png
-   :alt: rainbowstreamIOT
-
 Install
 -------
 
@@ -191,29 +179,7 @@ Here is full list of supported command:
 -  ``q`` will quit.
 
 
-For example see the screenshot above.
-
-Bug and feature requests
-------------------------
-
-Found a bug or a feature request ? 
-Please `create an issue`_ or contact me at `@dtvd88`_
-
-Contributing
-------------
-I appreciate any help and support. Feel free to `fork`_ and `create a pull request`_.
-You will be listed as contributor.
-
-License
--------
-
-Rainbow Stream are released under an MIT License. See LICENSE.txt for
-details
 
 
 .. _Python Twitter Tool: http://mike.verdone.ca/twitter/
 .. _Twitter API: https://dev.twitter.com/docs/api/1.1
-.. _create an issue: https://github.com/DTVD/rainbowstream/issues/new
-.. _@dtvd88: https://twitter.com/dtvd88
-.. _fork: https://github.com/DTVD/rainbowstream/fork
-.. _create a pull request: https://github.com/DTVD/rainbowstream/compare/
