@@ -81,7 +81,7 @@ There are 16 basic colors:
   * white
 
 These colors will be enough for almost terminals.
-But if your terminals can support 256 colors (check your `$TERM` variable!), 
+But if your terminal can support 256 colors (check your `$TERM` variable!), 
 you can even use `term_0` to `term_255` as examples above.
 
 Color reference can be found at 
@@ -91,7 +91,7 @@ Color reference can be found at
 ### Available options
 * `DECORATED_NAME`: color of your Twitter's __username__ which is placed at every line's begin.
 * `CYCLE_COLOR`: list of colors from which Twitter __real name__ 's color is selected. 
-  * Color selection is cycle through this list but with a _memoization_. 
+  * Color selection is cycle through this list but with _memoization_. 
   * It's means that same names will appear in same colors.
 * `TWEET`: colors of parts in a tweet's ouput.
   * `nick` : color for Twitter __username__.
