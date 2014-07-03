@@ -103,8 +103,7 @@ There are 16 basic colors:
   * white
 
 These colors will be enough for almost terminals.
-
-But if your terminals can support 256 colors (check your `$XTERM` variable!), 
+But if your terminals can support 256 colors (check your `$TERM` variable!), 
 you can even use `term_0` to `term_255` as sample above.
 
 Color reference can be found at 
