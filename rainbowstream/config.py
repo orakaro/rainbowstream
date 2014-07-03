@@ -18,33 +18,31 @@ def load_config(filepath):
     """
     Load config from filepath
     """
-    try:
-        with open(filepath) as f:
-            content = ''.join(f.readlines())
+    with open(filepath) as f:
+        content = ''.join(f.readlines())
+        match = comment_re.search(content)
+        while match:
+            content = content[:match.start()] + content[match.end():]
             match = comment_re.search(content)
-            while match:
-                content = content[:match.start()] + content[match.end():]
-                match = comment_re.search(content)
-        return json.loads(content)
-    except IOError:
-        return None
+    return json.loads(content)
 
 # Load default colorset
 c = {}
 default_config = 'rainbowstream/colorset/default.json'
 data = load_config(default_config)
-if data:
-    for d in data:
-        c[d] = data[d]
-db.theme_store('default')
+for d in data:
+    c[d] = data[d]
+c['theme'] = 'default'
 # Load user's colorset
 rainbow_config = os.environ.get(
     'HOME',
     os.environ.get(
         'USERPROFILE',
         '')) + os.sep + '.rainbow_config.json'
-data = load_config(rainbow_config)
-if data:
+try:
+    data = load_config(rainbow_config)
     for d in data:
         c[d] = data[d]
-    db.theme_update('user')
+    c['theme'] = 'custom'
+except:
+    pass

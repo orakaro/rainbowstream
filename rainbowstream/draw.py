@@ -14,7 +14,6 @@ from .config import *
 from .db import *
 
 db = RainbowDB()
-cur_theme = None
 
 def check_theme():
     """
@@ -22,17 +21,17 @@ def check_theme():
     """
     exists = db.theme_query()
     themes = [t.theme_name for t in exists]
-    if cur_theme != themes[0]:
-        cur_theme = themes[0]
+    if c['theme'] != themes[0]:
+        c['theme'] = themes[0]
         # Determine path
-        if cur_theme == 'user':
+        if c['theme'] == 'custom':
             config = os.environ.get(
                 'HOME',
                 os.environ.get(
                 'USERPROFILE',
                 '')) + os.sep + '.rainbow_config.json'
         else:
-            config = 'rainbowstream/colorset/'+cur_theme+'.json'
+            config = 'rainbowstream/colorset/'+c['theme']+'.json'
         # Load new config
         data = load_config(config)
         if data:

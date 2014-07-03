@@ -139,8 +139,8 @@ def get_decorated_name():
 
     files = os.listdir('rainbowstream/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
-    themes += ['user']
     g['themes'] = themes
+    db.theme_store(c['theme'])
 
 
 def switch():
@@ -769,19 +769,23 @@ def theme():
     """
     if not g['stuff']:
         # List themes
-        line = ' ' * 2 + light_yellow('* ')
         for theme in g['themes']:
+            line = ''
             # Detect custom config
-            if theme == 'user':
+            if theme == 'custom':
                 line += light_magenta('custom')
                 exists = db.theme_query()
                 themes = [t.theme_name for t in exists]
-                if themes[0] == 'user':
+                if themes[0] == 'custom':
                     line += light_magenta(' (applied)')
                 else:
                     line += light_magenta(' (not specified)')
             else:
                 line += light_magenta(theme)
+            if c['theme'] == theme :
+                line = ' '*2 + light_yellow('* ') + line
+            else:
+                line = ' '*4 + line
             printNicely(line)
     else:
         # Change theme
@@ -793,7 +797,7 @@ def theme():
                 for nc in new_config:
                     c[nc] = new_config[nc]
             # Update db
-            theme_update(g['stuff'])
+            db.theme_update(g['stuff'])
             g['decorated_name'] = color_func(
                 c['DECORATED_NAME'])(
                 '[@' + g['original_name'] + ']: ')
