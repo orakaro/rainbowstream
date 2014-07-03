@@ -58,9 +58,13 @@ Simply type "h" and hit the Enter key to see the help.
 
 Input is in interactive mode. It means that you can use arrow key to move up and down history, tab-autocomplete or 2 tab to view available suggestion. Input history from previous run is available as well.
 
-Available commands are listed in [Read The Docs](http://rainbowstream.readthedocs.org/en/latest/) 
-while themes and colors setting's can be found at
-[config guide](https://github.com/DTVD/rainbowstream/blob/master/theme.md).
+Available commands are listed in [Read The Docs](http://rainbowstream.readthedocs.org/en/latest/) .
+
+## Theme customization
+Rainbow Stream is shipped with some default themes. 
+You can either change theme by `theme` command or create your favorite one.
+
+For detaile information, see [theme usage and customization](https://github.com/DTVD/rainbowstream/blob/master/theme.md)
 
 ## Bug and feature requests
 Found a bug or a feature request ?
