@@ -83,13 +83,17 @@ Available commands are listed in `Read The Docs`_.
 Theme customization
 ------------------------
 
-Rainbow Stream is shipped with some default themes. 
+Rainbow Stream is shipped with some default themes.
 You can either change theme by ``theme`` command or create your favorite one.
 
 Theme’s screenshot:
 
+- Monokai
+
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/Monokai.png
    :alt: monokai
+
+- Solarized
 
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/Solarized.png
    :alt: solarized

@@ -61,10 +61,10 @@ Input is in interactive mode. It means that you can use arrow key to move up and
 Available commands are listed in [Read The Docs](http://rainbowstream.readthedocs.org/en/latest/) .
 
 ## Theme customization
-Rainbow Stream is shipped with some default themes. 
+Rainbow Stream is shipped with some default themes.
 You can either change theme by `theme` command or create your favorite one.
 
-Theme's screenshot: 
+Theme's screenshot:
 * Monokai
 ![Monokai](./screenshot/themes/Monokai.png)
 * Solarized
