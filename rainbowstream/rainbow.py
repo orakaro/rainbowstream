@@ -789,8 +789,9 @@ def theme():
             # Load new config
             new_config = 'rainbowstream/colorset/' + g['stuff'] + '.json'
             new_config = load_config(new_config)
-            for nc in new_config:
-                c[nc] = new_config[nc]
+            if new_config
+                for nc in new_config:
+                    c[nc] = new_config[nc]
             # Update db
             theme_update(g['stuff'])
             g['decorated_name'] = color_func(

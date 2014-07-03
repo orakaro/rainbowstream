@@ -35,8 +35,9 @@ def check_theme():
             config = 'rainbowstream/colorset/'+cur_theme+'.json'
         # Load new config
         data = load_config(config)
-        for d in data:
-            c[d] = data[d]
+        if data:
+            for d in data:
+                c[d] = data[d]
 
 
 def color_func(func_name):
