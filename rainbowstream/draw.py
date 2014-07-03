@@ -14,6 +14,29 @@ from .config import *
 from .db import *
 
 db = RainbowDB()
+cur_theme = None
+
+def check_theme():
+    """
+    Check current theme and update if necessary
+    """
+    exists = db.theme_query()
+    themes = [t.theme_name for t in exists]
+    if cur_theme != themes[0]:
+        cur_theme = themes[0]
+        # Determine path
+        if cur_theme == 'user':
+            config = os.environ.get(
+                'HOME',
+                os.environ.get(
+                'USERPROFILE',
+                '')) + os.sep + '.rainbow_config.json'
+        else:
+            config = 'rainbowstream/colorset/'+cur_theme+'.json'
+        # Load new config
+        data = load_config(config)
+        for d in data:
+            c[d] = data[d]
 
 
 def color_func(func_name):
@@ -31,6 +54,7 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     Draw the rainbow
     """
 
+    check_theme()
     # Retrieve tweet
     tid = t['id']
     text = t['text']

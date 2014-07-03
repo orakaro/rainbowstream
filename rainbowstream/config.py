@@ -3,6 +3,10 @@ import re
 import os
 import os.path
 
+from .db import *
+
+db = RainbowDB()
+
 # Regular expression for comments
 comment_re = re.compile(
     '(^)?[^\S\n]*/(?:\*(.*?)\*/[^\S\n]*|/[^\n]*)($)?',
@@ -21,8 +25,10 @@ def load_config(filepath):
             while match:
                 content = content[:match.start()] + content[match.end():]
                 match = comment_re.search(content)
+        db.theme_store('user')
         return json.loads(content)
-    except:
+    except IOError:
+        db.theme_store('default')
         pass
 
 # Load default colorset

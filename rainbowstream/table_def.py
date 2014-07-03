@@ -27,5 +27,18 @@ class Message(Base):
         self.message_id = message_id
 
 
+class Theme(Base):
+
+    __tablename__ = "theme"
+
+    theme_id = Column(Integer, primary_key=True)
+    theme_name = Column(String)
+    changed = Column(Boolean, default=False)
+
+    def __init__(self, theme_name):
+        self.theme_name = theme_name
+        self.Boolean = False
+
+
 def init_db():
     Base.metadata.create_all(engine)
