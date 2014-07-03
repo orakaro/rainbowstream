@@ -15,7 +15,7 @@ or
 [Solarized theme](https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/solarized.json).
 
 ### Custom config
- * Config file's name should be excatly `.rainbow_config.json` and placed at home directory.
+ * Config file's name should be exactly `.rainbow_config.json` and placed at home directory.
  * Config file's content should follow json format.
  * Comments as `//` or `/*...*/` are allowed.
  * Here is an example
@@ -82,7 +82,7 @@ There are 16 basic colors:
 
 These colors will be enough for almost terminals.
 But if your terminal can support 256 colors (check your `$TERM` variable!), 
-you can even use `term_0` to `term_255` as examples above.
+you can even use `term_0` to `term_255` as the example above.
 
 Color reference can be found at 
 [bash colors](http://misc.flogisoft.com/bash/tip_colors_and_formatting) or 
