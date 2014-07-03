@@ -794,14 +794,20 @@ def theme():
         # Change theme
         try:
             # Load new config
-            new_config = 'rainbowstream/colorset/' + g['stuff'] + '.json'
+            c['theme'] = g['stuff']
+            if g['stuff'] != 'custom':
+                new_config = 'rainbowstream/colorset/' + g['stuff'] + '.json'
+            else:
+                new_config = os.environ.get(
+                    'HOME',os.environ.get(
+                        'USERPROFILE',
+                        '')) + os.sep + '.rainbow_config.json'
             new_config = load_config(new_config)
             if new_config:
                 for nc in new_config:
                     c[nc] = new_config[nc]
             # Update db and reset colors
             db.theme_update(g['stuff'])
-            cyc = init_cycle()
             g['decorated_name'] = color_func(
                 c['DECORATED_NAME'])(
                 '[@' + g['original_name'] + ']: ')
