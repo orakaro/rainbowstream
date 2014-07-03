@@ -181,8 +181,17 @@ theme immedaitely.
 
 -  ``q`` will quit.
 
+Available commands are listed in `Read The Docs`_.
 
+Theme customization
+^^^^^^^^^^^^^^^^^^^
+
+Rainbow Stream is shipped with some default themes. 
+You can either change theme by ``theme`` command or create your favorite one.
+
+For detaile information, see `theme usage and customization`_.
 
 
 .. _Python Twitter Tool: http://mike.verdone.ca/twitter/
 .. _Twitter API: https://dev.twitter.com/docs/api/1.1
+.. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
