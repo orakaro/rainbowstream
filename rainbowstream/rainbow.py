@@ -789,7 +789,7 @@ def theme():
             # Load new config
             new_config = 'rainbowstream/colorset/' + g['stuff'] + '.json'
             new_config = load_config(new_config)
-            if new_config
+            if new_config:
                 for nc in new_config:
                     c[nc] = new_config[nc]
             # Update db

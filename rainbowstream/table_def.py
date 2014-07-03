@@ -32,12 +32,10 @@ class Theme(Base):
     __tablename__ = "theme"
 
     theme_id = Column(Integer, primary_key=True)
-    theme_name = Column(String)
-    changed = Column(Boolean, default=False)
+    theme_name = Column(String(20))
 
     def __init__(self, theme_name):
         self.theme_name = theme_name
-        self.Boolean = False
 
 
 def init_db():
