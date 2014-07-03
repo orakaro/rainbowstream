@@ -794,7 +794,6 @@ def theme():
         # Change theme
         try:
             # Load new config
-            c['theme'] = g['stuff']
             if g['stuff'] != 'custom':
                 new_config = 'rainbowstream/colorset/' + g['stuff'] + '.json'
             else:
@@ -808,6 +807,7 @@ def theme():
                     c[nc] = new_config[nc]
             # Update db and reset colors
             db.theme_update(g['stuff'])
+            c['theme'] = g['stuff']
             notify_cycle()
             g['decorated_name'] = color_func(
                 c['DECORATED_NAME'])(
@@ -815,7 +815,7 @@ def theme():
             printNicely(green('Theme changed.'))
         except:
             if g['stuff'] == 'custom':
-                printNicely(light_magenta('~/.rainbow_config.json is not exists!'))
+                printNicely(red('~/.rainbow_config.json is not exists!'))
             else:
                 printNicely(red('No such theme exists.'))
 
