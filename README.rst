@@ -106,5 +106,5 @@ details
 .. _@dtvd88: https://twitter.com/dtvd88
 .. _fork: https://github.com/DTVD/rainbowstream/fork
 .. _create a pull request: https://github.com/DTVD/rainbowstream/compare/
-.. _Read The Dics: http://rainbowstream.readthedocs.org/en/latest/
+.. _Read The Docs: http://rainbowstream.readthedocs.org/en/latest/
 .. _config guide: #
