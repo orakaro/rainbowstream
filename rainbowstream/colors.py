@@ -11,7 +11,7 @@ def basic_color(code):
     return inner
 
 
-def RGB(code):
+def term_color(code):
     """
     256 colors supported
     """

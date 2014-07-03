@@ -17,44 +17,42 @@
         * light_magenta
         * light_cyan
         * white
-    and 256 colors from RGB_0 to RGB_255
-    Color code can be reference at
-    http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
-     */
+    and 256 terminal's colors from term_0 to term_255
+    */
 
-    "DECORATED_NAME" : "RGB_198",
-    "CYCLE_COLOR" :["RGB_198","RGB_57","RGB_166","RGB_50","RGB_179","RGB_74","RGB_112"],
+    "DECORATED_NAME" : "term_198",
+    "CYCLE_COLOR" :["term_198","term_57","term_166","term_50","term_179","term_74","term_112"],
     "TWEET" : {
-        "nick"      : "RGB_112",
-        "clock"     : "RGB_57",
-        "id"        : "RGB_166",
-        "favourite" : "RGB_50",
-        "rt"        : "RGB_179",
-        "link"      : "RGB_74",
+        "nick"      : "term_112",
+        "clock"     : "term_57",
+        "id"        : "term_166",
+        "favourite" : "term_50",
+        "rt"        : "term_179",
+        "link"      : "term_74",
         "keyword"   : "on_light_green"
     },
 
     "MESSAGE" : {
-        "sender"    : "RGB_112",
-        "recipient" : "RGB_112",
-        "to"        : "RGB_50",
-        "clock"     : "RGB_57",
-        "id"        : "RGB_166"
+        "sender"    : "term_112",
+        "recipient" : "term_112",
+        "to"        : "term_50",
+        "clock"     : "term_57",
+        "id"        : "term_166"
     },
 
     "PROFILE" : {
-        "statuses_count"    : "RGB_112",
-        "friends_count"     : "RGB_198",
-        "followers_count"   : "RGB_57",
-        "nick"              : "RGB_198",
-        "profile_image_url" : "RGB_74",
-        "description"       : "RGB_166",
-        "location"          : "RGB_112",
-        "url"               : "RGB_74",
-        "clock"             : "RGB_57"
+        "statuses_count"    : "term_112",
+        "friends_count"     : "term_198",
+        "followers_count"   : "term_57",
+        "nick"              : "term_198",
+        "profile_image_url" : "term_74",
+        "description"       : "term_166",
+        "location"          : "term_112",
+        "url"               : "term_74",
+        "clock"             : "term_57"
     },
 
     "TREND" : {
-        "url": "RGB_74"
+        "url": "term_74"
     }
 }

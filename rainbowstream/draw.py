@@ -24,8 +24,8 @@ def init_cycle():
     Init the cycle
     """
     colors_shuffle = [globals()[i.encode('utf8')]
-        if not i.startswith('RGB_')
-        else RGB(int(i[4:]))
+        if not i.startswith('term_')
+        else term_color(int(i[4:]))
         for i in c['CYCLE_COLOR']]
     return itertools.cycle(colors_shuffle)
 g['cyc'] = init_cycle()
@@ -109,8 +109,8 @@ def color_func(func_name):
     Call color function base on name
     """
     pure = func_name.encode('utf8')
-    if pure.startswith('RGB_') and pure[4:].isdigit():
-        return RGB(int(pure[4:]))
+    if pure.startswith('term_') and pure[4:].isdigit():
+        return term_color(int(pure[4:]))
     return globals()[pure]
 
 
