@@ -781,6 +781,12 @@ def theme():
             else:
                 line = ' '*4 + line
             printNicely(line)
+    elif g['stuff'] == 'current_as_default':
+        path = os.path.dirname(__file__) + '/colorset/init'
+        f = open(path,'w')
+        f.write(c['theme'])
+        f.close()
+        printNicely(light_green('Okay it will be applied from next time :)'))
     else:
         # Change theme
         try:
@@ -1060,7 +1066,7 @@ def listen():
             ['@'],  # unblock
             ['@'],  # report
             [],  # cal
-            g['themes'],  # theme
+            g['themes'] + ['current_as_default'],  # theme
             [],  # help
             [],  # clear
             [],  # quit
