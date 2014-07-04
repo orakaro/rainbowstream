@@ -56,6 +56,11 @@ or
 
     "TREND" : {
         "url": "term_74"
+    },
+    
+    "CAL" : {
+        "days": "term_57",
+        "today": "on_light_blue"
     }
 }
 ```
@@ -83,6 +88,25 @@ There are 16 basic colors:
 These colors will be enough for almost terminals.
 But if your terminal can support 256 colors (check your `$TERM` variable!),
 you can even use `term_0` to `term_255` as the example above.
+
+There are also background highlight colors like:
+  * on_default
+  * on_black
+  * on_red
+  * on_green
+  * on_yellow
+  * on_blue
+  * on_magenta
+  * on_cyan
+  * on_grey
+  * on_light_red
+  * on_light_green
+  * on_light_yellow
+  * on_light_blue
+  * on_light_magenta
+  * on_light_cyan
+  * on_white
+
 
 Color reference can be found at
 [bash colors](http://misc.flogisoft.com/bash/tip_colors_and_formatting) or
@@ -119,6 +143,9 @@ Color reference can be found at
   * `clock`: color for joined time.
 * `TREND`: colors for trend's output:
   * `url`: color for trend's url.
+* `CAL`: colors for calendar's output:
+  * `days`: color for days in current month
+  * `today`: color for today.
 
 ### Theme usage
 While entered Rainbow Stream:
