@@ -58,9 +58,14 @@ docs/_build/
 # Editor
 *sublime*
 .tag*
+*.swp*
+*.swo*
 
 # Virtualenv
 /venv/*
 
 # History completer
 completer.hist
+
+# Consumer
+rainbowstream/consumer.py

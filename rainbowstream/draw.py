@@ -197,7 +197,7 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     meta = color_func(c['TWEET']['clock'])(
         '[' + clock + '] ') + color_func(c['TWEET']['id'])('[id=' + str(rid) + '] ')
     if favorited:
-        meta = meta + color_func(c['TWEET']['favorite'])(u'\u2605')
+        meta = meta + color_func(c['TWEET']['favorited'])(u'\u2605')
     tweet = text.split()
     # Replace url
     if expanded_url:

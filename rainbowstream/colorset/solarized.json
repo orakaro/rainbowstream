@@ -26,7 +26,7 @@
         "nick"      : "term_64",
         "clock"     : "term_32",
         "id"        : "term_124",
-        "favourite" : "term_64",
+        "favorited" : "term_64",
         "rt"        : "term_66",
         "link"      : "term_23",
         "keyword"   : "on_light_green"

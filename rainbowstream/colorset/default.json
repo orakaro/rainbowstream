@@ -51,7 +51,7 @@
         "nick"      : "grey",
         "clock"     : "grey",
         "id"        : "grey",
-        "favourite" : "light_green",
+        "favorited" : "light_green",
         "rt"        : "grey",
         "link"      : "light_cyan",
         "keyword"   : "on_light_yellow"
