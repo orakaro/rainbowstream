@@ -79,5 +79,10 @@
 
     "TREND" : {
         "url": "light_cyan"
+    },
+
+    "CAL" : {
+        "days": "grey",
+        "today": "on_grey"
     }
 }

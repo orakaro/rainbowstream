@@ -18,7 +18,6 @@ from .db import *
 db = RainbowDB()
 g = {}
 
-
 def init_cycle():
     """
     Init the cycle
@@ -27,22 +26,22 @@ def init_cycle():
         if not i.startswith('term_')
         else term_color(int(i[5:]))
         for i in c['CYCLE_COLOR']]
-    return itertools.cycle(colors_shuffle)
-g['cyc'] = init_cycle()
+    return colors_shuffle, itertools.cycle(colors_shuffle)
+g['colors_shuffle'], g['cyc'] = init_cycle()
 
 
 def notify_cycle():
     """
     Notify from rainbow
     """
-    g['cyc'] = init_cycle()
+    g['colors_shuffle'], g['cyc'] = init_cycle()
 
 
 def order_rainbow(s):
     """
     Print a string with ordered color with each character
     """
-    c = [colors_shuffle[i % 7](s[i]) for i in xrange(len(s))]
+    c = [g['colors_shuffle'][i % 7](s[i]) for i in xrange(len(s))]
     return reduce(lambda x, y: x + y, c)
 
 
@@ -50,7 +49,7 @@ def random_rainbow(s):
     """
     Print a string with random color with each character
     """
-    c = [random.choice(colors_shuffle)(i) for i in s]
+    c = [random.choice(g['colors_shuffle'])(i) for i in s]
     return reduce(lambda x, y: x + y, c)
 
 
@@ -84,6 +83,25 @@ def ascii_art(text):
     print('\n'.join(
         [next(g['cyc'])(i) for i in fi.split('\n')]
     ))
+
+
+def show_calendar(month, date, rel):
+    """
+    Show the calendar in rainbow mode
+    """
+    month = random_rainbow(month)
+    date = ' '.join([cycle_color(i) for i in date.split(' ')])
+    today = str(int(os.popen('date +\'%d\'').read().strip()))
+    # Display
+    printNicely(month)
+    printNicely(date)
+    for line in rel:
+        ary = line.split(' ')
+        ary = map(lambda x: color_func(c['CAL']['today'])(x)
+            if x == today
+            else color_func(c['CAL']['days'])(x)
+            , ary)
+        printNicely(' '.join(ary))
 
 
 def check_theme():

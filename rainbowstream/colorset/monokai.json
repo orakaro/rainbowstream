@@ -54,5 +54,10 @@
 
     "TREND" : {
         "url": "term_74"
+    },
+
+    "CAL" : {
+        "days": "term_57",
+        "today": "on_light_blue"
     }
 }

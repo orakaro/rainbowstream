@@ -54,5 +54,10 @@
 
     "TREND" : {
         "url": "term_23"
+    },
+
+    "CAL" : {
+        "days": "term_64",
+        "today": "on_light_green"
     }
 }

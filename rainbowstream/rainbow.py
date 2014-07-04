@@ -751,17 +751,8 @@ def cal():
     # Format
     rel = os.popen('cal').read().split('\n')
     month = rel.pop(0)
-    month = random_rainbow(month)
     date = rel.pop(0)
-    date = ' '.join([cycle_color(i) for i in date.split(' ')])
-    today = str(int(os.popen('date +\'%d\'').read().strip()))
-    # Display
-    printNicely(month)
-    printNicely(date)
-    for line in rel:
-        ary = line.split(' ')
-        ary = map(lambda x: on_grey(x) if x == today else grey(x), ary)
-        printNicely(' '.join(ary))
+    show_calendar(month, date, rel)
 
 
 def theme():
@@ -984,8 +975,8 @@ def reset():
         printNicely(magenta('Need tips ? Type "h" and hit Enter key!'))
     g['reset'] = False
     try:
-        printNicely(eval(g['cmd']))
-    except:
+        printNicely(str(eval(g['cmd'])))
+    except Exception:
         pass
 
 
@@ -1092,8 +1083,7 @@ def listen():
         try:
             g['stuff'] = ' '.join(line.split()[1:])
             process(cmd)()
-        except Exception as e:
-            print e
+        except Exception:
             printNicely(red('OMG something is wrong with Twitter right now.'))
         # Not redisplay prefix
         if cmd in ['switch', 't', 'rt', 'rep']:
@@ -1133,18 +1123,18 @@ def stream(domain, args, name='Rainbow Stream'):
         domain=domain,
         **stream_args)
 
-    if domain == c['USER_DOMAIN']:
-        tweet_iter = stream.user(**query_args)
-    elif domain == c['SITE_DOMAIN']:
-        tweet_iter = stream.site(**query_args)
-    else:
-        if args.track_keywords:
-            tweet_iter = stream.statuses.filter(**query_args)
-        else:
-            tweet_iter = stream.statuses.sample()
-
-    # Iterate over the stream.
     try:
+        if domain == c['USER_DOMAIN']:
+            tweet_iter = stream.user(**query_args)
+        elif domain == c['SITE_DOMAIN']:
+            tweet_iter = stream.site(**query_args)
+        else:
+            if args.track_keywords:
+                tweet_iter = stream.statuses.filter(**query_args)
+            else:
+                tweet_iter = stream.statuses.sample()
+
+        # Iterate over the stream.
         for tweet in tweet_iter:
             if tweet is None:
                 printNicely("-- None --")
@@ -1162,10 +1152,10 @@ def stream(domain, args, name='Rainbow Stream'):
                     fil=args.filter,
                     ig=args.ignore,
                 )
-    except:
+    except TwitterHTTPError:
+        printNicely('')
         printNicely(
-            magenta("I'm afraid we have problem with twitter'S maximum connection."))
-        printNicely(magenta("Let's try again later."))
+            magenta("We have maximum connection problem with twitter'stream API right now :("))
 
 
 def fly():
@@ -1174,11 +1164,22 @@ def fly():
     """
     # Spawn stream process
     args = parse_arguments()
-    get_decorated_name()
+    try:
+        get_decorated_name()
+
+    except TwitterHTTPError:
+        printNicely('')
+        printNicely(
+            magenta("I'm afraid we have maximum connection problem with twitter right now :("))
+        printNicely(magenta("Let's try again later."))
+        save_history()
+        os.system('rm -rf rainbow.db')
+        sys.exit()
+
     p = Process(
         target=stream,
         args=(
-            c['USER_DOMAIN'],
+        c['USER_DOMAIN'],
             args,
             g['original_name']))
     p.start()
