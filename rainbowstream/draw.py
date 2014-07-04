@@ -28,13 +28,15 @@ def init_cycle():
         for i in c['CYCLE_COLOR']]
     return itertools.cycle(colors_shuffle)
 g['cyc'] = init_cycle()
+g['cache'] = {}
 
 
-def notify_cycle():
+def reset_cycle():
     """
     Notify from rainbow
     """
     g['cyc'] = init_cycle()
+    g['cache'] = {}
 
 
 def order_rainbow(s):
@@ -65,13 +67,11 @@ def Memoize(func):
     """
     Memoize decorator
     """
-    cache = {}
-
     @wraps(func)
     def wrapper(*args):
-        if args not in cache:
-            cache[args] = func(*args)
-        return cache[args]
+        if args not in g['cache']:
+            g['cache'][args] = func(*args)
+        return g['cache'][args]
     return wrapper
 
 

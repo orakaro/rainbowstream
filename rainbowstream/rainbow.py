@@ -799,7 +799,7 @@ def theme():
             # Update db and reset colors
             db.theme_update(g['stuff'])
             c['theme'] = g['stuff']
-            notify_cycle()
+            reset_cycle()
             g['decorated_name'] = color_func(
                 c['DECORATED_NAME'])(
                 '[@' + g['original_name'] + ']: ')

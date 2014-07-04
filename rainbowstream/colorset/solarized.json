@@ -58,6 +58,6 @@
 
     "CAL" : {
         "days": "term_64",
-        "today": "on_light_green"
+        "today": "light_green"
     }
 }
