@@ -172,9 +172,11 @@ Here is full list of supported command:
 
 **Screening Commands**
 
--  ``theme`` will list available themes. ``theme monokai`` will apply *monokai*
-theme immedaitely.
-
+-  ``theme`` will list available themes. 
+  
+  + ``theme monokai`` will apply *monokai* theme immedaitely.
+  + ``theme current_as_default`` will remember current theme as next time default.
+  
 -  ``h`` will show the help.
 
 -  ``c`` will clear the screen.
