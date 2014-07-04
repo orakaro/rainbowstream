@@ -26,31 +26,39 @@ def init_cycle():
         if not i.startswith('term_')
         else term_color(int(i[5:]))
         for i in c['CYCLE_COLOR']]
-    return colors_shuffle, itertools.cycle(colors_shuffle)
-g['colors_shuffle'], g['cyc'] = init_cycle()
+    return itertools.cycle(colors_shuffle)
+g['cyc'] = init_cycle()
 
 
 def notify_cycle():
     """
     Notify from rainbow
     """
-    g['colors_shuffle'], g['cyc'] = init_cycle()
+    g['cyc'] = init_cycle()
 
 
 def order_rainbow(s):
     """
     Print a string with ordered color with each character
     """
-    c = [g['colors_shuffle'][i % 7](s[i]) for i in xrange(len(s))]
-    return reduce(lambda x, y: x + y, c)
+    colors_shuffle = [globals()[i.encode('utf8')]
+        if not i.startswith('term_')
+        else term_color(int(i[5:]))
+        for i in c['CYCLE_COLOR']]
+    colored = [colors_shuffle[i % 7](s[i]) for i in xrange(len(s))]
+    return reduce(lambda x, y: x + y, colored)
 
 
 def random_rainbow(s):
     """
     Print a string with random color with each character
     """
-    c = [random.choice(g['colors_shuffle'])(i) for i in s]
-    return reduce(lambda x, y: x + y, c)
+    colors_shuffle = [globals()[i.encode('utf8')]
+        if not i.startswith('term_')
+        else term_color(int(i[5:]))
+        for i in c['CYCLE_COLOR']]
+    colored = [random.choice(colors_shuffle)(i) for i in s]
+    return reduce(lambda x, y: x + y, colored)
 
 
 def Memoize(func):
