@@ -15,8 +15,8 @@
     // Autocomplete history file name
     "HISTORY_FILENAME" : "completer.hist",
     // Image config
-    "IMAGE_SHIFT" : "10",
-    "IMAGE_MAX_HEIGHT" : "40",
+    "IMAGE_SHIFT" : 10,
+    "IMAGE_MAX_HEIGHT" : 40,
     // Stream config
     "USER_DOMAIN" : "userstream.twitter.com",
     "PUBLIC_DOMAIN" : "stream.twitter.com",
