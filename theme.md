@@ -5,14 +5,16 @@
 ![Monokai](./screenshot/themes/Monokai.png)
 #### Solarized
 ![Solarized](./screenshot/themes/Solarized.png)
+#### Tomorrow Night
+![Solarized](./screenshot/themes/TomorrowNight.png)
+#### Larapaste
+![Solarized](./screenshot/themes/larapaste.png)
 
 ## Customization
 Create a file `~/.rainbow_config.json` and follow next instruction.
 
 Examples are available in
-[Monokai theme](https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/monokai.json)
-or
-[Solarized theme](https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/solarized.json).
+[Themes folder](https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset)
 
 ### Custom config
  * Config file's name should be exactly `.rainbow_config.json` and placed at home directory.
