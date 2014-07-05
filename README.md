@@ -69,6 +69,10 @@ Theme's screenshot:
 ![Monokai](./screenshot/themes/Monokai.png)
 * Solarized
 ![Solarized](./screenshot/themes/Solarized.png)
+* Tomorrow Night
+![Solarized](./screenshot/themes/TomorrowNight.png)
+* Larapaste
+![Solarized](./screenshot/themes/larapaste.png)
 
 For detaile information, see [theme usage and customization](https://github.com/DTVD/rainbowstream/blob/master/theme.md)
 
