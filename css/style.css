@@ -1063,3 +1063,8 @@
 	  	width: 100%;
 	  	height: 100%;
 	  }
+	  .rsi img{
+    	max-width:100% !important;
+    	height:auto;
+    	display:block;
+	  }
