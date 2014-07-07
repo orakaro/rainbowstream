@@ -40,7 +40,7 @@ Just type
 
 .. code:: bash
 
-    rainbow
+    rainbowstream
 
 and see your stream.
 
@@ -49,7 +49,7 @@ You can try it with:
 
 .. code:: bash
 
-    rainbow -iot # Or rainbow --image-on-term
+    rainbowstream -iot # Or rainbowstream --image-on-term
 
 In the first time you will be asked for authorization of Rainbow Stream
 app at Twitter. Just click the “Authorize access” button and paste PIN
@@ -198,6 +198,12 @@ Theme’s screenshot:
 
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/Solarized.png
    :alt: solarized
+
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/TomorrowNight.png
+   :alt: tomorrownight
+
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/larapaste.png
+   :alt: larapaste
 
 For detaile information, see `theme usage and customization`_.
 
