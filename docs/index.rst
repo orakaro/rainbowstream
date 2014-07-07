@@ -193,14 +193,22 @@ You can either change theme by ``theme`` command or create your favorite one.
 
 Theme’s screenshot:
 
+- Monokai
+
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/Monokai.png
    :alt: monokai
+
+- Solarized
 
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/Solarized.png
    :alt: solarized
 
+- Tomorrow Night
+
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/TomorrowNight.png
    :alt: tomorrownight
+
+- Larapaste
 
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/larapaste.png
    :alt: larapaste
