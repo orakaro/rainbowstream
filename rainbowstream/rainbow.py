@@ -10,6 +10,7 @@ import signal
 import argparse
 import time
 import requests
+import webbrowser
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
@@ -36,6 +37,7 @@ cmdset = [
     'mentions',
     't',
     'rt',
+    'quote',
     'allrt',
     'fav',
     'rep',
@@ -44,6 +46,7 @@ cmdset = [
     's',
     'mes',
     'show',
+    'open',
     'ls',
     'inbox',
     'sent',
@@ -310,6 +313,30 @@ def retweet():
     t.statuses.retweet(id=tid, include_entities=False, trim_user=True)
 
 
+def quote():
+    """
+    Quote a tweet
+    """
+    t = Twitter(auth=authen())
+    try:
+        id = int(g['stuff'].split()[0])
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    tweet = t.statuses.show(id=tid)
+    screen_name = tweet['user']['screen_name']
+    text = tweet['text']
+    quote = '\"@' + screen_name + ': ' + text + '\"'
+    quote = quote.encode('utf8')
+    printNicely(light_magenta('Compose mode:'))
+    extra = raw_input(quote)
+    if extra:
+        t.statuses.update(status=quote+extra)
+    else:
+        printNicely(light_magenta('No text added.'))
+
+
 def allretweet():
     """
     List all retweet
@@ -462,6 +489,26 @@ def show():
             img.show()
     except:
         printNicely(red('Sorry I can\'t show this image.'))
+
+
+def open():
+    """
+    Open url
+    """
+    t = Twitter(auth=authen())
+    try:
+        if not g['stuff'].isdigit():
+            return
+        tid = db.rainbow_to_tweet_query(g['stuff'])[0].tweet_id
+        tweet = t.statuses.show(id=tid)
+        link_ary = [u for u in tweet['text'].split() if u.startswith('http://')]
+        if not link_ary:
+            printNicely(light_magenta('No url here @.@!'))
+            return
+        for link in link_ary:
+            webbrowser.open(link)
+    except:
+        printNicely(red('Sorry I can\'t open url in this tweet.'))
 
 
 def list():
@@ -860,6 +907,10 @@ def help():
         light_green('rt 12 ') + ' will retweet to tweet with ' + \
         light_yellow('[id=12]') + '.\n'
     usage += s * 2 + \
+        light_green('quote 12 ') + ' will quote the tweet with ' + \
+        light_yellow('[id=12]') + '. If no extra text is added, ' + \
+        'the quote will be canceled.\n'
+    usage += s * 2 + \
         light_green('allrt 12 20 ') + ' will list 20 newest retweet of the tweet with ' + \
         light_yellow('[id=12]') + '.\n'
     usage += s * 2 + light_green('rep 12 oops') + ' will reply "' + \
@@ -876,6 +927,8 @@ def help():
         light_yellow('[id=12]') + '.\n'
     usage += s * 2 + light_green('show image 12') + ' will show image in tweet with ' + \
         light_yellow('[id=12]') + ' in your OS\'s image viewer.\n'
+    usage += s * 2 + light_green('open 12') + ' will open url in tweet with ' + \
+        light_yellow('[id=12]') + ' in your OS\'s default browser.\n'
 
     # Direct message
     usage += '\n'
@@ -1000,6 +1053,7 @@ def process(cmd):
             mentions,
             tweet,
             retweet,
+            quote,
             allretweet,
             favorite,
             reply,
@@ -1008,6 +1062,7 @@ def process(cmd):
             search,
             message,
             show,
+            open,
             list,
             inbox,
             sent,
@@ -1044,6 +1099,7 @@ def listen():
             [],  # mentions
             [],  # tweet
             [],  # retweet
+            [],  # quote
             [],  # allretweet
             [],  # favorite
             [],  # reply
@@ -1052,6 +1108,7 @@ def listen():
             ['#'],  # search
             ['@'],  # message
             ['image'],  # show image
+            [''],  # open url
             ['fl', 'fr'],  # list
             [],  # inbox
             [],  # sent
