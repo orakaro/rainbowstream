@@ -96,6 +96,9 @@ Here is full list of supported command:
 -  ``rt 12`` will retweet the tweet with *[id=12]*. You can see id of
    each tweet beside the time.
 
+-  ``quote 12`` will quote the tweet with *[id=12]*. If no extra text is added,
+   the quote will be cancelled.
+
 -  ``allrt 12 20`` will list 20 newest retweets of the tweet with *[id=12]*. If the number of retweets is not specified, 5 newest retweets will be listed instead.
 
 -  ``rep 12 Really`` will reply *‘Really’* to the tweet with *[id=12]*.
@@ -108,6 +111,9 @@ Here is full list of supported command:
 
 -  ``show image 12`` will show the image in tweet with *[id=12]* in your
    OS’s image viewer.
+
+-  ``open 12`` will open url in tweet with *[id=12]* in your
+   OS’s default browser.
 
 **Direct Messages Commands**
 
