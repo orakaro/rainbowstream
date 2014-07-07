@@ -38,14 +38,14 @@ pip install rainbowstream
 #### The stream
 Just type
 ```bash
-rainbow
+rainbowstream
 ```
 and see your stream.
 
 I shipped a feature which can display **tweet's images directly on terminal**.
 You can try it with:
 ```bash
-rainbow -iot # Or rainbow --image-on-term
+rainbowstream -iot # Or rainbowstream --image-on-term
 ```
 
 In the first time you will be asked for authorization of Rainbow Stream app at Twitter.
