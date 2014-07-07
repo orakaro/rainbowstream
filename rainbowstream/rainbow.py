@@ -491,7 +491,7 @@ def show():
         printNicely(red('Sorry I can\'t show this image.'))
 
 
-def open():
+def urlopen():
     """
     Open url
     """
@@ -829,6 +829,7 @@ def theme():
                 line = ' '*4 + line
             printNicely(line)
     elif g['stuff'] == 'current_as_default':
+        # Set default
         path = os.path.dirname(__file__) + '/colorset/init'
         f = open(path,'w')
         f.write(c['theme'])
@@ -1062,7 +1063,7 @@ def process(cmd):
             search,
             message,
             show,
-            open,
+            urlopen,
             list,
             inbox,
             sent,
@@ -1146,7 +1147,8 @@ def listen():
         try:
             g['stuff'] = ' '.join(line.split()[1:])
             process(cmd)()
-        except Exception:
+        except Exception,e :
+            print e
             printNicely(red('OMG something is wrong with Twitter right now.'))
         # Not redisplay prefix
         if cmd in ['switch', 't', 'rt', 'rep']:
