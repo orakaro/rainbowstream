@@ -52,7 +52,7 @@ Just type
 
 .. code:: bash
 
-    rainbow
+    rainbowstream
 
 and see your stream.
 
@@ -61,7 +61,7 @@ You can try it with:
 
 .. code:: bash
 
-    rainbow -iot # Or rainbow --image-on-term
+    rainbowstream -iot # Or rainbowstream --image-on-term
 
 In the first time you will be asked for authorization of Rainbow Stream
 app at Twitter. Just click the “Authorize access” button and paste PIN
