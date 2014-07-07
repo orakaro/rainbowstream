@@ -98,6 +98,17 @@ Theme’s screenshot:
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/Solarized.png
    :alt: solarized
 
+- Tomorrow Night
+
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/TomorrowNight.png
+   :alt: tomorrownight
+
+- Larapaste
+
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/larapaste.png
+   :alt: larapaste
+
+
 For detaile information, see `theme usage and customization`_.
 
 Bug and feature requests
