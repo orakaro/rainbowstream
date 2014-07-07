@@ -329,7 +329,10 @@ def quote():
     text = tweet['text']
     quote = '\"@' + screen_name + ': ' + text + '\"'
     quote = quote.encode('utf8')
-    printNicely(light_magenta('Compose mode:'))
+    notice = light_magenta('Compose mode ')
+    notice += light_yellow('(Enter nothing will cancel the quote)')
+    notice += light_magenta(':')
+    printNicely(notice)
     extra = raw_input(quote)
     if extra:
         t.statuses.update(status=quote+extra)
