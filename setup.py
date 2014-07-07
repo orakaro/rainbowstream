@@ -41,6 +41,6 @@ setup(name='rainbowstream',
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]
-      rainbow=rainbowstream.rainbow:fly
+      rainbowstream=rainbowstream.rainbow:fly
       """,
       )

@@ -837,6 +837,7 @@ def theme():
         f = open(path,'w')
         f.write(c['theme'])
         f.close()
+        os.system('chmod 777 ' + path)
         printNicely(light_green('Okay it will be applied from next time :)'))
     else:
         # Change theme
