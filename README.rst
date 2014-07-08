@@ -16,10 +16,6 @@ Showcase
 ----------
 Screencast: https://www.youtube.com/watch?v=tykCvPMJq8s
 
-Screenshot:
-
-.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamAll.png
-   :alt: rainbowstream
 
 Install
 -------
