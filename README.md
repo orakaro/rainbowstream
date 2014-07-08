@@ -84,7 +84,7 @@ If you want to build a runnable version yourself, follow these simple steps
 * [Create your own Twitter Application](https://apps.twitter.com/app/new)
 * Get your Twitter application's API key and secret
 * Fork this repo
-* Create a file `consumer.py` in [`rainbowstream`](https://github.com/DTVD/rainbowstream/tree/master/rainbowstream) folder with folowwing content.
+* Create a file `consumer.py` in [`rainbowstream`](https://github.com/DTVD/rainbowstream/tree/master/rainbowstream) folder with following content
 ```python
 # Consumer information
 CONSUMER_KEY = 'APIKey' # Your Twitter application's API key
