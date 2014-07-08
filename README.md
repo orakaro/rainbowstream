@@ -94,8 +94,8 @@ CONSUMER_SECRET = 'APISecret' # Your Twitter application's API secret
 ```bash
 # cd to directory which contains setup.py
 pip install -e .
-pip list # confirm installed version
-rainbowstream # Local version of rainbowstream
+pip list | grep rainbowstream # confirm installed version
+rainbowstream # local version of rainbowstream
 ```
 
 ## Contributing
