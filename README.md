@@ -13,7 +13,7 @@ Screencast:
 https://www.youtube.com/watch?v=tykCvPMJq8s
 <br>
 
-Screenshot:
+Screenshot: (Click to see)
 ![rainbowstream](https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamAll.png)
 
 ## Install
