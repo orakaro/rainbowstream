@@ -14,7 +14,7 @@ https://www.youtube.com/watch?v=tykCvPMJq8s
 <br>
 
 Screenshot:
-![rainbowstream](./screenshot/RainbowStreamAll.png)
+![rainbowstream](https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamAll.png)
 
 ## Install
 You will need Python 2.7+ and pip.
