@@ -949,7 +949,7 @@ def help():
 
     # Follower and following
     usage += '\n'
-    usage += s + grey(u'\u266A' + ' Fiends and followers \n')
+    usage += s + grey(u'\u266A' + ' Friends and followers \n')
     usage += s * 2 + \
         light_green('ls fl') + \
         ' will list all followers (people who are following you).\n'
