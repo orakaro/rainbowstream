@@ -256,8 +256,11 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     # Display Image
     if iot and media_url:
         for mu in media_url:
-            response = requests.get(mu)
-            image_to_display(StringIO(response.content))
+            try:
+                response = requests.get(mu)
+                image_to_display(StringIO(response.content))
+            except:
+                printNicely(red('Sorry, image link is broken'))
 
 
 def print_message(m):
@@ -386,8 +389,11 @@ def show_profile(u, iot=False):
     printNicely('')
     printNicely(line1)
     if iot:
-        response = requests.get(profile_image_url)
-        image_to_display(StringIO(response.content), 2, 20)
+        try:
+            response = requests.get(profile_image_url)
+            image_to_display(StringIO(response.content), 2, 20)
+        except:
+            pass
     else:
         printNicely(line2)
     for line in [line3, line4, line5, line6]:
