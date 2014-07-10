@@ -1,16 +1,15 @@
 from setuptools import setup, find_packages
 
-version = '0.2.5'
+version = '0.2.6'
 
 install_requires = [
+    "python-dateutil",
+    "requests",
+    "pyfiglet",
     "SQLAlchemy",
     "pysqlite",
-    "colorama",
-    "pyfiglet",
-    "python-dateutil",
     "twitter",
     "Pillow",
-    "requests",
 ]
 
 setup(name='rainbowstream',
@@ -31,7 +30,7 @@ setup(name='rainbowstream',
       ],
       keywords='twitter, command-line tools, web 2.0, stream API',
       author='Vu Nhat Minh',
-      author_email='nhatminh_179@hotmail.com',
+      author_email='nhatminh179@gmail.com',
       url='https://github.com/DTVD/rainbowstream',
       license='MIT License',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
