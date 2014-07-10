@@ -122,7 +122,7 @@ Color reference can be found at
 * `TWEET`: colors of parts in a tweet's ouput.
   * `nick` : color for Twitter __username__.
   * `clock`: color for time of tweet.
-  * `id`: color for Tweet's id
+  * `id`: color for tweet's id
   * `favorite`: color for the star symbol when a tweet is favorited by you
   * `rt`: color for `RT` word in tweet's content.
   * `link`: color for an url
