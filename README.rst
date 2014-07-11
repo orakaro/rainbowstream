@@ -20,20 +20,29 @@ Screencast: https://www.youtube.com/watch?v=tykCvPMJq8s
 Install
 -------
 
-You will need Python 2.7+ and pip.
+The quick way
+^^^^^^^^^^^^^
+
+You will need Python 2.7 and pip.
 
 .. code:: bash
 
     sudo pip install rainbowstream
 
-or try with a virtualenv
+
+The recommended way
+^^^^^^^^^^^^^^^^^^^
+
+Use `virtualenv`_
 
 .. code:: bash
 
-    sudo pip install virtualenv # skip if you already have virtualenv
     virtualenv venv
-    source venv/bin/activate # use the brand new virtualenv.
+    # Python 3 users : use -p to specify your Python 3 localtion as below
+    # virtualenv -p /usr/bin/python3 venv
+    source venv/bin/activate
     pip install rainbowstream
+
 
 Usage
 -----
@@ -131,3 +140,4 @@ details
 .. _Read The Docs: http://rainbowstream.readthedocs.org/en/latest/
 .. _config guide: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
+.. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
