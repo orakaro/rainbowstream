@@ -27,11 +27,11 @@ class RainbowCompleter(object):
             words = origline.split()
 
             if not words:
-                self.current_candidates = sorted(self.options.keys())
+                self.current_candidates = sorted([c for c in self.options])
             else:
                 try:
                     if begin == 0:
-                        candidates = self.options.keys()
+                        candidates = [c for c in self.options]
                     elif words[-1] in self.options[words[0]]:
                         candidates = []
                     else:

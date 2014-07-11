@@ -7,13 +7,13 @@ import time
 from twitter.util import printNicely
 from functools import wraps
 from pyfiglet import figlet_format
-from functools import reduce
-from StringIO import StringIO
 from dateutil import parser
 from .c_image import *
 from .colors import *
 from .config import *
 from .db import *
+from .py3patch import *
+
 
 db = RainbowDB()
 g = {}
@@ -48,7 +48,7 @@ def order_rainbow(s):
         else term_color(int(i[5:]))
         for i in c['CYCLE_COLOR']]
     colored = [colors_shuffle[i % 7](s[i]) for i in xrange(len(s))]
-    return reduce(lambda x, y: x + y, colored)
+    return ''.join(colored)
 
 
 def random_rainbow(s):
@@ -60,7 +60,7 @@ def random_rainbow(s):
         else term_color(int(i[5:]))
         for i in c['CYCLE_COLOR']]
     colored = [random.choice(colors_shuffle)(i) for i in s]
-    return reduce(lambda x, y: x + y, colored)
+    return ''.join(colored)
 
 
 def Memoize(func):
@@ -105,7 +105,7 @@ def show_calendar(month, date, rel):
     printNicely(date)
     for line in rel:
         ary = line.split(' ')
-        ary = map(lambda x: color_func(c['CAL']['today'])(x)
+        ary = lmap(lambda x: color_func(c['CAL']['today'])(x)
             if x == today
             else color_func(c['CAL']['days'])(x)
             , ary)
@@ -141,10 +141,9 @@ def color_func(func_name):
     """
     Call color function base on name
     """
-    pure = func_name.encode('utf8')
-    if pure.startswith('term_') and pure[5:].isdigit():
-        return term_color(int(pure[5:]))
-    return globals()[pure]
+    if func_name.startswith('term_') and func_name[5:].isdigit():
+        return term_color(int(func_name[5:]))
+    return globals()[func_name]
 
 
 def draw(t, iot=False, keyword=None, fil=[], ig=[]):
@@ -210,25 +209,25 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     # Replace url
     if expanded_url:
         for index in range(len(expanded_url)):
-            tweet = map(
+            tweet = lmap(
                 lambda x: expanded_url[index] if x == url[index] else x,
                 tweet)
     # Highlight RT
-    tweet = map(
+    tweet = lmap(
         lambda x: color_func(
             c['TWEET']['rt'])(x) if x == 'RT' else x,
         tweet)
     # Highlight screen_name
-    tweet = map(lambda x: cycle_color(x) if x[0] == '@' else x, tweet)
+    tweet = lmap(lambda x: cycle_color(x) if x[0] == '@' else x, tweet)
     # Highlight link
-    tweet = map(
+    tweet = lmap(
         lambda x: color_func(
             c['TWEET']['link'])(x) if x[
             0:4] == 'http' else x,
         tweet)
     # Highlight search keyword
     if keyword:
-        tweet = map(
+        tweet = lmap(
             lambda x: color_func(c['TWEET']['keyword'])(x) if
             ''.join(c for c in x if c.isalnum()).lower() == keyword.lower()
             else x,
@@ -296,7 +295,7 @@ def print_message(m):
         '[' + clock + ']') + color_func(
             c['MESSAGE']['id'])(
                 ' [message_id=' + str(rid) + '] ')
-    text = ''.join(map(lambda x: x + '  ' if x == '\n' else x, text))
+    text = ''.join(lmap(lambda x: x + '  ' if x == '\n' else x, text))
 
     line1 = u"{u:>{uw}}:".format(
         u=user,
@@ -350,7 +349,7 @@ def show_profile(u, iot=False):
     profile_image_raw_url = 'Profile photo: ' + \
         color_func(c['PROFILE']['profile_image_url'])(profile_image_url)
     description = ''.join(
-        map(lambda x: x + ' ' * 4 if x == '\n' else x, description))
+        lmap(lambda x: x + ' ' * 4 if x == '\n' else x, description))
     description = color_func(c['PROFILE']['description'])(description)
     location = 'Location : ' + color_func(c['PROFILE']['location'])(location)
     url = 'URL : ' + (color_func(c['PROFILE']['url'])(url) if url else '')

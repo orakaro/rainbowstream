@@ -17,7 +17,6 @@ from twitter.api import *
 from twitter.oauth import OAuth, read_token_file
 from twitter.oauth_dance import oauth_dance
 from twitter.util import printNicely
-from StringIO import StringIO
 
 from .draw import *
 from .colors import *
@@ -26,6 +25,8 @@ from .consumer import *
 from .interactive import *
 from .db import *
 from .c_image import *
+from .py3patch import *
+
 
 g = {}
 db = RainbowDB()
@@ -1151,8 +1152,7 @@ def listen():
         try:
             g['stuff'] = ' '.join(line.split()[1:])
             process(cmd)()
-        except Exception,e :
-            print e
+        except Exception:
             printNicely(red('OMG something is wrong with Twitter right now.'))
         # Not redisplay prefix
         if cmd in ['switch', 't', 'rt', 'rep']:

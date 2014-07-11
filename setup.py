@@ -7,7 +7,6 @@ install_requires = [
     "requests",
     "pyfiglet",
     "SQLAlchemy",
-    "pysqlite",
     "twitter",
     "Pillow",
 ]

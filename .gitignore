@@ -62,7 +62,7 @@ docs/_build/
 *.swo*
 
 # Virtualenv
-/venv/*
+/venv*
 
 # History completer
 completer.hist
