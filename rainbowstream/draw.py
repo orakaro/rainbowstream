@@ -257,8 +257,8 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
         for mu in media_url:
             try:
                 response = requests.get(mu)
-                image_to_display(StringIO(response.content))
-            except:
+                image_to_display(BytesIO(response.content))
+            except Exception:
                 printNicely(red('Sorry, image link is broken'))
 
 
@@ -390,7 +390,7 @@ def show_profile(u, iot=False):
     if iot:
         try:
             response = requests.get(profile_image_url)
-            image_to_display(StringIO(response.content), 2, 20)
+            image_to_display(BytesIO(response.content), 2, 20)
         except:
             pass
     else:

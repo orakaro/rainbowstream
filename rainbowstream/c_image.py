@@ -40,9 +40,9 @@ def image_to_display(path,start=None,length=None):
     i = i.resize((width, height), Image.ANTIALIAS)
     height = min(height, c['IMAGE_MAX_HEIGHT'])
 
-    for y in xrange(height):
+    for y in range(height):
         sys.stdout.write(' ' * start)
-        for x in xrange(width):
+        for x in range(width):
             p = i.getpixel((x, y))
             r, g, b = p[:3]
             pixel_print(rgb2short(r, g, b))

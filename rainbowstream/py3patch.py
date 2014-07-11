@@ -5,9 +5,9 @@ import sys
 
 # StringIO module
 try:
-    from StringIO import StringIO
+    from StringIO import StringIO, BytesIO
 except:
-    from io import StringIO
+    from io import StringIO, BytesIO
 
 # raw_input and map functiion behaviour
 if sys.version[0]=="3": 
