@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.2.7'
+version = '0.2.8'
 
 install_requires = [
     "python-dateutil",
