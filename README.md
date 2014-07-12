@@ -95,6 +95,8 @@ CONSUMER_SECRET = 'APISecret' # Your Twitter application's API secret
 * Use pip to install in local
 ```bash
 # cd to directory which contains setup.py
+virtualenv venv # Python3 users: use -p to specify python3
+source venv/bin/activate
 pip install -e .
 pip list | grep rainbowstream # confirm installed version
 rainbowstream # local version of rainbowstream

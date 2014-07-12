@@ -9,6 +9,8 @@
     "MESSAGES_DISPLAY" : 5,
     // 'trend': max trending topics
     "TREND_MAX" : 10,
+    // List home timeline max
+    "LIST_MAX" : 5,
     // 'switch': Filter and Ignore list ex: ['@fat','@mdo']
     "ONLY_LIST" : [],
     "IGNORE_LIST" : [],
@@ -84,5 +86,14 @@
     "CAL" : {
         "days": "grey",
         "today": "on_grey"
+    },
+
+    "GROUP" : {
+        "name": "grey",
+        "member": "light_green",
+        "subscriber": "light_green",
+        "mode": "grey",
+        "description": "light_yellow",
+        "clock": "grey"
     }
 }

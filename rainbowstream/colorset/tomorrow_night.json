@@ -59,5 +59,14 @@
     "CAL" : {
         "days": "term_103",
         "today": "on_light_blue"
+    },
+
+    "GROUP" : {
+        "name": "term_103",
+        "member": "term_179",
+        "subscriber": "term_30",
+        "mode": "term_54",
+        "description": "term_58",
+        "clock": "term_173"
     }
 }

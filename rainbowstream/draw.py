@@ -411,3 +411,81 @@ def print_trends(trends):
         line = cycle_color(name) + ': ' + color_func(c['TREND']['url'])(url)
         printNicely(line)
     printNicely('')
+
+
+def print_list(group):
+    """
+    Display a list
+    """
+    for g in group:
+        # Format
+        name = g['name']
+        name = color_func(c['GROUP']['name'])(name + ' : ')
+        member = str(g['member_count'])
+        member = color_func(c['GROUP']['member'])(member+' member')
+        subscriber = str(g['subscriber_count'])
+        subscriber = color_func(c['GROUP']['subscriber'])(subscriber+' subscriber')
+        description = g['description'].strip()
+        description = color_func(c['GROUP']['description'])(description)
+        mode = g['mode']
+        mode = color_func(c['GROUP']['mode'])('Type: '+mode)
+        created_at = g['created_at']
+        date = parser.parse(created_at)
+        date = date - datetime.timedelta(seconds=time.timezone)
+        clock = date.strftime('%Y/%m/%d %H:%M:%S')
+        clock = 'Created at ' + color_func(c['GROUP']['clock'])(clock)
+
+        # Save to db
+        db.list_store(g['id'],g['name'])
+
+        # Create lines
+        line1 = ' '*2 + name + member + '  ' + subscriber
+        line2 = ' '*4 + description
+        line3 = ' '*4 + mode
+        line4 = ' '*4 + clock
+
+        # Display
+        printNicely('')
+        printNicely(line1)
+        printNicely(line2)
+        printNicely(line3)
+        printNicely(line4)
+
+    printNicely('')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

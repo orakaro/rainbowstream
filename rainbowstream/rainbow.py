@@ -60,6 +60,7 @@ cmdset = [
     'block',
     'unblock',
     'report',
+    'list',
     'cal',
     'theme',
     'h',
@@ -514,7 +515,7 @@ def urlopen():
         printNicely(red('Sorry I can\'t open url in this tweet.'))
 
 
-def list():
+def ls():
     """
     List friends for followers
     """
@@ -550,9 +551,10 @@ def list():
             rel[u['name']] = '@' + u['screen_name']
         next_cursor = list['next_cursor']
     # Print out result
-    printNicely('All: ' + str(len(rel)) + ' people.')
+    printNicely('All: ' + str(len(rel)) + ' ' + d[target] + '.')
     for name in rel:
-        user = '  ' + cycle_color(name) + grey(' ' + rel[name] + ' ')
+        user = '  ' + cycle_color(name)
+        user +=  color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
         printNicely(user)
 
 
@@ -744,7 +746,8 @@ def muting():
     # Print out result
     printNicely('All: ' + str(len(rel)) + ' people.')
     for name in rel:
-        user = '  ' + cycle_color(name) + grey(' ' + rel[name] + ' ')
+        user = '  ' + cycle_color(name)
+        user +=  color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
         printNicely(user)
 
 
@@ -791,6 +794,139 @@ def report():
             screen_name=screen_name[1:])
         printNicely(green('You reported ' + screen_name + '.'))
     else:
+        printNicely(red('Sorry I can\'t understand.'))
+
+
+def show_lists(t):
+    """
+    list list
+    """
+    rel = t.lists.list(screen_name=g['original_name'])
+    if rel:
+        print_list(rel)
+    else:
+        printNicely(light_magenta('You belong to no lists :)'))
+
+
+def list_home(t):
+    """
+    List home
+    """
+    # Get list name
+    list_name = raw_input(light_magenta('Give me the list\'s name: '))
+    if not list_name:
+        printNicely(light_magenta('No list specified.'))
+        return
+    # Print timeline
+    l = db.list_name_to_id_query(list_name)[0]
+    res = t.lists.statuses(
+        list_id = l.list_id,
+        count = c['LIST_MAX'],
+        include_entities=False)
+    for tweet in res:
+        draw(t=tweet)
+    printNicely('')
+
+
+def list_members(t):
+    """
+    List members
+    """
+    # Get list name
+    list_name = raw_input(light_magenta('Give me the list\'s name: '))
+    if not list_name:
+        printNicely(light_magenta('No list specified.'))
+        return
+    # Members
+    l = db.list_name_to_id_query(list_name)[0]
+    rel = {}
+    next_cursor = -1
+    while next_cursor != 0 :
+        m = t.lists.members(
+            list_id = l.list_id,
+            cursor = next_cursor,
+            include_entities=False)
+        for u in m['users']:
+            rel[u['name']] = '@' + u['screen_name']
+        next_cursor = m['next_cursor']
+    printNicely('All: ' + str(len(rel)) + ' members.')
+    for name in rel:
+        user = '  ' + cycle_color(name)
+        user +=  color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
+        printNicely(user)
+
+
+def list_subscribers(t):
+    """
+    List subscribers
+    """
+    # Get list name
+    list_name = raw_input(light_magenta('Give me the list\'s name: '))
+    if not list_name:
+        printNicely(light_magenta('No list specified.'))
+        return
+    # Subscribers
+    l = db.list_name_to_id_query(list_name)[0]
+    rel = {}
+    next_cursor = -1
+    while next_cursor != 0 :
+        m = t.lists.subscribers(
+            list_id = l.list_id,
+            cursor = next_cursor,
+            include_entities=False)
+        for u in m['users']:
+            rel[u['name']] = '@' + u['screen_name']
+        next_cursor = m['next_cursor']
+    printNicely('All: ' + str(len(rel)) + ' subscribers.')
+    for name in rel:
+        user = '  ' + cycle_color(name)
+        user +=  color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
+        printNicely(user)
+
+
+def list_remove(t):
+    """
+    Remove specific user from a list
+    """
+    # Get list name
+    list_name = raw_input(light_magenta('Give me the list\'s name: '))
+    if not list_name:
+        printNicely(light_magenta('No list specified.'))
+        return
+    # Remove
+    l = db.list_name_to_id_query(list_name)[0]
+    user_name = raw_input(light_magenta('Give me the name of unlucky man: '))
+    try:
+        t.lists.members.destroy(
+            list_id = l.list_id,
+            screen_name = user_name)
+        printNicely(light_green('Okay he\'s gone :)'))
+    except:
+        printNicely(light_magenta('I\'m sorry we can not remove him.'))
+
+
+def list():
+    """
+    Twitter's list
+    """
+    t = Twitter(auth=authen())
+    # List all lists or base on action
+    try:
+        g['list_action'] = g['stuff'].split()[0]
+    except:
+        show_lists(t)
+        return
+
+    # Sub function
+    action_ary = {
+        'home': list_home,
+        'all_mem': list_members,
+        'all_sub': list_subscribers,
+        'rm': list_remove,
+    }
+    try:
+        return action_ary[g['list_action']](t)
+    except:
         printNicely(red('Sorry I can\'t understand.'))
 
 
@@ -869,25 +1005,13 @@ def theme():
                 printNicely(red('No such theme exists.'))
 
 
-def help():
+def help_discover():
     """
-    Help
+    Discover the world
     """
     s = ' ' * 2
-    h, w = os.popen('stty size', 'r').read().split()
-
-    # Start
-    usage = '\n'
-    usage += s + 'Hi boss! I\'m ready to serve you right now!\n'
-    usage += s + '-' * (int(w) - 4) + '\n'
-    usage += s + 'You are ' + \
-        light_yellow('already') + ' on your personal stream.\n'
-    usage += s + 'Any update from Twitter will show up ' + \
-        light_yellow('immediately') + '.\n'
-    usage += s + 'In addtion, following commands are available right now:\n'
-
     # Discover the world
-    usage += '\n'
+    usage = '\n'
     usage += s + grey(u'\u266A' + ' Discover the world \n')
     usage += s * 2 + light_green('trend') + ' will show global trending topics. ' + \
         'You can try ' + light_green('trend US') + ' or ' + \
@@ -902,9 +1026,16 @@ def help():
         ' will show ' + magenta('@mdo') + '\'s home.\n'
     usage += s * 2 + light_green('s #AKB48') + ' will search for "' + \
         light_yellow('AKB48') + '" and return 5 newest tweet.\n'
+    printNicely(usage)
 
+
+def help_tweets():
+    """
+    Tweets
+    """
+    s = ' ' * 2
     # Tweet
-    usage += '\n'
+    usage = '\n'
     usage += s + grey(u'\u266A' + ' Tweets \n')
     usage += s * 2 + light_green('t oops ') + \
         'will tweet "' + light_yellow('oops') + '" immediately.\n'
@@ -934,9 +1065,16 @@ def help():
         light_yellow('[id=12]') + ' in your OS\'s image viewer.\n'
     usage += s * 2 + light_green('open 12') + ' will open url in tweet with ' + \
         light_yellow('[id=12]') + ' in your OS\'s default browser.\n'
+    printNicely(usage)
 
+
+def help_messages():
+    """
+    Messages
+    """
+    s = ' ' * 2
     # Direct message
-    usage += '\n'
+    usage = '\n'
     usage += s + grey(u'\u266A' + ' Direct messages \n')
     usage += s * 2 + light_green('inbox') + ' will show inbox messages. ' + \
         light_green('inbox 7') + ' will show newest 7 messages.\n'
@@ -946,9 +1084,16 @@ def help():
         magenta('@dtvd88') + '.\n'
     usage += s * 2 + light_green('trash 5') + ' will remove message with ' + \
         light_yellow('[message_id=5]') + '.\n'
+    printNicely(usage)
 
+
+def help_friends_and_followers():
+    """
+    Friends and Followers
+    """
+    s = ' ' * 2
     # Follower and following
-    usage += '\n'
+    usage = '\n'
     usage += s + grey(u'\u266A' + ' Friends and followers \n')
     usage += s * 2 + \
         light_green('ls fl') + \
@@ -971,9 +1116,38 @@ def help():
         magenta('@dtvd88') + '.\n'
     usage += s * 2 + light_green('report @dtvd88') + ' will report ' + \
         magenta('@dtvd88') + ' as a spam account.\n'
+    printNicely(usage)
 
+
+def help_list():
+    """
+    Lists
+    """
+    s = ' ' * 2
+    # Twitter list
+    usage = '\n'
+    usage += s + grey(u'\u266A' + ' Twitter list\n')
+    usage += s * 2 + light_green('list') + \
+        ' will show all lists you are belong to.\n'
+    usage += s * 2 + light_green('list home') + \
+        ' will show timeline of list. You will be asked for list\'s name\n'
+    usage += s * 2 + light_green('list mem') + \
+        ' will show list\'s all members.\n'
+    usage += s * 2 + light_green('list sub') + \
+        ' will show list\'s all subscribers.\n'
+    usage += s * 2 + light_green('list rm') + \
+        ' will remove specific person from a list owned by you.' + \
+        ' You will be asked for list\'s name and person\'s name.\n'
+    printNicely(usage)
+
+
+def help_stream():
+    """
+    Stream switch
+    """
+    s = ' ' * 2
     # Switch
-    usage += '\n'
+    usage = '\n'
     usage += s + grey(u'\u266A' + ' Switching streams \n')
     usage += s * 2 + light_green('switch public #AKB') + \
         ' will switch to public stream and follow "' + \
@@ -988,6 +1162,41 @@ def help():
         ' filter will decide nicks will be EXCLUDE.\n'
     usage += s * 2 + light_green('switch mine -d') + \
         ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
+    printNicely(usage)
+
+
+def help():
+    """
+    Help
+    """
+    s = ' ' * 2
+    h, w = os.popen('stty size', 'r').read().split()
+
+    # Start
+    usage = '\n'
+    usage += s + 'Hi boss! I\'m ready to serve you right now!\n'
+    usage += s + '-' * (int(w) - 4) + '\n'
+    usage += s + 'You are ' + \
+        light_yellow('already') + ' on your personal stream.\n'
+    usage += s + 'Any update from Twitter will show up ' + \
+        light_yellow('immediately') + '.\n'
+    usage += s + 'In addtion, following commands are available right now:\n'
+
+    # Twitter help section
+    usage += '\n'
+    usage += s + grey(u'\u266A' + ' Twitter help\n')
+    usage += s * 2 + light_green('h discover') + \
+        ' will show help for discover commands.\n'
+    usage += s * 2 + light_green('h tweets') + \
+        ' will show help for tweets commands.\n'
+    usage += s * 2 + light_green('h messages') + \
+        ' will show help for messages commands.\n'
+    usage += s * 2 + light_green('h friends_and_followers') + \
+        ' will show help for friends and followers commands.\n'
+    usage += s * 2 + light_green('h list') + \
+        ' will show help for list commands.\n'
+    usage += s * 2 + light_green('h stream') + \
+        ' will show help for stream commands.\n'
 
     # Smart shell
     usage += '\n'
@@ -1011,7 +1220,20 @@ def help():
     usage += '\n'
     usage += s + '-' * (int(w) - 4) + '\n'
     usage += s + 'Have fun and hang tight! \n'
-    printNicely(usage)
+
+    # Show help
+    d = {
+        'discover' : help_discover,
+        'tweets' : help_tweets,
+        'messages' : help_messages,
+        'friends_and_followers' : help_friends_and_followers,
+        'list' : help_list,
+        'stream' : help_stream,
+    }
+    if g['stuff']:
+        d[g['stuff'].strip()]()
+    else:
+        printNicely(usage)
 
 
 def clear():
@@ -1068,7 +1290,7 @@ def process(cmd):
             message,
             show,
             urlopen,
-            list,
+            ls,
             inbox,
             sent,
             trash,
@@ -1081,6 +1303,7 @@ def process(cmd):
             block,
             unblock,
             report,
+            list,
             cal,
             theme,
             help,
@@ -1127,9 +1350,10 @@ def listen():
             ['@'],  # block
             ['@'],  # unblock
             ['@'],  # report
+            ['home','all_mem','all_sub','rm'],  # list
             [],  # cal
             g['themes'] + ['current_as_default'],  # theme
-            [],  # help
+            ['discover','tweets','messages','friends_and_followers','list','stream'],  # help
             [],  # clear
             [],  # quit
         ]
@@ -1151,8 +1375,7 @@ def listen():
         try:
             g['stuff'] = ' '.join(line.split()[1:])
             process(cmd)()
-        except Exception,e :
-            print e
+        except Exception:
             printNicely(red('OMG something is wrong with Twitter right now.'))
         # Not redisplay prefix
         if cmd in ['switch', 't', 'rt', 'rep']:

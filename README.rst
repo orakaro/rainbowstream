@@ -110,6 +110,36 @@ Bug and feature requests
 Found a bug or a feature request ?
 Please `create an issue`_ or contact me at `@dtvd88`_
 
+Development
+-----------
+
+If you want to build a runnable version yourself, follow these simple
+steps
+
+-  `Create your own Twitter Application`_
+-  Get your Twitter application’s API key and secret
+-  Fork github's repo
+-  Create a file ``consumer.py`` in ```rainbowstream```_ folder with
+   following content
+
+   .. code:: python
+
+       # Consumer information
+       CONSUMER_KEY = 'APIKey' # Your Twitter application's API key
+       CONSUMER_SECRET = 'APISecret' # Your Twitter application's API secret
+
+-  Use pip to install in local
+
+   .. code:: bash
+
+       # cd to directory which contains setup.py
+       virtualenv venv # Python3 users: use -p to specify python3
+       source venv/bin/activate
+       pip install -e .
+       pip list | grep rainbowstream # confirm installed version
+       rainbowstream # local version of rainbowstream
+
+
 Contributing
 ------------
 I appreciate any help and support. Feel free to `fork`_ and `create a pull request`_.
@@ -131,3 +161,5 @@ details
 .. _Read The Docs: http://rainbowstream.readthedocs.org/en/latest/
 .. _config guide: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
+.. _Create your own Twitter Application: https://apps.twitter.com/app/new
+.. _``rainbowstream``: https://github.com/DTVD/rainbowstream/tree/master/rainbowstream

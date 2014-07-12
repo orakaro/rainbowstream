@@ -59,5 +59,14 @@
     "CAL" : {
         "days": "term_209",
         "today": "on_light_magenta"
+    },
+
+    "GROUP" : {
+        "name": "term_73",
+        "member": "term_220",
+        "subscriber": "term_73",
+        "mode": "term_59",
+        "description": "term_230",
+        "clock": "term_220"
     }
 }
