@@ -20,20 +20,30 @@ Screencast: https://www.youtube.com/watch?v=tykCvPMJq8s
 Install
 -------
 
-You will need Python 2.7+ and pip.
+The quick way
+^^^^^^^^^^^^^
+
+You will need Python and pip (2.7.x or 3.x).
 
 .. code:: bash
 
     sudo pip install rainbowstream
+    # Python 3 users: sudo pip3 install rainbowstream
 
-or try with a virtualenv
+
+The recommended way
+^^^^^^^^^^^^^^^^^^^
+
+Use `virtualenv`_
 
 .. code:: bash
 
-    sudo pip install virtualenv # skip if you already have virtualenv
     virtualenv venv
-    source venv/bin/activate # use the brand new virtualenv.
+    # Python 3 users : use -p to specify your Python 3 localtion as below
+    # virtualenv -p /usr/bin/python3 venv
+    source venv/bin/activate
     pip install rainbowstream
+
 
 Usage
 -----
@@ -163,3 +173,4 @@ details
 .. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _Create your own Twitter Application: https://apps.twitter.com/app/new
 .. _``rainbowstream``: https://github.com/DTVD/rainbowstream/tree/master/rainbowstream
+.. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
