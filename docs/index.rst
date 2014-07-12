@@ -18,11 +18,12 @@ Install
 The quick way
 ^^^^^^^^^^^^^
 
-You will need Python 2.7 and pip.
+You will need Python and pip (2.7.x or 3.x).
 
 .. code:: bash
 
     sudo pip install rainbowstream
+    # Python 3 users: sudo pip3 install rainbowstream
 
 The recommended way
 ^^^^^^^^^^^^^^^^^^^
