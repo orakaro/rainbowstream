@@ -1,5 +1,8 @@
 build/
 venv/
+venv3/
 dist/
 *egg-info*
 completer.hist
+*sublime*
+rainbowstream
