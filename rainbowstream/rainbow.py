@@ -490,7 +490,7 @@ def show():
         media = tweet['entities']['media']
         for m in media:
             res = requests.get(m['media_url'])
-            img = Image.open(StringIO(res.content))
+            img = Image.open(BytesIO(res.content))
             img.show()
     except:
         printNicely(red('Sorry I can\'t show this image.'))
