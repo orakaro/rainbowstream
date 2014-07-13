@@ -98,23 +98,3 @@ class RainbowDB():
         session = Session()
         res = session.query(Theme).all()
         return res
-
-    def list_store(self, list_id, list_name):
-        """
-        Store list id and name
-        """
-        Session = sessionmaker(bind=self.engine)
-        session = Session()
-        l = List(list_id, list_name)
-        session.add(l)
-        session.commit()
-
-    def list_name_to_id_query(self, list_name):
-        """
-        Query base of list id
-        """
-        Session = sessionmaker(bind=self.engine)
-        session = Session()
-        res = session.query(List).filter_by(list_name=list_name).all()
-        return res
-

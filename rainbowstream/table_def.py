@@ -38,18 +38,5 @@ class Theme(Base):
         self.theme_name = theme_name
 
 
-class List(Base):
-
-    __tablename__ = "list"
-
-    list_rid = Column(Integer, primary_key=True)
-    list_id = Column(Integer)
-    list_name = Column(String(50))
-
-    def __init__(self, list_id, list_name):
-        self.list_id = list_id
-        self.list_name = list_name
-
-
 def init_db():
     Base.metadata.create_all(engine)

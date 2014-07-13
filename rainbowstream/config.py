@@ -38,7 +38,8 @@ try:
     if len(lines) > 1:
         raise Exception('More than 1 default theme')
     theme_name = lines[0].strip()
-    default_config = os.path.dirname(__file__)+'/colorset/'+theme_name+'.json'
+    default_config = os.path.dirname(
+        __file__) + '/colorset/' + theme_name + '.json'
     data = load_config(default_config)
     for d in data:
         c[d] = data[d]

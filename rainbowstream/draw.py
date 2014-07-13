@@ -18,14 +18,15 @@ from .py3patch import *
 db = RainbowDB()
 g = {}
 
+
 def init_cycle():
     """
     Init the cycle
     """
     colors_shuffle = [globals()[i.encode('utf8')]
-        if not i.startswith('term_')
-        else term_color(int(i[5:]))
-        for i in c['CYCLE_COLOR']]
+                      if not i.startswith('term_')
+                      else term_color(int(i[5:]))
+                      for i in c['CYCLE_COLOR']]
     return itertools.cycle(colors_shuffle)
 g['cyc'] = init_cycle()
 g['cache'] = {}
@@ -44,9 +45,9 @@ def order_rainbow(s):
     Print a string with ordered color with each character
     """
     colors_shuffle = [globals()[i.encode('utf8')]
-        if not i.startswith('term_')
-        else term_color(int(i[5:]))
-        for i in c['CYCLE_COLOR']]
+                      if not i.startswith('term_')
+                      else term_color(int(i[5:]))
+                      for i in c['CYCLE_COLOR']]
     colored = [colors_shuffle[i % 7](s[i]) for i in xrange(len(s))]
     return ''.join(colored)
 
@@ -56,9 +57,9 @@ def random_rainbow(s):
     Print a string with random color with each character
     """
     colors_shuffle = [globals()[i.encode('utf8')]
-        if not i.startswith('term_')
-        else term_color(int(i[5:]))
-        for i in c['CYCLE_COLOR']]
+                      if not i.startswith('term_')
+                      else term_color(int(i[5:]))
+                      for i in c['CYCLE_COLOR']]
     colored = [random.choice(colors_shuffle)(i) for i in s]
     return ''.join(colored)
 
@@ -106,9 +107,8 @@ def show_calendar(month, date, rel):
     for line in rel:
         ary = line.split(' ')
         ary = lmap(lambda x: color_func(c['CAL']['today'])(x)
-            if x == today
-            else color_func(c['CAL']['days'])(x)
-            , ary)
+                   if x == today
+                   else color_func(c['CAL']['days'])(x), ary)
         printNicely(' '.join(ary))
 
 
@@ -125,9 +125,10 @@ def check_theme():
             config = os.environ.get(
                 'HOME',
                 os.environ.get('USERPROFILE',
-                '')) + os.sep + '.rainbow_config.json'
+                               '')) + os.sep + '.rainbow_config.json'
         else:
-            config = os.path.dirname(__file__) + '/colorset/'+c['theme']+'.json'
+            config = os.path.dirname(
+                __file__) + '/colorset/' + c['theme'] + '.json'
         # Load new config
         data = load_config(config)
         if data:
@@ -418,30 +419,30 @@ def print_list(group):
     """
     for g in group:
         # Format
-        name = g['name']
+        name = g['full_name']
         name = color_func(c['GROUP']['name'])(name + ' : ')
         member = str(g['member_count'])
-        member = color_func(c['GROUP']['member'])(member+' member')
+        member = color_func(c['GROUP']['member'])(member + ' member')
         subscriber = str(g['subscriber_count'])
-        subscriber = color_func(c['GROUP']['subscriber'])(subscriber+' subscriber')
+        subscriber = color_func(
+            c['GROUP']['subscriber'])(
+            subscriber +
+            ' subscriber')
         description = g['description'].strip()
         description = color_func(c['GROUP']['description'])(description)
         mode = g['mode']
-        mode = color_func(c['GROUP']['mode'])('Type: '+mode)
+        mode = color_func(c['GROUP']['mode'])('Type: ' + mode)
         created_at = g['created_at']
         date = parser.parse(created_at)
         date = date - datetime.timedelta(seconds=time.timezone)
         clock = date.strftime('%Y/%m/%d %H:%M:%S')
         clock = 'Created at ' + color_func(c['GROUP']['clock'])(clock)
 
-        # Save to db
-        db.list_store(g['id'],g['name'])
-
         # Create lines
-        line1 = ' '*2 + name + member + '  ' + subscriber
-        line2 = ' '*4 + description
-        line3 = ' '*4 + mode
-        line4 = ' '*4 + clock
+        line1 = ' ' * 2 + name + member + '  ' + subscriber
+        line2 = ' ' * 4 + description
+        line3 = ' ' * 4 + mode
+        line4 = ' ' * 4 + clock
 
         # Display
         printNicely('')
@@ -451,40 +452,3 @@ def print_list(group):
         printNicely(line4)
 
     printNicely('')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

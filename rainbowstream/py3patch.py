@@ -10,10 +10,8 @@ except:
     from io import StringIO, BytesIO
 
 # raw_input and map functiion behaviour
-if sys.version[0]=="3": 
+if sys.version[0] == "3":
     raw_input = input
-    lmap = lambda f,a: list(map(f,a))
+    lmap = lambda f, a: list(map(f, a))
 else:
-    lmap = lambda f,a: map(f,a)
-
-
+    lmap = lambda f, a: map(f, a)

@@ -24,7 +24,7 @@ def pixel_print(ansicolor):
     sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
 
 
-def image_to_display(path,start=None,length=None):
+def image_to_display(path, start=None, length=None):
     rows, columns = os.popen('stty size', 'r').read().split()
     if not start:
         start = c['IMAGE_SHIFT']

@@ -316,7 +316,7 @@ def rgb2short(r, g, b):
     return RGB2SHORT_DICT[rgb_to_hex(m)]
 
 
-def image_to_display(path,start=None,length=None):
+def image_to_display(path, start=None, length=None):
     rows, columns = os.popen('stty size', 'r').read().split()
     if not start:
         start = IMAGE_SHIFT

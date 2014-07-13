@@ -39,8 +39,8 @@ class RainbowCompleter(object):
                         candidates = self.options[first]
 
                     if being_completed:
-                        self.current_candidates = [ w for w in candidates
-                                                    if w.startswith(being_completed) ]
+                        self.current_candidates = [w for w in candidates
+                                                   if w.startswith(being_completed)]
                     else:
                         self.current_candidates = candidates
 
@@ -92,4 +92,3 @@ def init_interactive_shell(d):
         readline.parse_and_bind("bind ^I rl_complete")
     else:
         readline.parse_and_bind("tab: complete")
-

@@ -142,7 +142,7 @@ def get_decorated_name():
     g['decorated_name'] = color_func(c['DECORATED_NAME'])('[' + name + ']: ')
     g['ascii_art'] = True
 
-    files = os.listdir(os.path.dirname(__file__)+'/colorset')
+    files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     themes += ['custom']
     g['themes'] = themes
@@ -337,7 +337,7 @@ def quote():
     printNicely(notice)
     extra = raw_input(quote)
     if extra:
-        t.statuses.update(status=quote+extra)
+        t.statuses.update(status=quote + extra)
     else:
         printNicely(light_magenta('No text added.'))
 
@@ -506,7 +506,8 @@ def urlopen():
             return
         tid = db.rainbow_to_tweet_query(g['stuff'])[0].tweet_id
         tweet = t.statuses.show(id=tid)
-        link_ary = [u for u in tweet['text'].split() if u.startswith('http://')]
+        link_ary = [
+            u for u in tweet['text'].split() if u.startswith('http://')]
         if not link_ary:
             printNicely(light_magenta('No url here @.@!'))
             return
@@ -555,7 +556,7 @@ def ls():
     printNicely('All: ' + str(len(rel)) + ' ' + d[target] + '.')
     for name in rel:
         user = '  ' + cycle_color(name)
-        user +=  color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
+        user += color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
         printNicely(user)
 
 
@@ -748,7 +749,7 @@ def muting():
     printNicely('All: ' + str(len(rel)) + ' people.')
     for name in rel:
         user = '  ' + cycle_color(name)
-        user +=  color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
+        user += color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
         printNicely(user)
 
 
@@ -800,7 +801,7 @@ def report():
 
 def show_lists(t):
     """
-    list list
+    List list
     """
     rel = t.lists.list(screen_name=g['original_name'])
     if rel:
@@ -815,14 +816,18 @@ def list_home(t):
     """
     # Get list name
     list_name = raw_input(light_magenta('Give me the list\'s name: '))
-    if not list_name:
-        printNicely(light_magenta('No list specified.'))
+    # Get list name and owner
+    try:
+        owner, slug = list_name.split('/')
+        if slug.startswith('@'):
+            slug = slug[1:]
+    except:
+        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
         return
-    # Print timeline
-    l = db.list_name_to_id_query(list_name)[0]
     res = t.lists.statuses(
-        list_id = l.list_id,
-        count = c['LIST_MAX'],
+        slug=slug,
+        owner_screen_name=owner,
+        count=c['LIST_MAX'],
         include_entities=False)
     for tweet in res:
         draw(t=tweet)
@@ -835,17 +840,22 @@ def list_members(t):
     """
     # Get list name
     list_name = raw_input(light_magenta('Give me the list\'s name: '))
-    if not list_name:
-        printNicely(light_magenta('No list specified.'))
+    # Get list name and owner
+    try:
+        owner, slug = list_name.split('/')
+        if slug.startswith('@'):
+            slug = slug[1:]
+    except:
+        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
         return
-    # Members
-    l = db.list_name_to_id_query(list_name)[0]
+    # Get members
     rel = {}
     next_cursor = -1
-    while next_cursor != 0 :
+    while next_cursor != 0:
         m = t.lists.members(
-            list_id = l.list_id,
-            cursor = next_cursor,
+            slug=slug,
+            owner_screen_name=owner,
+            cursor=next_cursor,
             include_entities=False)
         for u in m['users']:
             rel[u['name']] = '@' + u['screen_name']
@@ -853,7 +863,7 @@ def list_members(t):
     printNicely('All: ' + str(len(rel)) + ' members.')
     for name in rel:
         user = '  ' + cycle_color(name)
-        user +=  color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
+        user += color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
         printNicely(user)
 
 
@@ -863,17 +873,22 @@ def list_subscribers(t):
     """
     # Get list name
     list_name = raw_input(light_magenta('Give me the list\'s name: '))
-    if not list_name:
-        printNicely(light_magenta('No list specified.'))
+    # Get list name and owner
+    try:
+        owner, slug = list_name.split('/')
+        if slug.startswith('@'):
+            slug = slug[1:]
+    except:
+        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
         return
-    # Subscribers
-    l = db.list_name_to_id_query(list_name)[0]
+    # Get subscribers
     rel = {}
     next_cursor = -1
-    while next_cursor != 0 :
+    while next_cursor != 0:
         m = t.lists.subscribers(
-            list_id = l.list_id,
-            cursor = next_cursor,
+            slug=slug,
+            owner_screen_name=owner,
+            cursor=next_cursor,
             include_entities=False)
         for u in m['users']:
             rel[u['name']] = '@' + u['screen_name']
@@ -881,8 +896,36 @@ def list_subscribers(t):
     printNicely('All: ' + str(len(rel)) + ' subscribers.')
     for name in rel:
         user = '  ' + cycle_color(name)
-        user +=  color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
+        user += color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
         printNicely(user)
+
+
+def list_add(t):
+    """
+    Add specific user to a list
+    """
+    # Get list name
+    list_name = raw_input(light_magenta('Give me the list\'s name: '))
+    # Get list name and owner
+    try:
+        owner, slug = list_name.split('/')
+        if slug.startswith('@'):
+            slug = slug[1:]
+    except:
+        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
+        return
+    # Add
+    user_name = raw_input(light_magenta('Give me name of the newbie: '))
+    if user_name.startswith('@'):
+        user_name = user_name[1:]
+    try:
+        t.lists.members.create(
+            slug=slug,
+            owner_screen_name=owner,
+            screen_name=user_name)
+        printNicely(light_green('Added.'))
+    except:
+        printNicely(light_magenta('I\'m sorry we can not add him/her.'))
 
 
 def list_remove(t):
@@ -891,19 +934,153 @@ def list_remove(t):
     """
     # Get list name
     list_name = raw_input(light_magenta('Give me the list\'s name: '))
-    if not list_name:
-        printNicely(light_magenta('No list specified.'))
+    # Get list name and owner
+    try:
+        owner, slug = list_name.split('/')
+        if slug.startswith('@'):
+            slug = slug[1:]
+    except:
+        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
         return
     # Remove
-    l = db.list_name_to_id_query(list_name)[0]
-    user_name = raw_input(light_magenta('Give me the name of unlucky man: '))
+    user_name = raw_input(light_magenta('Give me name of the unlucky one: '))
+    if user_name.startswith('@'):
+        user_name = user_name[1:]
     try:
         t.lists.members.destroy(
-            list_id = l.list_id,
-            screen_name = user_name)
-        printNicely(light_green('Okay he\'s gone :)'))
+            slug=slug,
+            owner_screen_name=owner,
+            screen_name=user_name)
+        printNicely(light_green('Gone.'))
     except:
-        printNicely(light_magenta('I\'m sorry we can not remove him.'))
+        printNicely(light_magenta('I\'m sorry we can not remove him/her.'))
+
+
+def list_subscribe(t):
+    """
+    Subscribe to a list
+    """
+    # Get list name
+    list_name = raw_input(light_magenta('Give me the list\'s name: '))
+    # Get list name and owner
+    try:
+        owner, slug = list_name.split('/')
+        if slug.startswith('@'):
+            slug = slug[1:]
+    except:
+        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
+        return
+    # Subscribe
+    try:
+        t.lists.subscribers.create(
+            slug=slug,
+            owner_screen_name=owner)
+        printNicely(light_green('Done.'))
+    except:
+        printNicely(
+            light_magenta('I\'m sorry you can not subscribe to this list.'))
+
+
+def list_unsubscribe(t):
+    """
+    Unsubscribe a list
+    """
+    # Get list name
+    list_name = raw_input(light_magenta('Give me the list\'s name: '))
+    # Get list name and owner
+    try:
+        owner, slug = list_name.split('/')
+        if slug.startswith('@'):
+            slug = slug[1:]
+    except:
+        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
+        return
+    # Subscribe
+    try:
+        t.lists.subscribers.destroy(
+            slug=slug,
+            owner_screen_name=owner)
+        printNicely(light_green('Done.'))
+    except:
+        printNicely(
+            light_magenta('I\'m sorry you can not unsubscribe to this list.'))
+
+
+def list_own(t):
+    """
+    List own
+    """
+    rel = []
+    next_cursor = -1
+    while next_cursor != 0:
+        res = t.lists.ownerships(
+            screen_name=g['original_name'],
+            cursor=next_cursor)
+        rel += res['lists']
+        next_cursor = res['next_cursor']
+    if rel:
+        print_list(rel)
+    else:
+        printNicely(light_magenta('You own no lists :)'))
+
+
+def list_new(t):
+    """
+    Create a new list
+    """
+    name = raw_input(light_magenta('New list\'s name: '))
+    mode = raw_input(light_magenta('New list\'s mode (public/private): '))
+    description = raw_input(light_magenta('New list\'s description: '))
+    try:
+        t.lists.create(
+            name=name,
+            mode=mode,
+            description=description)
+        printNicely(light_green(name + ' list is created.'))
+    except:
+        printNicely(red('Oops something is wrong with Twitter :('))
+
+
+def list_update(t):
+    """
+    Update a list
+    """
+    slug = raw_input(light_magenta('Your list that you want to update: '))
+    name = raw_input(light_magenta('Update name (leave blank to unchange): '))
+    mode = raw_input(light_magenta('Update mode (public/private): '))
+    description = raw_input(light_magenta('Update description: '))
+    try:
+        if name:
+            t.lists.update(
+                slug='-'.join(slug.split()),
+                owner_screen_name=g['original_name'],
+                name=name,
+                mode=mode,
+                description=description)
+        else:
+            t.lists.update(
+                slug=slug,
+                owner_screen_name=g['original_name'],
+                mode=mode,
+                description=description)
+        printNicely(light_green(slug + ' list is updated.'))
+    except Exception as e:
+        print e
+        printNicely(red('Oops something is wrong with Twitter :('))
+
+
+def list_delete(t):
+    """
+    Delete a list
+    """
+    slug = raw_input(light_magenta('Your list that you want to update: '))
+    try:
+        t.lists.destroy(
+            slug='-'.join(slug.split()),
+            owner_screen_name=g['original_name'])
+        printNicely(light_green(slug + ' list is deleted.'))
+    except:
+        printNicely(red('Oops something is wrong with Twitter :('))
 
 
 def list():
@@ -917,17 +1094,24 @@ def list():
     except:
         show_lists(t)
         return
-
-    # Sub function
+    # Sub-function
     action_ary = {
         'home': list_home,
         'all_mem': list_members,
         'all_sub': list_subscribers,
+        'add': list_add,
         'rm': list_remove,
+        'sub': list_subscribe,
+        'unsub': list_unsubscribe,
+        'own': list_own,
+        'new': list_new,
+        'update': list_update,
+        'del': list_delete,
     }
     try:
         return action_ary[g['list_action']](t)
-    except:
+    except Exception as e:
+        print e
         printNicely(red('Sorry I can\'t understand.'))
 
 
@@ -956,22 +1140,23 @@ def theme():
                 custom_path = os.environ.get(
                     'HOME',
                     os.environ.get('USERPROFILE',
-                        '')) + os.sep + '.rainbow_config.json'
+                                   '')) + os.sep + '.rainbow_config.json'
                 if not os.path.exists(custom_path):
-                    line += light_magenta(' (create your own config file at ~/.rainbow_config.json)')
+                    line += light_magenta(
+                        ' (create your own config file at ~/.rainbow_config.json)')
                 else:
                     line += light_magenta(' (loaded)')
             else:
                 line += light_magenta(theme)
-            if c['theme'] == theme :
-                line = ' '*2 + light_yellow('* ') + line
+            if c['theme'] == theme:
+                line = ' ' * 2 + light_yellow('* ') + line
             else:
-                line = ' '*4 + line
+                line = ' ' * 4 + line
             printNicely(line)
     elif g['stuff'] == 'current_as_default':
         # Set default
         path = os.path.dirname(__file__) + '/colorset/init'
-        f = open(path,'w')
+        f = open(path, 'w')
         f.write(c['theme'])
         f.close()
         os.system('chmod 777 ' + path)
@@ -981,10 +1166,11 @@ def theme():
         try:
             # Load new config
             if g['stuff'] != 'custom':
-                new_config = os.path.dirname(__file__) + '/colorset/' + g['stuff'] + '.json'
+                new_config = os.path.dirname(
+                    __file__) + '/colorset/' + g['stuff'] + '.json'
             else:
                 new_config = os.environ.get(
-                    'HOME',os.environ.get(
+                    'HOME', os.environ.get(
                         'USERPROFILE',
                         '')) + os.sep + '.rainbow_config.json'
             new_config = load_config(new_config)
@@ -1136,9 +1322,24 @@ def help_list():
         ' will show list\'s all members.\n'
     usage += s * 2 + light_green('list all_sub') + \
         ' will show list\'s all subscribers.\n'
+    usage += s * 2 + light_green('list add') + \
+        ' will add specific person to a list owned by you.' + \
+        ' You will be asked for list\'s name and person\'s name.\n'
     usage += s * 2 + light_green('list rm') + \
         ' will remove specific person from a list owned by you.' + \
         ' You will be asked for list\'s name and person\'s name.\n'
+    usage += s * 2 + light_green('list sub') + \
+        ' will subscribe you to a specific list.\n'
+    usage += s * 2 + light_green('list unsub') + \
+        ' will unsubscribe you from a specific list.\n'
+    usage += s * 2 + light_green('list own') + \
+        ' will show all list owned by you.\n'
+    usage += s * 2 + light_green('list new') + \
+        ' will create a new list.\n'
+    usage += s * 2 + light_green('list update') + \
+        ' will update a list owned by you.\n'
+    usage += s * 2 + light_green('list del') + \
+        ' will delete a list owned by you.\n'
     printNicely(usage)
 
 
@@ -1224,12 +1425,12 @@ def help():
 
     # Show help
     d = {
-        'discover' : help_discover,
-        'tweets' : help_tweets,
-        'messages' : help_messages,
-        'friends_and_followers' : help_friends_and_followers,
-        'list' : help_list,
-        'stream' : help_stream,
+        'discover': help_discover,
+        'tweets': help_tweets,
+        'messages': help_messages,
+        'friends_and_followers': help_friends_and_followers,
+        'list': help_list,
+        'stream': help_stream,
     }
     if g['stuff']:
         d[g['stuff'].strip()]()
@@ -1351,10 +1552,29 @@ def listen():
             ['@'],  # block
             ['@'],  # unblock
             ['@'],  # report
-            ['home','all_mem','all_sub','rm'],  # list
+            [
+                'home',
+                'all_mem',
+                'all_sub',
+                'add',
+                'rm',
+                'sub',
+                'unsub',
+                'own',
+                'new',
+                'update',
+                'del'
+            ],  # list
             [],  # cal
             g['themes'] + ['current_as_default'],  # theme
-            ['discover','tweets','messages','friends_and_followers','list','stream'],  # help
+            [
+                'discover',
+                'tweets',
+                'messages',
+                'friends_and_followers',
+                'list',
+                'stream'
+            ],  # help
             [],  # clear
             [],  # quit
         ]
@@ -1472,7 +1692,7 @@ def fly():
     p = Process(
         target=stream,
         args=(
-        c['USER_DOMAIN'],
+            c['USER_DOMAIN'],
             args,
             g['original_name']))
     p.start()
