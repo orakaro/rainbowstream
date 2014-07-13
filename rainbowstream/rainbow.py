@@ -1317,7 +1317,7 @@ def help_list():
     usage += s * 2 + light_green('list') + \
         ' will show all lists you are belong to.\n'
     usage += s * 2 + light_green('list home') + \
-        ' will show timeline of list. You will be asked for list\'s name\n'
+        ' will show timeline of list. You will be asked for list\'s name.\n'
     usage += s * 2 + light_green('list all_mem') + \
         ' will show list\'s all members.\n'
     usage += s * 2 + light_green('list all_sub') + \

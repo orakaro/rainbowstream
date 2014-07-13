@@ -159,6 +159,34 @@ Here is full list of supported command:
 
 -  ``report @dtvd88`` will report @dtvd88 as a spam account.
 
+**Twitter list**
+
+-  ``list`` will show all lists you are belong to.
+
+-  ``list home`` will show timeline of list. You will be asked for list's name.
+
+-  ``list all_mem`` will show list's all members.
+
+-  ``list all_sub`` will show list's all subscribers.
+
+-  ``list add`` will add specific person to a list owned by you.
+    You will be asked for list's name and person's name.
+
+-  ``list rm`` will remove specific person from a list owned by you.
+    You will be asked for list's name and person's name.
+
+-  ``list sub`` will subscribe you to a specific list.
+
+-  ``list unsub`` will unsubscribe you from a specific list.
+
+-  ``list own`` will show all list owned by you.
+
+-  ``list new`` will create a new list.
+
+-  ``list update`` will update a list owned by you.
+
+-  ``list del`` will delete a list owned by you.
+
 **Switching Stream Commands**
 
 -  ``switch public #AKB48`` will switch current stream to public stream
