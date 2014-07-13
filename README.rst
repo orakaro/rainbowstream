@@ -129,7 +129,7 @@ steps
 -  `Create your own Twitter Application`_
 -  Get your Twitter application’s API key and secret
 -  Fork github's repo
--  Create a file ``consumer.py`` in ```rainbowstream```_ folder with
+-  Create a file ``consumer.py`` in `rainbowstream`_ folder with
    following content
 
    .. code:: python
@@ -172,5 +172,5 @@ details
 .. _config guide: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _Create your own Twitter Application: https://apps.twitter.com/app/new
-.. _``rainbowstream``: https://github.com/DTVD/rainbowstream/tree/master/rainbowstream
+.. _rainbowstream: https://github.com/DTVD/rainbowstream/tree/master/rainbowstream
 .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
