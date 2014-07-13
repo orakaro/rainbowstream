@@ -170,10 +170,8 @@ Here is full list of supported command:
 -  ``list all_sub`` will show list's all subscribers.
 
 -  ``list add`` will add specific person to a list owned by you.
-    You will be asked for list's name and person's name.
 
 -  ``list rm`` will remove specific person from a list owned by you.
-    You will be asked for list's name and person's name.
 
 -  ``list sub`` will subscribe you to a specific list.
 
