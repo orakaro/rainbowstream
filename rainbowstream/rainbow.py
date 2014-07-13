@@ -1064,8 +1064,7 @@ def list_update(t):
                 mode=mode,
                 description=description)
         printNicely(light_green(slug + ' list is updated.'))
-    except Exception as e:
-        print e
+    except:
         printNicely(red('Oops something is wrong with Twitter :('))
 
 
@@ -1110,8 +1109,7 @@ def list():
     }
     try:
         return action_ary[g['list_action']](t)
-    except Exception as e:
-        print e
+    except:
         printNicely(red('Sorry I can\'t understand.'))
 
 
