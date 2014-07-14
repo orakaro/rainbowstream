@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+import sys
 
 version = '0.3.2'
 
@@ -10,6 +11,8 @@ install_requires = [
     "twitter",
     "Pillow",
 ]
+if sys.version[0] == "2":
+    install_requires += "pysqlite"
 
 setup(name='rainbowstream',
       version=version,
