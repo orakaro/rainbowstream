@@ -333,12 +333,12 @@ def image_to_display(path, start=None, length=None):
     height = min(height, IMAGE_MAX_HEIGHT)
 
     for y in xrange(height):
-        print ' ' * start,
+        sys.stdout.write(' ' * start)
         for x in xrange(width):
             p = i.getpixel((x, y))
             r, g, b = p[:3]
             pixel_print(rgb2short(r, g, b))
-        print ''
+        sys.stdout.write('\n')
 
 if __name__ == '__main__':
     image_to_display(sys.argv[1])

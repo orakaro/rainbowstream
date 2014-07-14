@@ -1681,8 +1681,9 @@ def fly():
     except TwitterHTTPError:
         printNicely('')
         printNicely(
-            magenta("I'm afraid we have maximum connection problem with twitter right now :("))
-        printNicely(magenta("Let's try again later."))
+            magenta("Something wrong with Twitter Oauth right now :("))
+        printNicely(
+            magenta("Please delete ~/.rainbow_oauth and try again."))
         save_history()
         os.system('rm -rf rainbow.db')
         sys.exit()
