@@ -10,7 +10,8 @@ Rainbow Stream
 Terminal-based Twitter Client. Realtime tweetstream, compose, search ,
 favorite … and much more fun directly from terminal.
 
-This package is built on the top of `Python Twitter Tool`_ and `Twitter API`_.
+This package is built on the top of `Python Twitter Tool`_ and `Twitter API`_,
+can run on Python 2.7.x and 3.4.x .
 
 Install
 -------
