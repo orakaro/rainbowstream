@@ -265,7 +265,7 @@ steps
 
 -  `Create your own Twitter Application`_
 -  Get your Twitter application’s API key and secret
--  Fork github's repo
+-  Fork github's repo and clone in your system.
 -  Create a file ``consumer.py`` in ```rainbowstream```_ folder with
    following content
 
@@ -279,11 +279,13 @@ steps
 
    .. code:: bash
 
-       # cd to directory which contains setup.py
+       # cd to directory which contains setup.py (cloned directory)
        virtualenv venv # Python3 users: use -p to specify python3
        source venv/bin/activate
        pip install -e .
-       pip list | grep rainbowstream # confirm installed version
+       which rainbowstream # /this-directory/venv/bin/rainbowstream
+       pip list | grep rainbowstream # rainbowstream (0.x.x, /this-directory)
+       # Remove ~/.rainbow_oauth if exists
        rainbowstream # local version of rainbowstream
 
 .. _Create your own Twitter Application: https://apps.twitter.com/app/new
