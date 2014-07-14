@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-version = '0.3.1'
+version = '0.3.2'
 
 install_requires = [
     "python-dateutil",
@@ -21,7 +21,6 @@ setup(name='rainbowstream',
           "Intended Audience :: End Users/Desktop",
           "Natural Language :: English",
           "Operating System :: OS Independent",
-          "Programming Language :: Python :: 2.6",
           "Programming Language :: Python :: 2.7",
           "Programming Language :: Python :: 3.2",
           "Programming Language :: Python :: 3.3",
@@ -30,7 +29,7 @@ setup(name='rainbowstream',
           "Topic :: Utilities",
           "License :: OSI Approved :: MIT License",
       ],
-      keywords='twitter, command-line tools, web 2.0, stream API',
+      keywords='twitter, command-line tools, stream API',
       author='Vu Nhat Minh',
       author_email='nhatminh179@gmail.com',
       url='http://www.rainbowstream.org/',
