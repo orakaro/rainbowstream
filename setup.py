@@ -12,7 +12,7 @@ install_requires = [
     "Pillow",
 ]
 if sys.version[0] == "2":
-    install_requires += "pysqlite"
+    install_requires += ["pysqlite"]
 
 setup(name='rainbowstream',
       version=version,
