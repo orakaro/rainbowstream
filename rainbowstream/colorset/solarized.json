@@ -17,56 +17,56 @@
         * light_magenta
         * light_cyan
         * white
-    and 256 terminal's colors from term_0 to term_255
+    and 256 terminal's colors from 0 to 255
     */
 
-    "DECORATED_NAME" : "term_64",
-    "CYCLE_COLOR" :["term_124","term_32","term_64","term_66","term_130","term_23"],
+    "DECORATED_NAME" : 64,
+    "CYCLE_COLOR" :[124,32,64,66,130,23],
     "TWEET" : {
-        "nick"      : "term_64",
-        "clock"     : "term_32",
-        "id"        : "term_124",
-        "favorited" : "term_64",
-        "rt"        : "term_66",
-        "link"      : "term_23",
+        "nick"      : 64,
+        "clock"     : 32,
+        "id"        : 124,
+        "favorited" : 64,
+        "rt"        : 66,
+        "link"      : 23,
         "keyword"   : "on_light_green"
     },
 
     "MESSAGE" : {
-        "sender"    : "term_64",
-        "recipient" : "term_64",
-        "to"        : "term_130",
-        "clock"     : "term_32",
-        "id"        : "term_124"
+        "sender"    : 64,
+        "recipient" : 64,
+        "to"        : 130,
+        "clock"     : 32,
+        "id"        : 124
     },
 
     "PROFILE" : {
-        "statuses_count"    : "term_124",
-        "friends_count"     : "term_32",
-        "followers_count"   : "term_130",
-        "nick"              : "term_64",
-        "profile_image_url" : "term_23",
-        "description"       : "term_66",
-        "location"          : "term_64",
-        "url"               : "term_23",
-        "clock"             : "term_32"
+        "statuses_count"    : 124,
+        "friends_count"     : 32,
+        "followers_count"   : 130,
+        "nick"              : 64,
+        "profile_image_url" : 23,
+        "description"       : 66,
+        "location"          : 64,
+        "url"               : 23,
+        "clock"             : 32
     },
 
     "TREND" : {
-        "url": "term_23"
+        "url": 23
     },
 
     "CAL" : {
-        "days": "term_64",
+        "days": 64,
         "today": "light_green"
     },
 
     "GROUP" : {
-        "name": "term_64",
-        "member": "term_130",
-        "subscriber": "term_32",
-        "mode": "term_164",
-        "description": "term_66",
-        "clock": "term_32"
+        "name": 64,
+        "member": 130,
+        "subscriber": 32,
+        "mode": 164,
+        "description": 66,
+        "clock": 32
     }
 }

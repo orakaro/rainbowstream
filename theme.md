@@ -24,44 +24,44 @@ Examples are available in
 
 ```json
 {
-    "DECORATED_NAME" : "term_198",
-    "CYCLE_COLOR" :["term_198","term_57","term_166","term_50","term_179","term_74","term_112"],
+    "DECORATED_NAME" : 198,
+    "CYCLE_COLOR" :[198,57,166,50,179,74,112],
     "TWEET" : {
-        "nick"      : "term_112",
-        "clock"     : "term_57",
-        "id"        : "term_166",
-        "favourite" : "term_50",
-        "rt"        : "term_179",
-        "link"      : "term_74",
+        "nick"      : 112,
+        "clock"     : 57,
+        "id"        : 166,
+        "favourite" : 50,
+        "rt"        : 179,
+        "link"      : 74,
         "keyword"   : "on_light_green"
     },
 
     "MESSAGE" : {
-        "sender"    : "term_112",
-        "recipient" : "term_112",
-        "to"        : "term_50",
-        "clock"     : "term_57",
-        "id"        : "term_166"
+        "sender"    : 112,
+        "recipient" : 112,
+        "to"        : 50,
+        "clock"     : 57,
+        "id"        : 166
     },
 
     "PROFILE" : {
-        "statuses_count"    : "term_112",
-        "friends_count"     : "term_198",
-        "followers_count"   : "term_57",
-        "nick"              : "term_198",
-        "profile_image_url" : "term_74",
-        "description"       : "term_166",
-        "location"          : "term_112",
-        "url"               : "term_74",
-        "clock"             : "term_57"
+        "statuses_count"    : 112,
+        "friends_count"     : 198,
+        "followers_count"   : 57,
+        "nick"              : 198,
+        "profile_image_url" : 74,
+        "description"       : 166,
+        "location"          : 112,
+        "url"               : 74,
+        "clock"             : 57
     },
 
     "TREND" : {
-        "url": "term_74"
+        "url": 74
     },
-    
+
     "CAL" : {
-        "days": "term_57",
+        "days": 57,
         "today": "on_light_blue"
     }
 }
@@ -89,7 +89,7 @@ There are 16 basic colors:
 
 These colors will be enough for almost terminals.
 But if your terminal can support 256 colors (check your `$TERM` variable!),
-you can even use `term_0` to `term_255` as the example above.
+you can even use 0 to 255 as the example above.
 
 There are also background highlight colors like:
   * on_default

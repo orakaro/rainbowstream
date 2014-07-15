@@ -24,8 +24,8 @@ def init_cycle():
     Init the cycle
     """
     colors_shuffle = [globals()[i.encode('utf8')]
-                      if not i.startswith('term_')
-                      else term_color(int(i[5:]))
+                      if not str(i).isdigit()
+                      else term_color(int(i))
                       for i in c['CYCLE_COLOR']]
     return itertools.cycle(colors_shuffle)
 g['cyc'] = init_cycle()
@@ -45,8 +45,8 @@ def order_rainbow(s):
     Print a string with ordered color with each character
     """
     colors_shuffle = [globals()[i.encode('utf8')]
-                      if not i.startswith('term_')
-                      else term_color(int(i[5:]))
+                      if not str(i).isdigit()
+                      else term_color(int(i))
                       for i in c['CYCLE_COLOR']]
     colored = [colors_shuffle[i % 7](s[i]) for i in xrange(len(s))]
     return ''.join(colored)
@@ -57,8 +57,8 @@ def random_rainbow(s):
     Print a string with random color with each character
     """
     colors_shuffle = [globals()[i.encode('utf8')]
-                      if not i.startswith('term_')
-                      else term_color(int(i[5:]))
+                      if not str(i).isdigit()
+                      else term_color(int(i))
                       for i in c['CYCLE_COLOR']]
     colored = [random.choice(colors_shuffle)(i) for i in s]
     return ''.join(colored)
@@ -135,8 +135,8 @@ def color_func(func_name):
     """
     Call color function base on name
     """
-    if func_name.startswith('term_') and func_name[5:].isdigit():
-        return term_color(int(func_name[5:]))
+    if str(func_name).isdigit():
+        return term_color(int(func_name))
     return globals()[func_name]
 
 
