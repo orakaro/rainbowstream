@@ -11,14 +11,14 @@
 ![Solarized](./screenshot/themes/larapaste.png)
 
 ## Customization
-Create a file `~/.rainbow_config.json` and follow next instruction.
+Modify `~/.rainbow_config.json` and follow next instruction.
 
 Examples are available in
 [Themes folder](https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset)
 
 ### Custom config
- * Config file's name should be exactly `.rainbow_config.json` and placed at home directory.
- * Config file's content should follow json format.
+ * There is a file named exactly `.rainbow_config.json` and is placed at your home directory.
+ * Add color configurations to above file and follow json format.
  * Comments as `//` or `/*...*/` are allowed.
  * Here is an example
 
