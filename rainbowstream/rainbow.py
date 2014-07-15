@@ -11,6 +11,7 @@ import argparse
 import time
 import requests
 import webbrowser
+import json
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
@@ -144,9 +145,8 @@ def get_decorated_name():
 
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
-    themes += ['custom']
     g['themes'] = themes
-    db.theme_store(c['theme'])
+    db.theme_store(c['THEME'])
 
 
 def switch():
@@ -1131,32 +1131,31 @@ def theme():
     if not g['stuff']:
         # List themes
         for theme in g['themes']:
-            line = ''
-            # Detect custom config
-            if theme == 'custom':
-                line += light_magenta('custom')
-                custom_path = os.environ.get(
-                    'HOME',
-                    os.environ.get('USERPROFILE',
-                                   '')) + os.sep + '.rainbow_config.json'
-                if not os.path.exists(custom_path):
-                    line += light_magenta(
-                        ' (create your own config file at ~/.rainbow_config.json)')
-                else:
-                    line += light_magenta(' (loaded)')
-            else:
-                line += light_magenta(theme)
-            if c['theme'] == theme:
+            line = light_magenta(theme)
+            if c['THEME'] == theme:
                 line = ' ' * 2 + light_yellow('* ') + line
             else:
                 line = ' ' * 4 + line
             printNicely(line)
     elif g['stuff'] == 'current_as_default':
-        # Set default
-        path = os.path.dirname(__file__) + '/colorset/init'
-        f = open(path, 'w')
-        f.write(c['theme'])
-        f.close()
+        # Set as default
+        def fixup(adict, k, v):
+            for key in adict.keys():
+                if key == k:
+                    adict[key] = v
+                elif type(adict[key]) is dict:
+                    fixup(adict[key], k, v)
+        # Modify
+        path = os.environ.get(
+            'HOME',
+            os.environ.get(
+                'USERPROFILE',
+                '')) + os.sep + '.rainbow_config.json'
+        data = load_config(rainbow_config)
+        fixup(data, 'THEME', c['THEME'])
+        # Save
+        with open(path, 'w') as out:
+            json.dump(data, out, indent = 4)
         os.system('chmod 777 ' + path)
         printNicely(light_green('Okay it will be applied from next time :)'))
     else:
@@ -1177,17 +1176,14 @@ def theme():
                     c[nc] = new_config[nc]
             # Update db and reset colors
             db.theme_update(g['stuff'])
-            c['theme'] = g['stuff']
+            c['THEME'] = g['stuff']
             reset_cycle()
             g['decorated_name'] = color_func(
                 c['DECORATED_NAME'])(
                 '[@' + g['original_name'] + ']: ')
             printNicely(green('Theme changed.'))
         except:
-            if g['stuff'] == 'custom':
-                printNicely(red('~/.rainbow_config.json is not exists!'))
-            else:
-                printNicely(red('No such theme exists.'))
+            printNicely(red('No such theme exists.'))
 
 
 def help_discover():
@@ -1612,7 +1608,7 @@ def stream(domain, args, name='Rainbow Stream'):
     art_dict = {
         c['USER_DOMAIN']: name,
         c['PUBLIC_DOMAIN']: args.track_keywords,
-        c['SITE_DOMAIN']: 'Site Stream',
+        c['SITE_DOMAIN']: name,
     }
     if g['ascii_art']:
         ascii_art(art_dict[domain])

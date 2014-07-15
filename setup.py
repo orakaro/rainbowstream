@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
-import sys
+import os, sys
 
-version = '0.3.4'
+# Bumped version
+version = '0.3.5'
 
+# Require
 install_requires = [
     "python-dateutil",
     "requests",
@@ -11,9 +13,21 @@ install_requires = [
     "twitter",
     "Pillow",
 ]
+# Python 3 doesn't hava pysqlite
 if sys.version[0] == "2":
     install_requires += ["pysqlite"]
 
+# Copy default config if not exists
+default = os.environ.get(
+    'HOME',
+    os.environ.get(
+        'USERPROFILE',
+        '')) + os.sep + '.rainbow_config.json'
+if not os.path.isfile(default):
+    cmd = 'cp rainbowstream/colorset/config ' + default
+    os.system(cmd)
+
+# Setup
 setup(name='rainbowstream',
       version=version,
       description="A smart and nice Twitter client on terminal.",
@@ -25,8 +39,6 @@ setup(name='rainbowstream',
           "Natural Language :: English",
           "Operating System :: OS Independent",
           "Programming Language :: Python :: 2.7",
-          "Programming Language :: Python :: 3.2",
-          "Programming Language :: Python :: 3.3",
           "Programming Language :: Python :: 3.4",
           "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: CGI Tools/Libraries",
           "Topic :: Utilities",

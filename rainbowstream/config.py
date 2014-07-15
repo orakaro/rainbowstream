@@ -2,13 +2,13 @@ import json
 import re
 import os
 import os.path
+from collections import OrderedDict
 
 # Regular expression for comments
 comment_re = re.compile(
     '(^)?[^\S\n]*/(?:\*(.*?)\*/[^\S\n]*|/[^\n]*)($)?',
     re.DOTALL | re.MULTILINE
 )
-
 
 def load_config(filepath):
     """
@@ -20,34 +20,12 @@ def load_config(filepath):
         while match:
             content = content[:match.start()] + content[match.end():]
             match = comment_re.search(content)
-    return json.loads(content)
+    return json.loads(content, object_pairs_hook=OrderedDict)
 
 # Config dictionary
 c = {}
-# Load default
-default_config = os.path.dirname(__file__) + '/colorset/default.json'
-data = load_config(default_config)
-for d in data:
-    c[d] = data[d]
-c['theme'] = 'default'
-# Load init if exist
-try:
-    path = os.path.dirname(__file__) + '/colorset/init'
-    f = open(path)
-    lines = f.readlines()
-    if len(lines) > 1:
-        raise Exception('More than 1 default theme')
-    theme_name = lines[0].strip()
-    default_config = os.path.dirname(
-        __file__) + '/colorset/' + theme_name + '.json'
-    data = load_config(default_config)
-    for d in data:
-        c[d] = data[d]
-    c['theme'] = theme_name
-    f.close()
-except:
-    pass
-# Load user's colorset
+
+# Load user's config
 rainbow_config = os.environ.get(
     'HOME',
     os.environ.get(
@@ -57,6 +35,15 @@ try:
     data = load_config(rainbow_config)
     for d in data:
         c[d] = data[d]
-    c['theme'] = 'custom'
+except:
+    pass
+
+# Load default theme
+theme_file = os.path.dirname(
+    __file__) + '/colorset/' + c['THEME'] + '.json'
+try:
+    data = load_config(theme_file)
+    for d in data:
+        c[d] = data[d]
 except:
     pass

@@ -118,17 +118,10 @@ def check_theme():
     """
     exists = db.theme_query()
     themes = [t.theme_name for t in exists]
-    if c['theme'] != themes[0]:
-        c['theme'] = themes[0]
-        # Determine path
-        if c['theme'] == 'custom':
-            config = os.environ.get(
-                'HOME',
-                os.environ.get('USERPROFILE',
-                               '')) + os.sep + '.rainbow_config.json'
-        else:
-            config = os.path.dirname(
-                __file__) + '/colorset/' + c['theme'] + '.json'
+    if c['THEME'] != themes[0]:
+        c['THEME'] = themes[0]
+        config = os.path.dirname(
+            __file__) + '/colorset/' + c['THEME'] + '.json'
         # Load new config
         data = load_config(config)
         if data:

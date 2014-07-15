@@ -1,29 +1,4 @@
 {
-    // 'search': max search record
-    "SEARCH_MAX_RECORD" : 5,
-    // 'home': default number of home's tweets
-    "HOME_TWEET_NUM" : 5,
-    // 'allrt': default number of retweets
-    "RETWEETS_SHOW_NUM" : 5,
-    // 'inbox','sent': default number of direct message
-    "MESSAGES_DISPLAY" : 5,
-    // 'trend': max trending topics
-    "TREND_MAX" : 10,
-    // List home timeline max
-    "LIST_MAX" : 5,
-    // 'switch': Filter and Ignore list ex: ['@fat','@mdo']
-    "ONLY_LIST" : [],
-    "IGNORE_LIST" : [],
-    // Autocomplete history file name
-    "HISTORY_FILENAME" : "completer.hist",
-    // Image config
-    "IMAGE_SHIFT" : 10,
-    "IMAGE_MAX_HEIGHT" : 40,
-    // Stream config
-    "USER_DOMAIN" : "userstream.twitter.com",
-    "PUBLIC_DOMAIN" : "stream.twitter.com",
-    "SITE_DOMAIN" : "sitestream.twitter.com",
-
     /* Color config
     There are 16 basic colors supported :
         * default
@@ -43,8 +18,6 @@
         * light_cyan
         * white
     and 256 colors from term_0 to term_255
-    Color code can be reference at
-    http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
      */
 
     "DECORATED_NAME" : "grey",
