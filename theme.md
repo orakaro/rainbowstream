@@ -154,6 +154,7 @@ While entered Rainbow Stream:
 * `theme` and hit ENTER to see which is available.
 * `theme` + TAB twice will show themes list instantly.
 * `theme monokai` will apply `monokai` theme immediately. You can use TAB key for theme's name autocompletion.
+* `theme current_as_default` will set current theme as next time's default.
 
 ### Theme contribution
 I appreciate any contribution for themes for this app.
