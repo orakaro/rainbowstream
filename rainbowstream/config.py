@@ -25,6 +25,16 @@ def load_config(filepath):
 # Config dictionary
 c = {}
 
+# Load the initial config
+config = os.path.dirname(
+    __file__) + '/colorset/config'
+try:
+    data = load_config(config)
+    for d in data:
+        c[d] = data[d]
+except:
+    pass
+
 # Load user's config
 rainbow_config = os.environ.get(
     'HOME',

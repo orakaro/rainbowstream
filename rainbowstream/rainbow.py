@@ -141,7 +141,6 @@ def get_decorated_name():
     name = '@' + t.account.verify_credentials()['screen_name']
     g['original_name'] = name[1:]
     g['decorated_name'] = color_func(c['DECORATED_NAME'])('[' + name + ']: ')
-    g['ascii_art'] = True
 
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
@@ -207,7 +206,6 @@ def switch():
         if args.ignore:
             printNicely(red('Ignore: ' + str(args.ignore)))
         printNicely('')
-        g['ascii_art'] = True
     except:
         printNicely(red('Sorry I can\'t understand.'))
 
@@ -1610,7 +1608,7 @@ def stream(domain, args, name='Rainbow Stream'):
         c['PUBLIC_DOMAIN']: args.track_keywords,
         c['SITE_DOMAIN']: name,
     }
-    if g['ascii_art']:
+    if c['ASCII_ART']:
         ascii_art(art_dict[domain])
 
     # These arguments are optional:

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import os, sys
 
 # Bumped version
-version = '0.3.7'
+version = '0.3.8'
 
 # Require
 install_requires = [
@@ -39,6 +39,8 @@ setup(name='rainbowstream',
           "Natural Language :: English",
           "Operating System :: OS Independent",
           "Programming Language :: Python :: 2.7",
+          "Programming Language :: Python :: 3.2",
+          "Programming Language :: Python :: 3.3",
           "Programming Language :: Python :: 3.4",
           "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: CGI Tools/Libraries",
           "Topic :: Utilities",
