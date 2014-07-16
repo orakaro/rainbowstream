@@ -797,6 +797,23 @@ def report():
         printNicely(red('Sorry I can\'t understand.'))
 
 
+def get_slug():
+    """
+    Get Slug Decorator
+    """
+     # Get list name
+    list_name = raw_input(light_magenta('Give me the list\'s name: '))
+    # Get list name and owner
+    try:
+        owner, slug = list_name.split('/')
+        if slug.startswith('@'):
+            slug = slug[1:]
+        return owner, slug
+    except:
+        printNicely(light_magenta('List name should follow "@owner/list_name" format.'))
+        raise Exception('Wrong list name')
+
+
 def show_lists(t):
     """
     List list
@@ -812,16 +829,7 @@ def list_home(t):
     """
     List home
     """
-    # Get list name
-    list_name = raw_input(light_magenta('Give me the list\'s name: '))
-    # Get list name and owner
-    try:
-        owner, slug = list_name.split('/')
-        if slug.startswith('@'):
-            slug = slug[1:]
-    except:
-        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
-        return
+    owner, slug = get_slug()
     res = t.lists.statuses(
         slug=slug,
         owner_screen_name=owner,
@@ -836,16 +844,7 @@ def list_members(t):
     """
     List members
     """
-    # Get list name
-    list_name = raw_input(light_magenta('Give me the list\'s name: '))
-    # Get list name and owner
-    try:
-        owner, slug = list_name.split('/')
-        if slug.startswith('@'):
-            slug = slug[1:]
-    except:
-        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
-        return
+    owner, slug = get_slug()
     # Get members
     rel = {}
     next_cursor = -1
@@ -869,16 +868,7 @@ def list_subscribers(t):
     """
     List subscribers
     """
-    # Get list name
-    list_name = raw_input(light_magenta('Give me the list\'s name: '))
-    # Get list name and owner
-    try:
-        owner, slug = list_name.split('/')
-        if slug.startswith('@'):
-            slug = slug[1:]
-    except:
-        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
-        return
+    owner, slug = get_slug()
     # Get subscribers
     rel = {}
     next_cursor = -1
@@ -902,16 +892,7 @@ def list_add(t):
     """
     Add specific user to a list
     """
-    # Get list name
-    list_name = raw_input(light_magenta('Give me the list\'s name: '))
-    # Get list name and owner
-    try:
-        owner, slug = list_name.split('/')
-        if slug.startswith('@'):
-            slug = slug[1:]
-    except:
-        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
-        return
+    owner, slug = get_slug()
     # Add
     user_name = raw_input(light_magenta('Give me name of the newbie: '))
     if user_name.startswith('@'):
@@ -930,16 +911,7 @@ def list_remove(t):
     """
     Remove specific user from a list
     """
-    # Get list name
-    list_name = raw_input(light_magenta('Give me the list\'s name: '))
-    # Get list name and owner
-    try:
-        owner, slug = list_name.split('/')
-        if slug.startswith('@'):
-            slug = slug[1:]
-    except:
-        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
-        return
+    owner, slug = get_slug()
     # Remove
     user_name = raw_input(light_magenta('Give me name of the unlucky one: '))
     if user_name.startswith('@'):
@@ -958,16 +930,7 @@ def list_subscribe(t):
     """
     Subscribe to a list
     """
-    # Get list name
-    list_name = raw_input(light_magenta('Give me the list\'s name: '))
-    # Get list name and owner
-    try:
-        owner, slug = list_name.split('/')
-        if slug.startswith('@'):
-            slug = slug[1:]
-    except:
-        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
-        return
+    owner, slug = get_slug()
     # Subscribe
     try:
         t.lists.subscribers.create(
@@ -983,16 +946,7 @@ def list_unsubscribe(t):
     """
     Unsubscribe a list
     """
-    # Get list name
-    list_name = raw_input(light_magenta('Give me the list\'s name: '))
-    # Get list name and owner
-    try:
-        owner, slug = list_name.split('/')
-        if slug.startswith('@'):
-            slug = slug[1:]
-    except:
-        printNicely(light_magenta('Please follow "@owner/list_name" format.'))
-        return
+    owner, slug = get_slug()
     # Subscribe
     try:
         t.lists.subscribers.destroy(
@@ -1108,7 +1062,7 @@ def list():
     try:
         return action_ary[g['list_action']](t)
     except:
-        printNicely(red('Sorry I can\'t understand.'))
+        printNicely(red('Please try again.'))
 
 
 def cal():

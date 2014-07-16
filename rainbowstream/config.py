@@ -46,7 +46,7 @@ try:
     for d in data:
         c[d] = data[d]
 except:
-    pass
+    print('It seems that ~/.rainbow_config.json has wrong format :(')
 
 # Load default theme
 theme_file = os.path.dirname(
