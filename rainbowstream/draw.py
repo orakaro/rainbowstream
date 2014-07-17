@@ -3,6 +3,7 @@ import itertools
 import requests
 import datetime
 import time
+import re
 
 from twitter.util import printNicely
 from functools import wraps
@@ -28,11 +29,9 @@ def init_cycle():
                       else term_color(int(i))
                       for i in c['CYCLE_COLOR']]
     return itertools.cycle(colors_shuffle)
-g['cyc'] = init_cycle()
-g['cache'] = {}
 
 
-def reset_cycle():
+def start_cycle():
     """
     Notify from rainbow
     """
@@ -219,16 +218,16 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
             c['TWEET']['link'])(x) if x[
             0:4] == 'http' else x,
         tweet)
-    # Highlight search keyword
-    if keyword:
-        tweet = lmap(
-            lambda x: color_func(c['TWEET']['keyword'])(x) if
-            ''.join(c for c in x if c.isalnum()).lower() == keyword.lower()
-            else x,
-            tweet
-        )
-    # Recreate tweet
+
+    # Highlight keyword
     tweet = ' '.join(tweet)
+    if keyword:
+        roj = re.search(keyword,tweet,re.IGNORECASE)
+        if roj:
+            occur = roj.group()
+            ary = tweet.split(occur)
+            delimeter = color_func(c['TWEET']['keyword'])(occur)
+            tweet = delimeter.join(ary)
 
     # Draw rainbow
     line1 = u"{u:>{uw}}:".format(
@@ -445,3 +444,7 @@ def print_list(group):
         printNicely(line4)
 
     printNicely('')
+
+
+# Start the color cycle
+start_cycle()

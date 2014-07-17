@@ -438,19 +438,17 @@ def search():
     Search
     """
     t = Twitter(auth=authen())
-    if g['stuff'].startswith('#'):
-        rel = t.search.tweets(q=g['stuff'])['statuses']
-        if rel:
-            printNicely('Newest tweets:')
-            for i in reversed(xrange(c['SEARCH_MAX_RECORD'])):
-                draw(t=rel[i],
-                     iot=g['iot'],
-                     keyword=g['stuff'].strip()[1:])
-            printNicely('')
-        else:
-            printNicely(magenta('I\'m afraid there is no result'))
+    g['stuff'] = g['stuff'].strip()
+    rel = t.search.tweets(q=g['stuff'])['statuses']
+    if rel:
+        printNicely('Newest tweets:')
+        for i in reversed(xrange(c['SEARCH_MAX_RECORD'])):
+            draw(t=rel[i],
+                 iot=g['iot'],
+                 keyword=g['stuff'])
+        printNicely('')
     else:
-        printNicely(red('A keyword should be a hashtag (like \'#AKB48\')'))
+        printNicely(magenta('I\'m afraid there is no result'))
 
 
 def message():
@@ -1129,7 +1127,7 @@ def theme():
             # Update db and reset colors
             db.theme_update(g['stuff'])
             c['THEME'] = g['stuff']
-            reset_cycle()
+            start_cycle()
             g['decorated_name'] = color_func(
                 c['DECORATED_NAME'])(
                 '[@' + g['original_name'] + ']: ')
