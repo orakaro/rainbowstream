@@ -1155,8 +1155,9 @@ def help_discover():
         magenta('@mdo') + '.\n'
     usage += s * 2 + light_green('view @mdo') + \
         ' will show ' + magenta('@mdo') + '\'s home.\n'
-    usage += s * 2 + light_green('s #AKB48') + ' will search for "' + \
-        light_yellow('AKB48') + '" and return 5 newest tweet.\n'
+    usage += s * 2 + light_green('s AKB48') + ' will search for "' + \
+        light_yellow('AKB48') + '" and return 5 newest tweet. ' + \
+        'Search can be performed with or without hashtag.\n'
     printNicely(usage)
 
 

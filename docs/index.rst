@@ -95,8 +95,8 @@ Here is full list of supported command:
 -  ``view @mdo`` will show @mdo ’s timeline. ``view @dmo 9`` will print
    exactly 9 tweets.
 
--  ``s #noah`` will search the word *‘noah’*. Result will come back with
-   highlight.
+-  ``s noah`` will search the word *‘noah’*. Result will come back with
+   highlight. Search can be performed with or without hashtag.
 
 **Tweet Commands**
 
