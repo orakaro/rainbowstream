@@ -260,13 +260,37 @@ For detaile information, see `theme usage and customization`_.
 Config explanation
 ^^^^^^^^^^^^^^^^^^
 
--  ``THEME`` theme.
+-  ``THEME``: current theme.
 
--  ``ASCII_ART`` Boolen value, decide to diplay your twitter name by ascii art at stream begin or not.
+-  ``ASCII_ART``: diplay your twitter name by ascii art at stream begin or not.
 
--  ``SEARCH_MAX_RECORD`` : max tweets can display on a 'search' command.
+-  ``SEARCH_MAX_RECORD``: max tweets can display on 'search' command.
 
--  ``HOME_TWEET_NUM`` : default tweets to display on a 'home' command.
+-  ``HOME_TWEET_NUM``: default tweets to display on 'home' command.
+
+-  ``RETWEETS_SHOW_NUM``: default tweets to display on 'allrt' command.
+
+-  ``MESSAGES_DISPLAY``: default messages to display on 'inbox' or 'sent' command.
+
+-  ``TREND_MAX``: default trends to display on 'trend' command.
+
+-  ``LIST_MAX``: default tweets to display on 'list home' command.
+
+-  ``ONLY_LIST``: filter list on 'switch' command.
+
+-  ``IGNORE_LIST``: ignore list on 'switch' command.
+
+-  ``HISTORY_FILENAME``: name of file which stores input history.
+
+-  ``IMAGE_SHIFT``: left and right margin of image in '-iot'/'--image-on-term' mode.
+
+-  ``IMAGE_MAX_HEIGHT``: max height of image in '-iot'/'--image-on-term' mode.
+
+-  ``USER_DOMAIN``: user URL of Twitter Streaming API.
+
+-  ``PUBLIC_DOMAIN``: public URL of Twitter Streaming API.
+
+-  ``SITE_DOMAIN``: site URL of Twitter Streaming API.
 
 Development
 -----------
