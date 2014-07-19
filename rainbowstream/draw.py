@@ -139,7 +139,7 @@ def color_func(func_name):
     return globals()[func_name]
 
 
-def draw(t, iot=False, keyword=None, fil=[], ig=[]):
+def draw(t, iot=False, keyword=None, check_semaphore=False, fil=[], ig=[]):
     """
     Draw the rainbow
     """
@@ -240,6 +240,12 @@ def draw(t, iot=False, keyword=None, fil=[], ig=[]):
     )
     line3 = '  ' + tweet
 
+    # Check the semaphore lock
+    if check_semaphore:
+        while db.semaphore_query():
+            time.sleep(0.5)
+
+    # Output
     printNicely('')
     printNicely(line1)
     printNicely(line2)

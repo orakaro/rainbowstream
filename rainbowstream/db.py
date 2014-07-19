@@ -98,3 +98,33 @@ class RainbowDB():
         session = Session()
         res = session.query(Theme).all()
         return res
+
+    def semaphore_store(self, flag):
+        """
+        Store semaphore flag
+        """
+        Session = sessionmaker(bind=self.engine)
+        session = Session()
+        th = Semaphore(flag)
+        session.add(th)
+        session.commit()
+
+    def semaphore_update(self, flag):
+        """
+        Update semaphore flag
+        """
+        Session = sessionmaker(bind=self.engine)
+        session = Session()
+        res = session.query(Semaphore).all()
+        for r in res:
+            r.flag = flag
+        session.commit()
+
+    def semaphore_query(self):
+        """
+        Query semaphore
+        """
+        Session = sessionmaker(bind=self.engine)
+        session = Session()
+        res = session.query(Semaphore).all()
+        return res[0].flag

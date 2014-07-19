@@ -38,5 +38,16 @@ class Theme(Base):
         self.theme_name = theme_name
 
 
+class Semaphore(Base):
+
+    __tablename__ = "semaphore"
+
+    semaphore_id = Column(Integer, primary_key=True)
+    flag = Column(Boolean)
+
+    def __init__(self, flag):
+        self.flag = flag
+
+
 def init_db():
     Base.metadata.create_all(engine)

@@ -135,17 +135,22 @@ def authen():
 
 def get_decorated_name():
     """
-    Beginning of every line
+    Init function
     """
+    # Get name
     t = Twitter(auth=authen())
     name = '@' + t.account.verify_credentials()['screen_name']
     g['original_name'] = name[1:]
     g['decorated_name'] = color_func(c['DECORATED_NAME'])('[' + name + ']: ')
 
+    # Theme init
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     g['themes'] = themes
     db.theme_store(c['THEME'])
+
+    # Semaphore init
+    db.semaphore_store(False)
 
 
 def switch():
@@ -1537,17 +1542,22 @@ def listen():
         except:
             cmd = ''
         g['cmd'] = cmd
-        # Save cmd to global variable and call process
         try:
+            # Lock the semaphore
+            db.semaphore_update(True)
+            # Save cmd to global variable and call process
             g['stuff'] = ' '.join(line.split()[1:])
+            # Process the command
             process(cmd)()
+            # Not re-display
+            if cmd in ['switch', 't', 'rt', 'rep']:
+                g['prefix'] = False
+            else:
+                g['prefix'] = True
+            # Release the semaphore lock
+            db.semaphore_update(False)
         except Exception:
             printNicely(red('OMG something is wrong with Twitter right now.'))
-        # Not redisplay prefix
-        if cmd in ['switch', 't', 'rt', 'rep']:
-            g['prefix'] = False
-        else:
-            g['prefix'] = True
 
 
 def stream(domain, args, name='Rainbow Stream'):
@@ -1607,6 +1617,7 @@ def stream(domain, args, name='Rainbow Stream'):
                     t=tweet,
                     iot=args.image_on_term,
                     keyword=args.track_keywords,
+                    check_semaphore=True,
                     fil=args.filter,
                     ig=args.ignore,
                 )
