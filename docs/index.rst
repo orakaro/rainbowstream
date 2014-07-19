@@ -212,12 +212,20 @@ Here is full list of supported command:
   + Even ``cal`` will show the calendar for current month.
   + Put ``order_rainbow('anything')`` or ``random_rainbow('wahahaha')`` will make more fun :)
 
-**Screening Commands**
+**Config**
 
 -  ``theme`` will list available themes.
 
   + ``theme monokai`` will apply *monokai* theme immedaitely.
   + ``theme current_as_default`` will remember current theme as next time default.
+
+-  ``config`` will list all config key.
+
+  + ``config ASCII_ART`` will output current valut of *ASCII_ART* config key.
+  + ``config ASCII_ART default`` will output default valut of *ASCII_ART* config key.
+  + ``config ASCII_ART = False`` will set valut of *ASCII_ART* config key to *False*.
+
+**Screening Commands**
 
 -  ``h`` will show the help.
 
@@ -259,6 +267,9 @@ For detaile information, see `theme usage and customization`_.
 
 Config explanation
 ^^^^^^^^^^^^^^^^^^
+
+Rainbow Stream has a config file located at ``~/.rainbow_config.json``.
+You can view or set a new value of every config key by ``config`` command (See **Interactive mode** section above).
 
 -  ``THEME``: current theme.
 
