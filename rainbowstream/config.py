@@ -74,7 +74,7 @@ def set_config(key,value):
     # Modify value
     if value.isdigit():
         value = int(value)
-    if value.lower() == 'True':
+    elif value.lower() == 'True':
         value = True
     elif value.lower() == 'False':
         value = False

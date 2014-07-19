@@ -1114,6 +1114,7 @@ def config():
         value = g['stuff'].split()[-1]
         try:
             set_config(key,value)
+            printNicely(light_green('Updated successfully.'))
         except:
             printNicely(light_magenta('Not valid value.'))
             return
