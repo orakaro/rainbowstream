@@ -1092,7 +1092,7 @@ def config():
             line = ' '*2 + light_green(k) + ': ' + light_yellow(str(all_config[k]))
             printNicely(line)
         guide = 'Detailed explanation can be found at ' + \
-            color_func(c['TWEET']['link'])('http://rainbowstream.readthedocs.org/en/latest/')
+            color_func(c['TWEET']['link'])('http://rainbowstream.readthedocs.org/en/latest/#config-explanation')
         printNicely(guide)
     # Print specific config
     elif len(g['stuff'].split()) == 1:
@@ -1112,7 +1112,11 @@ def config():
     elif len(g['stuff'].split()) == 3 and g['stuff'].split()[1] == '=' :
         key = g['stuff'].split()[0]
         value = g['stuff'].split()[-1]
-        set_config(key,value)
+        try:
+            set_config(key,value)
+        except:
+            printNicely(light_magenta('Not valid value.'))
+            return
         reload_config()
     else:
         printNicely(light_magenta('Sorry I can\'s understand.'))

@@ -43,7 +43,11 @@ def get_all_config():
         os.environ.get(
             'USERPROFILE',
             '')) + os.sep + '.rainbow_config.json'
-    return load_config(path)
+    data = load_config(path)
+    # Hard to set from prompt
+    data.pop('ONLY_LIST',None)
+    data.pop('IGNORE_LIST',None)
+    return data
 
 
 def get_default_config(key):
