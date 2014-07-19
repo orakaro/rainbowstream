@@ -212,7 +212,7 @@ Here is full list of supported command:
   + Even ``cal`` will show the calendar for current month.
   + Put ``order_rainbow('anything')`` or ``random_rainbow('wahahaha')`` will make more fun :)
 
-**Config**
+**Config Management**
 
 -  ``theme`` will list available themes.
 
@@ -221,9 +221,9 @@ Here is full list of supported command:
 
 -  ``config`` will list all config key.
 
-  + ``config ASCII_ART`` will output current valut of *ASCII_ART* config key.
-  + ``config ASCII_ART default`` will output default valut of *ASCII_ART* config key.
-  + ``config ASCII_ART = False`` will set valut of *ASCII_ART* config key to *False*.
+  + ``config ASCII_ART`` will output current value of *ASCII_ART* config key.
+  + ``config ASCII_ART default`` will output default value of *ASCII_ART* config key.
+  + ``config ASCII_ART = False`` will set value of *ASCII_ART* config key to *False*.
 
 **Screening Commands**
 
