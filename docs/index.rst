@@ -257,6 +257,17 @@ Theme’s screenshot:
 
 For detaile information, see `theme usage and customization`_.
 
+Config explanation
+^^^^^^^^^^^^^^^^^^
+
+-  ``THEME`` theme.
+
+-  ``ASCII_ART`` Boolen value, decide to diplay your twitter name by ascii art at stream begin or not.
+
+-  ``SEARCH_MAX_RECORD`` : max tweets can display on a 'search' command.
+
+-  ``HOME_TWEET_NUM`` : default tweets to display on a 'home' command.
+
 Development
 -----------
 

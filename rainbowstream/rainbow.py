@@ -64,6 +64,7 @@ cmdset = [
     'report',
     'list',
     'cal',
+    'config',
     'theme',
     'h',
     'c',
@@ -1079,6 +1080,44 @@ def cal():
     show_calendar(month, date, rel)
 
 
+def config():
+    """
+    Browse and change config
+    """
+    all_config = get_all_config()
+    g['stuff'] = g['stuff'].strip()
+    # List all config
+    if not g['stuff']:
+        for k in all_config:
+            line = ' '*2 + light_green(k) + ': ' + light_yellow(str(all_config[k]))
+            printNicely(line)
+        guide = 'Detailed explanation can be found at ' + \
+            color_func(c['TWEET']['link'])('http://rainbowstream.readthedocs.org/en/latest/')
+        printNicely(guide)
+    # Print specific config
+    elif len(g['stuff'].split()) == 1:
+        if g['stuff'] in all_config:
+            k = g['stuff']
+            line = ' '*2 + light_green(k) + ': ' + light_yellow(str(all_config[k]))
+            printNicely(line)
+        else:
+            printNicely(red('No config key like this.'))
+    # Print specific config's default value
+    elif len(g['stuff'].split()) == 2 and g['stuff'].split()[-1] == 'default':
+        key = g['stuff'].split()[0]
+        value = get_default_config(key)
+        line = ' '*2 + light_green(key) + ': ' + light_magenta(value)
+        printNicely(line)
+    # Set specific config
+    elif len(g['stuff'].split()) == 3 and g['stuff'].split()[1] == '=' :
+        key = g['stuff'].split()[0]
+        value = g['stuff'].split()[-1]
+        set_config(key,value)
+        reload_config()
+    else:
+        printNicely(light_magenta('Sorry I can\'s understand.'))
+
+
 def theme():
     """
     List and change theme
@@ -1094,24 +1133,7 @@ def theme():
             printNicely(line)
     elif g['stuff'] == 'current_as_default':
         # Set as default
-        def fixup(adict, k, v):
-            for key in adict.keys():
-                if key == k:
-                    adict[key] = v
-                elif type(adict[key]) is dict:
-                    fixup(adict[key], k, v)
-        # Modify
-        path = os.environ.get(
-            'HOME',
-            os.environ.get(
-                'USERPROFILE',
-                '')) + os.sep + '.rainbow_config.json'
-        data = load_config(rainbow_config)
-        fixup(data, 'THEME', c['THEME'])
-        # Save
-        with open(path, 'w') as out:
-            json.dump(data, out, indent = 4)
-        os.system('chmod 777 ' + path)
+        set_config('THEME',c['THEME'])
         printNicely(light_green('Okay it will be applied from next time :)'))
     else:
         # Change theme
@@ -1358,12 +1380,26 @@ def help():
     usage += s * 2 + 'Even ' + light_green('cal') + ' will show the calendar' + \
         ' for current month.\n'
 
+    # Config
+    usage += '\n'
+    usage += s + grey(u'\u266A' + ' Config \n')
+    usage += s * 2 + light_green('theme') + ' will list available theme. ' + \
+        light_green('theme monokai') + ' will apply ' + light_yellow('monokai') + \
+        ' theme immediately.\n'
+    usage += s * 2 + light_green('config') + ' will list all config.\n'
+    usage += s * 3 + \
+        light_green('config ASCII_ART') + ' will output current value of ' +\
+        light_yellow('ASCII_ART') +' config key.\n'
+    usage += s * 3 + \
+        light_green('config ASCII_ART default') + ' will output default value of ' + \
+        light_yellow('ASCII_ART') +' config key.\n'
+    usage += s * 3 + \
+        light_green('config ASCII_ART = False') + ' will set value of ' + \
+        light_yellow('ASCII_ART') +' config key to ' + light_yellow('False') + '.\n'
+
     # Screening
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Screening \n')
-    usage += s * 2 + light_green('theme') + ' will list available theme.' + \
-        light_green('theme monokai') + ' will apply ' + light_yellow('monokai') + \
-        ' theme immediately.\n'
     usage += s * 2 + light_green('h') + ' will show this help again.\n'
     usage += s * 2 + light_green('c') + ' will clear the screen.\n'
     usage += s * 2 + light_green('q') + ' will quit.\n'
@@ -1457,6 +1493,7 @@ def process(cmd):
             report,
             list,
             cal,
+            config,
             theme,
             help,
             clear,
@@ -1516,6 +1553,7 @@ def listen():
                 'del'
             ],  # list
             [],  # cal
+            [key for key in dict(get_all_config())], # config
             g['themes'] + ['current_as_default'],  # theme
             [
                 'discover',
