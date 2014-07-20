@@ -13,8 +13,11 @@ except:
 
 try:
     from HTMLParser import HTMLParser
+    def unescape(s):
+        p = HTMLParser()
+        return p.unescape(s)
 except:
-    from html.parser import HTMLParser
+    from html import unescape
 
 # raw_input and map functiion behaviour
 if sys.version[0] == "3":

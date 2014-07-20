@@ -20,11 +20,6 @@ db = RainbowDB()
 g = {}
 
 
-def unescape(s):
-    p = HTMLParser()
-    return p.unescape(s)
-
-
 def init_cycle():
     """
     Init the cycle
@@ -163,11 +158,12 @@ def draw(t, iot=False, keyword=None, check_semaphore=False, fil=[], ig=[]):
 
     # Pull extended retweet text
     try:
-        text = 'RT @{0}: {1}'.format(t['retweeted_status']['user']['screen_name'],
-                                     t['retweeted_status']['text'])
+        text = 'RT @' + t['retweeted_status']['user']['screen_name'] + ': ' +\
+            t['retweeted_status']['text']
     except:
         pass
 
+    # Unescape HTML character
     text = unescape(text)
 
     # Get expanded url
