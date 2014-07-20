@@ -152,7 +152,7 @@ def draw(t, iot=False, keyword=None, check_semaphore=False, fil=[], ig=[]):
     check_theme()
     # Retrieve tweet
     tid = t['id']
-    text = unescape(t['text'])
+    text = t['text']
     screen_name = t['user']['screen_name']
     name = t['user']['name']
     created_at = t['created_at']
@@ -160,6 +160,15 @@ def draw(t, iot=False, keyword=None, check_semaphore=False, fil=[], ig=[]):
     date = parser.parse(created_at)
     date = date - datetime.timedelta(seconds=time.timezone)
     clock = date.strftime('%Y/%m/%d %H:%M:%S')
+
+    # Pull extended retweet text
+    try:
+        text = 'RT @{0}: {1}'.format(t['retweeted_status']['user']['screen_name'],
+                                     t['retweeted_status']['text'])
+    except:
+        pass
+
+    text = unescape(text)
 
     # Get expanded url
     try:
