@@ -20,6 +20,11 @@ db = RainbowDB()
 g = {}
 
 
+def unescape(s):
+    p = HTMLParser()
+    return p.unescape(s)
+
+
 def init_cycle():
     """
     Init the cycle
@@ -156,6 +161,15 @@ def draw(t, iot=False, keyword=None, check_semaphore=False, fil=[], ig=[]):
     date = date - datetime.timedelta(seconds=time.timezone)
     clock = date.strftime('%Y/%m/%d %H:%M:%S')
 
+    # Pull extended retweet text
+    try:
+        text = 'RT @{0}: {1}'.format(t['retweeted_status']['user']['screen_name'],
+                                     t['retweeted_status']['text'])
+    except:
+        pass
+
+    text = unescape(text)
+
     # Get expanded url
     try:
         expanded_url = []
@@ -267,7 +281,7 @@ def print_message(m):
     """
     sender_screen_name = '@' + m['sender_screen_name']
     sender_name = m['sender']['name']
-    text = m['text']
+    text = unescape(m['text'])
     recipient_screen_name = '@' + m['recipient_screen_name']
     recipient_name = m['recipient']['name']
     mid = m['id']
