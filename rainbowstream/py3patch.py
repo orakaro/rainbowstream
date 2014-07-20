@@ -9,6 +9,13 @@ try:
 except:
     from io import StringIO, BytesIO
 
+# HTMLParser module
+
+try:
+    from HTMLParser import HTMLParser
+except:
+    from html.parser import HTMLParser
+
 # raw_input and map functiion behaviour
 if sys.version[0] == "3":
     raw_input = input

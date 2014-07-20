@@ -20,6 +20,11 @@ db = RainbowDB()
 g = {}
 
 
+def unescape(s):
+    p = HTMLParser()
+    return p.unescape(s)
+
+
 def init_cycle():
     """
     Init the cycle
@@ -147,7 +152,7 @@ def draw(t, iot=False, keyword=None, check_semaphore=False, fil=[], ig=[]):
     check_theme()
     # Retrieve tweet
     tid = t['id']
-    text = t['text']
+    text = unescape(t['text'])
     screen_name = t['user']['screen_name']
     name = t['user']['name']
     created_at = t['created_at']
@@ -267,7 +272,7 @@ def print_message(m):
     """
     sender_screen_name = '@' + m['sender_screen_name']
     sender_name = m['sender']['name']
-    text = m['text']
+    text = unescape(m['text'])
     recipient_screen_name = '@' + m['recipient_screen_name']
     recipient_name = m['recipient']['name']
     mid = m['id']
