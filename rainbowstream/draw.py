@@ -232,7 +232,7 @@ def draw(t, iot=False, keyword=None, check_semaphore=False, fil=[], ig=[]):
     # Highlight keyword
     tweet = ' '.join(tweet)
     if keyword:
-        roj = re.search(keyword,tweet,re.IGNORECASE)
+        roj = re.search(keyword, tweet, re.IGNORECASE)
         if roj:
             occur = roj.group()
             ary = tweet.split(occur)

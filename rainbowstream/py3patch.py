@@ -10,12 +10,9 @@ except:
     from io import StringIO, BytesIO
 
 # HTMLParser module
-
 try:
     from HTMLParser import HTMLParser
-    def unescape(s):
-        p = HTMLParser()
-        return p.unescape(s)
+    unescape = HTMLParser().unescape
 except:
     from html import unescape
 

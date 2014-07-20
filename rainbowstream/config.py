@@ -10,6 +10,7 @@ comment_re = re.compile(
     re.DOTALL | re.MULTILINE
 )
 
+
 def fixup(adict, k, v):
     """
     Fix up a key in json format
@@ -17,7 +18,7 @@ def fixup(adict, k, v):
     for key in adict.keys():
         if key == k:
             adict[key] = v
-        elif type(adict[key]) is dict:
+        elif isinstance(adict[key], dict):
             fixup(adict[key], k, v)
 
 
@@ -45,8 +46,8 @@ def get_all_config():
             '')) + os.sep + '.rainbow_config.json'
     data = load_config(path)
     # Hard to set from prompt
-    data.pop('ONLY_LIST',None)
-    data.pop('IGNORE_LIST',None)
+    data.pop('ONLY_LIST', None)
+    data.pop('IGNORE_LIST', None)
     return data
 
 
@@ -67,7 +68,7 @@ def get_config(key):
     return c[key]
 
 
-def set_config(key,value):
+def set_config(key, value):
     """
     Set a config key with specific value
     """
@@ -88,7 +89,7 @@ def set_config(key,value):
     fixup(data, key, value)
     # Save
     with open(path, 'w') as out:
-        json.dump(data, out, indent = 4)
+        json.dump(data, out, indent=4)
     os.system('chmod 777 ' + path)
 
 

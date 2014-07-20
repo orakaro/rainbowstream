@@ -805,7 +805,7 @@ def get_slug():
     """
     Get Slug Decorator
     """
-     # Get list name
+    # Get list name
     list_name = raw_input(light_magenta('Give me the list\'s name: '))
     # Get list name and owner
     try:
@@ -814,7 +814,8 @@ def get_slug():
             slug = slug[1:]
         return owner, slug
     except:
-        printNicely(light_magenta('List name should follow "@owner/list_name" format.'))
+        printNicely(
+            light_magenta('List name should follow "@owner/list_name" format.'))
         raise Exception('Wrong list name')
 
 
@@ -1089,16 +1090,19 @@ def config():
     # List all config
     if not g['stuff']:
         for k in all_config:
-            line = ' '*2 + light_green(k) + ': ' + light_yellow(str(all_config[k]))
+            line = ' ' * 2 + \
+                light_green(k) + ': ' + light_yellow(str(all_config[k]))
             printNicely(line)
         guide = 'Detailed explanation can be found at ' + \
-            color_func(c['TWEET']['link'])('http://rainbowstream.readthedocs.org/en/latest/#config-explanation')
+            color_func(c['TWEET']['link'])(
+                'http://rainbowstream.readthedocs.org/en/latest/#config-explanation')
         printNicely(guide)
     # Print specific config
     elif len(g['stuff'].split()) == 1:
         if g['stuff'] in all_config:
             k = g['stuff']
-            line = ' '*2 + light_green(k) + ': ' + light_yellow(str(all_config[k]))
+            line = ' ' * 2 + \
+                light_green(k) + ': ' + light_yellow(str(all_config[k]))
             printNicely(line)
         else:
             printNicely(red('No config key like this.'))
@@ -1106,14 +1110,14 @@ def config():
     elif len(g['stuff'].split()) == 2 and g['stuff'].split()[-1] == 'default':
         key = g['stuff'].split()[0]
         value = get_default_config(key)
-        line = ' '*2 + light_green(key) + ': ' + light_magenta(value)
+        line = ' ' * 2 + light_green(key) + ': ' + light_magenta(value)
         printNicely(line)
     # Set specific config
-    elif len(g['stuff'].split()) == 3 and g['stuff'].split()[1] == '=' :
+    elif len(g['stuff'].split()) == 3 and g['stuff'].split()[1] == '=':
         key = g['stuff'].split()[0]
         value = g['stuff'].split()[-1]
         try:
-            set_config(key,value)
+            set_config(key, value)
             printNicely(light_green('Updated successfully.'))
         except:
             printNicely(light_magenta('Not valid value.'))
@@ -1138,7 +1142,7 @@ def theme():
             printNicely(line)
     elif g['stuff'] == 'current_as_default':
         # Set as default
-        set_config('THEME',c['THEME'])
+        set_config('THEME', c['THEME'])
         printNicely(light_green('Okay it will be applied from next time :)'))
     else:
         # Change theme
@@ -1394,13 +1398,14 @@ def help():
     usage += s * 2 + light_green('config') + ' will list all config.\n'
     usage += s * 3 + \
         light_green('config ASCII_ART') + ' will output current value of ' +\
-        light_yellow('ASCII_ART') +' config key.\n'
+        light_yellow('ASCII_ART') + ' config key.\n'
     usage += s * 3 + \
         light_green('config ASCII_ART default') + ' will output default value of ' + \
-        light_yellow('ASCII_ART') +' config key.\n'
+        light_yellow('ASCII_ART') + ' config key.\n'
     usage += s * 3 + \
         light_green('config ASCII_ART = False') + ' will set value of ' + \
-        light_yellow('ASCII_ART') +' config key to ' + light_yellow('False') + '.\n'
+        light_yellow('ASCII_ART') + ' config key to ' + \
+        light_yellow('False') + '.\n'
 
     # Screening
     usage += '\n'
@@ -1558,7 +1563,7 @@ def listen():
                 'del'
             ],  # list
             [],  # cal
-            [key for key in dict(get_all_config())], # config
+            [key for key in dict(get_all_config())],  # config
             g['themes'] + ['current_as_default'],  # theme
             [
                 'discover',
