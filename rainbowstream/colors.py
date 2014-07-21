@@ -1,4 +1,3 @@
-
 def basic_color(code):
     """
     16 colors supported
@@ -21,6 +20,9 @@ def term_color(code):
     return inner
 
 
+"""
+16 basic colors
+"""
 default = basic_color('39')
 black = basic_color('30')
 red = basic_color('31')
@@ -38,6 +40,9 @@ light_magenta = basic_color('95')
 light_cyan = basic_color('96')
 white = basic_color('97')
 
+"""
+16 basic colors on background
+"""
 on_default = basic_color('49')
 on_black = basic_color('40')
 on_red = basic_color('41')

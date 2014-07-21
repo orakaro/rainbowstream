@@ -281,6 +281,9 @@ CLUT = [  # color look-up table
 
 
 def _create_dicts():
+    """
+    Create dictionary
+    """
     short2rgb_dict = dict(CLUT)
     rgb2short_dict = {}
     for k, v in short2rgb_dict.items():
@@ -291,24 +294,39 @@ RGB2SHORT_DICT, SHORT2RGB_DICT = _create_dicts()
 
 
 def short2rgb(short):
+    """
+    Short to RGB
+    """
     return SHORT2RGB_DICT[short]
 
 
 def pixel_print(ansicolor):
+    """
+    Print a pixel with given Ansi color
+    """
     sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
 
 
 def hex_to_rgb(value):
+    """
+    Hex to RGB
+    """
     value = value.lstrip('#')
     lv = len(value)
     return tuple(int(value[i:i + lv / 3], 16) for i in range(0, lv, lv / 3))
 
 
 def rgb_to_hex(rgb):
+    """
+    RGB to Hex
+    """
     return '%02x%02x%02x' % rgb
 
 
 def rgb2short(r, g, b):
+    """
+    RGB to short
+    """
     dist = lambda s, d: (s[0] - d[0]) ** 2 + \
         (s[1] - d[1]) ** 2 + (s[2] - d[2]) ** 2
     ary = [hex_to_rgb(hex) for hex in RGB2SHORT_DICT]
@@ -317,6 +335,9 @@ def rgb2short(r, g, b):
 
 
 def image_to_display(path, start=None, length=None):
+    """
+    Display an image
+    """
     rows, columns = os.popen('stty size', 'r').read().split()
     if not start:
         start = IMAGE_SHIFT
@@ -340,5 +361,9 @@ def image_to_display(path, start=None, length=None):
             pixel_print(rgb2short(r, g, b))
         sys.stdout.write('\n')
 
+
+"""
+For direct using purpose
+"""
 if __name__ == '__main__':
     image_to_display(sys.argv[1])

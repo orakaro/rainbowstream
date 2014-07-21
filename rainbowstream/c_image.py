@@ -8,6 +8,9 @@ import os
 
 
 def call_c():
+    """
+    Call the C program for converting RGB to Ansi colors
+    """
     library = expanduser('~/.image.so')
     sauce = join(dirname(__file__), 'image.c')
     if not exists(library) or getmtime(sauce) > getmtime(library):
@@ -21,10 +24,16 @@ rgb2short = call_c()
 
 
 def pixel_print(ansicolor):
+    """
+    Print a pixel with given Ansi color
+    """
     sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
 
 
 def image_to_display(path, start=None, length=None):
+    """
+    Display an image
+    """
     rows, columns = os.popen('stty size', 'r').read().split()
     if not start:
         start = c['IMAGE_SHIFT']
@@ -48,5 +57,9 @@ def image_to_display(path, start=None, length=None):
             pixel_print(rgb2short(r, g, b))
         sys.stdout.write('\n')
 
+
+"""
+For direct using purpose
+"""
 if __name__ == '__main__':
     image_to_display(sys.argv[1])

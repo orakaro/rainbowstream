@@ -11,7 +11,6 @@ import argparse
 import time
 import requests
 import webbrowser
-import json
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
@@ -28,9 +27,13 @@ from .db import *
 from .c_image import *
 from .py3patch import *
 
-
+# Global values
 g = {}
+
+# Database
 db = RainbowDB()
+
+# Commands
 cmdset = [
     'switch',
     'trend',
@@ -134,7 +137,7 @@ def authen():
         CONSUMER_SECRET)
 
 
-def get_decorated_name():
+def init():
     """
     Init function
     """
@@ -143,13 +146,11 @@ def get_decorated_name():
     name = '@' + t.account.verify_credentials()['screen_name']
     g['original_name'] = name[1:]
     g['decorated_name'] = color_func(c['DECORATED_NAME'])('[' + name + ']: ')
-
     # Theme init
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     g['themes'] = themes
     db.theme_store(c['THEME'])
-
     # Semaphore init
     db.semaphore_store(False)
 
@@ -160,7 +161,6 @@ def switch():
     """
     try:
         target = g['stuff'].split()[0]
-
         # Filter and ignore
         args = parse_arguments()
         try:
@@ -175,7 +175,6 @@ def switch():
         except:
             printNicely(red('Sorry, wrong format.'))
             return
-
         # Public stream
         if target == 'public':
             keyword = g['stuff'].split()[1]
@@ -192,7 +191,6 @@ def switch():
                     args))
             p.start()
             g['stream_pid'] = p.pid
-
         # Personal stream
         elif target == 'mine':
             # Kill old process
@@ -230,7 +228,6 @@ def trend():
         town = g['stuff'].split()[1]
     except:
         town = ''
-
     avail = t.trends.available()
     # World wide
     if not country:
@@ -1354,7 +1351,6 @@ def help():
     """
     s = ' ' * 2
     h, w = os.popen('stty size', 'r').read().split()
-
     # Start
     usage = '\n'
     usage += s + 'Hi boss! I\'m ready to serve you right now!\n'
@@ -1364,7 +1360,6 @@ def help():
     usage += s + 'Any update from Twitter will show up ' + \
         light_yellow('immediately') + '.\n'
     usage += s + 'In addtion, following commands are available right now:\n'
-
     # Twitter help section
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Twitter help\n')
@@ -1380,7 +1375,6 @@ def help():
         ' will show help for list commands.\n'
     usage += s * 2 + light_green('h stream') + \
         ' will show help for stream commands.\n'
-
     # Smart shell
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Smart shell\n')
@@ -1388,7 +1382,6 @@ def help():
         'will be evaluate by Python interpreter.\n'
     usage += s * 2 + 'Even ' + light_green('cal') + ' will show the calendar' + \
         ' for current month.\n'
-
     # Config
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Config \n')
@@ -1406,19 +1399,16 @@ def help():
         light_green('config ASCII_ART = False') + ' will set value of ' + \
         light_yellow('ASCII_ART') + ' config key to ' + \
         light_yellow('False') + '.\n'
-
     # Screening
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Screening \n')
     usage += s * 2 + light_green('h') + ' will show this help again.\n'
     usage += s * 2 + light_green('c') + ' will clear the screen.\n'
     usage += s * 2 + light_green('q') + ' will quit.\n'
-
     # End
     usage += '\n'
     usage += s + '-' * (int(w) - 4) + '\n'
     usage += s + 'Have fun and hang tight! \n'
-
     # Show help
     d = {
         'discover': help_discover,
@@ -1612,7 +1602,6 @@ def stream(domain, args, name='Rainbow Stream'):
     """
     Track the stream
     """
-
     # The Logo
     art_dict = {
         c['USER_DOMAIN']: name,
@@ -1621,24 +1610,20 @@ def stream(domain, args, name='Rainbow Stream'):
     }
     if c['ASCII_ART']:
         ascii_art(art_dict[domain])
-
     # These arguments are optional:
     stream_args = dict(
         timeout=args.timeout,
         block=not args.no_block,
         heartbeat_timeout=args.heartbeat_timeout)
-
     # Track keyword
     query_args = dict()
     if args.track_keywords:
         query_args['track'] = args.track_keywords
-
     # Get stream
     stream = TwitterStream(
         auth=authen(),
         domain=domain,
         **stream_args)
-
     try:
         if domain == c['USER_DOMAIN']:
             tweet_iter = stream.user(**query_args)
@@ -1649,8 +1634,6 @@ def stream(domain, args, name='Rainbow Stream'):
                 tweet_iter = stream.statuses.filter(**query_args)
             else:
                 tweet_iter = stream.statuses.sample()
-
-        # Iterate over the stream.
         for tweet in tweet_iter:
             if tweet is None:
                 printNicely("-- None --")
@@ -1679,11 +1662,10 @@ def fly():
     """
     Main function
     """
-    # Spawn stream process
+    # Initial
     args = parse_arguments()
     try:
-        get_decorated_name()
-
+        init()
     except TwitterHTTPError:
         printNicely('')
         printNicely(
@@ -1693,7 +1675,7 @@ def fly():
         save_history()
         os.system('rm -rf rainbow.db')
         sys.exit()
-
+    # Spawn stream process
     p = Process(
         target=stream,
         args=(
@@ -1701,7 +1683,6 @@ def fly():
             args,
             g['original_name']))
     p.start()
-
     # Start listen process
     time.sleep(0.5)
     g['reset'] = True

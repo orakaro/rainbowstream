@@ -4,11 +4,14 @@ import os
 import os.path
 from collections import OrderedDict
 
-# Regular expression for comments
+# Regular expression for comments in config file
 comment_re = re.compile(
     '(^)?[^\S\n]*/(?:\*(.*?)\*/[^\S\n]*|/[^\n]*)($)?',
     re.DOTALL | re.MULTILINE
 )
+
+# Config dictionary
+c = {}
 
 
 def fixup(adict, k, v):
@@ -110,38 +113,41 @@ def reload_config():
         print('It seems that ~/.rainbow_config.json has wrong format :(')
 
 
-# Config dictionary
-c = {}
+def init_config():
+    """
+    Init configuration
+    """
+    # Load the initial config
+    config = os.path.dirname(
+        __file__) + '/colorset/config'
+    try:
+        data = load_config(config)
+        for d in data:
+            c[d] = data[d]
+    except:
+        pass
+    # Load user's config
+    rainbow_config = os.environ.get(
+        'HOME',
+        os.environ.get(
+            'USERPROFILE',
+            '')) + os.sep + '.rainbow_config.json'
+    try:
+        data = load_config(rainbow_config)
+        for d in data:
+            c[d] = data[d]
+    except:
+        print('It seems that ~/.rainbow_config.json has wrong format :(')
+    # Load default theme
+    theme_file = os.path.dirname(
+        __file__) + '/colorset/' + c['THEME'] + '.json'
+    try:
+        data = load_config(theme_file)
+        for d in data:
+            c[d] = data[d]
+    except:
+        pass
 
-# Load the initial config
-config = os.path.dirname(
-    __file__) + '/colorset/config'
-try:
-    data = load_config(config)
-    for d in data:
-        c[d] = data[d]
-except:
-    pass
 
-# Load user's config
-rainbow_config = os.environ.get(
-    'HOME',
-    os.environ.get(
-        'USERPROFILE',
-        '')) + os.sep + '.rainbow_config.json'
-try:
-    data = load_config(rainbow_config)
-    for d in data:
-        c[d] = data[d]
-except:
-    print('It seems that ~/.rainbow_config.json has wrong format :(')
-
-# Load default theme
-theme_file = os.path.dirname(
-    __file__) + '/colorset/' + c['THEME'] + '.json'
-try:
-    data = load_config(theme_file)
-    for d in data:
-        c[d] = data[d]
-except:
-    pass
+# Init config
+init_config()
