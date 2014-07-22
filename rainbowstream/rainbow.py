@@ -165,8 +165,10 @@ def switch():
         args = parse_arguments()
         try:
             if g['stuff'].split()[-1] == '-f':
-                only = raw_input('Only nicks: ')
-                ignore = raw_input('Ignore nicks: ')
+                guide = 'To ignore an option, just hit Enter key.'
+                printNicely(light_magenta(guide))
+                only = raw_input('Only nicks [Ex: @xxx,@yy]: ')
+                ignore = raw_input('Ignore nicks [Ex: @xxx,@yy]: ')
                 args.filter = filter(None, only.split(','))
                 args.ignore = filter(None, ignore.split(','))
             elif g['stuff'].split()[-1] == '-d':
@@ -1652,6 +1654,8 @@ def stream(domain, args, name='Rainbow Stream'):
                     fil=args.filter,
                     ig=args.ignore,
                 )
+            elif tweet.get('direct_message'):
+                print_message(tweet['direct_message'])
     except TwitterHTTPError:
         printNicely('')
         printNicely(
