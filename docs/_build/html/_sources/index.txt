@@ -10,37 +10,35 @@ Rainbow Stream
 Terminal-based Twitter Client. Realtime tweetstream, compose, search ,
 favorite … and much more fun directly from terminal.
 
-This package is built on the top of `Python Twitter Tool`_ and `Twitter API`_.
-
-Showcase
-----------
-Screencast: https://www.youtube.com/watch?v=tykCvPMJq8s 
-
-Screenshot: 
-
-.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStream.png
-   :alt: rainbowstream
-
-.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamIOT.png
-   :alt: rainbowstreamIOT
+This package is built on the top of `Python Twitter Tool`_ and `Twitter API`_,
+can run on Python 2.7.x and 3.x .
 
 Install
 -------
 
-You will need Python 2.7+ and pip.
+The quick way
+^^^^^^^^^^^^^
+
+You will need Python and pip (2.7.x or 3.x).
 
 .. code:: bash
 
     sudo pip install rainbowstream
-    
-or try with a virtualenv
+    # Python 3 users: sudo pip3 install rainbowstream
+
+The recommended way
+^^^^^^^^^^^^^^^^^^^
+
+Use `virtualenv`_
 
 .. code:: bash
 
-    sudo pip install virtualenv # skip if you already have virtualenv
-    virtualenv venv 
-    source venv/bin/activate # use the brand new virtualenv.
+    virtualenv venv
+    # Python 3 users : use -p to specify your Python 3 localtion as below
+    # virtualenv -p /usr/bin/python3 venv
+    source venv/bin/activate
     pip install rainbowstream
+
 
 Usage
 -----
@@ -52,7 +50,7 @@ Just type
 
 .. code:: bash
 
-    rainbow
+    rainbowstream
 
 and see your stream.
 
@@ -61,7 +59,7 @@ You can try it with:
 
 .. code:: bash
 
-    rainbow -iot # Or rainbow --image-on-term
+    rainbowstream -iot # Or rainbowstream --image-on-term
 
 In the first time you will be asked for authorization of Rainbow Stream
 app at Twitter. Just click the “Authorize access” button and paste PIN
@@ -97,8 +95,8 @@ Here is full list of supported command:
 -  ``view @mdo`` will show @mdo ’s timeline. ``view @dmo 9`` will print
    exactly 9 tweets.
 
--  ``s #noah`` will search the word *‘noah’*. Result will come back with
-   highlight.
+-  ``s noah`` will search the word *‘noah’*. Result will come back with
+   highlight. Search can be performed with or without hashtag.
 
 **Tweet Commands**
 
@@ -107,6 +105,9 @@ Here is full list of supported command:
 
 -  ``rt 12`` will retweet the tweet with *[id=12]*. You can see id of
    each tweet beside the time.
+
+-  ``quote 12`` will quote the tweet with *[id=12]*. If no extra text is added,
+   the quote will be cancelled.
 
 -  ``allrt 12 20`` will list 20 newest retweets of the tweet with *[id=12]*. If the number of retweets is not specified, 5 newest retweets will be listed instead.
 
@@ -120,6 +121,9 @@ Here is full list of supported command:
 
 -  ``show image 12`` will show the image in tweet with *[id=12]* in your
    OS’s image viewer.
+
+-  ``open 12`` will open url in tweet with *[id=12]* in your
+   OS’s default browser.
 
 **Direct Messages Commands**
 
@@ -156,6 +160,32 @@ Here is full list of supported command:
 
 -  ``report @dtvd88`` will report @dtvd88 as a spam account.
 
+**Twitter list**
+
+-  ``list`` will show all lists you are belong to.
+
+-  ``list home`` will show timeline of list. You will be asked for list's name.
+
+-  ``list all_mem`` will show list's all members.
+
+-  ``list all_sub`` will show list's all subscribers.
+
+-  ``list add`` will add specific person to a list owned by you.
+
+-  ``list rm`` will remove specific person from a list owned by you.
+
+-  ``list sub`` will subscribe you to a specific list.
+
+-  ``list unsub`` will unsubscribe you from a specific list.
+
+-  ``list own`` will show all list owned by you.
+
+-  ``list new`` will create a new list.
+
+-  ``list update`` will update a list owned by you.
+
+-  ``list del`` will delete a list owned by you.
+
 **Switching Stream Commands**
 
 -  ``switch public #AKB48`` will switch current stream to public stream
@@ -182,6 +212,19 @@ Here is full list of supported command:
   + Even ``cal`` will show the calendar for current month.
   + Put ``order_rainbow('anything')`` or ``random_rainbow('wahahaha')`` will make more fun :)
 
+**Config Management**
+
+-  ``theme`` will list available themes.
+
+  + ``theme monokai`` will apply *monokai* theme immedaitely.
+  + ``theme current_as_default`` will remember current theme as next time default.
+
+-  ``config`` will list all config key.
+
+  + ``config ASCII_ART`` will output current value of *ASCII_ART* config key.
+  + ``config ASCII_ART default`` will output default value of *ASCII_ART* config key.
+  + ``config ASCII_ART = False`` will set value of *ASCII_ART* config key to *False*.
+
 **Screening Commands**
 
 -  ``h`` will show the help.
@@ -190,30 +233,110 @@ Here is full list of supported command:
 
 -  ``q`` will quit.
 
+Available commands are listed in `Read The Docs`_.
 
-For example see the screenshot above.
+Theme customization
+^^^^^^^^^^^^^^^^^^^
 
-Bug and feature requests
-------------------------
+Rainbow Stream is shipped with some default themes.
+You can either change theme by ``theme`` command or create your favorite one.
 
-Found a bug or a feature request ? 
-Please `create an issue`_ or contact me at `@dtvd88`_
+Theme’s screenshot:
 
-Contributing
-------------
-I appreciate any help and support. Feel free to `fork`_ and `create a pull request`_.
-You will be listed as contributor.
+- Monokai
 
-License
--------
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/Monokai.png
+   :alt: monokai
 
-Rainbow Stream are released under an MIT License. See LICENSE.txt for
-details
+- Solarized
 
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/Solarized.png
+   :alt: solarized
 
+- Tomorrow Night
+
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/TomorrowNight.png
+   :alt: tomorrownight
+
+- Larapaste
+
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/larapaste.png
+   :alt: larapaste
+
+For detaile information, see `theme usage and customization`_.
+
+Config explanation
+^^^^^^^^^^^^^^^^^^
+
+Rainbow Stream has a config file located at ``~/.rainbow_config.json``.
+You can view or set a new value of every config key by ``config`` command (See **Interactive mode** section above).
+
+-  ``THEME``: current theme.
+
+-  ``ASCII_ART``: diplay your twitter name by ascii art at stream begin or not.
+
+-  ``SEARCH_MAX_RECORD``: max tweets can display on 'search' command.
+
+-  ``HOME_TWEET_NUM``: default tweets to display on 'home' command.
+
+-  ``RETWEETS_SHOW_NUM``: default tweets to display on 'allrt' command.
+
+-  ``MESSAGES_DISPLAY``: default messages to display on 'inbox' or 'sent' command.
+
+-  ``TREND_MAX``: default trends to display on 'trend' command.
+
+-  ``LIST_MAX``: default tweets to display on 'list home' command.
+
+-  ``ONLY_LIST``: filter list on 'switch' command.
+
+-  ``IGNORE_LIST``: ignore list on 'switch' command.
+
+-  ``HISTORY_FILENAME``: name of file which stores input history.
+
+-  ``IMAGE_SHIFT``: left and right margin of image in '-iot'/'--image-on-term' mode.
+
+-  ``IMAGE_MAX_HEIGHT``: max height of image in '-iot'/'--image-on-term' mode.
+
+-  ``USER_DOMAIN``: user URL of Twitter Streaming API.
+
+-  ``PUBLIC_DOMAIN``: public URL of Twitter Streaming API.
+
+-  ``SITE_DOMAIN``: site URL of Twitter Streaming API.
+
+Development
+-----------
+
+If you want to build a runnable version yourself, follow these simple
+steps
+
+-  `Create your own Twitter Application`_
+-  Get your Twitter application’s API key and secret
+-  Fork github's repo and clone in your system.
+-  Create a file ``consumer.py`` in ```rainbowstream```_ folder with
+   following content
+
+   .. code:: python
+
+       # Consumer information
+       CONSUMER_KEY = 'APIKey' # Your Twitter application's API key
+       CONSUMER_SECRET = 'APISecret' # Your Twitter application's API secret
+
+-  Use pip to install in local
+
+   .. code:: bash
+
+       # cd to directory which contains setup.py (cloned directory)
+       virtualenv venv # Python3 users: use -p to specify python3
+       source venv/bin/activate
+       pip install -e .
+       which rainbowstream # /this-directory/venv/bin/rainbowstream
+       pip list | grep rainbowstream # rainbowstream (0.x.x, /this-directory)
+       # Remove ~/.rainbow_oauth if exists
+       rainbowstream # local version of rainbowstream
+
+.. _Create your own Twitter Application: https://apps.twitter.com/app/new
+.. _``rainbowstream``: https://github.com/DTVD/rainbowstream/tree/master/rainbowstream
 .. _Python Twitter Tool: http://mike.verdone.ca/twitter/
 .. _Twitter API: https://dev.twitter.com/docs/api/1.1
-.. _create an issue: https://github.com/DTVD/rainbowstream/issues/new
-.. _@dtvd88: https://twitter.com/dtvd88
-.. _fork: https://github.com/DTVD/rainbowstream/fork
-.. _create a pull request: https://github.com/DTVD/rainbowstream/compare/
+.. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
+.. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/

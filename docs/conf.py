@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# Rainbow Stream documentation build configuration file, created by
-# sphinx-quickstart on Mon Jun 30 17:12:05 2014.
+# RainbowStream documentation build configuration file, created by
+# sphinx-quickstart on Wed Jul 23 12:26:18 2014.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -14,6 +14,7 @@
 
 import sys
 import os
+sys.path.append(os.path.abspath('_themes'))
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -43,7 +44,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Rainbow Stream'
+project = u'RainbowStream'
 copyright = u'2014, Vu Nhat Minh'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -98,7 +99,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-sys.path.append(os.path.abspath('_themes'))
+#html_theme = 'default'
 html_theme_path = ['_themes']
 html_theme = 'flask'
 
@@ -198,7 +199,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'RainbowStream.tex', u'Rainbow Stream Documentation',
+  ('index', 'RainbowStream.tex', u'RainbowStream Documentation',
    u'Vu Nhat Minh', 'manual'),
 ]
 
@@ -228,7 +229,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'rainbowstream', u'Rainbow Stream Documentation',
+    ('index', 'rainbowstream', u'RainbowStream Documentation',
      [u'Vu Nhat Minh'], 1)
 ]
 
@@ -242,7 +243,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'RainbowStream', u'Rainbow Stream Documentation',
+  ('index', 'RainbowStream', u'RainbowStream Documentation',
    u'Vu Nhat Minh', 'RainbowStream', 'One line description of project.',
    'Miscellaneous'),
 ]
