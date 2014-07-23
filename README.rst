@@ -22,7 +22,7 @@ Screenshot: (click to see)
 
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamAll.png
    :alt: all
-   
+
 Install
 -------
 
