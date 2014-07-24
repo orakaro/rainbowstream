@@ -111,6 +111,19 @@ def show_calendar(month, date, rel):
         printNicely(' '.join(ary))
 
 
+def check_config():
+   """
+   Check if config is changed
+   """
+   changed = False
+   data = get_all_config()
+   for key in data:
+       if data[key] != c[key]:
+           changed = True
+   if changed:
+       reload_config()
+
+
 def check_theme():
     """
     Check current theme and update if necessary
@@ -145,6 +158,7 @@ def draw(t, iot=False, keyword=None, check_semaphore=False, fil=[], ig=[]):
     """
 
     check_theme()
+    check_config()
     # Retrieve tweet
     tid = t['id']
     text = t['text']
