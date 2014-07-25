@@ -1053,6 +1053,8 @@
 	  	position: relative;
 	  	top: 0;
 	  	left: 0;
+	  	width: 85%;
+	  	height: 85%;
 	  }
 	  .rsi img{
     	max-width:100% !important;
