@@ -17,7 +17,7 @@ can run on Python 2.7.x and 3.x .
 Showcase
 ----------
 
-.. figure:: https://github.com/DTVD/rainbowstream/blob/master/screenshot/rs.gif
+.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/rs.gif
    :alt: gif
 
 Install
