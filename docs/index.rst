@@ -222,8 +222,9 @@ Here is full list of supported command:
 -  ``config`` will list all config key.
 
   + ``config ASCII_ART`` will output current value of *ASCII_ART* config key.
-  + ``config ASCII_ART default`` will output default value of *ASCII_ART* config key.
-  + ``config ASCII_ART = False`` will set value of *ASCII_ART* config key to *False*.
+  + ``config TREND_MAX default`` will output default value of *TREND_MAX* config key.
+  + ``config CUSTOM_CONFIG drop`` will drop *CUSTOM_CONFIG* config key.
+  + ``config IMAGE_ON_TERM = true`` will set value of *IMAGE_ON_TERM* config key to *True*.
 
 **Screening Commands**
 
