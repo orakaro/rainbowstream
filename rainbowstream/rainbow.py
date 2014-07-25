@@ -1607,8 +1607,7 @@ def listen():
                 g['prefix'] = True
             # Release the semaphore lock
             db.semaphore_update(False)
-        except Exception as e:
-            print e
+        except Exception:
             printNicely(red('OMG something is wrong with Twitter right now.'))
 
 
