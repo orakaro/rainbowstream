@@ -61,6 +61,9 @@ You can try it with:
 
     rainbowstream -iot # Or rainbowstream --image-on-term
 
+You also can change the config key ``IMAGE_ON_TERM`` to ``True`` inside the app 
+to enable above feature (see `config management`_ section).
+
 In the first time you will be asked for authorization of Rainbow Stream
 app at Twitter. Just click the “Authorize access” button and paste PIN
 number to the terminal, the rainbow will start.
@@ -341,3 +344,5 @@ steps
 .. _Twitter API: https://dev.twitter.com/docs/api/1.1
 .. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
+.. _config management: http://rainbowstream.readthedocs.org/en/latest/#the-interactive-mode
+
