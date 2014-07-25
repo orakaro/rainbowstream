@@ -262,8 +262,8 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
         if roj:
             occur = roj.group()
             ary = tweet.split(occur)
-            delimeter = color_func(c['TWEET']['keyword'])(occur)
-            tweet = delimeter.join(ary)
+            delimiter = color_func(c['TWEET']['keyword'])(occur)
+            tweet = delimiter.join(ary)
 
     # Draw rainbow
     line1 = u"{u:>{uw}}:".format(
