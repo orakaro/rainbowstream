@@ -60,9 +60,11 @@ def get_default_config(key):
     """
     path = os.path.dirname(
         __file__) + '/colorset/config'
-    data = load_config(path)
+    try:
+        data = load_config(path)
+    except:
+       raise Exception('No such config key.')
     return data[key]
-
 
 def get_config(key):
     """
@@ -78,9 +80,9 @@ def set_config(key, value):
     # Modify value
     if value.isdigit():
         value = int(value)
-    elif value.lower() == 'True':
+    elif value.lower() == 'true':
         value = True
-    elif value.lower() == 'False':
+    elif value.lower() == 'false':
         value = False
     # Fix up
     path = os.environ.get(
@@ -89,11 +91,37 @@ def set_config(key, value):
             'USERPROFILE',
             '')) + os.sep + '.rainbow_config.json'
     data = load_config(path)
-    fixup(data, key, value)
+    if key in data:
+        fixup(data, key, value)
+    else:
+        data[key] = value
+        c[key] = value
     # Save
     with open(path, 'w') as out:
         json.dump(data, out, indent=4)
     os.system('chmod 777 ' + path)
+
+
+def delete_config(key):
+   """
+   Delete a config key
+   """
+   path = os.environ.get(
+        'HOME',
+        os.environ.get(
+            'USERPROFILE',
+            '')) + os.sep + '.rainbow_config.json'
+   data = load_config(path)
+   # Drop key
+   if key in data and key in c:
+       data.pop(key)
+       c.pop(key)
+   else:
+       raise Exception('No such config key.')
+   # Save
+   with open(path, 'w') as out:
+       json.dump(data, out, indent=4)
+   os.system('chmod 777 ' + path)
 
 
 def reload_config():

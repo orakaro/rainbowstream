@@ -1,4 +1,6 @@
 {
+    // Image on term
+    "IMAGE_ON_TERM" : false,
     // Themes
     "THEME" : "monokai",
     // Ascii Art

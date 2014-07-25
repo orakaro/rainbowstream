@@ -117,9 +117,10 @@ def check_config():
    """
    changed = False
    data = get_all_config()
-   for key in data:
-       if data[key] != c[key]:
-           changed = True
+   for key in c:
+       if key in data:
+           if data[key] != c[key]:
+               changed = True
    if changed:
        reload_config()
 
@@ -152,7 +153,7 @@ def color_func(func_name):
     return globals()[func_name]
 
 
-def draw(t, iot=False, keyword=None, check_semaphore=False, fil=[], ig=[]):
+def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     """
     Draw the rainbow
     """
@@ -276,7 +277,7 @@ def draw(t, iot=False, keyword=None, check_semaphore=False, fil=[], ig=[]):
     printNicely(line3)
 
     # Display Image
-    if iot and media_url:
+    if c['IMAGE_ON_TERM'] and media_url:
         for mu in media_url:
             try:
                 response = requests.get(mu)
@@ -337,7 +338,7 @@ def print_message(m):
     printNicely(line3)
 
 
-def show_profile(u, iot=False):
+def show_profile(u):
     """
     Show a profile
     """
@@ -410,7 +411,7 @@ def show_profile(u, iot=False):
     # Display
     printNicely('')
     printNicely(line1)
-    if iot:
+    if c['IMAGE_ON_TERM']:
         try:
             response = requests.get(profile_image_url)
             image_to_display(BytesIO(response.content), 2, 20)

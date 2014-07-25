@@ -137,7 +137,7 @@ def authen():
         CONSUMER_SECRET)
 
 
-def init():
+def init(args):
     """
     Init function
     """
@@ -153,7 +153,8 @@ def init():
     db.theme_store(c['THEME'])
     # Semaphore init
     db.semaphore_store(False)
-
+    # Image on term
+    c['IMAGE_ON_TERM'] = args.image_on_term
 
 def switch():
     """
@@ -261,7 +262,7 @@ def home():
     if g['stuff'].isdigit():
         num = int(g['stuff'])
     for tweet in reversed(t.statuses.home_timeline(count=num)):
-        draw(t=tweet, iot=g['iot'])
+        draw(t=tweet)
     printNicely('')
 
 
@@ -277,7 +278,7 @@ def view():
         except:
             num = c['HOME_TWEET_NUM']
         for tweet in reversed(t.statuses.user_timeline(count=num, screen_name=user[1:])):
-            draw(t=tweet, iot=g['iot'])
+            draw(t=tweet)
         printNicely('')
     else:
         printNicely(red('A name should begin with a \'@\''))
@@ -292,7 +293,7 @@ def mentions():
     if g['stuff'].isdigit():
         num = int(g['stuff'])
     for tweet in reversed(t.statuses.mentions_timeline(count=num)):
-        draw(t=tweet, iot=g['iot'])
+        draw(t=tweet)
     printNicely('')
 
 
@@ -368,7 +369,7 @@ def allretweet():
         printNicely(magenta('This tweet has no retweet.'))
         return
     for tweet in reversed(rt_ary):
-        draw(t=tweet, iot=g['iot'])
+        draw(t=tweet)
     printNicely('')
 
 
@@ -385,7 +386,7 @@ def favorite():
     tid = db.rainbow_to_tweet_query(id)[0].tweet_id
     t.favorites.create(_id=tid, include_entities=False)
     printNicely(green('Favorited.'))
-    draw(t.statuses.show(id=tid), iot=g['iot'])
+    draw(t.statuses.show(id=tid))
     printNicely('')
 
 
@@ -434,7 +435,7 @@ def unfavorite():
     tid = db.rainbow_to_tweet_query(id)[0].tweet_id
     t.favorites.destroy(_id=tid)
     printNicely(green('Okay it\'s unfavorited.'))
-    draw(t.statuses.show(id=tid), iot=g['iot'])
+    draw(t.statuses.show(id=tid))
     printNicely('')
 
 
@@ -449,7 +450,6 @@ def search():
         printNicely('Newest tweets:')
         for i in reversed(xrange(c['SEARCH_MAX_RECORD'])):
             draw(t=rel[i],
-                 iot=g['iot'],
                  keyword=g['stuff'])
         printNicely('')
     else:
@@ -652,7 +652,7 @@ def whois():
             user = t.users.show(
                 screen_name=screen_name[1:],
                 include_entities=False)
-            show_profile(user, g['iot'])
+            show_profile(user)
         except:
             printNicely(red('Omg no user.'))
     else:
@@ -1104,13 +1104,24 @@ def config():
                 light_green(k) + ': ' + light_yellow(str(all_config[k]))
             printNicely(line)
         else:
-            printNicely(red('No config key like this.'))
+            printNicely(red('No such config key.'))
     # Print specific config's default value
     elif len(g['stuff'].split()) == 2 and g['stuff'].split()[-1] == 'default':
         key = g['stuff'].split()[0]
-        value = get_default_config(key)
-        line = ' ' * 2 + light_green(key) + ': ' + light_magenta(value)
-        printNicely(line)
+        try:
+            value = get_default_config(key)
+            line = ' ' * 2 + light_green(key) + ': ' + light_magenta(value)
+            printNicely(line)
+        except:
+            printNicely(light_magenta('This config key does not exist in default.'))
+    # Delete specific config key in config file
+    elif len(g['stuff'].split()) == 2 and g['stuff'].split()[-1] == 'drop':
+        key = g['stuff'].split()[0]
+        try:
+            delete_config(key)
+            printNicely(light_green('Config key is dropped.'))
+        except:
+            printNicely(red('No such config key.'))
     # Set specific config
     elif len(g['stuff'].split()) == 3 and g['stuff'].split()[1] == '=':
         key = g['stuff'].split()[0]
@@ -1395,12 +1406,15 @@ def help():
         light_green('config ASCII_ART') + ' will output current value of ' +\
         light_yellow('ASCII_ART') + ' config key.\n'
     usage += s * 3 + \
-        light_green('config ASCII_ART default') + ' will output default value of ' + \
-        light_yellow('ASCII_ART') + ' config key.\n'
+        light_green('config TREND_MAX default') + ' will output default value of ' + \
+        light_yellow('TREND_MAX') + ' config key.\n'
     usage += s * 3 + \
-        light_green('config ASCII_ART = False') + ' will set value of ' + \
-        light_yellow('ASCII_ART') + ' config key to ' + \
-        light_yellow('False') + '.\n'
+        light_green('config CUSTOM_CONFIG drop') + ' will drop ' + \
+        light_yellow('CUSTOM_CONFIG') + ' config key.\n'
+    usage += s * 3 + \
+        light_green('config IMAGE_ON_TERM = true') + ' will set value of ' + \
+        light_yellow('IMAGE_ON_TERM') + ' config key to ' + \
+        light_yellow('True') + '.\n'
     # Screening
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Screening \n')
@@ -1648,7 +1662,6 @@ def stream(domain, args, name='Rainbow Stream'):
             elif tweet.get('text'):
                 draw(
                     t=tweet,
-                    iot=args.image_on_term,
                     keyword=args.track_keywords,
                     check_semaphore=True,
                     fil=args.filter,
@@ -1669,7 +1682,7 @@ def fly():
     # Initial
     args = parse_arguments()
     try:
-        init()
+        init(args)
     except TwitterHTTPError:
         printNicely('')
         printNicely(
@@ -1692,5 +1705,4 @@ def fly():
     g['reset'] = True
     g['prefix'] = True
     g['stream_pid'] = p.pid
-    g['iot'] = args.image_on_term
     listen()
