@@ -16,12 +16,9 @@ can run on Python 2.7.x and 3.x .
 
 Showcase
 ----------
-Screencast: https://www.youtube.com/watch?v=tykCvPMJq8s
 
-Screenshot: (click to see)
-
-.. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/RainbowStreamAll.png
-   :alt: all
+.. figure:: https://github.com/DTVD/rainbowstream/blob/master/screenshot/rs.gif
+   :alt: gif
 
 Install
 -------
