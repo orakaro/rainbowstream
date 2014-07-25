@@ -5,6 +5,8 @@
     "THEME" : "monokai",
     // Ascii Art
     "ASCII_ART" : true,
+    // Prefix
+    "PREFIX" : "",
     // 'search': max search record
     "SEARCH_MAX_RECORD" : 5,
     // 'home': default number of home's tweets

@@ -144,8 +144,12 @@ def init(args):
     # Get name
     t = Twitter(auth=authen())
     name = '@' + t.account.verify_credentials()['screen_name']
+    if not get_config('PREFIX'):
+        set_config('PREFIX', name)
     g['original_name'] = name[1:]
-    g['decorated_name'] = color_func(c['DECORATED_NAME'])('[' + name + ']: ')
+    g['decorated_name'] = lambda x: color_func(
+        c['DECORATED_NAME'])(
+        '[' + x + ']: ')
     # Theme init
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
@@ -155,6 +159,7 @@ def init(args):
     db.semaphore_store(False)
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
+
 
 def switch():
     """
@@ -1113,7 +1118,8 @@ def config():
             line = ' ' * 2 + light_green(key) + ': ' + light_magenta(value)
             printNicely(line)
         except:
-            printNicely(light_magenta('This config key does not exist in default.'))
+            printNicely(
+                light_magenta('This config key does not exist in default.'))
     # Delete specific config key in config file
     elif len(g['stuff'].split()) == 2 and g['stuff'].split()[-1] == 'drop':
         key = g['stuff'].split()[0]
@@ -1126,8 +1132,17 @@ def config():
     elif len(g['stuff'].split()) == 3 and g['stuff'].split()[1] == '=':
         key = g['stuff'].split()[0]
         value = g['stuff'].split()[-1]
+        if key == 'THEME' and not validate_theme(value):
+            printNicely(red('Invalid theme\'s value.'))
+            return
         try:
             set_config(key, value)
+            # Apply theme immediately
+            if key == 'THEME':
+                reload_theme(value)
+                g['decorated_name'] = lambda x: color_func(
+                    c['DECORATED_NAME'])(
+                    '[' + x + ']: ')
             printNicely(light_green('Updated successfully.'))
         except:
             printNicely(light_magenta('Not valid value.'))
@@ -1150,33 +1165,15 @@ def theme():
             else:
                 line = ' ' * 4 + line
             printNicely(line)
-    elif g['stuff'] == 'current_as_default':
-        # Set as default
-        set_config('THEME', c['THEME'])
-        printNicely(light_green('Okay it will be applied from next time :)'))
     else:
         # Change theme
         try:
-            # Load new config
-            if g['stuff'] != 'custom':
-                new_config = os.path.dirname(
-                    __file__) + '/colorset/' + g['stuff'] + '.json'
-            else:
-                new_config = os.environ.get(
-                    'HOME', os.environ.get(
-                        'USERPROFILE',
-                        '')) + os.sep + '.rainbow_config.json'
-            new_config = load_config(new_config)
-            if new_config:
-                for nc in new_config:
-                    c[nc] = new_config[nc]
-            # Update db and reset colors
-            db.theme_update(g['stuff'])
-            c['THEME'] = g['stuff']
-            start_cycle()
-            g['decorated_name'] = color_func(
+            # Load new theme
+            reload_theme(g['stuff'])
+            # Redefine decorated_name
+            g['decorated_name'] = lambda x: color_func(
                 c['DECORATED_NAME'])(
-                '[@' + g['original_name'] + ']: ')
+                '[' + x + ']: ')
             printNicely(green('Theme changed.'))
         except:
             printNicely(red('No such theme exists.'))
@@ -1570,7 +1567,7 @@ def listen():
             ],  # list
             [],  # cal
             [key for key in dict(get_all_config())],  # config
-            g['themes'] + ['current_as_default'],  # theme
+            g['themes'],  # theme
             [
                 'discover',
                 'tweets',
@@ -1588,7 +1585,7 @@ def listen():
     reset()
     while True:
         if g['prefix']:
-            line = raw_input(g['decorated_name'])
+            line = raw_input(g['decorated_name'](c['PREFIX']))
         else:
             line = raw_input()
         try:
@@ -1610,7 +1607,8 @@ def listen():
                 g['prefix'] = True
             # Release the semaphore lock
             db.semaphore_update(False)
-        except Exception:
+        except Exception as e:
+            print e
             printNicely(red('OMG something is wrong with Twitter right now.'))
 
 

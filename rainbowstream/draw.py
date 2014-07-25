@@ -112,36 +112,47 @@ def show_calendar(month, date, rel):
 
 
 def check_config():
-   """
-   Check if config is changed
-   """
-   changed = False
-   data = get_all_config()
-   for key in c:
-       if key in data:
-           if data[key] != c[key]:
-               changed = True
-   if changed:
-       reload_config()
+    """
+    Check if config is changed
+    """
+    changed = False
+    data = get_all_config()
+    for key in c:
+        if key in data:
+            if data[key] != c[key]:
+                changed = True
+    if changed:
+        reload_config()
 
 
-def check_theme():
+def validate_theme(theme):
+    """
+    Validate a theme exists or not
+    """
+    # Theme changed check
+    files = os.listdir(os.path.dirname(__file__) + '/colorset')
+    themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
+    return theme in themes
+
+
+def reload_theme(current_config):
     """
     Check current theme and update if necessary
     """
     exists = db.theme_query()
     themes = [t.theme_name for t in exists]
-    if c['THEME'] != themes[0]:
-        c['THEME'] = themes[0]
+    if current_config != themes[0]:
         config = os.path.dirname(
-            __file__) + '/colorset/' + c['THEME'] + '.json'
+            __file__) + '/colorset/' + current_config + '.json'
         # Load new config
         data = load_config(config)
         if data:
             for d in data:
                 c[d] = data[d]
-        # Re-init color cycle
-        g['cyc'] = init_cycle()
+        # Restart color cycle and update db/config
+        start_cycle()
+        db.theme_update(current_config)
+        set_config('THEME', current_config)
 
 
 def color_func(func_name):
@@ -158,8 +169,8 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     Draw the rainbow
     """
 
-    check_theme()
     check_config()
+    reload_theme(c['THEME'])
     # Retrieve tweet
     tid = t['id']
     text = t['text']

@@ -63,8 +63,9 @@ def get_default_config(key):
     try:
         data = load_config(path)
     except:
-       raise Exception('No such config key.')
+        raise Exception('No such config key.')
     return data[key]
+
 
 def get_config(key):
     """
@@ -91,11 +92,13 @@ def set_config(key, value):
             'USERPROFILE',
             '')) + os.sep + '.rainbow_config.json'
     data = load_config(path)
+    # Update global config
+    c[key] = value
+    # Update config file
     if key in data:
         fixup(data, key, value)
     else:
         data[key] = value
-        c[key] = value
     # Save
     with open(path, 'w') as out:
         json.dump(data, out, indent=4)
@@ -103,25 +106,29 @@ def set_config(key, value):
 
 
 def delete_config(key):
-   """
-   Delete a config key
-   """
-   path = os.environ.get(
+    """
+    Delete a config key
+    """
+    path = os.environ.get(
         'HOME',
         os.environ.get(
             'USERPROFILE',
             '')) + os.sep + '.rainbow_config.json'
-   data = load_config(path)
-   # Drop key
-   if key in data and key in c:
-       data.pop(key)
-       c.pop(key)
-   else:
-       raise Exception('No such config key.')
-   # Save
-   with open(path, 'w') as out:
-       json.dump(data, out, indent=4)
-   os.system('chmod 777 ' + path)
+    data = load_config(path)
+    # Drop key
+    if key in data and key in c:
+        data.pop(key)
+        c.pop(key)
+        try:
+            data[key] = c[key] = get_default_config(key)
+        except:
+            pass
+    else:
+        raise Exception('No such config key.')
+    # Save
+    with open(path, 'w') as out:
+        json.dump(data, out, indent=4)
+    os.system('chmod 777 ' + path)
 
 
 def reload_config():
