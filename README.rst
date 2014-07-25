@@ -15,7 +15,7 @@ can run on Python 2.7.x and 3.x .
 
 
 Showcase
-----------
+--------
 
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/rs.gif
    :alt: gif
@@ -90,7 +90,7 @@ suggestion. Input history from previous run is available as well.
 Available commands are listed in `Read The Docs`_.
 
 Theme customization
-------------------------
+-------------------
 
 Rainbow Stream is shipped with some default themes.
 You can either change theme by ``theme`` command or create your favorite one.

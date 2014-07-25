@@ -16,7 +16,7 @@ try:
 except:
     from html import unescape
 
-# raw_input and map functiion behaviour
+# raw_input and map function behaviour
 if sys.version[0] == "3":
     raw_input = input
     lmap = lambda f, a: list(map(f, a))
