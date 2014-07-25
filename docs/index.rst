@@ -219,8 +219,8 @@ Here is full list of supported command:
 
 -  ``theme`` will list available themes.
 
-  + ``theme monokai`` will apply *monokai* theme immedaitely.
-  + ``theme current_as_default`` will remember current theme as next time default.
+  + ``theme monokai`` will apply *monokai* theme immediately.
+  + Changed theme will be remember as the next time's default theme.
 
 -  ``config`` will list all config key.
 
