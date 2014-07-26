@@ -10,15 +10,19 @@ except:
     from io import StringIO, BytesIO
 
 # HTMLParser module
-try:
+if sys.version[0] == "2":
     from HTMLParser import HTMLParser
-    unescape = HTMLParser().unescape
-except:
-    from html import unescape
+else:
+    from html.parser import HTMLParser
+unescape = HTMLParser().unescape
+# According to https://github.com/python/cpython/blob/master/Lib/html/parser.py#L547 ,
+# in python 3.5 maybe I should use
+# from html import unescape
+# but it is a far-future story:)
 
 # raw_input and map function behaviour
-if sys.version[0] == "3":
+if sys.version[0] == "2":
+    lmap = lambda f, a: map(f, a)
+else:
     raw_input = input
     lmap = lambda f, a: list(map(f, a))
-else:
-    lmap = lambda f, a: map(f, a)
