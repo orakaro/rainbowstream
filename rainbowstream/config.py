@@ -91,7 +91,11 @@ def set_config(key, value):
         os.environ.get(
             'USERPROFILE',
             '')) + os.sep + '.rainbow_config.json'
-    data = load_config(path)
+    data = {}
+    try:
+        data = load_config(path)
+    except:
+        pass
     # Update global config
     c[key] = value
     # Update config file
@@ -172,7 +176,7 @@ def init_config():
         for d in data:
             c[d] = data[d]
     except:
-        print('It seems that ~/.rainbow_config.json has wrong format :(')
+        pass
     # Load default theme
     theme_file = os.path.dirname(
         __file__) + '/colorset/' + c['THEME'] + '.json'
