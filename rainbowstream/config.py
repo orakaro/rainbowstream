@@ -42,11 +42,7 @@ def get_all_config():
     """
     Get all config
     """
-    path = os.environ.get(
-        'HOME',
-        os.environ.get(
-            'USERPROFILE',
-            '')) + os.sep + '.rainbow_config.json'
+    path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
     data = load_config(path)
     # Hard to set from prompt
     data.pop('ONLY_LIST', None)
@@ -86,11 +82,7 @@ def set_config(key, value):
     elif value.lower() == 'false':
         value = False
     # Fix up
-    path = os.environ.get(
-        'HOME',
-        os.environ.get(
-            'USERPROFILE',
-            '')) + os.sep + '.rainbow_config.json'
+    path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
     data = {}
     try:
         data = load_config(path)
@@ -113,11 +105,7 @@ def delete_config(key):
     """
     Delete a config key
     """
-    path = os.environ.get(
-        'HOME',
-        os.environ.get(
-            'USERPROFILE',
-            '')) + os.sep + '.rainbow_config.json'
+    path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
     data = load_config(path)
     # Drop key
     if key in data and key in c:
@@ -139,11 +127,7 @@ def reload_config():
     """
     Reload config
     """
-    rainbow_config = os.environ.get(
-        'HOME',
-        os.environ.get(
-            'USERPROFILE',
-            '')) + os.sep + '.rainbow_config.json'
+    rainbow_config = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
     try:
         data = load_config(rainbow_config)
         for d in data:
@@ -166,11 +150,7 @@ def init_config():
     except:
         pass
     # Load user's config
-    rainbow_config = os.environ.get(
-        'HOME',
-        os.environ.get(
-            'USERPROFILE',
-            '')) + os.sep + '.rainbow_config.json'
+    rainbow_config = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
     try:
         data = load_config(rainbow_config)
         for d in data:

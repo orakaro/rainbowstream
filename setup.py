@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
-import os, sys
+import os, os.path, sys
 
 # Bumped version
-version = '0.4.9'
+version = '0.4.10'
 
 # Require
 install_requires = [
@@ -19,11 +19,7 @@ if sys.version[0] == "2":
     install_requires += ["pysqlite"]
 
 # Copy default config if not exists
-default = os.environ.get(
-    'HOME',
-    os.environ.get(
-        'USERPROFILE',
-        '')) + os.sep + '.rainbow_config.json'
+default = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
 if not os.path.isfile(default):
     cmd = 'cp rainbowstream/colorset/config ' + default
     os.system(cmd)

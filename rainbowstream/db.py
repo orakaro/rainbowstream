@@ -12,8 +12,9 @@ class RainbowDB():
         """
         Init DB
         """
-        if not os.path.isfile('rainbow.db'):
-            init_db()
+        if os.path.isfile('rainbow.db'):
+            os.system('rm -rf rainbow.db')
+        init_db()
         self.engine = create_engine('sqlite:///rainbow.db', echo=False)
 
 
