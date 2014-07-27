@@ -169,8 +169,17 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     Draw the rainbow
     """
 
+    # Check the semaphore lock (stream process only)
+    if check_semaphore:
+        if db.semaphore_query_pause():
+            return
+        while db.semaphore_query_lock():
+            time.sleep(0.5)
+
+    # Check config and theme
     check_config()
     reload_theme(c['THEME'])
+
     # Retrieve tweet
     tid = t['id']
     text = t['text']
@@ -294,13 +303,6 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
         printNicely(red('Wrong format in config.'))
         return
 
-    # Check the semaphore lock (stream process only)
-    if check_semaphore:
-        if db.semaphore_query_pause():
-            return
-        while db.semaphore_query_flag():
-            time.sleep(0.5)
-
     # Draw
     printNicely(formater)
 
@@ -314,10 +316,19 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
                 printNicely(red('Sorry, image link is broken'))
 
 
-def print_message(m):
+def print_message(m, check_semaphore=False):
     """
     Print direct message
     """
+
+    # Check the semaphore lock (stream process only)
+    if check_semaphore:
+        if db.semaphore_query_pause():
+            return
+        while db.semaphore_query_lock():
+            time.sleep(0.5)
+
+    # Retrieve message
     sender_screen_name = '@' + m['sender_screen_name']
     sender_name = m['sender']['name']
     text = unescape(m['text'])
@@ -456,7 +467,7 @@ def show_profile(u):
     if c['IMAGE_ON_TERM']:
         try:
             response = requests.get(profile_image_url)
-            image_to_display(BytesIO(response.content), 2, 20)
+            image_to_display(BytesIO(response.content))
         except:
             pass
     else:

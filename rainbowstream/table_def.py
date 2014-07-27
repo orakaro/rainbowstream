@@ -43,11 +43,11 @@ class Semaphore(Base):
     __tablename__ = "semaphore"
 
     semaphore_id = Column(Integer, primary_key=True)
-    flag = Column(Boolean)
+    lock = Column(Boolean)
     pause = Column(Boolean)
 
-    def __init__(self, flag, pause):
-        self.flag = flag
+    def __init__(self, lock, pause):
+        self.lock = lock
         self.pause = pause
 
 

@@ -1619,7 +1619,7 @@ def listen():
         g['cmd'] = cmd
         try:
             # Lock the semaphore
-            db.semaphore_update_flag(True)
+            db.semaphore_update_lock(True)
             # Save cmd to global variable and call process
             g['stuff'] = ' '.join(line.split()[1:])
             # Process the command
@@ -1630,7 +1630,7 @@ def listen():
             else:
                 g['prefix'] = True
             # Release the semaphore lock
-            db.semaphore_update_flag(False)
+            db.semaphore_update_lock(False)
         except Exception:
             printNicely(red('OMG something is wrong with Twitter right now.'))
 
@@ -1689,7 +1689,7 @@ def stream(domain, args, name='Rainbow Stream'):
                     ig=args.ignore,
                 )
             elif tweet.get('direct_message'):
-                print_message(tweet['direct_message'])
+                print_message(tweet['direct_message'],check_semaphore=True)
     except TwitterHTTPError:
         printNicely('')
         printNicely(
