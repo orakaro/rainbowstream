@@ -235,8 +235,8 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     # Format info
     name = cycle_color(name)
     nick = color_func(c['TWEET']['nick'])(' ' + screen_name + ' ')
-    clock = color_func(c['TWEET']['clock'])('[' + clock + ']')
-    id = color_func(c['TWEET']['id'])('[id=' + str(rid) + ']')
+    clock = clock
+    id = str(rid)
     fav = ''
     if favorited:
         fav = color_func(c['TWEET']['favorited'])(u'\u2605')
@@ -275,12 +275,21 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     # Load config formater
     try:
         formater = c['FORMAT']['TWEET']['DISPLAY']
-        formater =  name.join(formater.split("#name"))
-        formater =  nick.join(formater.split("#nick"))
-        formater =  clock.join(formater.split("#clock"))
-        formater =  id.join(formater.split("#id"))
-        formater =  fav.join(formater.split("#fav"))
-        formater =  tweet.join(formater.split("#tweet"))
+        formater = name.join(formater.split("#name"))
+        formater = nick.join(formater.split("#nick"))
+        formater = fav.join(formater.split("#fav"))
+        formater = tweet.join(formater.split("#tweet"))
+        # Change clock word
+        word = [w for w in formater.split() if '#clock' in w][0]
+        delimiter = color_func(
+            c['TWEET']['clock'])(
+            clock.join(
+                word.split('#clock')))
+        formater = delimiter.join(formater.split(word))
+        # Change id word
+        word = [w for w in formater.split() if '#id' in w][0]
+        delimiter = color_func(c['TWEET']['id'])(id.join(word.split('#id')))
+        formater = delimiter.join(formater.split(word))
     except:
         printNicely(red('Wrong format in config.'))
         return
@@ -333,24 +342,34 @@ def print_message(m):
     sender_name = cycle_color(sender_name)
     sender_nick = color_func(c['MESSAGE']['sender'])(sender_screen_name)
     recipient_name = cycle_color(recipient_name)
-    recipient_nick = color_func(c['MESSAGE']['recipient'])(recipient_screen_name)
+    recipient_nick = color_func(
+        c['MESSAGE']['recipient'])(recipient_screen_name)
     to = color_func(c['MESSAGE']['to'])('>>>')
-    clock = color_func(c['MESSAGE']['clock'])('[' + clock + ']')
-    id = color_func(c['MESSAGE']['id'])('[message_id=' + str(rid) + ']')
+    clock = clock
+    id = str(rid)
 
     text = ''.join(lmap(lambda x: x + '  ' if x == '\n' else x, text))
 
     # Load config formater
     try:
         formater = c['FORMAT']['MESSAGE']['DISPLAY']
-        formater =  sender_name.join(formater.split("#sender_name"))
-        formater =  sender_nick.join(formater.split("#sender_nick"))
-        formater =  to.join(formater.split("#to"))
-        formater =  recipient_name.join(formater.split("#recipient_name"))
-        formater =  recipient_nick.join(formater.split("#recipient_nick"))
-        formater =  clock.join(formater.split("#clock"))
-        formater =  id.join(formater.split("#id"))
-        formater =  text.join(formater.split("#message"))
+        formater = sender_name.join(formater.split("#sender_name"))
+        formater = sender_nick.join(formater.split("#sender_nick"))
+        formater = to.join(formater.split("#to"))
+        formater = recipient_name.join(formater.split("#recipient_name"))
+        formater = recipient_nick.join(formater.split("#recipient_nick"))
+        formater = text.join(formater.split("#message"))
+        # Change clock word
+        word = [w for w in formater.split() if '#clock' in w][0]
+        delimiter = color_func(
+            c['MESSAGE']['clock'])(
+            clock.join(
+                word.split('#clock')))
+        formater = delimiter.join(formater.split(word))
+        # Change id word
+        word = [w for w in formater.split() if '#id' in w][0]
+        delimiter = color_func(c['MESSAGE']['id'])(id.join(word.split('#id')))
+        formater = delimiter.join(formater.split(word))
     except:
         printNicely(red('Wrong format in config.'))
         return

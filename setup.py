@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import os, os.path, sys
 
 # Bumped version
-version = '0.5.0'
+version = '0.5.1'
 
 # Require
 install_requires = [
