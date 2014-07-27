@@ -70,6 +70,8 @@ cmdset = [
     'config',
     'theme',
     'h',
+    'p',
+    'r',
     'c',
     'q'
 ]
@@ -156,7 +158,7 @@ def init(args):
     g['themes'] = themes
     db.theme_store(c['THEME'])
     # Semaphore init
-    db.semaphore_store(False)
+    db.semaphore_store(False, False)
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
 
@@ -911,7 +913,7 @@ def list_add(t):
             slug=slug,
             owner_screen_name=owner,
             screen_name=user_name)
-        printNicely(light_green('Added.'))
+        printNicely(green('Added.'))
     except:
         printNicely(light_magenta('I\'m sorry we can not add him/her.'))
 
@@ -930,7 +932,7 @@ def list_remove(t):
             slug=slug,
             owner_screen_name=owner,
             screen_name=user_name)
-        printNicely(light_green('Gone.'))
+        printNicely(green('Gone.'))
     except:
         printNicely(light_magenta('I\'m sorry we can not remove him/her.'))
 
@@ -945,7 +947,7 @@ def list_subscribe(t):
         t.lists.subscribers.create(
             slug=slug,
             owner_screen_name=owner)
-        printNicely(light_green('Done.'))
+        printNicely(green('Done.'))
     except:
         printNicely(
             light_magenta('I\'m sorry you can not subscribe to this list.'))
@@ -961,7 +963,7 @@ def list_unsubscribe(t):
         t.lists.subscribers.destroy(
             slug=slug,
             owner_screen_name=owner)
-        printNicely(light_green('Done.'))
+        printNicely(green('Done.'))
     except:
         printNicely(
             light_magenta('I\'m sorry you can not unsubscribe to this list.'))
@@ -997,7 +999,7 @@ def list_new(t):
             name=name,
             mode=mode,
             description=description)
-        printNicely(light_green(name + ' list is created.'))
+        printNicely(green(name + ' list is created.'))
     except:
         printNicely(red('Oops something is wrong with Twitter :('))
 
@@ -1024,7 +1026,7 @@ def list_update(t):
                 owner_screen_name=g['original_name'],
                 mode=mode,
                 description=description)
-        printNicely(light_green(slug + ' list is updated.'))
+        printNicely(green(slug + ' list is updated.'))
     except:
         printNicely(red('Oops something is wrong with Twitter :('))
 
@@ -1038,7 +1040,7 @@ def list_delete(t):
         t.lists.destroy(
             slug='-'.join(slug.split()),
             owner_screen_name=g['original_name'])
-        printNicely(light_green(slug + ' list is deleted.'))
+        printNicely(green(slug + ' list is deleted.'))
     except:
         printNicely(red('Oops something is wrong with Twitter :('))
 
@@ -1095,7 +1097,7 @@ def config():
     if not g['stuff']:
         for k in all_config:
             line = ' ' * 2 + \
-                light_green(k) + ': ' + light_yellow(str(all_config[k]))
+                green(k) + ': ' + light_yellow(str(all_config[k]))
             printNicely(line)
         guide = 'Detailed explanation can be found at ' + \
             color_func(c['TWEET']['link'])(
@@ -1106,7 +1108,7 @@ def config():
         if g['stuff'] in all_config:
             k = g['stuff']
             line = ' ' * 2 + \
-                light_green(k) + ': ' + light_yellow(str(all_config[k]))
+                green(k) + ': ' + light_yellow(str(all_config[k]))
             printNicely(line)
         else:
             printNicely(red('No such config key.'))
@@ -1115,7 +1117,7 @@ def config():
         key = g['stuff'].split()[0]
         try:
             value = get_default_config(key)
-            line = ' ' * 2 + light_green(key) + ': ' + light_magenta(value)
+            line = ' ' * 2 + green(key) + ': ' + light_magenta(value)
             printNicely(line)
         except:
             printNicely(
@@ -1125,7 +1127,7 @@ def config():
         key = g['stuff'].split()[0]
         try:
             delete_config(key)
-            printNicely(light_green('Config key is dropped.'))
+            printNicely(green('Config key is dropped.'))
         except:
             printNicely(red('No such config key.'))
     # Set specific config
@@ -1143,7 +1145,7 @@ def config():
                 g['decorated_name'] = lambda x: color_func(
                     c['DECORATED_NAME'])(
                     '[' + x + ']: ')
-            printNicely(light_green('Updated successfully.'))
+            printNicely(green('Updated successfully.'))
         except:
             printNicely(light_magenta('Not valid value.'))
             return
@@ -1416,6 +1418,8 @@ def help():
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Screening \n')
     usage += s * 2 + light_green('h') + ' will show this help again.\n'
+    usage += s * 2 + light_green('p') + ' will pause the stream.\n'
+    usage += s * 2 + light_green('r') + ' will unpause the stream.\n'
     usage += s * 2 + light_green('c') + ' will clear the screen.\n'
     usage += s * 2 + light_green('q') + ' will quit.\n'
     # End
@@ -1435,6 +1439,22 @@ def help():
         d[g['stuff'].strip()]()
     else:
         printNicely(usage)
+
+
+def pause():
+    """
+    Pause stream display
+    """
+    db.semaphore_update_pause(True)
+    printNicely(green('Stream is paused'))
+
+
+def replay():
+    """
+    Replay stream
+    """
+    db.semaphore_update_pause(False)
+    printNicely(green('Stream is running back now'))
 
 
 def clear():
@@ -1509,6 +1529,8 @@ def process(cmd):
             config,
             theme,
             help,
+            pause,
+            replay,
             clear,
             quit
         ]
@@ -1576,6 +1598,8 @@ def listen():
                 'list',
                 'stream'
             ],  # help
+            [],  # pause
+            [],  # reconnect
             [],  # clear
             [],  # quit
         ]
@@ -1595,7 +1619,7 @@ def listen():
         g['cmd'] = cmd
         try:
             # Lock the semaphore
-            db.semaphore_update(True)
+            db.semaphore_update_flag(True)
             # Save cmd to global variable and call process
             g['stuff'] = ' '.join(line.split()[1:])
             # Process the command
@@ -1606,7 +1630,7 @@ def listen():
             else:
                 g['prefix'] = True
             # Release the semaphore lock
-            db.semaphore_update(False)
+            db.semaphore_update_flag(False)
         except Exception:
             printNicely(red('OMG something is wrong with Twitter right now.'))
 

@@ -234,7 +234,7 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
 
     # Format info
     name = cycle_color(name)
-    nick = color_func(c['TWEET']['nick'])(' ' + screen_name + ' ')
+    nick = color_func(c['TWEET']['nick'])(screen_name)
     clock = clock
     id = str(rid)
     fav = ''
@@ -294,9 +294,11 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
         printNicely(red('Wrong format in config.'))
         return
 
-    # Check the semaphore lock
+    # Check the semaphore lock (stream process only)
     if check_semaphore:
-        while db.semaphore_query():
+        if db.semaphore_query_pause():
+            return
+        while db.semaphore_query_flag():
             time.sleep(0.5)
 
     # Draw

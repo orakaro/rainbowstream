@@ -44,9 +44,11 @@ class Semaphore(Base):
 
     semaphore_id = Column(Integer, primary_key=True)
     flag = Column(Boolean)
+    pause = Column(Boolean)
 
-    def __init__(self, flag):
+    def __init__(self, flag, pause):
         self.flag = flag
+        self.pause = pause
 
 
 def init_db():

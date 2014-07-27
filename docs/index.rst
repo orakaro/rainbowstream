@@ -61,7 +61,7 @@ You can try it with:
 
     rainbowstream -iot # Or rainbowstream --image-on-term
 
-You also can change the config key ``IMAGE_ON_TERM`` to ``True`` inside the app 
+You also can change the config key ``IMAGE_ON_TERM`` to ``True`` inside the app
 to enable above feature (see `config management`_ section).
 
 In the first time you will be asked for authorization of Rainbow Stream
@@ -233,6 +233,10 @@ Here is full list of supported command:
 
 -  ``h`` will show the help.
 
+-  ``p`` will pause the stream.
+
+-  ``r`` will unpause the stream.
+
 -  ``c`` will clear the screen.
 
 -  ``q`` will quit.
@@ -311,7 +315,7 @@ You can view or set a new value of every config key by ``config`` command (See *
 
   + ``CLOCK_FORMAT``: time format, see `Python's strftime format`_.
   + ``DISPLAY``: decide how tweet will be printed.
- 
+
     + ``#name``: Twitter's name
     + ``#nick``: Twitter's screen name
     + ``#clock``: Datetime
