@@ -23,6 +23,14 @@ Showcase
 Install
 -------
 
+Requirements
+^^^^^^^^^^^^
+
+If you use Linux, you might need to install the ``python-dev`` and 
+``libsqlite3-dev`` packages if you haven't already. For debian-based distros, 
+these can be installed with ``sudo apt-get install python-dev libsqlite3-dev``.
+
+
 The quick way
 ^^^^^^^^^^^^^
 
