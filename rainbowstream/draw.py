@@ -180,7 +180,12 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     favorited = t['favorited']
     date = parser.parse(created_at)
     date = date - datetime.timedelta(seconds=time.timezone)
-    clock = date.strftime('%Y/%m/%d %H:%M:%S')
+    clock_format = '%Y/%m/%d %H:%M:%S'
+    try:
+        clock_format = c['FORMAT']['TWEET']['CLOCK_FORMAT']
+    except:
+        pass
+    clock = date.strftime(clock_format)
 
     # Pull extended retweet text
     try:
@@ -228,12 +233,14 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     rid = res[0].rainbow_id
 
     # Format info
-    user = cycle_color(
-        name) + color_func(c['TWEET']['nick'])(' ' + screen_name + ' ')
-    meta = color_func(c['TWEET']['clock'])(
-        '[' + clock + '] ') + color_func(c['TWEET']['id'])('[id=' + str(rid) + '] ')
+    name = cycle_color(name)
+    nick = color_func(c['TWEET']['nick'])(' ' + screen_name + ' ')
+    clock = color_func(c['TWEET']['clock'])('[' + clock + ']')
+    id = color_func(c['TWEET']['id'])('[id=' + str(rid) + ']')
+    fav = ''
     if favorited:
-        meta = meta + color_func(c['TWEET']['favorited'])(u'\u2605')
+        fav = color_func(c['TWEET']['favorited'])(u'\u2605')
+
     tweet = text.split()
     # Replace url
     if expanded_url:
@@ -265,27 +272,26 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
             delimiter = color_func(c['TWEET']['keyword'])(occur)
             tweet = delimiter.join(ary)
 
-    # Draw rainbow
-    line1 = u"{u:>{uw}}:".format(
-        u=user,
-        uw=len(user) + 2,
-    )
-    line2 = u"{c:>{cw}}".format(
-        c=meta,
-        cw=len(meta) + 2,
-    )
-    line3 = '  ' + tweet
+    # Load config formater
+    try:
+        formater = c['FORMAT']['TWEET']['DISPLAY']
+        formater =  name.join(formater.split("#name"))
+        formater =  nick.join(formater.split("#nick"))
+        formater =  clock.join(formater.split("#clock"))
+        formater =  id.join(formater.split("#id"))
+        formater =  fav.join(formater.split("#fav"))
+        formater =  tweet.join(formater.split("#tweet"))
+    except:
+        printNicely(red('Wrong format in config.'))
+        return
 
     # Check the semaphore lock
     if check_semaphore:
         while db.semaphore_query():
             time.sleep(0.5)
 
-    # Output
-    printNicely('')
-    printNicely(line1)
-    printNicely(line2)
-    printNicely(line3)
+    # Draw
+    printNicely(formater)
 
     # Display Image
     if c['IMAGE_ON_TERM'] and media_url:
@@ -309,7 +315,12 @@ def print_message(m):
     mid = m['id']
     date = parser.parse(m['created_at'])
     date = date - datetime.timedelta(seconds=time.timezone)
-    clock = date.strftime('%Y/%m/%d %H:%M:%S')
+    clock_format = '%Y/%m/%d %H:%M:%S'
+    try:
+        clock_format = c['FORMAT']['MESSAGE']['CLOCK_FORMAT']
+    except:
+        pass
+    clock = date.strftime(clock_format)
 
     # Get rainbow id
     res = db.message_to_rainbow_query(mid)
@@ -319,34 +330,33 @@ def print_message(m):
     rid = res[0].rainbow_id
 
     # Draw
-    sender = cycle_color(
-        sender_name) + color_func(c['MESSAGE']['sender'])(' ' + sender_screen_name + ' ')
-    recipient = cycle_color(recipient_name) + color_func(
-        c['MESSAGE']['recipient'])(
-        ' ' + recipient_screen_name + ' ')
-    user = sender + color_func(c['MESSAGE']['to'])(' >>> ') + recipient
-    meta = color_func(
-        c['MESSAGE']['clock'])(
-        '[' + clock + ']') + color_func(
-            c['MESSAGE']['id'])(
-                ' [message_id=' + str(rid) + '] ')
+    sender_name = cycle_color(sender_name)
+    sender_nick = color_func(c['MESSAGE']['sender'])(sender_screen_name)
+    recipient_name = cycle_color(recipient_name)
+    recipient_nick = color_func(c['MESSAGE']['recipient'])(recipient_screen_name)
+    to = color_func(c['MESSAGE']['to'])('>>>')
+    clock = color_func(c['MESSAGE']['clock'])('[' + clock + ']')
+    id = color_func(c['MESSAGE']['id'])('[message_id=' + str(rid) + ']')
+
     text = ''.join(lmap(lambda x: x + '  ' if x == '\n' else x, text))
 
-    line1 = u"{u:>{uw}}:".format(
-        u=user,
-        uw=len(user) + 2,
-    )
-    line2 = u"{c:>{cw}}".format(
-        c=meta,
-        cw=len(meta) + 2,
-    )
+    # Load config formater
+    try:
+        formater = c['FORMAT']['MESSAGE']['DISPLAY']
+        formater =  sender_name.join(formater.split("#sender_name"))
+        formater =  sender_nick.join(formater.split("#sender_nick"))
+        formater =  to.join(formater.split("#to"))
+        formater =  recipient_name.join(formater.split("#recipient_name"))
+        formater =  recipient_nick.join(formater.split("#recipient_nick"))
+        formater =  clock.join(formater.split("#clock"))
+        formater =  id.join(formater.split("#id"))
+        formater =  text.join(formater.split("#message"))
+    except:
+        printNicely(red('Wrong format in config.'))
+        return
 
-    line3 = '  ' + text
-
-    printNicely('')
-    printNicely(line1)
-    printNicely(line2)
-    printNicely(line3)
+    # Draw
+    printNicely(formater)
 
 
 def show_profile(u):

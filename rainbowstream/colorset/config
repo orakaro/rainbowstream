@@ -30,5 +30,16 @@
     // Stream config
     "USER_DOMAIN" : "userstream.twitter.com",
     "PUBLIC_DOMAIN" : "stream.twitter.com",
-    "SITE_DOMAIN" : "sitestream.twitter.com"
+    "SITE_DOMAIN" : "sitestream.twitter.com",
+    // Format
+    "FORMAT": {
+        "TWEET": {
+            "CLOCK_FORMAT" : "%Y/%m/%d %H:%M:%S",
+            "DISPLAY" : "\n  #name #nick:\n  #clock #id #fav\n  #tweet"
+        },
+        "MESSAGE": {
+            "CLOCK_FORMAT" : "%Y/%m/%d %H:%M:%S",
+            "DISPLAY" : "\n  #sender_name #sender_nick #to #recipient_name #recipient_nick :\n  #clock #id\n  #message"
+        }
+    }
 }
