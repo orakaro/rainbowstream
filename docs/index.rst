@@ -309,20 +309,20 @@ You can view or set a new value of every config key by ``config`` command (See *
 
 -  ``FORMAT``: display format for tweet and message.
 
-  + `CLOCK_FORMAT`: time format, see `Python's strftime format`_.
-  + `DISPLAY`: decide how tweet will be printed.
+  + ``CLOCK_FORMAT``: time format, see `Python's strftime format`_.
+  + ``DISPLAY``: decide how tweet will be printed.
  
-    + `#name`: Twitter's name
-    + `#nick`: Twitter's screen name
-    + `#clock`: Datetime
-    + `#id`: ID
-    + `#fav`: favorited symbol
-    + `#tweet`: Tweet's content
-    + `#sender_name`: Message's sender name
-    + `#sender_nick`: Message's sender screen name
-    + `#to`: '>>>' symbol
-    + `#recipient_name`: Message's recipient name
-    + `#recipient_nick`: Message's recipient screen name
+    + ``#name``: Twitter's name
+    + ``#nick``: Twitter's screen name
+    + ``#clock``: Datetime
+    + ``#id``: ID
+    + ``#fav``: favorited symbol
+    + ``#tweet``: Tweet's content
+    + ``#sender_name``: Message's sender name
+    + ``#sender_nick``: Message's sender screen name
+    + ``#to``: '>>>' symbol
+    + ``#recipient_name``: Message's recipient name
+    + ``#recipient_nick``: Message's recipient screen name
 
 
 Development
