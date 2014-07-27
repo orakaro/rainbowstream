@@ -91,7 +91,7 @@ app at Twitter. Just click the “Authorize access” button and paste PIN
 number to the terminal, the rainbow will start.
 
 The interactive mode
---------------------
+^^^^^^^^^^^^^^^^^^^^
 
 While your personal stream is continued, you are also ready to tweet,
 search, reply, retweet… directly from console. Simply type “h” and hit
@@ -104,7 +104,7 @@ suggestion. Input history from previous run is available as well.
 Available commands are listed in `Read The Docs`_.
 
 Theme customization
--------------------
+^^^^^^^^^^^^^^^^^^^
 
 Rainbow Stream is shipped with some default themes.
 You can either change theme by ``theme`` command or create your favorite one.
@@ -131,8 +131,8 @@ Theme’s screenshot:
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/larapaste.png
    :alt: larapaste
 
-
 For detaile information, see `theme usage and customization`_.
+
 
 Bug and feature requests
 ------------------------
