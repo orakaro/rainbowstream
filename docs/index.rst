@@ -16,6 +16,22 @@ can run on Python 2.7.x and 3.x .
 Install
 -------
 
+Prerequisite
+^^^^^^^^^^^^
+
+If you use Linux, you might need to install the ``python-dev`` and ``libsqlite3-dev`` packages if you haven't already. 
+For debian-based distros, these can be installed with 
+
+.. code:: bash
+
+    sudo apt-get install python-dev libsqlite3-dev
+
+
+Besides, Mac OSX Maverick with Xcode 5.1 has a well-known `clang unknown argument`_ problem with 
+the ``Pillow`` package installation - a dependency of this app.
+If you are in this case, I recommend take a look at `Issue #10`_ and let me know if the workaround doesn't work for you.
+
+
 The quick way
 ^^^^^^^^^^^^^
 
@@ -368,5 +384,6 @@ steps
 .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
 .. _config management: http://rainbowstream.readthedocs.org/en/latest/#the-interactive-mode
 .. _Python's strftime format: https://docs.python.org/2/library/time.html#time.strftime
-
+.. _clang unknown argument: http://kaspermunck.github.io/2014/03/fixing-clang-error/
+.. _Issue #10: https://github.com/DTVD/rainbowstream/issues/10
 
