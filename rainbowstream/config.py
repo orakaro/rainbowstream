@@ -47,6 +47,7 @@ def get_all_config():
     # Hard to set from prompt
     data.pop('ONLY_LIST', None)
     data.pop('IGNORE_LIST', None)
+    data.pop('FORMAT', None)
     return data
 
 
