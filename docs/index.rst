@@ -307,6 +307,24 @@ You can view or set a new value of every config key by ``config`` command (See *
 
 -  ``SITE_DOMAIN``: site URL of Twitter Streaming API.
 
+-  ``FORMAT``: display format for tweet and message.
+
+  + `CLOCK_FORMAT`: time format, see `Python's strftime format`_.
+  + `DISPLAY`: decide how tweet will be printed.
+ 
+    + `#name`: Twitter's name
+    + `#nick`: Twitter's screen name
+    + `#clock`: Datetime
+    + `#id`: ID
+    + `#fav`: favorited symbol
+    + `#tweet`: Tweet's content
+    + `#sender_name`: Message's sender name
+    + `#sender_nick`: Message's sender screen name
+    + `#to`: '>>>' symbol
+    + `#recipient_name`: Message's recipient name
+    + `#recipient_nick`: Message's recipient screen name
+
+
 Development
 -----------
 
@@ -345,4 +363,6 @@ steps
 .. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
 .. _config management: http://rainbowstream.readthedocs.org/en/latest/#the-interactive-mode
+.. _Python's strftime format: https://docs.python.org/2/library/time.html#time.strftime
+
 
