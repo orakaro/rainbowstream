@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import os, os.path, sys
 
 # Bumped version
-version = '0.5.1'
+version = '0.5.2'
 
 # Require
 install_requires = [
@@ -22,6 +22,8 @@ if sys.version[0] == "2":
 default = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
 if not os.path.isfile(default):
     cmd = 'cp rainbowstream/colorset/config ' + default
+    os.system(cmd)
+    cmd = 'chmod 777 ' + default
     os.system(cmd)
 
 # Setup
