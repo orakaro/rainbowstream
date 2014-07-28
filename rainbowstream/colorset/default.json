@@ -29,6 +29,7 @@
         "favorited" : "light_green",
         "rt"        : "grey",
         "link"      : "light_cyan",
+        "hashtag"   : "grey",
         "keyword"   : "on_light_yellow"
     },
 

@@ -29,6 +29,7 @@
         "favorited" : 64,
         "rt"        : 66,
         "link"      : 23,
+        "hashtag"   : 64,
         "keyword"   : "on_light_green"
     },
 

@@ -270,7 +270,11 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
             c['TWEET']['link'])(x) if x[
             0:4] == 'http' else x,
         tweet)
-
+    # Highlight hashtag
+    tweet = lmap(
+        lambda x: color_func(
+            c['TWEET']['hashtag'])(x) if x.startswith('#') else x,
+        tweet)
     # Highlight keyword
     tweet = ' '.join(tweet)
     if keyword:

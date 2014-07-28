@@ -1471,10 +1471,13 @@ def quit():
     """
     Exit all
     """
-    save_history()
-    os.system('rm -rf rainbow.db')
-    os.kill(g['stream_pid'], signal.SIGKILL)
-    printNicely(green('See you next time :)'))
+    try:
+        save_history()
+        os.system('rm -rf rainbow.db')
+        os.kill(g['stream_pid'], signal.SIGKILL)
+        printNicely(green('See you next time :)'))
+    except:
+        pass
     sys.exit()
 
 
@@ -1711,9 +1714,8 @@ def fly():
     except TwitterHTTPError:
         printNicely('')
         printNicely(
-            magenta("Something wrong with Twitter Oauth right now :("))
-        printNicely(
-            magenta("Please delete ~/.rainbow_oauth and try again."))
+            magenta("We have maximum connection problem with twitter'stream API right now :("))
+        printNicely(magenta("Let's try again later."))
         save_history()
         os.system('rm -rf rainbow.db')
         sys.exit()
