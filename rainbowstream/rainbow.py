@@ -143,6 +143,9 @@ def init(args):
     """
     Init function
     """
+    # Handle Ctrl C
+    ctrl_c_handler = lambda signum, frame: quit()
+    signal.signal(signal.SIGINT, ctrl_c_handler)
     # Get name
     t = Twitter(auth=authen())
     name = '@' + t.account.verify_credentials()['screen_name']
@@ -1471,6 +1474,7 @@ def quit():
     save_history()
     os.system('rm -rf rainbow.db')
     os.kill(g['stream_pid'], signal.SIGKILL)
+    printNicely(green('See you next time :)'))
     sys.exit()
 
 
