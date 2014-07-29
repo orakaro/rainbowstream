@@ -17,7 +17,6 @@ class RainbowDB():
         init_db()
         self.engine = create_engine('sqlite:///rainbow.db', echo=False)
 
-
     def tweet_store(self, tweet_id):
         """
         Store tweet id
@@ -28,7 +27,6 @@ class RainbowDB():
         session.add(t)
         session.commit()
 
-
     def rainbow_to_tweet_query(self, rid):
         """
         Query base of rainbow id
@@ -38,7 +36,6 @@ class RainbowDB():
         res = session.query(Tweet).filter_by(rainbow_id=rid).all()
         return res
 
-
     def tweet_to_rainbow_query(self, tid):
         """
         Query base of tweet id
@@ -47,7 +44,6 @@ class RainbowDB():
         session = Session()
         res = session.query(Tweet).filter_by(tweet_id=tid).all()
         return res
-
 
     def message_store(self, message_id):
         """
@@ -59,7 +55,6 @@ class RainbowDB():
         session.add(m)
         session.commit()
 
-
     def rainbow_to_message_query(self, rid):
         """
         Query base of rainbow id
@@ -68,7 +63,6 @@ class RainbowDB():
         session = Session()
         res = session.query(Message).filter_by(rainbow_id=rid).all()
         return res
-
 
     def message_to_rainbow_query(self, mid):
         """
@@ -79,7 +73,6 @@ class RainbowDB():
         res = session.query(Message).filter_by(message_id=mid).all()
         return res
 
-
     def theme_store(self, theme_name):
         """
         Store theme
@@ -89,7 +82,6 @@ class RainbowDB():
         th = Theme(theme_name)
         session.add(th)
         session.commit()
-
 
     def theme_update(self, theme_name):
         """
@@ -102,7 +94,6 @@ class RainbowDB():
             r.theme_name = theme_name
         session.commit()
 
-
     def theme_query(self):
         """
         Query theme
@@ -111,7 +102,6 @@ class RainbowDB():
         session = Session()
         res = session.query(Theme).all()
         return res
-
 
     def semaphore_store(self, lock, pause):
         """
@@ -122,7 +112,6 @@ class RainbowDB():
         th = Semaphore(lock, pause)
         session.add(th)
         session.commit()
-
 
     def semaphore_update_lock(self, lock):
         """
@@ -135,7 +124,6 @@ class RainbowDB():
             r.lock = lock
         session.commit()
 
-
     def semaphore_update_pause(self, pause):
         """
         Update semaphore pause
@@ -147,7 +135,6 @@ class RainbowDB():
             r.pause = pause
         session.commit()
 
-
     def semaphore_query_lock(self):
         """
         Query semaphore lock
@@ -156,7 +143,6 @@ class RainbowDB():
         session = Session()
         res = session.query(Semaphore).all()
         return res[0].lock
-
 
     def semaphore_query_pause(self):
         """

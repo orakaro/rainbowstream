@@ -1696,7 +1696,7 @@ def stream(domain, args, name='Rainbow Stream'):
                     ig=args.ignore,
                 )
             elif tweet.get('direct_message'):
-                print_message(tweet['direct_message'],check_semaphore=True)
+                print_message(tweet['direct_message'], check_semaphore=True)
     except TwitterHTTPError:
         printNicely('')
         printNicely(

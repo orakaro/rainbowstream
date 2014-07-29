@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
-import os, os.path, sys
+import os
+import os.path
+import sys
 
 # Bumped version
-version = '0.5.6'
+version = '0.5.7'
 
 # Require
 install_requires = [
@@ -14,7 +16,7 @@ install_requires = [
     "Pillow",
 ]
 
-# Python 3 doesn't hava pysqlite
+# Python 3 doesn't have pysqlite
 if sys.version[0] == "2":
     install_requires += ["pysqlite"]
 

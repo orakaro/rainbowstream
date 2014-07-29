@@ -93,24 +93,6 @@ def ascii_art(text):
     ))
 
 
-def show_calendar(month, date, rel):
-    """
-    Show the calendar in rainbow mode
-    """
-    month = random_rainbow(month)
-    date = ' '.join([cycle_color(i) for i in date.split(' ')])
-    today = str(int(os.popen('date +\'%d\'').read().strip()))
-    # Display
-    printNicely(month)
-    printNicely(date)
-    for line in rel:
-        ary = line.split(' ')
-        ary = lmap(lambda x: color_func(c['CAL']['today'])(x)
-                   if x == today
-                   else color_func(c['CAL']['days'])(x), ary)
-        printNicely(' '.join(ary))
-
-
 def check_config():
     """
     Check if config is changed
@@ -255,25 +237,29 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     if expanded_url:
         for index in range(len(expanded_url)):
             tweet = lmap(
-                lambda x: expanded_url[index] if x == url[index] else x,
+                lambda x: expanded_url[index]
+                if x == url[index]
+                else x,
                 tweet)
     # Highlight RT
     tweet = lmap(
-        lambda x: color_func(
-            c['TWEET']['rt'])(x) if x == 'RT' else x,
+        lambda x: color_func(c['TWEET']['rt'])(x)
+        if x == 'RT'
+        else x,
         tweet)
     # Highlight screen_name
     tweet = lmap(lambda x: cycle_color(x) if x[0] == '@' else x, tweet)
     # Highlight link
     tweet = lmap(
-        lambda x: color_func(
-            c['TWEET']['link'])(x) if x[
-            0:4] == 'http' else x,
+        lambda x: color_func(c['TWEET']['link'])(x)
+        if x[0:4] == 'http'
+        else x,
         tweet)
     # Highlight hashtag
     tweet = lmap(
-        lambda x: color_func(
-            c['TWEET']['hashtag'])(x) if x.startswith('#') else x,
+        lambda x: color_func(c['TWEET']['hashtag'])(x)
+        if x.startswith('#')
+        else x,
         tweet)
     # Highlight keyword
     tweet = ' '.join(tweet)
@@ -294,10 +280,8 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
         formater = tweet.join(formater.split("#tweet"))
         # Change clock word
         word = [w for w in formater.split() if '#clock' in w][0]
-        delimiter = color_func(
-            c['TWEET']['clock'])(
-            clock.join(
-                word.split('#clock')))
+        delimiter = color_func(c['TWEET']['clock'])(
+            clock.join(word.split('#clock')))
         formater = delimiter.join(formater.split(word))
         # Change id word
         word = [w for w in formater.split() if '#id' in w][0]
@@ -378,10 +362,8 @@ def print_message(m, check_semaphore=False):
         formater = text.join(formater.split("#message"))
         # Change clock word
         word = [w for w in formater.split() if '#clock' in w][0]
-        delimiter = color_func(
-            c['MESSAGE']['clock'])(
-            clock.join(
-                word.split('#clock')))
+        delimiter = color_func(c['MESSAGE']['clock'])(
+            clock.join(word.split('#clock')))
         formater = delimiter.join(formater.split(word))
         # Change id word
         word = [w for w in formater.split() if '#id' in w][0]
@@ -532,6 +514,26 @@ def print_list(group):
         printNicely(line4)
 
     printNicely('')
+
+
+def show_calendar(month, date, rel):
+    """
+    Show the calendar in rainbow mode
+    """
+    month = random_rainbow(month)
+    date = ' '.join([cycle_color(i) for i in date.split(' ')])
+    today = str(int(os.popen('date +\'%d\'').read().strip()))
+    # Display
+    printNicely(month)
+    printNicely(date)
+    for line in rel:
+        ary = line.split(' ')
+        ary = lmap(
+            lambda x: color_func(c['CAL']['today'])(x)
+            if x == today
+            else color_func(c['CAL']['days'])(x),
+            ary)
+        printNicely(' '.join(ary))
 
 
 # Start the color cycle
