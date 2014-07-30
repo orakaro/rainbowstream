@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+from io import open
 import os
 import os.path
 import sys
@@ -32,7 +33,7 @@ if not os.path.isfile(default):
 setup(name='rainbowstream',
       version=version,
       description="A smart and nice Twitter client on terminal.",
-      long_description=open("./README.rst", "r").read(),
+      long_description=open("./README.rst", "r", encoding='utf-8').read(),
       classifiers=[
           "Development Status :: 5 - Production/Stable",
           "Environment :: Console",
