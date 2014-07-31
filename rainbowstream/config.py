@@ -30,7 +30,7 @@ def load_config(filepath):
     """
     Load config from filepath
     """
-    with open(filepath, encoding='utf-8') as f:
+    with open(filepath) as f:
         content = ''.join(f.readlines())
         match = comment_re.search(content)
         while match:
@@ -98,7 +98,7 @@ def set_config(key, value):
     else:
         data[key] = value
     # Save
-    with open(path, 'w', encoding='utf-8') as out:
+    with open(path, 'w') as out:
         json.dump(data, out, indent=4)
     os.system('chmod 777 ' + path)
 
@@ -120,7 +120,7 @@ def delete_config(key):
     else:
         raise Exception('No such config key.')
     # Save
-    with open(path, 'w', encoding='utf-8') as out:
+    with open(path, 'w') as out:
         json.dump(data, out, indent=4)
     os.system('chmod 777 ' + path)
 
