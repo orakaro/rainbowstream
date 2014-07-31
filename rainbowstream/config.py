@@ -2,7 +2,6 @@ import json
 import re
 import os
 import os.path
-from io import open
 from collections import OrderedDict
 
 # Regular expression for comments in config file
