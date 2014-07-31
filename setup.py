@@ -4,7 +4,7 @@ import os.path
 import sys
 
 # Bumped version
-version = '0.5.8'
+version = '0.5.9'
 
 # Require
 install_requires = [
