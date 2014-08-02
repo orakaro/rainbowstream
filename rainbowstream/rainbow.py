@@ -219,7 +219,7 @@ def switch():
         if args.ignore:
             printNicely(red('Ignore: ' + str(args.ignore)))
         printNicely('')
-    except Exception:
+    except:
         printNicely(red('Sorry I can\'t understand.'))
 
 
