@@ -213,7 +213,6 @@ def switch():
             th = threading.Thread(target=stream, args=(c['USER_DOMAIN'], args, g['original_name']))
             th.daemon = True
             th.start()
-        g['prefix'] = True
         printNicely('')
         if args.filter:
             printNicely(cyan('Only: ' + str(args.filter)))
