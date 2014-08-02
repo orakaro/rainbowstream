@@ -1613,7 +1613,6 @@ def listen():
         if g['prefix']:
             line = raw_input(g['decorated_name'](c['PREFIX']))
         else:
-            print('prefix is false')
             line = raw_input()
         try:
             cmd = line.split()[0]
