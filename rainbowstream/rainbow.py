@@ -507,7 +507,7 @@ def urlopen():
     try:
         if not g['stuff'].isdigit():
             return
-        tid = c['tweet_dict'][g['stuff']]
+        tid = c['tweet_dict'][int(g['stuff'])]
         tweet = t.statuses.show(id=tid)
         link_ary = [
             u for u in tweet['text'].split() if u.startswith('http://')]
@@ -1172,8 +1172,7 @@ def theme():
                 c['DECORATED_NAME'])(
                 '[' + x + ']: ')
             printNicely(green('Theme changed.'))
-        except Exception as e:
-            print e
+        except:
             printNicely(red('No such theme exists.'))
 
 
