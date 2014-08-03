@@ -157,7 +157,6 @@ def init(args):
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     g['themes'] = themes
-    g['prev_theme'] = c['THEME']
     # Semaphore init
     c['lock'] = False
     c['pause'] = False
@@ -1607,7 +1606,6 @@ def listen():
     read_history()
     reset()
     while True:
-        # Prompt redraw is needed when user is typing
         # raw_input
         if g['prefix']:
             line = raw_input(g['decorated_name'](c['PREFIX']))
@@ -1618,7 +1616,6 @@ def listen():
         except:
             cmd = ''
         g['cmd'] = cmd
-        # Prompt redraw not need when raw_input done
         try:
             # Lock the semaphore
             c['lock'] = True
