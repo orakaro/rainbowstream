@@ -19,12 +19,12 @@ Install
 Prerequisite
 ^^^^^^^^^^^^
 
-If you use Linux, you might need to install the ``python-dev`` and ``libsqlite3-dev`` packages if you haven't already. 
+If you use Linux, you might need to install the ``python-dev`` package if you haven't already. 
 For debian-based distros, these can be installed with 
 
 .. code:: bash
 
-    sudo apt-get install python-dev libsqlite3-dev
+    sudo apt-get install python-dev
 
 
 Besides, Mac OSX Maverick with Xcode 5.1 has a well-known `clang unknown argument`_ problem with 
