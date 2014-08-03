@@ -12,12 +12,10 @@ from dateutil import parser
 from .c_image import *
 from .colors import *
 from .config import *
-from .db import *
 from .py3patch import *
 
-
-db = RainbowDB()
-g = {}
+# Draw global variables
+dg = {}
 
 
 def init_cycle():
@@ -35,8 +33,8 @@ def start_cycle():
     """
     Notify from rainbow
     """
-    g['cyc'] = init_cycle()
-    g['cache'] = {}
+    dg['cyc'] = init_cycle()
+    dg['cache'] = {}
 
 
 def order_rainbow(s):
@@ -69,9 +67,9 @@ def Memoize(func):
     """
     @wraps(func)
     def wrapper(*args):
-        if args not in g['cache']:
-            g['cache'][args] = func(*args)
-        return g['cache'][args]
+        if args not in dg['cache']:
+            dg['cache'][args] = func(*args)
+        return dg['cache'][args]
     return wrapper
 
 
@@ -80,7 +78,7 @@ def cycle_color(s):
     """
     Cycle the colors_shuffle
     """
-    return next(g['cyc'])(s)
+    return next(dg['cyc'])(s)
 
 
 def ascii_art(text):
@@ -89,7 +87,7 @@ def ascii_art(text):
     """
     fi = figlet_format(text, font='doom')
     print('\n'.join(
-        [next(g['cyc'])(i) for i in fi.split('\n')]
+        [next(dg['cyc'])(i) for i in fi.split('\n')]
     ))
 
 
@@ -117,24 +115,23 @@ def validate_theme(theme):
     return theme in themes
 
 
-def reload_theme(current_config):
+def reload_theme(value, prev):
     """
     Check current theme and update if necessary
     """
-    exists = db.theme_query()
-    themes = [t.theme_name for t in exists]
-    if current_config != themes[0]:
+    if value != prev:
         config = os.path.dirname(
-            __file__) + '/colorset/' + current_config + '.json'
+            __file__) + '/colorset/' + value + '.json'
         # Load new config
         data = load_config(config)
         if data:
             for d in data:
                 c[d] = data[d]
-        # Restart color cycle and update db/config
+        # Restart color cycle and update config
         start_cycle()
-        db.theme_update(current_config)
-        set_config('THEME', current_config)
+        set_config('THEME', value)
+        return value
+    return prev
 
 
 def color_func(func_name):
@@ -151,16 +148,15 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     Draw the rainbow
     """
 
-    # Check the semaphore lock (stream process only)
+    # Check the semaphore pause and lock (stream process only)
     if check_semaphore:
-        if db.semaphore_query_pause():
+        if c['pause']:
             return
-        while db.semaphore_query_lock():
+        while c['lock']:
             time.sleep(0.5)
 
-    # Check config and theme
+    # Check config
     check_config()
-    reload_theme(c['THEME'])
 
     # Retrieve tweet
     tid = t['id']
@@ -217,11 +213,11 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
         return
 
     # Get rainbow id
-    res = db.tweet_to_rainbow_query(tid)
-    if not res:
-        db.tweet_store(tid)
-        res = db.tweet_to_rainbow_query(tid)
-    rid = res[0].rainbow_id
+    if tid not in c['tweet_dict']:
+        c['tweet_dict'].append(tid)
+        rid = len(c['tweet_dict']) - 1
+    else:
+        rid = c['tweet_dict'].index(tid)
 
     # Format info
     name = cycle_color(name)
@@ -309,11 +305,11 @@ def print_message(m, check_semaphore=False):
     Print direct message
     """
 
-    # Check the semaphore lock (stream process only)
+    # Check the semaphore pause and lock (stream process only)
     if check_semaphore:
-        if db.semaphore_query_pause():
+        if c['pause']:
             return
-        while db.semaphore_query_lock():
+        while c['lock']:
             time.sleep(0.5)
 
     # Retrieve message
@@ -333,11 +329,11 @@ def print_message(m, check_semaphore=False):
     clock = date.strftime(clock_format)
 
     # Get rainbow id
-    res = db.message_to_rainbow_query(mid)
-    if not res:
-        db.message_store(mid)
-        res = db.message_to_rainbow_query(mid)
-    rid = res[0].rainbow_id
+    if mid not in c['message_dict']:
+        c['message_dict'].append(mid)
+        rid = len(c['message_dict']) - 1
+    else:
+        rid = c['message_dict'].index(mid)
 
     # Draw
     sender_name = cycle_color(sender_name)
@@ -479,22 +475,22 @@ def print_list(group):
     """
     Display a list
     """
-    for g in group:
+    for grp in group:
         # Format
-        name = g['full_name']
+        name = grp['full_name']
         name = color_func(c['GROUP']['name'])(name + ' : ')
-        member = str(g['member_count'])
+        member = str(grp['member_count'])
         member = color_func(c['GROUP']['member'])(member + ' member')
-        subscriber = str(g['subscriber_count'])
+        subscriber = str(grp['subscriber_count'])
         subscriber = color_func(
             c['GROUP']['subscriber'])(
             subscriber +
             ' subscriber')
-        description = g['description'].strip()
+        description = grp['description'].strip()
         description = color_func(c['GROUP']['description'])(description)
-        mode = g['mode']
+        mode = grp['mode']
         mode = color_func(c['GROUP']['mode'])('Type: ' + mode)
-        created_at = g['created_at']
+        created_at = grp['created_at']
         date = parser.parse(created_at)
         date = date - datetime.timedelta(seconds=time.timezone)
         clock = date.strftime('%Y/%m/%d %H:%M:%S')

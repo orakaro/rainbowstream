@@ -4,14 +4,13 @@ import os.path
 import sys
 
 # Bumped version
-version = '0.5.9'
+version = '0.6.0'
 
 # Require
 install_requires = [
     "python-dateutil",
     "requests",
     "pyfiglet",
-    "SQLAlchemy",
     "twitter",
     "Pillow",
 ]

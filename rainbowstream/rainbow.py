@@ -1,8 +1,6 @@
 """
 Colorful user's timeline stream
 """
-from multiprocessing import Process
-
 import os
 import os.path
 import sys
@@ -24,18 +22,13 @@ from .colors import *
 from .config import *
 from .consumer import *
 from .interactive import *
-from .db import *
 from .c_image import *
 from .py3patch import *
 
 # Global values
 g = {}
 
-# Database
-db = RainbowDB()
-
 # Lock for streams
-
 StreamLock = threading.Lock()
 
 # Commands
@@ -164,9 +157,13 @@ def init(args):
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     g['themes'] = themes
-    db.theme_store(c['THEME'])
+    g['prev_theme'] = c['THEME']
     # Semaphore init
-    db.semaphore_store(False, False)
+    c['lock'] = False
+    c['pause'] = False
+    # Init tweet dict and message dict
+    c['tweet_dict'] = []
+    c['message_dict'] = []
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
 
@@ -321,7 +318,7 @@ def retweet():
     except:
         printNicely(red('Sorry I can\'t understand.'))
         return
-    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    tid = c['tweet_dict'][id]
     t.statuses.retweet(id=tid, include_entities=False, trim_user=True)
 
 
@@ -335,7 +332,7 @@ def quote():
     except:
         printNicely(red('Sorry I can\'t understand.'))
         return
-    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    tid = c['tweet_dict'][id]
     tweet = t.statuses.show(id=tid)
     screen_name = tweet['user']['screen_name']
     text = tweet['text']
@@ -363,7 +360,7 @@ def allretweet():
     except:
         printNicely(red('Sorry I can\'t understand.'))
         return
-    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    tid = c['tweet_dict'][id]
     # Get display num if exist
     try:
         num = int(g['stuff'].split()[1])
@@ -389,7 +386,7 @@ def favorite():
     except:
         printNicely(red('Sorry I can\'t understand.'))
         return
-    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    tid = c['tweet_dict'][id]
     t.favorites.create(_id=tid, include_entities=False)
     printNicely(green('Favorited.'))
     draw(t.statuses.show(id=tid))
@@ -406,7 +403,7 @@ def reply():
     except:
         printNicely(red('Sorry I can\'t understand.'))
         return
-    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    tid = c['tweet_dict'][id]
     user = t.statuses.show(id=tid)['user']['screen_name']
     status = ' '.join(g['stuff'].split()[1:])
     status = '@' + user + ' ' + status.decode('utf-8')
@@ -419,11 +416,11 @@ def delete():
     """
     t = Twitter(auth=authen())
     try:
-        rid = int(g['stuff'].split()[0])
+        id = int(g['stuff'].split()[0])
     except:
         printNicely(red('Sorry I can\'t understand.'))
         return
-    tid = db.rainbow_to_tweet_query(rid)[0].tweet_id
+    tid = c['tweet_dict'][id]
     t.statuses.destroy(id=tid)
     printNicely(green('Okay it\'s gone.'))
 
@@ -438,7 +435,7 @@ def unfavorite():
     except:
         printNicely(red('Sorry I can\'t understand.'))
         return
-    tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+    tid = c['tweet_dict'][id]
     t.favorites.destroy(_id=tid)
     printNicely(green('Okay it\'s unfavorited.'))
     draw(t.statuses.show(id=tid))
@@ -492,7 +489,7 @@ def show():
         if target != 'image':
             return
         id = int(g['stuff'].split()[1])
-        tid = db.rainbow_to_tweet_query(id)[0].tweet_id
+        tid = c['tweet_dict'][id]
         tweet = t.statuses.show(id=tid)
         media = tweet['entities']['media']
         for m in media:
@@ -511,7 +508,7 @@ def urlopen():
     try:
         if not g['stuff'].isdigit():
             return
-        tid = db.rainbow_to_tweet_query(g['stuff'])[0].tweet_id
+        tid = c['tweet_dict'][g['stuff']]
         tweet = t.statuses.show(id=tid)
         link_ary = [
             u for u in tweet['text'].split() if u.startswith('http://')]
@@ -639,10 +636,10 @@ def trash():
     """
     t = Twitter(auth=authen())
     try:
-        rid = int(g['stuff'].split()[0])
+        id = int(g['stuff'].split()[0])
     except:
         printNicely(red('Sorry I can\'t understand.'))
-    mid = db.rainbow_to_message_query(rid)[0].message_id
+    mid = c['message_dict'][id]
     t.direct_messages.destroy(id=mid)
     printNicely(green('Message deleted.'))
 
@@ -1140,7 +1137,7 @@ def config():
             set_config(key, value)
             # Apply theme immediately
             if key == 'THEME':
-                reload_theme(value)
+                c['THEME'] = reload_theme(value,c['THEME'])
                 g['decorated_name'] = lambda x: color_func(
                     c['DECORATED_NAME'])(
                     '[' + x + ']: ')
@@ -1170,13 +1167,14 @@ def theme():
         # Change theme
         try:
             # Load new theme
-            reload_theme(g['stuff'])
+            c['THEME'] = reload_theme(g['stuff'],c['THEME'])
             # Redefine decorated_name
             g['decorated_name'] = lambda x: color_func(
                 c['DECORATED_NAME'])(
                 '[' + x + ']: ')
             printNicely(green('Theme changed.'))
-        except:
+        except Exception as e:
+            print e
             printNicely(red('No such theme exists.'))
 
 
@@ -1444,7 +1442,7 @@ def pause():
     """
     Pause stream display
     """
-    db.semaphore_update_pause(True)
+    c['pause'] = True
     printNicely(green('Stream is paused'))
 
 
@@ -1452,7 +1450,7 @@ def replay():
     """
     Replay stream
     """
-    db.semaphore_update_pause(False)
+    c['pause'] = False
     printNicely(green('Stream is running back now'))
 
 
@@ -1469,7 +1467,6 @@ def quit():
     """
     try:
         save_history()
-        os.system('rm -rf rainbow.db')
         printNicely(green('See you next time :)'))
     except:
         pass
@@ -1610,6 +1607,8 @@ def listen():
     read_history()
     reset()
     while True:
+        # Prompt redraw is needed when user is typing
+        # raw_input
         if g['prefix']:
             line = raw_input(g['decorated_name'](c['PREFIX']))
         else:
@@ -1619,20 +1618,21 @@ def listen():
         except:
             cmd = ''
         g['cmd'] = cmd
+        # Prompt redraw not need when raw_input done
         try:
             # Lock the semaphore
-            db.semaphore_update_lock(True)
+            c['lock'] = True
             # Save cmd to global variable and call process
             g['stuff'] = ' '.join(line.split()[1:])
             # Process the command
             process(cmd)()
             # Not re-display
-            if cmd in ['t', 'rt', 'rep']:
+            if cmd in ['switch', 't', 'rt', 'rep']:
                 g['prefix'] = False
             else:
                 g['prefix'] = True
             # Release the semaphore lock
-            db.semaphore_update_lock(False)
+            c['lock'] = False
         except Exception:
             printNicely(red('OMG something is wrong with Twitter right now.'))
 
@@ -1677,7 +1677,7 @@ def stream(domain, args, name='Rainbow Stream'):
         StreamLock.acquire()
         g['stream_stop'] = False
         for tweet in tweet_iter:
-            if(g['stream_stop'] == True):
+            if(g['stream_stop']):
                 StreamLock.release()
                 break
             if tweet is None:
@@ -1696,8 +1696,6 @@ def stream(domain, args, name='Rainbow Stream'):
                     fil=args.filter,
                     ig=args.ignore,
                 )
-                sys.stdout.write(g['decorated_name'](c['PREFIX']) + readline.get_line_buffer())
-                sys.stdout.flush()
             elif tweet.get('direct_message'):
                 print_message(tweet['direct_message'], check_semaphore=True)
     except TwitterHTTPError:
@@ -1720,7 +1718,6 @@ def fly():
             magenta("We have maximum connection problem with twitter'stream API right now :("))
         printNicely(magenta("Let's try again later."))
         save_history()
-        os.system('rm -rf rainbow.db')
         sys.exit()
     # Spawn stream thread
     th = threading.Thread(target=stream, args=(c['USER_DOMAIN'], args, g['original_name']))
