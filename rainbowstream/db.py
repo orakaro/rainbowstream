@@ -1,6 +1,7 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 from .table_def import *
 
 
@@ -15,7 +16,7 @@ class RainbowDB():
         if os.path.isfile('rainbow.db'):
             os.system('rm -rf rainbow.db')
         init_db()
-        self.engine = create_engine('sqlite:///rainbow.db', echo=False)
+        self.engine = create_engine('sqlite:///rainbow.db', echo=False, connect_args={'check_same_thread':False}, poolclass=StaticPool)
 
     def tweet_store(self, tweet_id):
         """
