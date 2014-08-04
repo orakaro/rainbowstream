@@ -198,7 +198,11 @@ def switch():
             g['stream_stop'] = True
             args.track_keywords = keyword
             # Start new thread
-            th = threading.Thread(target=stream, args=(c['PUBLIC_DOMAIN'], args))
+            th = threading.Thread(
+                target=stream,
+                args=(
+                    c['PUBLIC_DOMAIN'],
+                    args))
             th.daemon = True
             th.start()
         # Personal stream
@@ -206,7 +210,12 @@ def switch():
             # Kill old thread
             g['stream_stop'] = True
             # Start new thread
-            th = threading.Thread(target=stream, args=(c['USER_DOMAIN'], args, g['original_name']))
+            th = threading.Thread(
+                target=stream,
+                args=(
+                    c['USER_DOMAIN'],
+                    args,
+                    g['original_name']))
             th.daemon = True
             th.start()
         printNicely('')
@@ -1136,7 +1145,7 @@ def config():
             set_config(key, value)
             # Apply theme immediately
             if key == 'THEME':
-                c['THEME'] = reload_theme(value,c['THEME'])
+                c['THEME'] = reload_theme(value, c['THEME'])
                 g['decorated_name'] = lambda x: color_func(
                     c['DECORATED_NAME'])(
                     '[' + x + ']: ')
@@ -1166,7 +1175,7 @@ def theme():
         # Change theme
         try:
             # Load new theme
-            c['THEME'] = reload_theme(g['stuff'],c['THEME'])
+            c['THEME'] = reload_theme(g['stuff'], c['THEME'])
             # Redefine decorated_name
             g['decorated_name'] = lambda x: color_func(
                 c['DECORATED_NAME'])(
@@ -1431,7 +1440,10 @@ def help():
         'stream': help_stream,
     }
     if g['stuff']:
-        d[g['stuff'].strip()]()
+        d.get(
+            g['stuff'].strip(),
+            lambda: printNicely(red('No such command.'))
+            )()
     else:
         printNicely(usage)
 
@@ -1716,7 +1728,12 @@ def fly():
         save_history()
         sys.exit()
     # Spawn stream thread
-    th = threading.Thread(target=stream, args=(c['USER_DOMAIN'], args, g['original_name']))
+    th = threading.Thread(
+        target=stream,
+        args=(
+            c['USER_DOMAIN'],
+            args,
+            g['original_name']))
     th.daemon = True
     th.start()
     # Start listen process
