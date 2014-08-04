@@ -42,7 +42,14 @@ Use `virtualenv`_
 Troubleshooting
 ^^^^^^^^^^^^^^^
 
-Mac OSX Maverick with Xcode 5.1 has a well-known `clang unknown argument`_ problem with
+If you use Linux, you might need to install the python-dev package if you haven't already. 
+For debian-based distros, these can be installed with
+
+.. code:: bash
+
+    sudo apt-get install python-dev
+
+Besides, Mac OSX Maverick with Xcode 5.1 has a well-known `clang unknown argument`_ problem with
 the ``Pillow`` package installation - a dependency of this app.
 If you are in this case, I recommend take a look at `Issue #10`_ and let me know if the workaround doesn't work for you.
 
