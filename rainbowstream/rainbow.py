@@ -157,6 +157,9 @@ def init(args):
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     g['themes'] = themes
+    # Startup cmd
+    g['OSX_readline_bug'] = False
+    g['previous_cmd'] = ''
     # Semaphore init
     c['lock'] = False
     c['pause'] = False
@@ -1622,10 +1625,16 @@ def listen():
             line = raw_input(g['decorated_name'](c['PREFIX']))
         else:
             line = raw_input()
+        # Save previous cmd in order to compare with readline buffer
+        g['previous_cmd'] = line.strip()
         try:
             cmd = line.split()[0]
         except:
             cmd = ''
+        # MacOSX readline bug (see "stream" function)
+        if g['OSX_readline_bug']:
+            cmd = cmd[1:]
+            g['OSX_readline_bug'] = False
         g['cmd'] = cmd
         try:
             # Lock the semaphore
@@ -1704,6 +1713,17 @@ def stream(domain, args, name='Rainbow Stream'):
                     fil=args.filter,
                     ig=args.ignore,
                 )
+                # Current readline buffer
+                current_buffer = readline.get_line_buffer().strip()
+                # There is an unexpected behaviour in MacOSX readline
+                # After completely delete a word after typing it
+                # somehow readline buffer still contains the 1st character of that word
+                if g['previous_cmd'] != current_buffer:
+                    if len(current_buffer) == 1:
+                        current_buffer = ''
+                        g['OSX_readline_bug'] = True
+                    sys.stdout.write(g['decorated_name'](c['PREFIX']) + current_buffer)
+                    sys.stdout.flush()
             elif tweet.get('direct_message'):
                 print_message(tweet['direct_message'], check_semaphore=True)
     except TwitterHTTPError:
