@@ -1446,7 +1446,7 @@ def help():
         d.get(
             g['stuff'].strip(),
             lambda: printNicely(red('No such command.'))
-            )()
+        )()
     else:
         printNicely(usage)
 
@@ -1715,14 +1715,16 @@ def stream(domain, args, name='Rainbow Stream'):
                 )
                 # Current readline buffer
                 current_buffer = readline.get_line_buffer().strip()
-                # There is an unexpected behaviour in MacOSX readline
-                # After completely delete a word after typing it
-                # somehow readline buffer still contains the 1st character of that word
+                # There is an unexpected behaviour in MacOSX readline:
+                # after completely delete a word after typing it,
+                # somehow readline buffer still contains
+                # the 1st character of that word
                 if g['previous_cmd'] != current_buffer:
                     if len(current_buffer) == 1:
                         current_buffer = ''
                         g['OSX_readline_bug'] = True
-                    sys.stdout.write(g['decorated_name'](c['PREFIX']) + current_buffer)
+                    sys.stdout.write(
+                        g['decorated_name'](c['PREFIX']) + current_buffer)
                     sys.stdout.flush()
             elif tweet.get('direct_message'):
                 print_message(tweet['direct_message'], check_semaphore=True)
