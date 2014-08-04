@@ -1,10 +1,9 @@
 from setuptools import setup, find_packages
 import os
 import os.path
-import sys
 
 # Bumped version
-version = '0.6.0'
+version = '0.6.1'
 
 # Require
 install_requires = [
@@ -14,10 +13,6 @@ install_requires = [
     "twitter",
     "Pillow",
 ]
-
-# Python 3 doesn't have pysqlite
-if sys.version[0] == "2":
-    install_requires += ["pysqlite"]
 
 # Copy default config if not exists
 default = os.path.expanduser("~") + os.sep + '.rainbow_config.json'

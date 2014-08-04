@@ -10,7 +10,7 @@ Rainbow Stream
 Terminal-based Twitter Client. Realtime tweetstream, compose, search ,
 favorite … and much more fun directly from terminal.
 
-This package is built on the top of `Python Twitter Tool`_ and `Twitter API`_, 
+This package is built on the top of `Python Twitter Tool`_ and `Twitter API`_,
 can run on Python 2.7.x and 3.x .
 
 
@@ -22,20 +22,6 @@ Showcase
 
 Install
 -------
-
-Prerequisite
-^^^^^^^^^^^^
-
-If you use Linux, you might need to install the ``python-dev`` package if you haven't already. 
-For debian-based distros, these can be installed with 
-
-.. code:: bash
-
-    sudo apt-get install python-dev
-
-Besides, Mac OSX Maverick with Xcode 5.1 has a well-known `clang unknown argument`_ problem with 
-the ``Pillow`` package installation - a dependency of this app.
-If you are in this case, I recommend take a look at `Issue #10`_ and let me know if the workaround doesn't work for you.
 
 The quick way
 ^^^^^^^^^^^^^
@@ -61,6 +47,12 @@ Use `virtualenv`_
     source venv/bin/activate
     pip install rainbowstream
 
+Troubleshooting
+^^^^^^^^^^^^^^^
+
+Mac OSX Maverick with Xcode 5.1 has a well-known `clang unknown argument`_ problem with
+the ``Pillow`` package installation - a dependency of this app.
+If you are in this case, I recommend take a look at `Issue #10`_ and let me know if the workaround doesn't work for you.
 
 Usage
 -----
@@ -83,7 +75,7 @@ You can try it with:
 
     rainbowstream -iot # Or rainbowstream --image-on-term
 
-You also can change the config key ``IMAGE_ON_TERM`` to ``True`` inside the app 
+You also can change the config key ``IMAGE_ON_TERM`` to ``True`` inside the app
 to enable above feature (see `config management`_ section).
 
 In the first time you will be asked for authorization of Rainbow Stream
