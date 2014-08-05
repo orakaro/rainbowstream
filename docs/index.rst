@@ -42,7 +42,7 @@ Use `virtualenv`_
 Troubleshooting
 ^^^^^^^^^^^^^^^
 
-If you use Linux, you might need to install the python-dev package if you haven't already. 
+If you use Linux, you might need to install the python-dev package if you haven't already.
 For debian-based distros, these can be installed with
 
 .. code:: bash
@@ -295,6 +295,8 @@ You can view or set a new value of every config key by ``config`` command (See *
 -  ``THEME``: current theme.
 
 -  ``ASCII_ART``: diplay your twitter name by ascii art at stream begin or not.
+
+-  ``HIDE_PROMPT``: Hide prompt after receiving a tweet or not.
 
 -  ``SEARCH_MAX_RECORD``: max tweets can display on 'search' command.
 

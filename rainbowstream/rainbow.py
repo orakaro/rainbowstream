@@ -158,7 +158,6 @@ def init(args):
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     g['themes'] = themes
     # Startup cmd
-    g['OSX_readline_bug'] = False
     g['previous_cmd'] = ''
     # Semaphore init
     c['lock'] = False
@@ -1631,10 +1630,6 @@ def listen():
             cmd = line.split()[0]
         except:
             cmd = ''
-        # MacOSX readline bug (see "stream" function)
-        if g['OSX_readline_bug']:
-            cmd = cmd[1:]
-            g['OSX_readline_bug'] = False
         g['cmd'] = cmd
         try:
             # Lock the semaphore
@@ -1668,7 +1663,7 @@ def stream(domain, args, name='Rainbow Stream'):
         ascii_art(art_dict[domain])
     # These arguments are optional:
     stream_args = dict(
-        timeout=args.timeout,
+        timeout=0.5, # To check g['stream_stop'] after each 0.5 s
         block=not args.no_block,
         heartbeat_timeout=args.heartbeat_timeout)
     # Track keyword
@@ -1694,13 +1689,12 @@ def stream(domain, args, name='Rainbow Stream'):
         StreamLock.acquire()
         g['stream_stop'] = False
         for tweet in tweet_iter:
-            if(g['stream_stop']):
-                StreamLock.release()
-                break
             if tweet is None:
                 printNicely("-- None --")
             elif tweet is Timeout:
-                printNicely("-- Timeout --")
+                if(g['stream_stop']):
+                    StreamLock.release()
+                    break
             elif tweet is HeartbeatTimeout:
                 printNicely("-- Heartbeat Timeout --")
             elif tweet is Hangup:
@@ -1715,16 +1709,16 @@ def stream(domain, args, name='Rainbow Stream'):
                 )
                 # Current readline buffer
                 current_buffer = readline.get_line_buffer().strip()
-                # There is an unexpected behaviour in MacOSX readline:
+                # There is an unexpected behaviour in MacOSX readline + Python 2:
                 # after completely delete a word after typing it,
                 # somehow readline buffer still contains
                 # the 1st character of that word
-                if g['previous_cmd'] != current_buffer:
-                    if len(current_buffer) == 1:
-                        current_buffer = ''
-                        g['OSX_readline_bug'] = True
+                if current_buffer and g['previous_cmd'] != current_buffer:
                     sys.stdout.write(
                         g['decorated_name'](c['PREFIX']) + current_buffer)
+                    sys.stdout.flush()
+                elif not c['HIDE_PROMPT']:
+                    sys.stdout.write(g['decorated_name'](c['PREFIX']))
                     sys.stdout.flush()
             elif tweet.get('direct_message'):
                 print_message(tweet['direct_message'], check_semaphore=True)
