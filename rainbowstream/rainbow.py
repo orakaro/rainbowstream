@@ -1669,7 +1669,7 @@ def stream(domain, args, name='Rainbow Stream'):
     # These arguments are optional:
     stream_args = dict(
         timeout=args.timeout,
-        block=False,
+        block=not args.no_block,
         heartbeat_timeout=args.heartbeat_timeout)
     # Track keyword
     query_args = dict()
@@ -1698,7 +1698,7 @@ def stream(domain, args, name='Rainbow Stream'):
                 StreamLock.release()
                 break
             if tweet is None:
-                pass
+                printNicely("-- None --")
             elif tweet is Timeout:
                 printNicely("-- Timeout --")
             elif tweet is HeartbeatTimeout:
