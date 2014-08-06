@@ -207,6 +207,8 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
 
     # Filter and ignore
     screen_name = '@' + screen_name
+    fil = list(set((fil or []) + c['ONLY_LIST']))
+    ig = list(set((ig or []) + c['IGNORE_LIST']))
     if fil and screen_name not in fil:
         return
     if ig and screen_name in ig:
