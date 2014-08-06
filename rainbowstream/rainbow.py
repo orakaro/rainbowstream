@@ -167,6 +167,26 @@ def init(args):
     c['message_dict'] = []
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
+    # Dictionary of muted users key:screen name, value:name
+    g['mute_dict'] = {}    
+    build_mute_dict(t)
+
+def build_mute_dict(t):
+    next_cursor = -1
+    rel = {}
+
+    while next_cursor != 0:
+        list = t.mutes.users.list(
+            screen_name=g['original_name'],
+            cursor=next_cursor,
+            skip_status=True,
+            include_entities=False,
+        )
+        for u in list['users']:
+            rel[u['screen_name'].encode('ascii', 'ignore')] =  u['name'].encode('ascii', 'ignore')
+        next_cursor = list['next_cursor']
+    if(rel != g['mute_dict']):
+        g['mute_dict'] = rel
 
 
 def switch():
@@ -714,6 +734,7 @@ def mute():
         rel = t.mutes.users.create(screen_name=screen_name[1:])
         if isinstance(rel, dict):
             printNicely(green(screen_name + ' is muted.'))
+            build_mute_dict(t)
         else:
             printNicely(red(rel))
     else:
@@ -734,6 +755,7 @@ def unmute():
         rel = t.mutes.users.destroy(screen_name=screen_name[1:])
         if isinstance(rel, dict):
             printNicely(green(screen_name + ' is unmuted.'))
+            build_mute_dict(t)
         else:
             printNicely(red(rel))
     else:
@@ -744,26 +766,12 @@ def muting():
     """
     List muting user
     """
-    t = Twitter(auth=authen())
-    # Init cursor
-    next_cursor = -1
-    rel = {}
-    # Cursor loop
-    while next_cursor != 0:
-        list = t.mutes.users.list(
-            screen_name=g['original_name'],
-            cursor=next_cursor,
-            skip_status=True,
-            include_entities=False,
-        )
-        for u in list['users']:
-            rel[u['name']] = '@' + u['screen_name']
-        next_cursor = list['next_cursor']
-    # Print out result
+    rel = g['mute_dict']
+    
     printNicely('All: ' + str(len(rel)) + ' people.')
     for name in rel:
-        user = '  ' + cycle_color(name)
-        user += color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
+        user = color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
+        user +=  cycle_color('@'+ name)
         printNicely(user)
 
 
@@ -1699,7 +1707,7 @@ def stream(domain, args, name='Rainbow Stream'):
                 printNicely("-- Heartbeat Timeout --")
             elif tweet is Hangup:
                 printNicely("-- Hangup --")
-            elif tweet.get('text'):
+            elif tweet.get('text') and (tweet['user']['screen_name'] not in g['mute_dict']):
                 draw(
                     t=tweet,
                     keyword=args.track_keywords,
@@ -1736,13 +1744,14 @@ def fly():
     args = parse_arguments()
     try:
         init(args)
-    except TwitterHTTPError:
+    except TwitterHTTPError as error:
         printNicely('')
         printNicely(
             magenta("We have maximum connection problem with twitter'stream API right now :("))
         printNicely(magenta("Let's try again later."))
         save_history()
-        sys.exit()
+        print(error)
+        sys.exit()   
     # Spawn stream thread
     th = threading.Thread(
         target=stream,
