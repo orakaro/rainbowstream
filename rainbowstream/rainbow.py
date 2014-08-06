@@ -1750,7 +1750,7 @@ def fly():
             magenta("We have maximum connection problem with twitter'stream API right now :("))
         printNicely(magenta("Let's try again later."))
         save_history()
-        sys.exit()   
+        sys.exit()
     # Spawn stream thread
     th = threading.Thread(
         target=stream,
