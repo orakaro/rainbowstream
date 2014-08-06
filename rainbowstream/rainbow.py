@@ -1744,13 +1744,12 @@ def fly():
     args = parse_arguments()
     try:
         init(args)
-    except TwitterHTTPError as error:
+    except TwitterHTTPError:
         printNicely('')
         printNicely(
             magenta("We have maximum connection problem with twitter'stream API right now :("))
         printNicely(magenta("Let's try again later."))
         save_history()
-        print(error)
         sys.exit()   
     # Spawn stream thread
     th = threading.Thread(
