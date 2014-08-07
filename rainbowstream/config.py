@@ -42,26 +42,28 @@ def get_all_config():
     """
     Get all config
     """
-    path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
-    data = load_config(path)
-    # Hard to set from prompt
-    data.pop('ONLY_LIST', None)
-    data.pop('IGNORE_LIST', None)
-    data.pop('FORMAT', None)
-    return data
+    try:
+        path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
+        data = load_config(path)
+        # Hard to set from prompt
+        data.pop('ONLY_LIST', None)
+        data.pop('IGNORE_LIST', None)
+        data.pop('FORMAT', None)
+        return data
+    except:
+        return []
 
 
 def get_default_config(key):
     """
     Get default value of a config key
     """
-    path = os.path.dirname(
-        __file__) + '/colorset/config'
     try:
+        path = os.path.dirname(__file__) + '/colorset/config'
         data = load_config(path)
+        return data[key]
     except:
-        raise Exception('No such config key.')
-    return data[key]
+        raise Exception('This config key does not exist in default.')
 
 
 def get_config(key):
@@ -82,15 +84,15 @@ def set_config(key, value):
         value = True
     elif value.lower() == 'false':
         value = False
-    # Fix up
+    # Update global config
+    c[key] = value
+    # Load current user config
     path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
     data = {}
     try:
         data = load_config(path)
     except:
-        pass
-    # Update global config
-    c[key] = value
+        return
     # Update config file
     if key in data:
         fixup(data, key, value)
@@ -107,7 +109,10 @@ def delete_config(key):
     Delete a config key
     """
     path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
-    data = load_config(path)
+    try: 
+        data = load_config(path)
+    except:
+        raise Exception('Config file is messed up.')
     # Drop key
     if key in data and key in c:
         data.pop(key)
@@ -128,13 +133,13 @@ def reload_config():
     """
     Reload config
     """
-    rainbow_config = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
-    try:
+    try: 
+        rainbow_config = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
         data = load_config(rainbow_config)
         for d in data:
             c[d] = data[d]
     except:
-        print('It seems that ~/.rainbow_config.json has wrong format :(')
+        raise Exception('Can not reload config file with wrong format.')
 
 
 def init_config():
@@ -156,8 +161,8 @@ def init_config():
         data = load_config(rainbow_config)
         for d in data:
             c[d] = data[d]
-    except:
-        pass
+    except ValueError as e:
+        c['USER_JSON_ERROR'] = str(e)
     # Load default theme
     theme_file = os.path.dirname(
         __file__) + '/colorset/' + c['THEME'] + '.json'

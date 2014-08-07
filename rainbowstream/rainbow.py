@@ -151,8 +151,7 @@ def init(args):
         set_config('PREFIX', name)
     g['original_name'] = name[1:]
     g['decorated_name'] = lambda x: color_func(
-        c['DECORATED_NAME'])(
-        '[' + x + ']: ')
+        c['DECORATED_NAME'])('[' + x + ']: ')
     # Theme init
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
@@ -167,6 +166,7 @@ def init(args):
     c['message_dict'] = []
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
+    set_config('IMAGE_ON_TERM',str(c['IMAGE_ON_TERM']))
 
 
 def switch():
@@ -1125,17 +1125,16 @@ def config():
             value = get_default_config(key)
             line = ' ' * 2 + green(key) + ': ' + light_magenta(value)
             printNicely(line)
-        except:
-            printNicely(
-                light_magenta('This config key does not exist in default.'))
+        except Exception as e:
+            printNicely(red(e))
     # Delete specific config key in config file
     elif len(g['stuff'].split()) == 2 and g['stuff'].split()[-1] == 'drop':
         key = g['stuff'].split()[0]
         try:
             delete_config(key)
             printNicely(green('Config key is dropped.'))
-        except:
-            printNicely(red('No such config key.'))
+        except Exception as e:
+            printNicely(red(e))
     # Set specific config
     elif len(g['stuff'].split()) == 3 and g['stuff'].split()[1] == '=':
         key = g['stuff'].split()[0]
@@ -1149,13 +1148,11 @@ def config():
             if key == 'THEME':
                 c['THEME'] = reload_theme(value, c['THEME'])
                 g['decorated_name'] = lambda x: color_func(
-                    c['DECORATED_NAME'])(
-                    '[' + x + ']: ')
+                    c['DECORATED_NAME'])('[' + x + ']: ')
+            reload_config()
             printNicely(green('Updated successfully.'))
-        except:
-            printNicely(light_magenta('Not valid value.'))
-            return
-        reload_config()
+        except Exception as e:
+            printNicely(red(e))
     else:
         printNicely(light_magenta('Sorry I can\'s understand.'))
 
@@ -1490,6 +1487,10 @@ def reset():
     Reset prefix of line
     """
     if g['reset']:
+        if c.get('USER_JSON_ERROR'):
+            printNicely(red('Your ~/.rainbow_config.json is messed up:'))
+            printNicely(red('>>> ' + c['USER_JSON_ERROR']))
+            printNicely('')
         printNicely(magenta('Need tips ? Type "h" and hit Enter key!'))
     g['reset'] = False
     try:
