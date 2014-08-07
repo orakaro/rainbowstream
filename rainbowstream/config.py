@@ -109,7 +109,7 @@ def delete_config(key):
     Delete a config key
     """
     path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
-    try: 
+    try:
         data = load_config(path)
     except:
         raise Exception('Config file is messed up.')
@@ -133,8 +133,9 @@ def reload_config():
     """
     Reload config
     """
-    try: 
-        rainbow_config = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
+    try:
+        rainbow_config = os.path.expanduser("~") + \
+            os.sep + '.rainbow_config.json'
         data = load_config(rainbow_config)
         for d in data:
             c[d] = data[d]

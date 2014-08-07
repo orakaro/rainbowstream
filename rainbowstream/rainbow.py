@@ -193,7 +193,7 @@ def init(args):
     c['message_dict'] = []
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
-    set_config('IMAGE_ON_TERM',str(c['IMAGE_ON_TERM']))
+    set_config('IMAGE_ON_TERM', str(c['IMAGE_ON_TERM']))
     # Mute dict
     c['IGNORE_LIST'] += build_mute_dict()
 
