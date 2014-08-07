@@ -137,6 +137,33 @@ def authen():
         CONSUMER_SECRET)
 
 
+def build_mute_dict(dict_data=False):
+    """
+    Build muting list
+    """
+    t = Twitter(auth=authen())
+    # Init cursor
+    next_cursor = -1
+    screen_name_list = []
+    name_list = []
+    # Cursor loop
+    while next_cursor != 0:
+        list = t.mutes.users.list(
+            screen_name=g['original_name'],
+            cursor=next_cursor,
+            skip_status=True,
+            include_entities=False,
+        )
+        screen_name_list += ['@' + u['screen_name'] for u in list['users']]
+        name_list += [u['name'] for u in list['users']]
+        next_cursor = list['next_cursor']
+    # Return dict or list
+    if dict_data:
+        return dict(zip(screen_name_list, name_list))
+    else:
+        return screen_name_list
+
+
 def init(args):
     """
     Init function
@@ -167,6 +194,8 @@ def init(args):
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
     set_config('IMAGE_ON_TERM',str(c['IMAGE_ON_TERM']))
+    # Mute dict
+    c['IGNORE_LIST'] += build_mute_dict()
 
 
 def switch():
@@ -416,7 +445,7 @@ def reply():
     tid = c['tweet_dict'][id]
     user = t.statuses.show(id=tid)['user']['screen_name']
     status = ' '.join(g['stuff'].split()[1:])
-    status = '@' + user + ' ' + status.decode('utf-8')
+    status = '@' + user + ' ' + unc(status)
     t.statuses.update(status=status, in_reply_to_status_id=tid)
 
 
@@ -711,11 +740,16 @@ def mute():
         printNicely(red('A name should be specified. '))
         return
     if screen_name.startswith('@'):
-        rel = t.mutes.users.create(screen_name=screen_name[1:])
-        if isinstance(rel, dict):
-            printNicely(green(screen_name + ' is muted.'))
-        else:
-            printNicely(red(rel))
+        try:
+            rel = t.mutes.users.create(screen_name=screen_name[1:])
+            if isinstance(rel, dict):
+                printNicely(green(screen_name + ' is muted.'))
+                c['IGNORE_LIST'] += [unc(screen_name)]
+                c['IGNORE_LIST'] = list(set(c['IGNORE_LIST']))
+            else:
+                printNicely(red(rel))
+        except:
+            printNicely(red('Something is wrong, can not mute now :('))
     else:
         printNicely(red('A name should begin with a \'@\''))
 
@@ -731,11 +765,15 @@ def unmute():
         printNicely(red('A name should be specified. '))
         return
     if screen_name.startswith('@'):
-        rel = t.mutes.users.destroy(screen_name=screen_name[1:])
-        if isinstance(rel, dict):
-            printNicely(green(screen_name + ' is unmuted.'))
-        else:
-            printNicely(red(rel))
+        try:
+            rel = t.mutes.users.destroy(screen_name=screen_name[1:])
+            if isinstance(rel, dict):
+                printNicely(green(screen_name + ' is unmuted.'))
+                c['IGNORE_LIST'].remove(screen_name)
+            else:
+                printNicely(red(rel))
+        except:
+            printNicely(red('Maybe you are not muting this person ?'))
     else:
         printNicely(red('A name should begin with a \'@\''))
 
@@ -744,27 +782,15 @@ def muting():
     """
     List muting user
     """
-    t = Twitter(auth=authen())
-    # Init cursor
-    next_cursor = -1
-    rel = {}
-    # Cursor loop
-    while next_cursor != 0:
-        list = t.mutes.users.list(
-            screen_name=g['original_name'],
-            cursor=next_cursor,
-            skip_status=True,
-            include_entities=False,
-        )
-        for u in list['users']:
-            rel[u['name']] = '@' + u['screen_name']
-        next_cursor = list['next_cursor']
-    # Print out result
-    printNicely('All: ' + str(len(rel)) + ' people.')
-    for name in rel:
-        user = '  ' + cycle_color(name)
-        user += color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
+    # Get dict of muting users
+    md = build_mute_dict(dict_data=True)
+    printNicely('All: ' + str(len(md)) + ' people.')
+    for name in md:
+        user = '  ' + cycle_color(md[name])
+        user += color_func(c['TWEET']['nick'])(' ' + name + ' ')
         printNicely(user)
+    # Update from Twitter
+    c['IGNORE_LIST'] = [n for n in md]
 
 
 def block():
@@ -1051,7 +1077,7 @@ def list_delete(t):
         printNicely(red('Oops something is wrong with Twitter :('))
 
 
-def list():
+def twitterlist():
     """
     Twitter's list
     """
@@ -1536,7 +1562,7 @@ def process(cmd):
             block,
             unblock,
             report,
-            list,
+            twitterlist,
             cal,
             config,
             theme,
@@ -1664,7 +1690,7 @@ def stream(domain, args, name='Rainbow Stream'):
         ascii_art(art_dict[domain])
     # These arguments are optional:
     stream_args = dict(
-        timeout=0.5, # To check g['stream_stop'] after each 0.5 s
+        timeout=0.5,  # To check g['stream_stop'] after each 0.5 s
         block=not args.no_block,
         heartbeat_timeout=args.heartbeat_timeout)
     # Track keyword
@@ -1740,7 +1766,7 @@ def fly():
     except TwitterHTTPError:
         printNicely('')
         printNicely(
-            magenta("We have maximum connection problem with twitter'stream API right now :("))
+            magenta("We have connection problem with twitter'stream API right now :("))
         printNicely(magenta("Let's try again later."))
         save_history()
         sys.exit()
