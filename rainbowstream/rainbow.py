@@ -1742,7 +1742,7 @@ def stream(domain, args, name='Rainbow Stream'):
                 # the 1st character of that word
                 if current_buffer and g['previous_cmd'] != current_buffer:
                     sys.stdout.write(
-                        g['decorated_name'](c['PREFIX']) + current_buffer)
+                        g['decorated_name'](c['PREFIX']) + unc(current_buffer))
                     sys.stdout.flush()
                 elif not c['HIDE_PROMPT']:
                     sys.stdout.write(g['decorated_name'](c['PREFIX']))

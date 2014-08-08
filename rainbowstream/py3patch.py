@@ -28,4 +28,3 @@ else:
     raw_input = input
     lmap = lambda f, a: list(map(f, a))
     unc = lambda x: x
-
