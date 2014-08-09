@@ -1206,8 +1206,7 @@ def theme():
                 c['DECORATED_NAME'])(
                 '[' + x + ']: ')
             printNicely(green('Theme changed.'))
-        except Exception as e:
-            print(e)
+        except:
             printNicely(red('No such theme exists.'))
 
 
