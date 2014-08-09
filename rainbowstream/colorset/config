@@ -37,7 +37,7 @@
     "FORMAT": {
         "TWEET": {
             "CLOCK_FORMAT" : "%Y/%m/%d %H:%M:%S",
-            "DISPLAY" : "\n  #name #nick :\n  [#clock] [id=#id] #fav\n  #tweet"
+            "DISPLAY" : "\n  #name #nick :\n  [#clock] [rt:#rt_count] [fav:#fa_count] [id=#id] #fav\n  #tweet"
         },
         "MESSAGE": {
             "CLOCK_FORMAT" : "%Y/%m/%d %H:%M:%S",

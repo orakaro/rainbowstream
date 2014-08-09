@@ -23,14 +23,16 @@
     "DECORATED_NAME" : 198,
     "CYCLE_COLOR" :[198,57,166,50,179,74,112],
     "TWEET" : {
-        "nick"      : 112,
-        "clock"     : 57,
-        "id"        : 166,
-        "favorited" : 50,
-        "rt"        : 179,
-        "link"      : 74,
-        "hashtag"   : 198,
-        "keyword"   : "on_light_green"
+        "nick"            : 112,
+        "clock"           : 57,
+        "id"              : 166,
+        "favorited"       : 50,
+        "retweet_count"   : 198,
+        "favorite_count"  : 50,
+        "rt"              : 179,
+        "link"            : 74,
+        "hashtag"         : 198,
+        "keyword"         : "on_light_green"
     },
 
     "MESSAGE" : {

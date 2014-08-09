@@ -165,6 +165,8 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     name = t['user']['name']
     created_at = t['created_at']
     favorited = t['favorited']
+    retweet_count = t['retweet_count']
+    favorite_count = t['favorite_count']
     date = parser.parse(created_at)
     date = date - datetime.timedelta(seconds=time.timezone)
     clock_format = '%Y/%m/%d %H:%M:%S'
@@ -270,6 +272,7 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
             tweet = delimiter.join(ary)
 
     # Load config formater
+    formater = ''
     try:
         formater = c['FORMAT']['TWEET']['DISPLAY']
         formater = name.join(formater.split("#name"))
@@ -285,9 +288,18 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
         word = [w for w in formater.split() if '#id' in w][0]
         delimiter = color_func(c['TWEET']['id'])(id.join(word.split('#id')))
         formater = delimiter.join(formater.split(word))
+        # Change retweet count word
+        word = [w for w in formater.split() if '#rt_count' in w][0]
+        delimiter = color_func(c['TWEET']['retweet_count'])(
+            str(retweet_count).join(word.split('#rt_count')))
+        formater = delimiter.join(formater.split(word))
+        # Change favorites count word
+        word = [w for w in formater.split() if '#fa_count' in w][0]
+        delimiter = color_func(c['TWEET']['favorite_count'])(
+            str(favorite_count).join(word.split('#fa_count')))
+        formater = delimiter.join(formater.split(word))
     except:
-        printNicely(red('Wrong format in config.'))
-        return
+        pass
 
     # Draw
     printNicely(formater)

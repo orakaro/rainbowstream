@@ -254,8 +254,6 @@ Here is full list of supported command:
 
 -  ``q`` will quit.
 
-Available commands are listed in `Read The Docs`_.
-
 Theme customization
 ^^^^^^^^^^^^^^^^^^^
 
@@ -334,7 +332,10 @@ You can view or set a new value of every config key by ``config`` command (See *
     + ``#name``: Twitter's name
     + ``#nick``: Twitter's screen name
     + ``#clock``: Datetime
+    + ``#rt_count``: retweets count
+    + ``#fa_count``: favorites count
     + ``#id``: ID
+    + ``#fav``: favorited symbol
     + ``#fav``: favorited symbol
     + ``#tweet``: Tweet's content
     + ``#sender_name``: Message's sender name

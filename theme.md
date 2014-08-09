@@ -1,6 +1,4 @@
 ## Available themes
-#### Default
-![Default](./screenshot/themes/Default.png)
 #### Monokai
 ![Monokai](./screenshot/themes/Monokai.png)
 #### Solarized
