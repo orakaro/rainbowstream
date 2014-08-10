@@ -31,49 +31,6 @@ g = {}
 # Lock for streams
 StreamLock = threading.Lock()
 
-# Commands
-cmdset = [
-    'switch',
-    'trend',
-    'home',
-    'view',
-    'mentions',
-    't',
-    'rt',
-    'quote',
-    'allrt',
-    'fav',
-    'rep',
-    'del',
-    'ufav',
-    's',
-    'mes',
-    'show',
-    'open',
-    'ls',
-    'inbox',
-    'sent',
-    'trash',
-    'whois',
-    'fl',
-    'ufl',
-    'mute',
-    'unmute',
-    'muting',
-    'block',
-    'unblock',
-    'report',
-    'list',
-    'cal',
-    'config',
-    'theme',
-    'h',
-    'p',
-    'r',
-    'c',
-    'q'
-]
-
 
 def parse_arguments():
     """
@@ -184,7 +141,7 @@ def init(args):
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     g['themes'] = themes
     # Startup cmd
-    g['previous_cmd'] = ''
+    g['cmd'] = ''
     # Semaphore init
     c['lock'] = False
     c['pause'] = False
@@ -1525,54 +1482,98 @@ def reset():
         pass
 
 
+# Command set
+cmdset = [
+    'switch',
+    'trend',
+    'home',
+    'view',
+    'mentions',
+    't',
+    'rt',
+    'quote',
+    'allrt',
+    'fav',
+    'rep',
+    'del',
+    'ufav',
+    's',
+    'mes',
+    'show',
+    'open',
+    'ls',
+    'inbox',
+    'sent',
+    'trash',
+    'whois',
+    'fl',
+    'ufl',
+    'mute',
+    'unmute',
+    'muting',
+    'block',
+    'unblock',
+    'report',
+    'list',
+    'cal',
+    'config',
+    'theme',
+    'h',
+    'p',
+    'r',
+    'c',
+    'q'
+]
+
+# Handle function set
+funcset = [
+    switch,
+    trend,
+    home,
+    view,
+    mentions,
+    tweet,
+    retweet,
+    quote,
+    allretweet,
+    favorite,
+    reply,
+    delete,
+    unfavorite,
+    search,
+    message,
+    show,
+    urlopen,
+    ls,
+    inbox,
+    sent,
+    trash,
+    whois,
+    follow,
+    unfollow,
+    mute,
+    unmute,
+    muting,
+    block,
+    unblock,
+    report,
+    twitterlist,
+    cal,
+    config,
+    theme,
+    help,
+    pause,
+    replay,
+    clear,
+    quit
+]
+
+
 def process(cmd):
     """
     Process switch
     """
-    return dict(zip(
-        cmdset,
-        [
-            switch,
-            trend,
-            home,
-            view,
-            mentions,
-            tweet,
-            retweet,
-            quote,
-            allretweet,
-            favorite,
-            reply,
-            delete,
-            unfavorite,
-            search,
-            message,
-            show,
-            urlopen,
-            ls,
-            inbox,
-            sent,
-            trash,
-            whois,
-            follow,
-            unfollow,
-            mute,
-            unmute,
-            muting,
-            block,
-            unblock,
-            report,
-            twitterlist,
-            cal,
-            config,
-            theme,
-            help,
-            pause,
-            replay,
-            clear,
-            quit
-        ]
-    )).get(cmd, reset)
+    return dict(zip(cmdset, funcset)).get(cmd, reset)
 
 
 def listen():
@@ -1651,15 +1652,13 @@ def listen():
             line = raw_input(g['decorated_name'](c['PREFIX']))
         else:
             line = raw_input()
-        # Save previous cmd in order to compare with readline buffer
-        g['previous_cmd'] = line.strip()
-        # Get short cmd to filter
+        # Save cmd to compare with readline buffer
+        g['cmd'] = line.strip()
+        # Get short cmd to pass to handle function
         try:
             cmd = line.split()[0]
         except:
             cmd = ''
-        # Save whold the entire cmd
-        g['cmd'] = line
         try:
             # Lock the semaphore
             c['lock'] = True
@@ -1742,7 +1741,7 @@ def stream(domain, args, name='Rainbow Stream'):
                 # after completely delete a word after typing it,
                 # somehow readline buffer still contains
                 # the 1st character of that word
-                if current_buffer and g['previous_cmd'] != current_buffer:
+                if current_buffer and g['cmd'] != current_buffer:
                     sys.stdout.write(
                         g['decorated_name'](c['PREFIX']) + unc(current_buffer))
                     sys.stdout.flush()
