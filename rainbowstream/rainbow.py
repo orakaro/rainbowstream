@@ -1520,7 +1520,7 @@ def reset():
         printNicely(magenta('Need tips ? Type "h" and hit Enter key!'))
     g['reset'] = False
     try:
-        printNicely(str(eval(g['cmd'])))
+        printNicely(str(eval('%s %s' % (g['cmd'], g['stuff']))))
     except Exception:
         pass
 
