@@ -20,56 +20,56 @@
     and 256 terminal's colors from 0 to 255
     */
 
-    "DECORATED_NAME" : 73,
-    "CYCLE_COLOR" :[73,209,148,230,220,59],
+    "DECORATED_NAME" : 37,
+    "CYCLE_COLOR" :[37,184,202,154,59,230],
     "TWEET" : {
-        "nick"            : 73,
-        "clock"           : 220,
-        "id"              : 209,
-        "favorited"       : 148,
-        "retweet_count"   : 73,
-        "favorite_count"  : 148,
-        "rt"              : 59,
-        "link"            : 148,
-        "hashtag"         : 73,
+        "nick"            : 37,
+        "clock"           : 184,
+        "id"              : 202,
+        "favorited"       : 154,
+        "retweet_count"   : 202,
+        "favorite_count"  : 154,
+        "rt"              : 202,
+        "link"            : 154,
+        "hashtag"         : 37,
         "keyword"         : "on_light_green"
     },
 
     "MESSAGE" : {
-        "sender"    : 73,
-        "recipient" : 73,
-        "to"        : 148,
-        "clock"     : 220,
-        "id"        : 209
+        "sender"    : 37,
+        "recipient" : 37,
+        "to"        : 154,
+        "clock"     : 184,
+        "id"        : 202
     },
 
     "PROFILE" : {
-        "statuses_count"    : 209,
-        "friends_count"     : 73,
-        "followers_count"   : 220,
-        "nick"              : 73,
-        "profile_image_url" : 148,
+        "statuses_count"    : 202,
+        "friends_count"     : 37,
+        "followers_count"   : 184,
+        "nick"              : 37,
+        "profile_image_url" : 154,
         "description"       : 230,
         "location"          : 59,
-        "url"               : 148,
-        "clock"             : 220
+        "url"               : 154,
+        "clock"             : 184
     },
 
     "TREND" : {
-        "url": 148
+        "url": 154
     },
 
     "CAL" : {
-        "days": 209,
+        "days": 202,
         "today": "on_light_magenta"
     },
 
     "GROUP" : {
-        "name": 73,
-        "member": 220,
-        "subscriber": 73,
+        "name": 37,
+        "member": 184,
+        "subscriber": 37,
         "mode": 59,
         "description": 230,
-        "clock": 220
+        "clock": 184
     }
 }
