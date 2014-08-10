@@ -1520,7 +1520,7 @@ def reset():
         printNicely(magenta('Need tips ? Type "h" and hit Enter key!'))
     g['reset'] = False
     try:
-        printNicely(str(eval('%s %s' % (g['cmd'], g['stuff']))))
+        printNicely(str(eval(g['cmd'])))
     except Exception:
         pass
 
@@ -1653,11 +1653,13 @@ def listen():
             line = raw_input()
         # Save previous cmd in order to compare with readline buffer
         g['previous_cmd'] = line.strip()
+        # Get short cmd to filter
         try:
             cmd = line.split()[0]
         except:
             cmd = ''
-        g['cmd'] = cmd
+        # Save whold the entire cmd
+        g['cmd'] = line
         try:
             # Lock the semaphore
             c['lock'] = True
