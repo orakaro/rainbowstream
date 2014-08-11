@@ -235,7 +235,7 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     tweet = text.split()
     # Replace url
     if expanded_url:
-        for index in range(len(expanded_url)):
+        for index in xrange(len(expanded_url)):
             tweet = lmap(
                 lambda x: expanded_url[index]
                 if x == url[index]

@@ -1,6 +1,7 @@
 from PIL import Image
 from os.path import join, dirname, getmtime, exists, expanduser
 from .config import *
+from .py3patch import *
 
 import ctypes
 import sys
@@ -49,9 +50,9 @@ def image_to_display(path, start=None, length=None):
     i = i.resize((width, height), Image.ANTIALIAS)
     height = min(height, c['IMAGE_MAX_HEIGHT'])
 
-    for y in range(height):
+    for y in xrange(height):
         sys.stdout.write(' ' * start)
-        for x in range(width):
+        for x in xrange(width):
             p = i.getpixel((x, y))
             r, g, b = p[:3]
             pixel_print(rgb2short(r, g, b))

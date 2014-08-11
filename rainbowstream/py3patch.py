@@ -25,6 +25,7 @@ if sys.version[0] == "2":
     lmap = lambda f, a: map(f, a)
     unc = lambda x: x.decode('utf-8')
 else:
+    xrange = range
     raw_input = input
     lmap = lambda f, a: list(map(f, a))
     unc = lambda x: x
