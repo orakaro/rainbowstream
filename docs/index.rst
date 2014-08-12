@@ -290,11 +290,17 @@ Config explanation
 Rainbow Stream has a config file located at ``~/.rainbow_config.json``.
 You can view or set a new value of every config key by ``config`` command (See **Interactive mode** section above).
 
+-  ``HEARTBEAT_TIMEOUT``: after this timeout (count by minutes), the stream will automatically hangup.
+
+-  ``IMAGE_ON_TERM``: display tweet's image directly on terminal.
+
 -  ``THEME``: current theme.
 
 -  ``ASCII_ART``: diplay your twitter name by ascii art at stream begin or not.
 
--  ``HIDE_PROMPT``: Hide prompt after receiving a tweet or not.
+-  ``HIDE_PROMPT``: hide prompt after receiving a tweet or not.
+
+-  ``PREFIX``: display string of prompt.
 
 -  ``SEARCH_MAX_RECORD``: max tweets can display on 'search' command.
 

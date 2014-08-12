@@ -1,4 +1,6 @@
 {
+    // After 120 minutes, the stream will automatically hangup
+    "HEARTBEAT_TIMEOUT" : 120,
     // Image on term
     "IMAGE_ON_TERM" : false,
     // Themes
@@ -27,8 +29,8 @@
     // Autocomplete history file name
     "HISTORY_FILENAME" : "completer.hist",
     // Image config
-    "IMAGE_SHIFT" : 10,
-    "IMAGE_MAX_HEIGHT" : 40,
+    "IMAGE_SHIFT" : 2,
+    "IMAGE_MAX_HEIGHT" : 90,
     // Stream config
     "USER_DOMAIN" : "userstream.twitter.com",
     "PUBLIC_DOMAIN" : "stream.twitter.com",

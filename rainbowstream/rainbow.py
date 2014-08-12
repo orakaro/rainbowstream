@@ -42,16 +42,6 @@ def parse_arguments():
         '--timeout',
         help='Timeout for the stream (seconds).')
     parser.add_argument(
-        '-ht',
-        '--heartbeat-timeout',
-        help='Set heartbeat timeout.',
-        default=90)
-    parser.add_argument(
-        '-nb',
-        '--no-block',
-        action='store_true',
-        help='Set stream to non-blocking.')
-    parser.add_argument(
         '-tt',
         '--track-keywords',
         help='Search the stream for specific text.')
@@ -1692,8 +1682,8 @@ def stream(domain, args, name='Rainbow Stream'):
     # These arguments are optional:
     stream_args = dict(
         timeout=0.5,  # To check g['stream_stop'] after each 0.5 s
-        block=not args.no_block,
-        heartbeat_timeout=args.heartbeat_timeout)
+        block=True,
+        heartbeat_timeout=c['HEARTBEAT_TIMEOUT'] * 60)
     # Track keyword
     query_args = dict()
     if args.track_keywords:
@@ -1725,6 +1715,15 @@ def stream(domain, args, name='Rainbow Stream'):
                     break
             elif tweet is HeartbeatTimeout:
                 printNicely("-- Heartbeat Timeout --")
+                guide = light_magenta("You can use ") + \
+                    light_green("switch") + \
+                    light_magenta(" command to return to your stream.\n")
+                guide += light_magenta("Type ") + \
+                    light_green("h stream") + \
+                    light_magenta(" for more details.")
+                printNicely(guide)
+                sys.stdout.write(g['decorated_name'](c['PREFIX']))
+                sys.stdout.flush()
             elif tweet is Hangup:
                 printNicely("-- Hangup --")
             elif tweet.get('text'):
