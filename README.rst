@@ -198,6 +198,6 @@ details
 .. _Create your own Twitter Application: https://apps.twitter.com/app/new
 .. _rainbowstream: https://github.com/DTVD/rainbowstream/tree/master/rainbowstream
 .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
-.. _config management: http://rainbowstream.readthedocs.org/en/latest/#the-interactive-mode
+.. _config management: http://rainbowstream.readthedocs.org/en/latest/#config-explanation
 .. _clang unknown argument: http://kaspermunck.github.io/2014/03/fixing-clang-error/
 .. _Issue #10: https://github.com/DTVD/rainbowstream/issues/10

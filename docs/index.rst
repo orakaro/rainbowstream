@@ -391,7 +391,7 @@ steps
 .. _Twitter API: https://dev.twitter.com/docs/api/1.1
 .. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
-.. _config management: http://rainbowstream.readthedocs.org/en/latest/#the-interactive-mode
+.. _config management: http://rainbowstream.readthedocs.org/en/latest/#config-explanation
 .. _Python's strftime format: https://docs.python.org/2/library/time.html#time.strftime
 .. _clang unknown argument: http://kaspermunck.github.io/2014/03/fixing-clang-error/
 .. _Issue #10: https://github.com/DTVD/rainbowstream/issues/10
