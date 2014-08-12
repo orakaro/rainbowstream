@@ -74,8 +74,11 @@ You can try it with:
 
     rainbowstream -iot # Or rainbowstream --image-on-term
 
-You also can change the config key ``IMAGE_ON_TERM`` to ``True`` inside the app
-to enable above feature (see `config management`_ section).
+You also can change the config key ``IMAGE_ON_TERM`` to ``True`` inside the app 
+to enable above feature, 
+change ``IMAGE_SHIFT`` to set image's margin (relative to your terminal's width) 
+or ``IMAGE_MAX_HEIGHT`` to control max height of every image.
+(see `config management`_ section).
 
 In the first time you will be asked for authorization of Rainbow Stream
 app at Twitter. Just click the “Authorize access” button and paste PIN
