@@ -15,7 +15,7 @@ def call_c():
     library = expanduser('~/.image.so')
     sauce = join(dirname(__file__), 'image.c')
     if not exists(library) or getmtime(sauce) > getmtime(library):
-        build = "gcc -fPIC -shared -o %s %s" % (library, sauce)
+        build = "cc -fPIC -shared -o %s %s" % (library, sauce)
         assert os.system(build + " >/dev/null 2>&1") == 0
     image_c = ctypes.cdll.LoadLibrary(library)
     image_c.init()
