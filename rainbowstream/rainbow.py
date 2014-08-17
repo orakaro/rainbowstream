@@ -1742,6 +1742,8 @@ def stream(domain, args, name='Rainbow Stream'):
                 printNicely(guide)
                 sys.stdout.write(g['decorated_name'](c['PREFIX']))
                 sys.stdout.flush()
+                StreamLock.release()
+                break
             elif tweet is Hangup:
                 printNicely("-- Hangup --")
             elif tweet.get('text'):
