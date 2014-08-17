@@ -311,6 +311,12 @@ You can view or set a new value of every config key by ``config`` command (See *
 
 -  ``RETWEETS_SHOW_NUM``: default tweets to display on 'allrt' command.
 
+-  ``QUOTE_FORMAT``: format when quote a tweet
+
+    + ``#comment``: Your own comment about the tweet
+    + ``#owner``: owner's username with '@'
+    + ``#tweet``: original tweet
+
 -  ``MESSAGES_DISPLAY``: default messages to display on 'inbox' or 'sent' command.
 
 -  ``TREND_MAX``: default trends to display on 'trend' command.

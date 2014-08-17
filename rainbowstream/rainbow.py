@@ -312,6 +312,7 @@ def quote():
     """
     Quote a tweet
     """
+    # Retrieve info
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
@@ -320,17 +321,34 @@ def quote():
         return
     tid = c['tweet_dict'][id]
     tweet = t.statuses.show(id=tid)
-    screen_name = tweet['user']['screen_name']
+    screen_name = '@' + tweet['user']['screen_name']
     text = tweet['text']
-    quote = '\"@' + screen_name + ': ' + text + '\"'
-    quote = quote.encode('utf8')
-    notice = light_magenta('Compose mode ')
-    notice += light_yellow('(Enter nothing will cancel the quote)')
-    notice += light_magenta(':')
+    # Validate quote format
+    if '#owner' not in c['QUOTE_FORMAT']:
+        printNicely(light_magenta('Quote should contains #owner'))
+        return
+    if '#comment' not in c['QUOTE_FORMAT']:
+        printNicely(light_magenta('Quote format should have #comment'))
+        return
+    # Notice
+    notice = light_magenta('Current quote format is: ')
+    notice += light_green(c['QUOTE_FORMAT'])
     printNicely(notice)
-    extra = raw_input(quote)
-    if extra:
-        t.statuses.update(status=quote + extra)
+    # Build formater
+    formater = ''
+    try:
+        formater = c['QUOTE_FORMAT']
+        formater = screen_name.join(formater.split('#owner'))
+        formater = text.join(formater.split('#tweet'))
+        formater = u2str(formater)
+    except:
+        pass
+    # Get comment
+    prefix = light_magenta('Compose your ') + light_green('#comment: ')
+    comment = raw_input(prefix)
+    if comment:
+        quote = comment.join(formater.split('#comment'))
+        t.statuses.update(status = quote)
     else:
         printNicely(light_magenta('No text added.'))
 
@@ -392,7 +410,7 @@ def reply():
     tid = c['tweet_dict'][id]
     user = t.statuses.show(id=tid)['user']['screen_name']
     status = ' '.join(g['stuff'].split()[1:])
-    status = '@' + user + ' ' + unc(status)
+    status = '@' + user + ' ' + str2u(status)
     t.statuses.update(status=status, in_reply_to_status_id=tid)
 
 
@@ -1742,7 +1760,7 @@ def stream(domain, args, name='Rainbow Stream'):
                 # the 1st character of that word
                 if current_buffer and g['cmd'] != current_buffer:
                     sys.stdout.write(
-                        g['decorated_name'](c['PREFIX']) + unc(current_buffer))
+                        g['decorated_name'](c['PREFIX']) + str2u(current_buffer))
                     sys.stdout.flush()
                 elif not c['HIDE_PROMPT']:
                     sys.stdout.write(g['decorated_name'](c['PREFIX']))

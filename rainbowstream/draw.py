@@ -275,10 +275,10 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     formater = ''
     try:
         formater = c['FORMAT']['TWEET']['DISPLAY']
-        formater = name.join(formater.split("#name"))
-        formater = nick.join(formater.split("#nick"))
-        formater = fav.join(formater.split("#fav"))
-        formater = tweet.join(formater.split("#tweet"))
+        formater = name.join(formater.split('#name'))
+        formater = nick.join(formater.split('#nick'))
+        formater = fav.join(formater.split('#fav'))
+        formater = tweet.join(formater.split('#tweet'))
         # Change clock word
         word = [w for w in formater.split() if '#clock' in w][0]
         delimiter = color_func(c['TWEET']['clock'])(
