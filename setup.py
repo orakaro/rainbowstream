@@ -12,6 +12,7 @@ install_requires = [
     "pyfiglet",
     "twitter",
     "Pillow",
+    "tzlocal",
 ]
 
 # Copy default config if not exists
