@@ -546,5 +546,58 @@ def show_calendar(month, date, rel):
         printNicely(' '.join(ary))
 
 
+def format_quote(tweet):
+    """
+    Quoting format
+    """
+    # Retrieve info
+    screen_name = '@' + tweet['user']['screen_name']
+    text = tweet['text']
+    # Validate quote format
+    if '#owner' not in c['QUOTE_FORMAT']:
+        printNicely(light_magenta('Quote should contains #owner'))
+        return False
+    if '#comment' not in c['QUOTE_FORMAT']:
+        printNicely(light_magenta('Quote format should have #comment'))
+        return False
+    # Build formater
+    formater = ''
+    try:
+        formater = c['QUOTE_FORMAT']
+        formater = screen_name.join(formater.split('#owner'))
+        formater = text.join(formater.split('#tweet'))
+        formater = u2str(formater)
+    except:
+        pass
+    # Highlight like a tweet
+    formater = formater.split()
+    formater = lmap(
+        lambda x: light_green(x)
+        if x == '#comment'
+        else x,
+        formater)
+    formater = lmap(
+        lambda x: color_func(c['TWEET']['rt'])(x)
+        if x == 'RT'
+        else x,
+        formater)
+    formater = lmap(lambda x: cycle_color(x) if x[0] == '@' else x, formater)
+    formater = lmap(
+        lambda x: color_func(c['TWEET']['link'])(x)
+        if x[0:4] == 'http'
+        else x,
+        formater)
+    formater = lmap(
+        lambda x: color_func(c['TWEET']['hashtag'])(x)
+        if x.startswith('#')
+        else x,
+        formater)
+    formater = ' '.join(formater)
+    # Notice
+    notice = light_magenta('Quoting: "') + formater + light_magenta('"')
+    printNicely(notice)
+    return formater
+
+
 # Start the color cycle
 start_cycle()

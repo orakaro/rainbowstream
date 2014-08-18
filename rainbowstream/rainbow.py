@@ -312,7 +312,7 @@ def quote():
     """
     Quote a tweet
     """
-    # Retrieve info
+    # Get tweet
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
@@ -321,34 +321,16 @@ def quote():
         return
     tid = c['tweet_dict'][id]
     tweet = t.statuses.show(id=tid)
-    screen_name = '@' + tweet['user']['screen_name']
-    text = tweet['text']
-    # Validate quote format
-    if '#owner' not in c['QUOTE_FORMAT']:
-        printNicely(light_magenta('Quote should contains #owner'))
+    # Get formater
+    formater = format_quote(tweet)
+    if not formater:
         return
-    if '#comment' not in c['QUOTE_FORMAT']:
-        printNicely(light_magenta('Quote format should have #comment'))
-        return
-    # Notice
-    notice = light_magenta('Current quote format is: ')
-    notice += light_green(c['QUOTE_FORMAT'])
-    printNicely(notice)
-    # Build formater
-    formater = ''
-    try:
-        formater = c['QUOTE_FORMAT']
-        formater = screen_name.join(formater.split('#owner'))
-        formater = text.join(formater.split('#tweet'))
-        formater = u2str(formater)
-    except:
-        pass
     # Get comment
     prefix = light_magenta('Compose your ') + light_green('#comment: ')
     comment = raw_input(prefix)
     if comment:
         quote = comment.join(formater.split('#comment'))
-        t.statuses.update(status = quote)
+        t.statuses.update(status=quote)
     else:
         printNicely(light_magenta('No text added.'))
 
