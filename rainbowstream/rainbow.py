@@ -1014,7 +1014,7 @@ def list_delete(t):
     """
     Delete a list
     """
-    slug = raw_input(light_magenta('Your list that you want to update: '))
+    slug = raw_input(light_magenta('Your list that you want to delete: '))
     try:
         t.lists.destroy(
             slug='-'.join(slug.split()),
@@ -1732,6 +1732,7 @@ def stream(domain, args, name='Rainbow Stream'):
                 draw(
                     t=tweet,
                     keyword=args.track_keywords,
+                    humanize=False,
                     check_semaphore=True,
                     fil=args.filter,
                     ig=args.ignore,

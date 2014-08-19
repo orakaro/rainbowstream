@@ -3,13 +3,14 @@ import itertools
 import requests
 import datetime
 import time
+import locale
+import arrow
 import re
 
 from twitter.util import printNicely
 from functools import wraps
 from pyfiglet import figlet_format
 from dateutil import parser
-from tzlocal import get_localzone
 from .c_image import *
 from .colors import *
 from .config import *
@@ -144,7 +145,7 @@ def color_func(func_name):
     return globals()[func_name]
 
 
-def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
+def draw(t, keyword=None, humanize=True, check_semaphore=False, fil=[], ig=[]):
     """
     Draw the rainbow
     """
@@ -169,13 +170,16 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     retweet_count = t['retweet_count']
     favorite_count = t['favorite_count']
     date = parser.parse(created_at)
-    date = date.astimezone(get_localzone())
-    clock_format = '%Y/%m/%d %H:%M:%S'
-    try:
-        clock_format = c['FORMAT']['TWEET']['CLOCK_FORMAT']
-    except:
-        pass
-    clock = date.strftime(clock_format)
+    date = arrow.get(date).to('local')
+    if humanize:
+        lang, encode = locale.getdefaultlocale()
+        clock = arrow.get(date).to('local').humanize(locale=lang)
+    else:
+        try:
+            clock_format = c['FORMAT']['TWEET']['CLOCK_FORMAT']
+        except:
+            clock_format = '%Y/%m/%d %H:%M:%S'
+        clock = date.datetime.strftime(clock_format)
 
     # Pull extended retweet text
     try:
@@ -335,7 +339,7 @@ def print_message(m, check_semaphore=False):
     recipient_name = m['recipient']['name']
     mid = m['id']
     date = parser.parse(m['created_at'])
-    date = date.astimezone(get_localzone())
+    date = arrow.get(date).to('local').datetime
     clock_format = '%Y/%m/%d %H:%M:%S'
     try:
         clock_format = c['FORMAT']['MESSAGE']['CLOCK_FORMAT']
@@ -428,8 +432,8 @@ def show_profile(u):
     location = 'Location : ' + color_func(c['PROFILE']['location'])(location)
     url = 'URL : ' + (color_func(c['PROFILE']['url'])(url) if url else '')
     date = parser.parse(created_at)
-    date = date.astimezone(get_localzone())
-    clock = date.strftime('%Y/%m/%d %H:%M:%S')
+    lang, encode = locale.getdefaultlocale()
+    clock = arrow.get(date).to('local').humanize(locale=lang)
     clock = 'Join at ' + color_func(c['PROFILE']['clock'])(clock)
 
     # Format
@@ -507,8 +511,8 @@ def print_list(group):
         mode = color_func(c['GROUP']['mode'])('Type: ' + mode)
         created_at = grp['created_at']
         date = parser.parse(created_at)
-        date = date.astimezone(get_localzone())
-        clock = date.strftime('%Y/%m/%d %H:%M:%S')
+        lang, encode = locale.getdefaultlocale()
+        clock = arrow.get(date).to('local').humanize(locale=lang)
         clock = 'Created at ' + color_func(c['GROUP']['clock'])(clock)
 
         # Create lines
