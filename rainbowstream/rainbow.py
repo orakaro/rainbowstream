@@ -1347,7 +1347,7 @@ def help():
         light_yellow('already') + ' on your personal stream.\n'
     usage += s + 'Any update from Twitter will show up ' + \
         light_yellow('immediately') + '.\n'
-    usage += s + 'In addtion, following commands are available right now:\n'
+    usage += s + 'In addition, following commands are available right now:\n'
     # Twitter help section
     usage += '\n'
     usage += s + grey(u'\u266A' + ' Twitter help\n')
