@@ -9,6 +9,7 @@ from twitter.util import printNicely
 from functools import wraps
 from pyfiglet import figlet_format
 from dateutil import parser
+from tzlocal import get_localzone
 from .c_image import *
 from .colors import *
 from .config import *
@@ -168,7 +169,7 @@ def draw(t, keyword=None, check_semaphore=False, fil=[], ig=[]):
     retweet_count = t['retweet_count']
     favorite_count = t['favorite_count']
     date = parser.parse(created_at)
-    date = date - datetime.timedelta(seconds=time.timezone)
+    date = date.astimezone(get_localzone())
     clock_format = '%Y/%m/%d %H:%M:%S'
     try:
         clock_format = c['FORMAT']['TWEET']['CLOCK_FORMAT']
@@ -334,7 +335,7 @@ def print_message(m, check_semaphore=False):
     recipient_name = m['recipient']['name']
     mid = m['id']
     date = parser.parse(m['created_at'])
-    date = date - datetime.timedelta(seconds=time.timezone)
+    date = date.astimezone(get_localzone())
     clock_format = '%Y/%m/%d %H:%M:%S'
     try:
         clock_format = c['FORMAT']['MESSAGE']['CLOCK_FORMAT']
@@ -427,7 +428,7 @@ def show_profile(u):
     location = 'Location : ' + color_func(c['PROFILE']['location'])(location)
     url = 'URL : ' + (color_func(c['PROFILE']['url'])(url) if url else '')
     date = parser.parse(created_at)
-    date = date - datetime.timedelta(seconds=time.timezone)
+    date = date.astimezone(get_localzone())
     clock = date.strftime('%Y/%m/%d %H:%M:%S')
     clock = 'Join at ' + color_func(c['PROFILE']['clock'])(clock)
 
@@ -506,7 +507,7 @@ def print_list(group):
         mode = color_func(c['GROUP']['mode'])('Type: ' + mode)
         created_at = grp['created_at']
         date = parser.parse(created_at)
-        date = date - datetime.timedelta(seconds=time.timezone)
+        date = date.astimezone(get_localzone())
         clock = date.strftime('%Y/%m/%d %H:%M:%S')
         clock = 'Created at ' + color_func(c['GROUP']['clock'])(clock)
 
