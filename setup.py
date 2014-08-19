@@ -3,16 +3,16 @@ import os
 import os.path
 
 # Bumped version
-version = '0.7.8'
+version = '0.8.0'
 
 # Require
 install_requires = [
     "python-dateutil",
+    "arrow",
     "requests",
     "pyfiglet",
     "twitter",
     "Pillow",
-    "tzlocal",
 ]
 
 # Copy default config if not exists

@@ -41,11 +41,11 @@
     "FORMAT": {
         "TWEET": {
             "CLOCK_FORMAT" : "%Y/%m/%d %H:%M:%S",
-            "DISPLAY" : "\n  #name #nick :\n  [#clock] [rt:#rt_count] [fav:#fa_count] [id=#id] #fav\n  #tweet"
+            "DISPLAY" : "\n  #name #nick #clock \n  Retweets:#rt_count Favorites:#fa_count id:#id #fav\n  #tweet"
         },
         "MESSAGE": {
             "CLOCK_FORMAT" : "%Y/%m/%d %H:%M:%S",
-            "DISPLAY" : "\n  #sender_name #sender_nick #to #recipient_name #recipient_nick :\n  [#clock] [message_id=#id]\n  #message"
+            "DISPLAY" : "\n  #sender_name #sender_nick #to #recipient_name #recipient_nick :\n  #clock message_id:#id\n  #message"
         }
     }
 }
