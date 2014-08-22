@@ -90,6 +90,8 @@ Here is full list of supported command:
 -  ``mentions`` will show mentions timeline. ``mentions 7`` will show 7
    mention tweets.
 
+-  ``conversation 12`` will show the chain of replies prior to the tweet with *[id=12]*.
+
 -  ``whois @dtvd88`` will show profile of @dtvd88.
 
 -  ``view @mdo`` will show @mdo ’s timeline. ``view @dmo 9`` will print
