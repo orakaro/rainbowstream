@@ -162,7 +162,7 @@ def init_config():
         data = load_config(rainbow_config)
         for d in data:
             c[d] = data[d]
-    except ValueError as e:
+    except (IOError, ValueError) as e:
         c['USER_JSON_ERROR'] = str(e)
     # Load default theme
     theme_file = os.path.dirname(__file__) + \
