@@ -145,67 +145,6 @@ def init(args):
     c['IGNORE_LIST'] += build_mute_dict()
 
 
-def switch():
-    """
-    Switch stream
-    """
-    try:
-        target = g['stuff'].split()[0]
-        # Filter and ignore
-        args = parse_arguments()
-        try:
-            if g['stuff'].split()[-1] == '-f':
-                guide = 'To ignore an option, just hit Enter key.'
-                printNicely(light_magenta(guide))
-                only = raw_input('Only nicks [Ex: @xxx,@yy]: ')
-                ignore = raw_input('Ignore nicks [Ex: @xxx,@yy]: ')
-                args.filter = filter(None, only.split(','))
-                args.ignore = filter(None, ignore.split(','))
-            elif g['stuff'].split()[-1] == '-d':
-                args.filter = c['ONLY_LIST']
-                args.ignore = c['IGNORE_LIST']
-        except:
-            printNicely(red('Sorry, wrong format.'))
-            return
-        # Public stream
-        if target == 'public':
-            keyword = g['stuff'].split()[1]
-            if keyword[0] == '#':
-                keyword = keyword[1:]
-            # Kill old thread
-            g['stream_stop'] = True
-            args.track_keywords = keyword
-            # Start new thread
-            th = threading.Thread(
-                target=stream,
-                args=(
-                    c['PUBLIC_DOMAIN'],
-                    args))
-            th.daemon = True
-            th.start()
-        # Personal stream
-        elif target == 'mine':
-            # Kill old thread
-            g['stream_stop'] = True
-            # Start new thread
-            th = threading.Thread(
-                target=stream,
-                args=(
-                    c['USER_DOMAIN'],
-                    args,
-                    g['original_name']))
-            th.daemon = True
-            th.start()
-        printNicely('')
-        if args.filter:
-            printNicely(cyan('Only: ' + str(args.filter)))
-        if args.ignore:
-            printNicely(red('Ignore: ' + str(args.ignore)))
-        printNicely('')
-    except:
-        printNicely(red('Sorry I can\'t understand.'))
-
-
 def trend():
     """
     Trend
@@ -255,6 +194,37 @@ def home():
     printNicely('')
 
 
+def mentions():
+    """
+    Mentions timeline
+    """
+    t = Twitter(auth=authen())
+    num = c['HOME_TWEET_NUM']
+    if g['stuff'].isdigit():
+        num = int(g['stuff'])
+    for tweet in reversed(t.statuses.mentions_timeline(count=num)):
+        draw(t=tweet)
+    printNicely('')
+
+
+def whois():
+    """
+    Show profile of a specific user
+    """
+    t = Twitter(auth=authen())
+    screen_name = g['stuff'].split()[0]
+    if screen_name.startswith('@'):
+        try:
+            user = t.users.show(
+                screen_name=screen_name[1:],
+                include_entities=False)
+            show_profile(user)
+        except:
+            printNicely(red('Omg no user.'))
+    else:
+        printNicely(red('A name should begin with a \'@\''))
+
+
 def view():
     """
     Friend view
@@ -273,44 +243,21 @@ def view():
         printNicely(red('A name should begin with a \'@\''))
 
 
-def mentions():
+def search():
     """
-    Mentions timeline
-    """
-    t = Twitter(auth=authen())
-    num = c['HOME_TWEET_NUM']
-    if g['stuff'].isdigit():
-        num = int(g['stuff'])
-    for tweet in reversed(t.statuses.mentions_timeline(count=num)):
-        draw(t=tweet)
-    printNicely('')
-
-
-def conversation():
-    """
-    Conversation view
+    Search
     """
     t = Twitter(auth=authen())
-    try:
-        id = int(g['stuff'].split()[0])
-    except:
-        printNicely(red('Sorry I can\'t understand.'))
-        return
-    tid = c['tweet_dict'][id]
-    tweet = t.statuses.show(id=tid)
-    limit = 9
-    thread_ref = []
-    thread_ref.append (tweet)
-    prev_tid = tweet['in_reply_to_status_id']
-    while prev_tid and limit:
-        limit -= 1
-        tweet = t.statuses.show(id=prev_tid)
-        prev_tid = tweet['in_reply_to_status_id']
-        thread_ref.append (tweet)
-
-    for tweet in reversed(thread_ref):
-        draw(t=tweet)
-    printNicely('')
+    g['stuff'] = g['stuff'].strip()
+    rel = t.search.tweets(q=g['stuff'])['statuses']
+    if rel:
+        printNicely('Newest tweets:')
+        for i in reversed(xrange(c['SEARCH_MAX_RECORD'])):
+            draw(t=rel[i],
+                 keyword=g['stuff'])
+        printNicely('')
+    else:
+        printNicely(magenta('I\'m afraid there is no result'))
 
 
 def tweet():
@@ -389,9 +336,9 @@ def allretweet():
     printNicely('')
 
 
-def favorite():
+def conversation():
     """
-    Favorite
+    Conversation view
     """
     t = Twitter(auth=authen())
     try:
@@ -400,9 +347,19 @@ def favorite():
         printNicely(red('Sorry I can\'t understand.'))
         return
     tid = c['tweet_dict'][id]
-    t.favorites.create(_id=tid, include_entities=False)
-    printNicely(green('Favorited.'))
-    draw(t.statuses.show(id=tid))
+    tweet = t.statuses.show(id=tid)
+    limit = c['CONVERSATION_MAX']
+    thread_ref = []
+    thread_ref.append(tweet)
+    prev_tid = tweet['in_reply_to_status_id']
+    while prev_tid and limit:
+        limit -= 1
+        tweet = t.statuses.show(id=prev_tid)
+        prev_tid = tweet['in_reply_to_status_id']
+        thread_ref.append(tweet)
+
+    for tweet in reversed(thread_ref):
+        draw(t=tweet)
     printNicely('')
 
 
@@ -423,9 +380,9 @@ def reply():
     t.statuses.update(status=status, in_reply_to_status_id=tid)
 
 
-def delete():
+def favorite():
     """
-    Delete
+    Favorite
     """
     t = Twitter(auth=authen())
     try:
@@ -434,8 +391,10 @@ def delete():
         printNicely(red('Sorry I can\'t understand.'))
         return
     tid = c['tweet_dict'][id]
-    t.statuses.destroy(id=tid)
-    printNicely(green('Okay it\'s gone.'))
+    t.favorites.create(_id=tid, include_entities=False)
+    printNicely(green('Favorited.'))
+    draw(t.statuses.show(id=tid))
+    printNicely('')
 
 
 def unfavorite():
@@ -455,41 +414,19 @@ def unfavorite():
     printNicely('')
 
 
-def search():
+def delete():
     """
-    Search
-    """
-    t = Twitter(auth=authen())
-    g['stuff'] = g['stuff'].strip()
-    rel = t.search.tweets(q=g['stuff'])['statuses']
-    if rel:
-        printNicely('Newest tweets:')
-        for i in reversed(xrange(c['SEARCH_MAX_RECORD'])):
-            draw(t=rel[i],
-                 keyword=g['stuff'])
-        printNicely('')
-    else:
-        printNicely(magenta('I\'m afraid there is no result'))
-
-
-def message():
-    """
-    Send a direct message
+    Delete
     """
     t = Twitter(auth=authen())
-    user = g['stuff'].split()[0]
-    if user[0].startswith('@'):
-        try:
-            content = g['stuff'].split()[1]
-        except:
-            printNicely(red('Sorry I can\'t understand.'))
-        t.direct_messages.new(
-            screen_name=user[1:],
-            text=content
-        )
-        printNicely(green('Message sent.'))
-    else:
-        printNicely(red('A name should begin with a \'@\''))
+    try:
+        id = int(g['stuff'].split()[0])
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = c['tweet_dict'][id]
+    t.statuses.destroy(id=tid)
+    printNicely(green('Okay it\'s gone.'))
 
 
 def show():
@@ -532,49 +469,6 @@ def urlopen():
             webbrowser.open(link)
     except:
         printNicely(red('Sorry I can\'t open url in this tweet.'))
-
-
-def ls():
-    """
-    List friends for followers
-    """
-    t = Twitter(auth=authen())
-    # Get name
-    try:
-        name = g['stuff'].split()[1]
-        if name.startswith('@'):
-            name = name[1:]
-        else:
-            printNicely(red('A name should begin with a \'@\''))
-            raise Exception('Invalid name')
-    except:
-        name = g['original_name']
-    # Get list followers or friends
-    try:
-        target = g['stuff'].split()[0]
-    except:
-        printNicely(red('Omg some syntax is wrong.'))
-    # Init cursor
-    d = {'fl': 'followers', 'fr': 'friends'}
-    next_cursor = -1
-    rel = {}
-    # Cursor loop
-    while next_cursor != 0:
-        list = getattr(t, d[target]).list(
-            screen_name=name,
-            cursor=next_cursor,
-            skip_status=True,
-            include_entities=False,
-        )
-        for u in list['users']:
-            rel[u['name']] = '@' + u['screen_name']
-        next_cursor = list['next_cursor']
-    # Print out result
-    printNicely('All: ' + str(len(rel)) + ' ' + d[target] + '.')
-    for name in rel:
-        user = '  ' + cycle_color(name)
-        user += color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
-        printNicely(user)
 
 
 def inbox():
@@ -643,6 +537,26 @@ def sent():
     printNicely('')
 
 
+def message():
+    """
+    Send a direct message
+    """
+    t = Twitter(auth=authen())
+    user = g['stuff'].split()[0]
+    if user[0].startswith('@'):
+        try:
+            content = g['stuff'].split()[1]
+        except:
+            printNicely(red('Sorry I can\'t understand.'))
+        t.direct_messages.new(
+            screen_name=user[1:],
+            text=content
+        )
+        printNicely(green('Message sent.'))
+    else:
+        printNicely(red('A name should begin with a \'@\''))
+
+
 def trash():
     """
     Remove message
@@ -657,22 +571,47 @@ def trash():
     printNicely(green('Message deleted.'))
 
 
-def whois():
+def ls():
     """
-    Show profile of a specific user
+    List friends for followers
     """
     t = Twitter(auth=authen())
-    screen_name = g['stuff'].split()[0]
-    if screen_name.startswith('@'):
-        try:
-            user = t.users.show(
-                screen_name=screen_name[1:],
-                include_entities=False)
-            show_profile(user)
-        except:
-            printNicely(red('Omg no user.'))
-    else:
-        printNicely(red('A name should begin with a \'@\''))
+    # Get name
+    try:
+        name = g['stuff'].split()[1]
+        if name.startswith('@'):
+            name = name[1:]
+        else:
+            printNicely(red('A name should begin with a \'@\''))
+            raise Exception('Invalid name')
+    except:
+        name = g['original_name']
+    # Get list followers or friends
+    try:
+        target = g['stuff'].split()[0]
+    except:
+        printNicely(red('Omg some syntax is wrong.'))
+    # Init cursor
+    d = {'fl': 'followers', 'fr': 'friends'}
+    next_cursor = -1
+    rel = {}
+    # Cursor loop
+    while next_cursor != 0:
+        list = getattr(t, d[target]).list(
+            screen_name=name,
+            cursor=next_cursor,
+            skip_status=True,
+            include_entities=False,
+        )
+        for u in list['users']:
+            rel[u['name']] = '@' + u['screen_name']
+        next_cursor = list['next_cursor']
+    # Print out result
+    printNicely('All: ' + str(len(rel)) + ' ' + d[target] + '.')
+    for name in rel:
+        user = '  ' + cycle_color(name)
+        user += color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
+        printNicely(user)
 
 
 def follow():
@@ -1082,6 +1021,67 @@ def twitterlist():
         printNicely(red('Please try again.'))
 
 
+def switch():
+    """
+    Switch stream
+    """
+    try:
+        target = g['stuff'].split()[0]
+        # Filter and ignore
+        args = parse_arguments()
+        try:
+            if g['stuff'].split()[-1] == '-f':
+                guide = 'To ignore an option, just hit Enter key.'
+                printNicely(light_magenta(guide))
+                only = raw_input('Only nicks [Ex: @xxx,@yy]: ')
+                ignore = raw_input('Ignore nicks [Ex: @xxx,@yy]: ')
+                args.filter = filter(None, only.split(','))
+                args.ignore = filter(None, ignore.split(','))
+            elif g['stuff'].split()[-1] == '-d':
+                args.filter = c['ONLY_LIST']
+                args.ignore = c['IGNORE_LIST']
+        except:
+            printNicely(red('Sorry, wrong format.'))
+            return
+        # Public stream
+        if target == 'public':
+            keyword = g['stuff'].split()[1]
+            if keyword[0] == '#':
+                keyword = keyword[1:]
+            # Kill old thread
+            g['stream_stop'] = True
+            args.track_keywords = keyword
+            # Start new thread
+            th = threading.Thread(
+                target=stream,
+                args=(
+                    c['PUBLIC_DOMAIN'],
+                    args))
+            th.daemon = True
+            th.start()
+        # Personal stream
+        elif target == 'mine':
+            # Kill old thread
+            g['stream_stop'] = True
+            # Start new thread
+            th = threading.Thread(
+                target=stream,
+                args=(
+                    c['USER_DOMAIN'],
+                    args,
+                    g['original_name']))
+            th.daemon = True
+            th.start()
+        printNicely('')
+        if args.filter:
+            printNicely(cyan('Only: ' + str(args.filter)))
+        if args.ignore:
+            printNicely(red('Ignore: ' + str(args.ignore)))
+        printNicely('')
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+
+
 def cal():
     """
     Unix's command `cal`
@@ -1091,6 +1091,33 @@ def cal():
     month = rel.pop(0)
     date = rel.pop(0)
     show_calendar(month, date, rel)
+
+
+def theme():
+    """
+    List and change theme
+    """
+    if not g['stuff']:
+        # List themes
+        for theme in g['themes']:
+            line = light_magenta(theme)
+            if c['THEME'] == theme:
+                line = ' ' * 2 + light_yellow('* ') + line
+            else:
+                line = ' ' * 4 + line
+            printNicely(line)
+    else:
+        # Change theme
+        try:
+            # Load new theme
+            c['THEME'] = reload_theme(g['stuff'], c['THEME'])
+            # Redefine decorated_name
+            g['decorated_name'] = lambda x: color_func(
+                c['DECORATED_NAME'])(
+                '[' + x + ']: ')
+            printNicely(green('Theme changed.'))
+        except:
+            printNicely(red('No such theme exists.'))
 
 
 def config():
@@ -1157,33 +1184,6 @@ def config():
         printNicely(light_magenta('Sorry I can\'s understand.'))
 
 
-def theme():
-    """
-    List and change theme
-    """
-    if not g['stuff']:
-        # List themes
-        for theme in g['themes']:
-            line = light_magenta(theme)
-            if c['THEME'] == theme:
-                line = ' ' * 2 + light_yellow('* ') + line
-            else:
-                line = ' ' * 4 + line
-            printNicely(line)
-    else:
-        # Change theme
-        try:
-            # Load new theme
-            c['THEME'] = reload_theme(g['stuff'], c['THEME'])
-            # Redefine decorated_name
-            g['decorated_name'] = lambda x: color_func(
-                c['DECORATED_NAME'])(
-                '[' + x + ']: ')
-            printNicely(green('Theme changed.'))
-        except:
-            printNicely(red('No such theme exists.'))
-
-
 def help_discover():
     """
     Discover the world
@@ -1199,8 +1199,6 @@ def help_discover():
         light_green('home 7') + ' will show 7 tweets.\n'
     usage += s * 2 + light_green('mentions') + ' will show mentions timeline. ' + \
         light_green('mentions 7') + ' will show 7 mention tweets.\n'
-    usage += s * 2 + light_green('conversation 12') + ' will show the chain of replies prior to the tweet with ' + \
-        light_yellow('[id=12]') + '.\n'
     usage += s * 2 + light_green('whois @mdo') + ' will show profile  of ' + \
         magenta('@mdo') + '.\n'
     usage += s * 2 + light_green('view @mdo') + \
@@ -1231,6 +1229,8 @@ def help_tweets():
     usage += s * 2 + \
         light_green('allrt 12 20 ') + ' will list 20 newest retweet of the tweet with ' + \
         light_yellow('[id=12]') + '.\n'
+    usage += s * 2 + light_green('conversation 12') + ' will show the chain of ' + \
+        'replies prior to the tweet with ' + light_yellow('[id=12]') + '.\n'
     usage += s * 2 + light_green('rep 12 oops') + ' will reply "' + \
         light_yellow('oops') + '" to tweet with ' + \
         light_yellow('[id=12]') + '.\n'
@@ -1508,11 +1508,11 @@ cmdset = [
     'home',
     'view',
     'mentions',
-    'conversation',
     't',
     'rt',
     'quote',
     'allrt',
+    'conversation',
     'fav',
     'rep',
     'del',
@@ -1552,11 +1552,11 @@ funcset = [
     home,
     view,
     mentions,
-    conversation,
     tweet,
     retweet,
     quote,
     allretweet,
+    conversation,
     favorite,
     reply,
     delete,
@@ -1609,11 +1609,11 @@ def listen():
             [],  # home
             ['@'],  # view
             [],  # mentions
-            [],  # conversation
             [],  # tweet
             [],  # retweet
             [],  # quote
             [],  # allretweet
+            [],  # conversation
             [],  # favorite
             [],  # reply
             [],  # delete

@@ -42,7 +42,7 @@ Use `virtualenv`_
 Troubleshooting
 ^^^^^^^^^^^^^^^
 
-If you use Linux, you might need to install some packages if you haven't already. 
+If you use Linux, you might need to install some packages if you haven't already.
 For debian-based distros, these can be installed with
 
 .. code:: bash
@@ -87,9 +87,9 @@ You can try it with:
 
     rainbowstream -iot # Or rainbowstream --image-on-term
 
-You also can change the config key ``IMAGE_ON_TERM`` to ``True`` inside the app 
-to enable above feature, 
-change ``IMAGE_SHIFT`` to set image's margin (relative to your terminal's width) 
+You also can change the config key ``IMAGE_ON_TERM`` to ``True`` inside the app
+to enable above feature,
+change ``IMAGE_SHIFT`` to set image's margin (relative to your terminal's width)
 or ``IMAGE_MAX_HEIGHT`` to control max height of every image.
 (see `config management`_ section).
 
@@ -142,6 +142,8 @@ Here is full list of supported command:
    the quote will be cancelled.
 
 -  ``allrt 12 20`` will list 20 newest retweets of the tweet with *[id=12]*. If the number of retweets is not specified, 5 newest retweets will be listed instead.
+
+-  ``conversation 12`` will show the chain of replies prior to the tweet with *[id=12]*.
 
 -  ``rep 12 Really`` will reply *‘Really’* to the tweet with *[id=12]*.
 
@@ -323,6 +325,8 @@ You can view or set a new value of every config key by ``config`` command (See *
 -  ``HOME_TWEET_NUM``: default tweets to display on 'home' command.
 
 -  ``RETWEETS_SHOW_NUM``: default tweets to display on 'allrt' command.
+
+-  ``CONVERSATION_MAX``: max tweet in a 'conversation' thread.
 
 -  ``QUOTE_FORMAT``: format when quote a tweet
 

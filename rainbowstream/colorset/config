@@ -17,6 +17,8 @@
     "HOME_TWEET_NUM" : 5,
     // 'allrt': default number of retweets
     "RETWEETS_SHOW_NUM" : 5,
+    // 'conversation': max tweet in a thread
+    "CONVERSATION_MAX" : 30,
     // 'quote' format
     "QUOTE_FORMAT" : "#comment RT #owner: #tweet",
     // 'inbox','sent': default number of direct message
