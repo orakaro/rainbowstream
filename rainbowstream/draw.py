@@ -1,7 +1,6 @@
 import random
 import itertools
 import requests
-import datetime
 import time
 import locale
 import arrow
