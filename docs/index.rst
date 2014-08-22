@@ -42,16 +42,29 @@ Use `virtualenv`_
 Troubleshooting
 ^^^^^^^^^^^^^^^
 
-If you use Linux, you might need to install the python-dev package if you haven't already.
+If you use Linux, you might need to install some packages if you haven't already. 
 For debian-based distros, these can be installed with
 
 .. code:: bash
 
-    sudo apt-get install python-dev
+    sudo apt-get install python-dev libjpeg libjpeg-dev libfreetype6 libfreetype6-dev zlib1g-dev
 
 Besides, Mac OSX Maverick with Xcode 5.1 has a well-known `clang unknown argument`_ problem with
 the ``Pillow`` package installation - a dependency of this app.
-If you are in this case, I recommend take a look at `Issue #10`_ and let me know if the workaround doesn't work for you.
+If you are in this case, I recommend taking a look at `Issue #10`_ and let me know if this workaround doesn't work for you.
+
+.. code:: bash
+
+    export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
+
+If installation in *the quick way* doesn't work:
+
+-  `sudo pip uninstall rainbowstream`
+-  use the *virtualenv way* above
+-  `create an issue`_ and provide:
+
+  + Your OS
+  + Your Python version
 
 Usage
 -----
