@@ -305,8 +305,9 @@ For detaile information, see `theme usage and customization`_.
 Config explanation
 ^^^^^^^^^^^^^^^^^^
 
-Rainbow Stream has a config file located at ``~/.rainbow_config.json``.
-You can view or set a new value of every config key by ``config`` command (See **Interactive mode** section above).
+Rainbow Stream has a custom config file located at ``~/.rainbow_config.json`` which will be loaded **after** its `default config`_. You are free to change anything on your custom config, but if you messed up with JSON format, the app would still works fine. Simply overwrite your custom config withe the `default config`_ to solve format problemss.
+
+You also can view or set a new value of every config key by ``config`` command (See **Interactive mode** section above).
 
 -  ``HEARTBEAT_TIMEOUT``: after this timeout (count by minutes), the stream will automatically hangup.
 
@@ -418,4 +419,5 @@ steps
 .. _Python's strftime format: https://docs.python.org/2/library/time.html#time.strftime
 .. _clang unknown argument: http://kaspermunck.github.io/2014/03/fixing-clang-error/
 .. _Issue #10: https://github.com/DTVD/rainbowstream/issues/10
+.. _default config: https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/config
 
