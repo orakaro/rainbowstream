@@ -286,6 +286,33 @@ def mentions():
     printNicely('')
 
 
+def conversation():
+    """
+    Conversation view
+    """
+    t = Twitter(auth=authen())
+    try:
+        id = int(g['stuff'].split()[0])
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = c['tweet_dict'][id]
+    tweet = t.statuses.show(id=tid)
+    limit = 9
+    thread_ref = []
+    thread_ref.append (tweet)
+    prev_tid = tweet['in_reply_to_status_id']
+    while prev_tid and limit:
+        limit -= 1
+        tweet = t.statuses.show(id=prev_tid)
+        prev_tid = tweet['in_reply_to_status_id']
+        thread_ref.append (tweet)
+
+    for tweet in reversed(thread_ref):
+        draw(t=tweet)
+    printNicely('')
+
+
 def tweet():
     """
     Tweet
@@ -1172,6 +1199,8 @@ def help_discover():
         light_green('home 7') + ' will show 7 tweets.\n'
     usage += s * 2 + light_green('mentions') + ' will show mentions timeline. ' + \
         light_green('mentions 7') + ' will show 7 mention tweets.\n'
+    usage += s * 2 + light_green('conversation 12') + ' will show the chain of replies prior to the tweet with ' + \
+        light_yellow('[id=12]') + '.\n'
     usage += s * 2 + light_green('whois @mdo') + ' will show profile  of ' + \
         magenta('@mdo') + '.\n'
     usage += s * 2 + light_green('view @mdo') + \
@@ -1479,6 +1508,7 @@ cmdset = [
     'home',
     'view',
     'mentions',
+    'conversation',
     't',
     'rt',
     'quote',
@@ -1522,6 +1552,7 @@ funcset = [
     home,
     view,
     mentions,
+    conversation,
     tweet,
     retweet,
     quote,
@@ -1578,6 +1609,7 @@ def listen():
             [],  # home
             ['@'],  # view
             [],  # mentions
+            [],  # conversation
             [],  # tweet
             [],  # retweet
             [],  # quote
