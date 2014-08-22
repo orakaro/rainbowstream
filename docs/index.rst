@@ -59,7 +59,7 @@ If you are in this case, I recommend taking a look at `Issue #10`_ and let me kn
 
 If installation in *the quick way* doesn't work:
 
--  `sudo pip uninstall rainbowstream`
+-  ``sudo pip uninstall rainbowstream``
 -  use the *virtualenv way* above
 -  `create an issue`_ and provide:
 
