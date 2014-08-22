@@ -305,7 +305,7 @@ For detaile information, see `theme usage and customization`_.
 Config explanation
 ^^^^^^^^^^^^^^^^^^
 
-Rainbow Stream has a custom config file located at ``~/.rainbow_config.json`` which will be loaded **after** its `default config`_. You are free to change anything on your custom config, but if you messed up with JSON format, the app would still works fine. Simply overwrite your custom config withe the `default config`_ to solve format problemss.
+Rainbow Stream has a custom config file located at ``~/.rainbow_config.json`` which will be loaded **after** its `default config`_. You are free to change anything on your custom config, but if you messed up with JSON format, the app would still works fine. Simply overwrite your custom config withe the `default config`_ to solve format problems.
 
 You also can view or set a new value of every config key by ``config`` command (See **Interactive mode** section above).
 
