@@ -1,8 +1,6 @@
-"""
-  Python 3 supports
-"""
 import sys
 
+# Library compatibility
 # StringIO module
 try:
     from StringIO import StringIO, BytesIO
@@ -20,7 +18,9 @@ unescape = HTMLParser().unescape
 # from html import unescape
 # but it is a far-future story:)
 
-# raw_input and map function behaviour
+
+# Function compatibility
+# xrange, raw_input, map ,unicde
 if sys.version[0] == "2":
     lmap = lambda f, a: map(f, a)
     str2u = lambda x: x.decode('utf-8')

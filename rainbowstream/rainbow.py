@@ -1,6 +1,3 @@
-"""
-Colorful user's timeline stream
-"""
 import os
 import os.path
 import sys
