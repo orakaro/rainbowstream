@@ -1666,19 +1666,19 @@ def listen():
     read_history()
     reset()
     while True:
-        # raw_input
-        if g['prefix']:
-            line = raw_input(g['decorated_name'](c['PREFIX']))
-        else:
-            line = raw_input()
-        # Save cmd to compare with readline buffer
-        g['cmd'] = line.strip()
-        # Get short cmd to pass to handle function
         try:
-            cmd = line.split()[0]
-        except:
-            cmd = ''
-        try:
+            # raw_input
+            if g['prefix']:
+                line = raw_input(g['decorated_name'](c['PREFIX']))
+            else:
+                line = raw_input()
+            # Save cmd to compare with readline buffer
+            g['cmd'] = line.strip()
+            # Get short cmd to pass to handle function
+            try:
+                cmd = line.split()[0]
+            except:
+                cmd = ''
             # Lock the semaphore
             c['lock'] = True
             # Save cmd to global variable and call process
@@ -1692,6 +1692,8 @@ def listen():
                 g['prefix'] = True
             # Release the semaphore lock
             c['lock'] = False
+        except EOFError:
+            printNicely('')
         except Exception:
             printNicely(red('OMG something is wrong with Twitter right now.'))
 

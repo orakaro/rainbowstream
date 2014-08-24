@@ -84,9 +84,6 @@ def init_interactive_shell(d):
     Init the rainbow shell
     """
     readline.set_completer(RainbowCompleter(d).complete)
-    readline.parse_and_bind('set editing-mode vi')
-    readline.parse_and_bind('set show-all-if-ambiguous on')
-    readline.parse_and_bind('set show-all-if-unmodified on')
     readline.parse_and_bind('set skip-completed-text on')
     if 'libedit' in readline.__doc__:
         readline.parse_and_bind("bind ^I rl_complete")
