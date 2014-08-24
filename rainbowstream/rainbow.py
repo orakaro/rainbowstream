@@ -117,10 +117,13 @@ def init(args):
     signal.signal(signal.SIGINT, ctrl_c_handler)
     # Get name
     t = Twitter(auth=authen())
-    name = '@' + t.account.verify_credentials()['screen_name']
+    credential = t.account.verify_credentials()
+    screen_name = '@' + credential['screen_name']
+    name = credential['name']
     if not get_config('PREFIX'):
-        set_config('PREFIX', name)
-    g['original_name'] = name[1:]
+        set_config('PREFIX', screen_name)
+    g['original_name'] = screen_name[1:]
+    g['full_name'] = name
     g['decorated_name'] = lambda x: color_func(
         c['DECORATED_NAME'])('[' + x + ']: ')
     # Theme init
@@ -128,6 +131,7 @@ def init(args):
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     g['themes'] = themes
     g['pause'] = False
+    g['message_threads'] = {}
     # Startup cmd
     g['cmd'] = ''
     # Semaphore init
@@ -470,17 +474,38 @@ def urlopen():
 
 def inbox():
     """
-    Inbox direct messages
+    Inbox threads
     """
     t = Twitter(auth=authen())
     num = c['MESSAGES_DISPLAY']
-    rel = []
+    if g['stuff'].isdigit():
+        num = g['stuff']
+    # Get inbox messages
+    cur_page = 1
+    inbox = []
+    while num > 20:
+        inbox = inbox + t.direct_messages(
+            count=20,
+            page=cur_page,
+            include_entities=False,
+            skip_status=False
+        )
+        num -= 20
+        cur_page += 1
+    inbox = inbox + t.direct_messages(
+        count=num,
+        page=cur_page,
+        include_entities=False,
+        skip_status=False
+    )
+    # Get sent messages
+    num = c['MESSAGES_DISPLAY']
     if g['stuff'].isdigit():
         num = g['stuff']
     cur_page = 1
-    # Max message per page is 20 so we have to loop
+    sent = []
     while num > 20:
-        rel = rel + t.direct_messages(
+        sent = sent + t.direct_messages.sent(
             count=20,
             page=cur_page,
             include_entities=False,
@@ -488,50 +513,42 @@ def inbox():
         )
         num -= 20
         cur_page += 1
-    rel = rel + t.direct_messages(
+    sent = sent + t.direct_messages.sent(
         count=num,
         page=cur_page,
         include_entities=False,
         skip_status=False
     )
-    # Display
-    printNicely('Inbox: newest ' + str(len(rel)) + ' messages.')
-    for m in reversed(rel):
-        print_message(m)
-    printNicely('')
+
+    d = {}
+    uniq_inbox = list(set(
+        [(m['sender_screen_name'],m['sender']['name']) for m in inbox]
+    ))
+    uniq_sent= list(set(
+        [(m['recipient_screen_name'],m['recipient']['name']) for m in sent]
+    ))
+    for partner in uniq_inbox:
+        inbox_ary = [m for m in inbox if m['sender_screen_name'] == partner[0]]
+        sent_ary = [m for m in sent if m['recipient_screen_name'] == partner[0]]
+        d[partner] = inbox_ary + sent_ary
+    for partner in uniq_sent:
+        if partner not in d:
+            d[partner] = [m for m in sent if m['recipient_screen_name'] == partner[0]]
+    g['message_threads'] = print_threads(d)
 
 
-def sent():
+def thread():
     """
-    Sent direct messages
+    View a thread of message
     """
-    t = Twitter(auth=authen())
-    num = c['MESSAGES_DISPLAY']
-    rel = []
-    if g['stuff'].isdigit():
-        num = int(g['stuff'])
-    cur_page = 1
-    # Max message per page is 20 so we have to loop
-    while num > 20:
-        rel = rel + t.direct_messages.sent(
-            count=20,
-            page=cur_page,
-            include_entities=False,
-            skip_status=False
-        )
-        num -= 20
-        cur_page += 1
-    rel = rel + t.direct_messages.sent(
-        count=num,
-        page=cur_page,
-        include_entities=False,
-        skip_status=False
-    )
-    # Display
-    printNicely('Sent: newest ' + str(len(rel)) + ' messages.')
-    for m in reversed(rel):
-        print_message(m)
-    printNicely('')
+    try:
+        thread_id = int(g['stuff'])
+        print_thread(g['message_threads'][thread_id],g['original_name'],g['full_name'])
+    except Exception as e:
+        print(e)
+        import traceback
+        print(traceback.format_exc())
+        printNicely(red('No such thread.'))
 
 
 def message():
@@ -1520,7 +1537,7 @@ cmdset = [
     'open',
     'ls',
     'inbox',
-    'sent',
+    'thread',
     'trash',
     'whois',
     'fl',
@@ -1564,7 +1581,7 @@ funcset = [
     urlopen,
     ls,
     inbox,
-    sent,
+    thread,
     trash,
     whois,
     follow,
@@ -1621,7 +1638,7 @@ def listen():
             [''],  # open url
             ['fl', 'fr'],  # list
             [],  # inbox
-            [],  # sent
+            [i for i in g['message_threads']],  #sent
             [],  # trash
             ['@'],  # whois
             ['@'],  # follow

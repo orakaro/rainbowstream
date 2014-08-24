@@ -25,10 +25,10 @@
     "TWEET" : {
         "nick"            : 67,
         "clock"           : 58,
-        "id"              : 166,
+        "id"              : 58,
         "favorited"       : 97,
-        "retweet_count"   : 166,
-        "favorite_count"  : 97,
+        "retweet_count"   : 97,
+        "favorite_count"  : 166,
         "rt"              : 145,
         "link"            : 30,
         "hashtag"         : 67,
@@ -36,8 +36,8 @@
     },
 
     "MESSAGE" : {
-        "sender"    : 67,
-        "recipient" : 67,
+        "partner"   : 67,
+        "me"        : 67,
         "to"        : 97,
         "clock"     : 58,
         "id"        : 166

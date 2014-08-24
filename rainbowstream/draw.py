@@ -1,10 +1,10 @@
 import random
 import itertools
 import requests
-import time
 import locale
 import arrow
 import re
+import os
 
 from twitter.util import printNicely
 from functools import wraps
@@ -308,6 +308,110 @@ def draw(t, keyword=None, humanize=True, fil=[], ig=[]):
                 image_to_display(BytesIO(response.content))
             except Exception:
                 printNicely(red('Sorry, image link is broken'))
+
+
+def print_threads(d):
+    """
+    Print threads of messages
+    """
+    id = 1
+    rel = {}
+    for partner in d:
+        messages = d[partner]
+        count = len(messages)
+        screen_name = '@' + partner[0]
+        name = partner[1]
+        screen_name = color_func(c['MESSAGE']['partner'])(screen_name)
+        name = cycle_color(name)
+        thread_id = color_func(c['MESSAGE']['id'])('thread id:'+str(id))
+        line = ' '*2 + name + ' ' + screen_name + \
+            ' (' + str(count) + ' message) ' + thread_id
+        printNicely(line)
+        rel[id] = partner
+        id += 1
+    dg['thread'] = d
+    return rel
+
+
+def print_thread(partner, me_nick, me_name):
+    """
+    Print a thread of messages
+    """
+    # Sort messages by time
+    messages = dg['thread'][partner]
+    messages.sort(key = lambda x:parser.parse(x['created_at']))
+
+    # Print the 1st line
+    dg['message_thread_margin'] = margin = 2
+    left_size = len(partner[0])+len(partner[1]) + margin
+    right_size = len(me_nick) + len(me_name) + margin
+    partner_screen_name = color_func(c['MESSAGE']['partner'])('@' + partner[0])
+    partner_name = cycle_color(partner[1])
+    me_screen_name = color_func(c['MESSAGE']['me'])('@' + me_nick)
+    me_name = cycle_color(me_name)
+    left = ' ' * margin + partner_name + ' ' + partner_screen_name
+    right = me_name + ' ' + me_screen_name + ' ' * margin
+    h, w = os.popen('stty size', 'r').read().split()
+    w = int(w)
+    line = '{}{}{}'.format(left, ' '*(w - left_size - right_size - 2 * margin), right)
+    printNicely('')
+    printNicely(line)
+    printNicely('')
+
+    # Print messages
+    for m in messages:
+        if m['sender_screen_name'] == me_nick:
+            print_right_message(m)
+        elif m['recipient_screen_name'] == me_nick:
+            print_left_message(m)
+
+
+def print_right_message(m):
+    """
+    Print a message on the right of screen
+    """
+    h, w = os.popen('stty size', 'r').read().split()
+    w = int(w)
+    frame_width = w //3 - dg['message_thread_margin']
+    step = frame_width - 2 * dg['message_thread_margin']
+    slicing = [m['text'][i:i+step] for i in range(0, len(m['text']), step)]
+    spaces = w - frame_width - dg['message_thread_margin']
+    dotline = ' ' * spaces + '-' * frame_width
+
+    printNicely(dotline)
+    for line in slicing:
+        fill = step - len(line)
+        screen_line = ' ' * spaces + '| ' + line + ' ' * fill + ' '
+        if slicing[-1] == line:
+            screen_line = screen_line + ' >'
+        else:
+            screen_line = screen_line + '|'
+        printNicely(screen_line)
+    printNicely(dotline)
+
+
+def print_left_message(m):
+    """
+    Print a message on the left of screen
+    """
+    h, w = os.popen('stty size', 'r').read().split()
+    w = int(w)
+    frame_width = w //3 - dg['message_thread_margin']
+    step = frame_width - 2 * dg['message_thread_margin']
+    slicing = [m['text'][i:i+step] for i in range(0, len(m['text']), step)]
+    spaces = dg['message_thread_margin']
+    dotline = ' ' * spaces + '-' * frame_width
+
+    printNicely(dotline)
+    for line in slicing:
+        fill = step - len(line)
+        screen_line = ' ' + line + ' ' * fill + ' |'
+        if slicing[-1] == line:
+            screen_line = ' ' * (spaces-1) + '< ' + screen_line
+        else:
+            screen_line = ' ' * spaces + '|' + screen_line
+        printNicely(screen_line)
+    printNicely(dotline)
 
 
 def print_message(m):

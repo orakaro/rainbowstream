@@ -27,8 +27,8 @@
         "clock"           : 57,
         "id"              : 166,
         "favorited"       : 50,
-        "retweet_count"   : 198,
-        "favorite_count"  : 50,
+        "retweet_count"   : 50,
+        "favorite_count"  : 198,
         "rt"              : 179,
         "link"            : 74,
         "hashtag"         : 198,
@@ -36,8 +36,8 @@
     },
 
     "MESSAGE" : {
-        "sender"    : 112,
-        "recipient" : 112,
+        "partner"   : 112,
+        "me"        : 112,
         "to"        : 50,
         "clock"     : 57,
         "id"        : 166
