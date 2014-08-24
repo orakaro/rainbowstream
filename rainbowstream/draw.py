@@ -144,18 +144,10 @@ def color_func(func_name):
     return globals()[func_name]
 
 
-def draw(t, keyword=None, humanize=True, check_semaphore=False, fil=[], ig=[]):
+def draw(t, keyword=None, humanize=True, fil=[], ig=[]):
     """
     Draw the rainbow
     """
-
-    # Check the semaphore pause and lock (stream process only)
-    if check_semaphore:
-        if c['pause']:
-            return
-        while c['lock']:
-            time.sleep(0.5)
-
     # Check config
     check_config()
 
@@ -318,18 +310,10 @@ def draw(t, keyword=None, humanize=True, check_semaphore=False, fil=[], ig=[]):
                 printNicely(red('Sorry, image link is broken'))
 
 
-def print_message(m, check_semaphore=False):
+def print_message(m):
     """
     Print direct message
     """
-
-    # Check the semaphore pause and lock (stream process only)
-    if check_semaphore:
-        if c['pause']:
-            return
-        while c['lock']:
-            time.sleep(0.5)
-
     # Retrieve message
     sender_screen_name = '@' + m['sender_screen_name']
     sender_name = m['sender']['name']
@@ -574,31 +558,31 @@ def format_quote(tweet):
     except:
         pass
     # Highlight like a tweet
-    formater = formater.split()
-    formater = lmap(
+    notice = formater.split()
+    notice = lmap(
         lambda x: light_green(x)
         if x == '#comment'
         else x,
-        formater)
-    formater = lmap(
+        notice)
+    notice = lmap(
         lambda x: color_func(c['TWEET']['rt'])(x)
         if x == 'RT'
         else x,
-        formater)
-    formater = lmap(lambda x: cycle_color(x) if x[0] == '@' else x, formater)
-    formater = lmap(
+        notice)
+    notice = lmap(lambda x: cycle_color(x) if x[0] == '@' else x, notice)
+    notice = lmap(
         lambda x: color_func(c['TWEET']['link'])(x)
         if x[0:4] == 'http'
         else x,
-        formater)
-    formater = lmap(
+        notice)
+    notice = lmap(
         lambda x: color_func(c['TWEET']['hashtag'])(x)
         if x.startswith('#')
         else x,
-        formater)
-    formater = ' '.join(formater)
+        notice)
+    notice = ' '.join(notice)
     # Notice
-    notice = light_magenta('Quoting: "') + formater + light_magenta('"')
+    notice = light_magenta('Quoting: "') + notice + light_magenta('"')
     printNicely(notice)
     return formater
 

@@ -127,11 +127,11 @@ def init(args):
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
     g['themes'] = themes
+    g['pause'] = False
     # Startup cmd
     g['cmd'] = ''
     # Semaphore init
     c['lock'] = False
-    c['pause'] = False
     # Init tweet dict and message dict
     c['tweet_dict'] = []
     c['message_dict'] = []
@@ -1450,7 +1450,7 @@ def pause():
     """
     Pause stream display
     """
-    c['pause'] = True
+    g['pause'] = True
     printNicely(green('Stream is paused'))
 
 
@@ -1458,7 +1458,7 @@ def replay():
     """
     Replay stream
     """
-    c['pause'] = False
+    g['pause'] = False
     printNicely(green('Stream is running back now'))
 
 
@@ -1760,11 +1760,16 @@ def stream(domain, args, name='Rainbow Stream'):
             elif tweet is Hangup:
                 printNicely("-- Hangup --")
             elif tweet.get('text'):
+                # Check the semaphore pause and lock (stream process only)
+                if g['pause']:
+                    continue
+                while c['lock']:
+                    time.sleep(0.5)
+                # Draw the tweet
                 draw(
                     t=tweet,
                     keyword=args.track_keywords,
                     humanize=False,
-                    check_semaphore=True,
                     fil=args.filter,
                     ig=args.ignore,
                 )
@@ -1782,7 +1787,12 @@ def stream(domain, args, name='Rainbow Stream'):
                     sys.stdout.write(g['decorated_name'](c['PREFIX']))
                     sys.stdout.flush()
             elif tweet.get('direct_message'):
-                print_message(tweet['direct_message'], check_semaphore=True)
+                # Check the semaphore pause and lock (stream process only)
+                if g['pause']:
+                    continue
+                while c['lock']:
+                    time.sleep(0.5)
+                print_message(tweet['direct_message'])
     except TwitterHTTPError:
         printNicely('')
         printNicely(
