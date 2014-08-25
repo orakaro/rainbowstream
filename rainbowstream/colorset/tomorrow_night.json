@@ -39,7 +39,7 @@
         "partner"       : 67,
         "me"            : 67,
         "me_frame"      : 30,
-        "partner_frame" : "white",
+        "partner_frame" : 166,
         "sender"        : 67,
         "recipient"     : 67,
         "to"            : 97,

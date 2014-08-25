@@ -1,4 +1,5 @@
 import random
+import textwrap
 import itertools
 import requests
 import locale
@@ -341,9 +342,9 @@ def print_thread(partner, me_nick, me_name):
     messages = dg['thread'][partner]
     messages.sort(key=lambda x: parser.parse(x['created_at']))
     # Use legacy display on non-ascii text message
-    text_ary = [m['text'] for m in messages]
-    not_ascii_text_ary = [t for t in text_ary if not is_ascii(t)]
-    if not_ascii_text_ary:
+    ms = [m['text'] for m in messages]
+    ums = [m for m in ms if not all(ord(c) < 128 for c in m)]
+    if ums:
         for m in messages:
             print_message(m)
         printNicely('')
@@ -383,7 +384,7 @@ def print_right_message(m):
     w = int(w)
     frame_width = w // 3 - dg['frame_margin']
     step = frame_width - 2 * dg['frame_margin']
-    slicing = [m['text'][i:i + step] for i in range(0, len(m['text']), step)]
+    slicing = textwrap.wrap(m['text'], step)
     spaces = w - frame_width - dg['frame_margin']
     dotline = ' ' * spaces + '-' * frame_width
     dotline = color_func(c['MESSAGE']['me_frame'])(dotline)
@@ -446,7 +447,7 @@ def print_left_message(m):
     w = int(w)
     frame_width = w // 3 - dg['frame_margin']
     step = frame_width - 2 * dg['frame_margin']
-    slicing = [m['text'][i:i + step] for i in range(0, len(m['text']), step)]
+    slicing = textwrap.wrap(m['text'], step)
     spaces = dg['frame_margin']
     dotline = ' ' * spaces + '-' * frame_width
     dotline = color_func(c['MESSAGE']['partner_frame'])(dotline)
