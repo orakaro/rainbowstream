@@ -522,18 +522,20 @@ def inbox():
 
     d = {}
     uniq_inbox = list(set(
-        [(m['sender_screen_name'],m['sender']['name']) for m in inbox]
+        [(m['sender_screen_name'], m['sender']['name']) for m in inbox]
     ))
-    uniq_sent= list(set(
-        [(m['recipient_screen_name'],m['recipient']['name']) for m in sent]
+    uniq_sent = list(set(
+        [(m['recipient_screen_name'], m['recipient']['name']) for m in sent]
     ))
     for partner in uniq_inbox:
         inbox_ary = [m for m in inbox if m['sender_screen_name'] == partner[0]]
-        sent_ary = [m for m in sent if m['recipient_screen_name'] == partner[0]]
+        sent_ary = [
+            m for m in sent if m['recipient_screen_name'] == partner[0]]
         d[partner] = inbox_ary + sent_ary
     for partner in uniq_sent:
         if partner not in d:
-            d[partner] = [m for m in sent if m['recipient_screen_name'] == partner[0]]
+            d[partner] = [
+                m for m in sent if m['recipient_screen_name'] == partner[0]]
     g['message_threads'] = print_threads(d)
 
 
@@ -543,11 +545,11 @@ def thread():
     """
     try:
         thread_id = int(g['stuff'])
-        print_thread(g['message_threads'][thread_id],g['original_name'],g['full_name'])
-    except Exception as e:
-        print(e)
-        import traceback
-        print(traceback.format_exc())
+        print_thread(
+            g['message_threads'][thread_id],
+            g['original_name'],
+            g['full_name'])
+    except Exception:
         printNicely(red('No such thread.'))
 
 
@@ -556,19 +558,19 @@ def message():
     Send a direct message
     """
     t = Twitter(auth=authen())
-    user = g['stuff'].split()[0]
-    if user[0].startswith('@'):
-        try:
-            content = g['stuff'].split()[1]
-        except:
-            printNicely(red('Sorry I can\'t understand.'))
-        t.direct_messages.new(
-            screen_name=user[1:],
-            text=content
-        )
-        printNicely(green('Message sent.'))
-    else:
-        printNicely(red('A name should begin with a \'@\''))
+    try:
+        user = g['stuff'].split()[0]
+        if user[0].startswith('@'):
+            content = ' '.join(g['stuff'].split()[1:])
+            t.direct_messages.new(
+                screen_name=user[1:],
+                text=content
+            )
+            printNicely(green('Message sent.'))
+        else:
+            printNicely(red('A name should begin with a \'@\''))
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
 
 
 def trash():
@@ -1274,8 +1276,8 @@ def help_messages():
     usage += s + grey(u'\u266A' + ' Direct messages \n')
     usage += s * 2 + light_green('inbox') + ' will show inbox messages. ' + \
         light_green('inbox 7') + ' will show newest 7 messages.\n'
-    usage += s * 2 + light_green('sent') + ' will show sent messages. ' + \
-        light_green('sent 7') + ' will show newest 7 messages.\n'
+    usage += s * 2 + light_green('thread 2') + ' will show full thread with ' + \
+        light_yellow('[thread_id=2]') + '.\n'
     usage += s * 2 + light_green('mes @dtvd88 hi') + ' will send a "hi" messege to ' + \
         magenta('@dtvd88') + '.\n'
     usage += s * 2 + light_green('trash 5') + ' will remove message with ' + \
@@ -1638,7 +1640,7 @@ def listen():
             [''],  # open url
             ['fl', 'fr'],  # list
             [],  # inbox
-            [i for i in g['message_threads']],  #sent
+            [i for i in g['message_threads']],  # sent
             [],  # trash
             ['@'],  # whois
             ['@'],  # follow

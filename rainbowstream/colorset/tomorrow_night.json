@@ -36,11 +36,15 @@
     },
 
     "MESSAGE" : {
-        "partner"   : 67,
-        "me"        : 67,
-        "to"        : 97,
-        "clock"     : 58,
-        "id"        : 166
+        "partner"       : 67,
+        "me"            : 67,
+        "me_frame"      : 30,
+        "partner_frame" : "white",
+        "sender"        : 67,
+        "recipient"     : 67,
+        "to"            : 97,
+        "clock"         : 58,
+        "id"            : 166
     },
 
     "PROFILE" : {

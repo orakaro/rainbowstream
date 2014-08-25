@@ -21,6 +21,9 @@
     "CONVERSATION_MAX" : 30,
     // 'quote' format
     "QUOTE_FORMAT" : "#comment RT #owner: #tweet",
+    // 'thread' meta format
+    "THREAD_META_LEFT" : "(#id) #clock",
+    "THREAD_META_RIGHT" : "#clock (#id)",
     // 'inbox','sent': default number of direct message
     "MESSAGES_DISPLAY" : 5,
     // 'trend': max trending topics
@@ -32,8 +35,9 @@
     "IGNORE_LIST" : [],
     // Autocomplete history file name
     "HISTORY_FILENAME" : "completer.hist",
-    // Image config
+    // Image margin
     "IMAGE_SHIFT" : 2,
+    // Image max height
     "IMAGE_MAX_HEIGHT" : 90,
     // Stream config
     "USER_DOMAIN" : "userstream.twitter.com",
@@ -47,7 +51,9 @@
         },
         "MESSAGE": {
             "CLOCK_FORMAT" : "%Y/%m/%d %H:%M:%S",
-            "DISPLAY" : "\n  #sender_name #sender_nick #to #recipient_name #recipient_nick :\n  #clock message_id:#id\n  #message"
+            "DISPLAY" : "\n  #sender_name #sender_nick #to #recipient_name #recipient_nick :\n  #clock message_id:#id\n  #message",
+            "THREAD_META_LEFT" : "[id:#id] #clock",
+            "THREAD_META_RIGHT" : "#clock [id:#id]"
         }
     }
 }

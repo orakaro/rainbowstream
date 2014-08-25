@@ -38,8 +38,10 @@
     "MESSAGE" : {
         "partner"       : 112,
         "me"            : 112,
-        "me_bg"         : 74,
-        "partner_bg"    : 112,
+        "me_frame"      : 74,
+        "partner_frame" : "white",
+        "sender"        : 112,
+        "recipient"     : 112,
         "to"            : 50,
         "clock"         : 57,
         "id"            : 166

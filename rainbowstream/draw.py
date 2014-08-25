@@ -276,21 +276,21 @@ def draw(t, keyword=None, humanize=True, fil=[], ig=[]):
         formater = fav.join(formater.split('#fav'))
         formater = tweet.join(formater.split('#tweet'))
         # Change clock word
-        word = [w for w in formater.split() if '#clock' in w][0]
+        word = [wo for wo in formater.split() if '#clock' in wo][0]
         delimiter = color_func(c['TWEET']['clock'])(
             clock.join(word.split('#clock')))
         formater = delimiter.join(formater.split(word))
         # Change id word
-        word = [w for w in formater.split() if '#id' in w][0]
+        word = [wo for wo in formater.split() if '#id' in wo][0]
         delimiter = color_func(c['TWEET']['id'])(id.join(word.split('#id')))
         formater = delimiter.join(formater.split(word))
         # Change retweet count word
-        word = [w for w in formater.split() if '#rt_count' in w][0]
+        word = [wo for wo in formater.split() if '#rt_count' in wo][0]
         delimiter = color_func(c['TWEET']['retweet_count'])(
             str(retweet_count).join(word.split('#rt_count')))
         formater = delimiter.join(formater.split(word))
         # Change favorites count word
-        word = [w for w in formater.split() if '#fa_count' in w][0]
+        word = [wo for wo in formater.split() if '#fa_count' in wo][0]
         delimiter = color_func(c['TWEET']['favorite_count'])(
             str(favorite_count).join(word.split('#fa_count')))
         formater = delimiter.join(formater.split(word))
@@ -323,8 +323,8 @@ def print_threads(d):
         name = partner[1]
         screen_name = color_func(c['MESSAGE']['partner'])(screen_name)
         name = cycle_color(name)
-        thread_id = color_func(c['MESSAGE']['id'])('thread id:'+str(id))
-        line = ' '*2 + name + ' ' + screen_name + \
+        thread_id = color_func(c['MESSAGE']['id'])('thread_id:' + str(id))
+        line = ' ' * 2 + name + ' ' + screen_name + \
             ' (' + str(count) + ' message) ' + thread_id
         printNicely(line)
         rel[id] = partner
@@ -339,20 +339,31 @@ def print_thread(partner, me_nick, me_name):
     """
     # Sort messages by time
     messages = dg['thread'][partner]
-    messages.sort(key = lambda x:parser.parse(x['created_at']))
-    # Print the 1st line
-    dg['message_thread_margin'] = margin = 2
-    left_size = len(partner[0])+len(partner[1]) + margin
-    right_size = len(me_nick) + len(me_name) + margin
-    partner_screen_name = color_func(c['MESSAGE']['partner'])('@' + partner[0])
-    partner_name = cycle_color(partner[1])
+    messages.sort(key=lambda x: parser.parse(x['created_at']))
+    # Use legacy display on non-ascii text message
+    text_ary = [m['text'] for m in messages]
+    not_ascii_text_ary = [t for t in text_ary if not is_ascii(t)]
+    if not_ascii_text_ary:
+        for m in messages:
+            print_message(m)
+        printNicely('')
+        return
+    # Print the first line
+    dg['frame_margin'] = margin = 2
+    partner_nick = partner[0]
+    partner_name = partner[1]
+    left_size = len(partner_nick) + len(partner_name) + 2
+    right_size = len(me_nick) + len(me_name) + 2
+    partner_nick = color_func(c['MESSAGE']['partner'])('@' + partner_nick)
+    partner_name = cycle_color(partner_name)
     me_screen_name = color_func(c['MESSAGE']['me'])('@' + me_nick)
     me_name = cycle_color(me_name)
-    left = ' ' * margin + partner_name + ' ' + partner_screen_name
+    left = ' ' * margin + partner_name + ' ' + partner_nick
     right = me_name + ' ' + me_screen_name + ' ' * margin
     h, w = os.popen('stty size', 'r').read().split()
     w = int(w)
-    line = '{}{}{}'.format(left, ' '*(w - left_size - right_size - 2 * margin), right)
+    line = '{}{}{}'.format(
+        left, ' ' * (w - left_size - right_size - 2 * margin), right)
     printNicely('')
     printNicely(line)
     printNicely('')
@@ -370,12 +381,12 @@ def print_right_message(m):
     """
     h, w = os.popen('stty size', 'r').read().split()
     w = int(w)
-    frame_width = w //3 - dg['message_thread_margin']
-    step = frame_width - 2 * dg['message_thread_margin']
-    slicing = [m['text'][i:i+step] for i in range(0, len(m['text']), step)]
-    spaces = w - frame_width - dg['message_thread_margin']
+    frame_width = w // 3 - dg['frame_margin']
+    step = frame_width - 2 * dg['frame_margin']
+    slicing = [m['text'][i:i + step] for i in range(0, len(m['text']), step)]
+    spaces = w - frame_width - dg['frame_margin']
     dotline = ' ' * spaces + '-' * frame_width
-    dotline = color_func(c['MESSAGE']['me_bg'])(dotline)
+    dotline = color_func(c['MESSAGE']['me_frame'])(dotline)
     # Draw the frame
     printNicely(dotline)
     for line in slicing:
@@ -385,10 +396,10 @@ def print_right_message(m):
             screen_line = screen_line + ' >'
         else:
             screen_line = screen_line + '|'
-        screen_line = color_func(c['MESSAGE']['me_bg'])(screen_line)
+        screen_line = color_func(c['MESSAGE']['me_frame'])(screen_line)
         printNicely(screen_line)
     printNicely(dotline)
-    # Print clock
+    # Format clock
     date = parser.parse(m['created_at'])
     date = arrow.get(date).to('local').datetime
     clock_format = '%Y/%m/%d %H:%M:%S'
@@ -397,18 +408,33 @@ def print_right_message(m):
     except:
         pass
     clock = date.strftime(clock_format)
-    # Get rainbow id
+    # Format id
     if m['id'] not in c['message_dict']:
         c['message_dict'].append(m['id'])
         rid = len(c['message_dict']) - 1
     else:
         rid = c['message_dict'].index(m['id'])
-    rid = str(rid)
-    # Create line and print
-    meta = color_func(c['MESSAGE']['clock'])(clock) + \
-        color_func(c['MESSAGE']['id'])(' ('+rid+')')
-    line = ' ' * (w - len(clock + rid) - 3 - dg['message_thread_margin']) + \
-        meta
+    id = str(rid)
+    # Print meta
+    formater = ''
+    try:
+        virtual_meta = formater = c['THREAD_META_RIGHT']
+        virtual_meta = clock.join(virtual_meta.split('#clock'))
+        virtual_meta = id.join(virtual_meta.split('#id'))
+        # Change clock word
+        word = [wo for wo in formater.split() if '#clock' in wo][0]
+        delimiter = color_func(c['MESSAGE']['clock'])(
+            clock.join(word.split('#clock')))
+        formater = delimiter.join(formater.split(word))
+        # Change id word
+        word = [wo for wo in formater.split() if '#id' in wo][0]
+        delimiter = color_func(c['MESSAGE']['id'])(id.join(word.split('#id')))
+        formater = delimiter.join(formater.split(word))
+    except Exception:
+        printNicely(red('Wrong format in config.'))
+        return
+    meta = formater
+    line = ' ' * (w - len(virtual_meta) - dg['frame_margin']) + meta
     printNicely(line)
 
 
@@ -418,25 +444,25 @@ def print_left_message(m):
     """
     h, w = os.popen('stty size', 'r').read().split()
     w = int(w)
-    frame_width = w //3 - dg['message_thread_margin']
-    step = frame_width - 2 * dg['message_thread_margin']
-    slicing = [m['text'][i:i+step] for i in range(0, len(m['text']), step)]
-    spaces = dg['message_thread_margin']
+    frame_width = w // 3 - dg['frame_margin']
+    step = frame_width - 2 * dg['frame_margin']
+    slicing = [m['text'][i:i + step] for i in range(0, len(m['text']), step)]
+    spaces = dg['frame_margin']
     dotline = ' ' * spaces + '-' * frame_width
-    dotline = color_func(c['MESSAGE']['partner_bg'])(dotline)
+    dotline = color_func(c['MESSAGE']['partner_frame'])(dotline)
     # Draw the frame
     printNicely(dotline)
     for line in slicing:
         fill = step - len(line)
         screen_line = ' ' + line + ' ' * fill + ' |'
         if slicing[-1] == line:
-            screen_line = ' ' * (spaces-1) + '< ' + screen_line
+            screen_line = ' ' * (spaces - 1) + '< ' + screen_line
         else:
             screen_line = ' ' * spaces + '|' + screen_line
-        screen_line = color_func(c['MESSAGE']['partner_bg'])(screen_line)
+        screen_line = color_func(c['MESSAGE']['partner_frame'])(screen_line)
         printNicely(screen_line)
     printNicely(dotline)
-    # Print clock
+    # Format clock
     date = parser.parse(m['created_at'])
     date = arrow.get(date).to('local').datetime
     clock_format = '%Y/%m/%d %H:%M:%S'
@@ -445,18 +471,33 @@ def print_left_message(m):
     except:
         pass
     clock = date.strftime(clock_format)
-    # Get rainbow id
+    # Format id
     if m['id'] not in c['message_dict']:
         c['message_dict'].append(m['id'])
         rid = len(c['message_dict']) - 1
     else:
         rid = c['message_dict'].index(m['id'])
-    rid = str(rid)
-    # Create line and print
-    meta = color_func(c['MESSAGE']['clock'])(clock) + \
-        color_func(c['MESSAGE']['id'])(' ('+rid+')')
-    line = ' ' * dg['message_thread_margin'] + \
-        meta
+    id = str(rid)
+    # Print meta
+    formater = ''
+    try:
+        virtual_meta = formater = c['THREAD_META_LEFT']
+        virtual_meta = clock.join(virtual_meta.split('#clock'))
+        virtual_meta = id.join(virtual_meta.split('#id'))
+        # Change clock word
+        word = [wo for wo in formater.split() if '#clock' in wo][0]
+        delimiter = color_func(c['MESSAGE']['clock'])(
+            clock.join(word.split('#clock')))
+        formater = delimiter.join(formater.split(word))
+        # Change id word
+        word = [wo for wo in formater.split() if '#id' in wo][0]
+        delimiter = color_func(c['MESSAGE']['id'])(id.join(word.split('#id')))
+        formater = delimiter.join(formater.split(word))
+    except Exception:
+        printNicely(red('Wrong format in config.'))
+        return
+    meta = formater
+    line = ' ' * dg['frame_margin'] + meta
     printNicely(line)
 
 
@@ -509,12 +550,12 @@ def print_message(m):
         formater = recipient_nick.join(formater.split("#recipient_nick"))
         formater = text.join(formater.split("#message"))
         # Change clock word
-        word = [w for w in formater.split() if '#clock' in w][0]
+        word = [wo for wo in formater.split() if '#clock' in wo][0]
         delimiter = color_func(c['MESSAGE']['clock'])(
             clock.join(word.split('#clock')))
         formater = delimiter.join(formater.split(word))
         # Change id word
-        word = [w for w in formater.split() if '#id' in w][0]
+        word = [wo for wo in formater.split() if '#id' in wo][0]
         delimiter = color_func(c['MESSAGE']['id'])(id.join(word.split('#id')))
         formater = delimiter.join(formater.split(word))
     except:

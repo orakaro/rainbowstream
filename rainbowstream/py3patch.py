@@ -30,3 +30,10 @@ else:
     raw_input = input
     lmap = lambda f, a: list(map(f, a))
     str2u = u2str = lambda x: x
+
+
+def is_ascii(s):
+    """
+    Check if multibyte character or not
+    """
+    return all(ord(c) < 128 for c in s)
