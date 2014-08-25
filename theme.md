@@ -25,21 +25,28 @@ Examples are available in
     "DECORATED_NAME" : 198,
     "CYCLE_COLOR" :[198,57,166,50,179,74,112],
     "TWEET" : {
-        "nick"      : 112,
-        "clock"     : 57,
-        "id"        : 166,
-        "favourite" : 50,
-        "rt"        : 179,
-        "link"      : 74,
-        "keyword"   : "on_light_green"
+        "nick"            : 112,
+        "clock"           : 57,
+        "id"              : 166,
+        "favorited"       : 50,
+        "retweet_count"   : 50,
+        "favorite_count"  : 198,
+        "rt"              : 179,
+        "link"            : 74,
+        "hashtag"         : 198,
+        "keyword"         : "on_light_green"
     },
 
     "MESSAGE" : {
-        "sender"    : 112,
-        "recipient" : 112,
-        "to"        : 50,
-        "clock"     : 57,
-        "id"        : 166
+        "partner"       : 112,
+        "me"            : 112,
+        "me_frame"      : 74,
+        "partner_frame" : 198,
+        "sender"        : 112,
+        "recipient"     : 112,
+        "to"            : 50,
+        "clock"         : 57,
+        "id"            : 166
     },
 
     "PROFILE" : {
@@ -61,6 +68,15 @@ Examples are available in
     "CAL" : {
         "days": 57,
         "today": "on_light_blue"
+    },
+
+    "GROUP" : {
+        "name": 112,
+        "member": 57,
+        "subscriber": 198,
+        "mode": 112,
+        "description": 166,
+        "clock": 57
     }
 }
 ```
@@ -120,17 +136,24 @@ Color reference can be found at
 * `TWEET`: colors of parts in a tweet's ouput.
   * `nick` : color for Twitter __username__.
   * `clock`: color for time of tweet.
-  * `id`: color for tweet's id
-  * `favorite`: color for the star symbol when a tweet is favorited by you
+  * `id`: color for tweet's id.
+  * `favorite`: color for the star symbol when a tweet is favorited by you.
+  * `retweet_count`: color for retweets count.
+  * `favorite_count`: color for favorites count.
   * `rt`: color for `RT` word in tweet's content.
-  * `link`: color for an url
-  * `keyword`: color for highlighted keyword (in tweets search)
+  * `link`: color for an url.
+  * `hashtag`: color for a hashtag.
+  * `keyword`: color for highlighted keyword (in tweets search).
 * `MESSAGE`: colors of parts in message's output.
+  * `partner`: color for __partner__.
+  * `me`: color for __authenticated user__.
+  * `partner_frame`: color for __partner's frame__.
+  * `me_frame`: color for __authenticated user's frame__.
   * `sender`: color for sender's __username__.
   * `recipient`: color for recipient's __username__.
   * `to`: color for the `>>>` symbol.
   * `clock`: color for time of message.
-  * `id`: color for message's id
+  * `id`: color for message's id.
 * `PROFILE`: colors for parts in profile's ouput.
   * `statuses_count`: color for statuses count.
   * `friends_count`: color for friends count.
@@ -144,8 +167,15 @@ Color reference can be found at
 * `TREND`: colors for trend's output:
   * `url`: color for trend's url.
 * `CAL`: colors for calendar's output:
-  * `days`: color for days in current month
+  * `days`: color for days in current month.
   * `today`: color for today.
+* `GROUP`: colors for twitter list output:
+  * `name`: color for twitter list's name.
+  * `member`: color member count.
+  * `subscriber`: color subscriber count.
+  * `mode`: color twitter list's mode.
+  * `description`: color twitter list's description.
+  * `clock`: color twitter list's created time.
 
 ### Theme usage
 While entered Rainbow Stream:

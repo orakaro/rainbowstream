@@ -161,11 +161,9 @@ Here is full list of supported command:
 
 **Direct Messages Commands**
 
--  ``inbox`` will show inbox messages. ``inbox 7`` will show newest 7
-   messages.
+-  ``inbox`` will show inbox messages. ``inbox 7`` will show newest 7 messages.
 
--  ``sent`` will show sent messages. ``sent 7`` will show newest 7
-   messages.
+-  ``thread 2`` will show full thread with [id=2].
 
 -  ``mes @dtvd88 hi`` will send a ``hi`` message to @dtvd88.
 

@@ -38,8 +38,8 @@
     "MESSAGE" : {
         "partner"       : 67,
         "me"            : 67,
-        "me_frame"      : 30,
         "partner_frame" : 166,
+        "me_frame"      : 30,
         "sender"        : 67,
         "recipient"     : 67,
         "to"            : 97,
