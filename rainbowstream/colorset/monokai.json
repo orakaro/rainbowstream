@@ -36,11 +36,13 @@
     },
 
     "MESSAGE" : {
-        "partner"   : 112,
-        "me"        : 112,
-        "to"        : 50,
-        "clock"     : 57,
-        "id"        : 166
+        "partner"       : 112,
+        "me"            : 112,
+        "me_bg"         : 74,
+        "partner_bg"    : 112,
+        "to"            : 50,
+        "clock"         : 57,
+        "id"            : 166
     },
 
     "PROFILE" : {

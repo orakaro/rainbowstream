@@ -68,15 +68,20 @@ def read_history():
     """
     Read history file
     """
-    if os.path.isfile(c['HISTORY_FILENAME']):
+    try:
         readline.read_history_file(c['HISTORY_FILENAME'])
+    except:
+        pass
 
 
 def save_history():
     """
     Save history to file
     """
-    readline.write_history_file(c['HISTORY_FILENAME'])
+    try:
+        readline.write_history_file(c['HISTORY_FILENAME'])
+    except:
+        pass
 
 
 def init_interactive_shell(d):
