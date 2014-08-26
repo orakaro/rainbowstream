@@ -223,7 +223,10 @@ def draw(t, keyword=None, humanize=True, fil=[], ig=[]):
 
     # Format info
     name = cycle_color(name)
-    nick = color_func(c['TWEET']['nick'])(screen_name)
+    if mytweet:
+        nick = color_func(c['TWEET']['mynick'])(screen_name)
+    else:
+        nick = color_func(c['TWEET']['nick'])(screen_name)
     clock = clock
     id = str(rid)
     fav = ''

@@ -134,7 +134,8 @@ Color reference can be found at
   * Color selection is cycle through this list but with _memoization_.
   * It's means that same names will appear in same colors.
 * `TWEET`: colors of parts in a tweet's ouput.
-  * `nick` : color for Twitter __username__.
+  * `mynick` : color for your Twitter __username__.
+  * `nick` : color for other Twitter __username__.
   * `clock`: color for time of tweet.
   * `id`: color for tweet's id.
   * `favorite`: color for the star symbol when a tweet is favorited by you.

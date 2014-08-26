@@ -23,6 +23,7 @@
     "DECORATED_NAME" : 198,
     "CYCLE_COLOR" :[198,57,166,50,179,74,112],
     "TWEET" : {
+        "mynick"          : 179,
         "nick"            : 112,
         "clock"           : 57,
         "id"              : 166,

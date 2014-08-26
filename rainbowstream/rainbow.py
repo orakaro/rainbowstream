@@ -461,10 +461,9 @@ def urlopen():
             return
         tid = c['tweet_dict'][int(g['stuff'])]
         tweet = t.statuses.show(id=tid)
-        link_ary = [
-            u for u in tweet['text'].split() if u.startswith('http://')]
-        link_ary.extend([
-            u for u in tweet['text'].split() if u.startswith('https://')])
+        link_prefix = ('http://', 'https://')
+        link_ary = [u for u in tweet['text'].split()
+                    if u.startswith(link_prefix)]
         if not link_ary:
             printNicely(light_magenta('No url here @.@!'))
             return
