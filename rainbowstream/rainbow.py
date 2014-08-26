@@ -122,7 +122,7 @@ def init(args):
     name = credential['name']
     if not get_config('PREFIX'):
         set_config('PREFIX', screen_name)
-    g['original_name'] = screen_name[1:]
+    c['original_name'] = g['original_name'] = screen_name[1:]
     g['full_name'] = name
     g['decorated_name'] = lambda x: color_func(
         c['DECORATED_NAME'])('[' + x + ']: ')

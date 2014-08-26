@@ -333,6 +333,12 @@ You also can view or set a new value of every config key by ``config`` command (
     + ``#owner``: owner's username with '@'
     + ``#tweet``: original tweet
 
+-  ``THREAD_META_LEFT``: format for meta information of messages from partner which is display in the left of screen.
+
+-  ``THREAD_META_RIGHT``: format for meta information of messages from you which is display in the right of screen.
+
+-  ``THREAD_MIN_WIDTH``: minimum width of a message frame.
+
 -  ``MESSAGES_DISPLAY``: default messages to display on 'inbox' or 'sent' command.
 
 -  ``TREND_MAX``: default trends to display on 'trend' command.

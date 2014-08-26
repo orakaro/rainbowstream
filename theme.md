@@ -143,6 +143,7 @@ Color reference can be found at
   * `rt`: color for `RT` word in tweet's content.
   * `link`: color for an url.
   * `hashtag`: color for a hashtag.
+  * `mytweet`: color for tweet's text from yourself.
   * `keyword`: color for highlighted keyword (in tweets search).
 * `MESSAGE`: colors of parts in message's output.
   * `partner`: color for __partner__.

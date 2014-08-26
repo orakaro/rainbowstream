@@ -32,6 +32,7 @@
         "rt"              : 66,
         "link"            : 23,
         "hashtag"         : 64,
+        "mytweet"         : 66,
         "keyword"         : "on_light_green"
     },
 

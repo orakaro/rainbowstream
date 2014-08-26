@@ -205,6 +205,7 @@ def draw(t, keyword=None, humanize=True, fil=[], ig=[]):
         media_url = None
 
     # Filter and ignore
+    mytweet = screen_name == c['original_name']
     screen_name = '@' + screen_name
     fil = list(set((fil or []) + c['ONLY_LIST']))
     ig = list(set((ig or []) + c['IGNORE_LIST']))
@@ -249,7 +250,7 @@ def draw(t, keyword=None, humanize=True, fil=[], ig=[]):
     # Highlight link
     tweet = lmap(
         lambda x: color_func(c['TWEET']['link'])(x)
-        if x[0:4] == 'http'
+        if x.startswith('http')
         else x,
         tweet)
     # Highlight hashtag
@@ -258,6 +259,15 @@ def draw(t, keyword=None, humanize=True, fil=[], ig=[]):
         if x.startswith('#')
         else x,
         tweet)
+    # Highlight my tweet
+    if mytweet:
+        tweet = [color_func(c['TWEET']['mytweet'])(x)
+                 for x in tweet
+                 if not any([
+                     x == 'RT',
+                     x.startswith('http'),
+                     x.startswith('#')])
+                 ]
     # Highlight keyword
     tweet = ' '.join(tweet)
     if keyword:
@@ -383,6 +393,7 @@ def print_right_message(m):
     h, w = os.popen('stty size', 'r').read().split()
     w = int(w)
     frame_width = w // 3 - dg['frame_margin']
+    frame_width = max(c['THREAD_MIN_WIDTH'], frame_width)
     step = frame_width - 2 * dg['frame_margin']
     slicing = textwrap.wrap(m['text'], step)
     spaces = w - frame_width - dg['frame_margin']
@@ -446,6 +457,7 @@ def print_left_message(m):
     h, w = os.popen('stty size', 'r').read().split()
     w = int(w)
     frame_width = w // 3 - dg['frame_margin']
+    frame_width = max(c['THREAD_MIN_WIDTH'], frame_width)
     step = frame_width - 2 * dg['frame_margin']
     slicing = textwrap.wrap(m['text'], step)
     spaces = dg['frame_margin']
