@@ -249,13 +249,24 @@ def search():
     Search
     """
     t = Twitter(auth=authen())
-    g['stuff'] = g['stuff'].strip()
-    rel = t.search.tweets(q=g['stuff'])['statuses']
+    # Setup query
+    query = g['stuff'].strip()
+    type = c['SEARCH_TYPE']
+    if type not in ['mixed', 'recent', 'popular']:
+        type = 'mixed'
+    max_record = c['SEARCH_MAX_RECORD']
+    count = min(max_record, 100)
+    # Perform search
+    rel = t.search.tweets(
+        q=query,
+        type=type,
+        count=count
+    )['statuses']
+    # Return results
     if rel:
         printNicely('Newest tweets:')
-        for i in reversed(xrange(c['SEARCH_MAX_RECORD'])):
-            draw(t=rel[i],
-                 keyword=g['stuff'])
+        for i in reversed(xrange(count)):
+            draw(t=rel[i], keyword=query)
         printNicely('')
     else:
         printNicely(magenta('I\'m afraid there is no result'))

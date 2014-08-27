@@ -319,6 +319,8 @@ You also can view or set a new value of every config key by ``config`` command (
 
 -  ``PREFIX``: display string of prompt.
 
+-  ``SEARCH_TYPE``: search type in 'search' command ('mixed','recent','popular').
+
 -  ``SEARCH_MAX_RECORD``: max tweets can display on 'search' command.
 
 -  ``HOME_TWEET_NUM``: default tweets to display on 'home' command.

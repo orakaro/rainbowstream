@@ -11,7 +11,9 @@
     "HIDE_PROMPT" : true,
     // Prefix
     "PREFIX" : "",
-    // 'search': max search record
+    // 'search': search type ('mixed','recent','popular')
+    "SEARCH_TYPE" : "mixed",
+    // 'search': search max result, number over 100 will fallback to 100
     "SEARCH_MAX_RECORD" : 5,
     // 'home': default number of home's tweets
     "HOME_TWEET_NUM" : 5,
