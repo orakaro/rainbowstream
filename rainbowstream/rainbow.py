@@ -122,6 +122,7 @@ def init(args):
     name = credential['name']
     if not get_config('PREFIX'):
         set_config('PREFIX', screen_name)
+    g['PREFIX'] = u2str(c['PREFIX'])
     c['original_name'] = g['original_name'] = screen_name[1:]
     g['full_name'] = name
     g['decorated_name'] = lambda x: color_func(
@@ -1700,7 +1701,7 @@ def listen():
         try:
             # raw_input
             if g['prefix']:
-                line = raw_input(g['decorated_name'](c['PREFIX']))
+                line = raw_input(g['decorated_name'](g['PREFIX']))
             else:
                 line = raw_input()
             # Save cmd to compare with readline buffer
@@ -1727,7 +1728,7 @@ def listen():
             printNicely('')
         except Exception:
             printNicely(red('OMG something is wrong with Twitter right now.'))
-
+            break
 
 def stream(domain, args, name='Rainbow Stream'):
     """
@@ -1784,7 +1785,7 @@ def stream(domain, args, name='Rainbow Stream'):
                     light_green("h stream") + \
                     light_magenta(" for more details.")
                 printNicely(guide)
-                sys.stdout.write(g['decorated_name'](c['PREFIX']))
+                sys.stdout.write(g['decorated_name'](g['PREFIX']))
                 sys.stdout.flush()
                 StreamLock.release()
                 break
@@ -1812,10 +1813,10 @@ def stream(domain, args, name='Rainbow Stream'):
                 # the 1st character of that word
                 if current_buffer and g['cmd'] != current_buffer:
                     sys.stdout.write(
-                        g['decorated_name'](c['PREFIX']) + str2u(current_buffer))
+                        g['decorated_name'](g['PREFIX']) + str2u(current_buffer))
                     sys.stdout.flush()
                 elif not c['HIDE_PROMPT']:
-                    sys.stdout.write(g['decorated_name'](c['PREFIX']))
+                    sys.stdout.write(g['decorated_name'](g['PREFIX']))
                     sys.stdout.flush()
             elif tweet.get('direct_message'):
                 # Check the semaphore pause and lock (stream process only)
