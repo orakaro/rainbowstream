@@ -1728,7 +1728,7 @@ def listen():
             printNicely('')
         except Exception:
             printNicely(red('OMG something is wrong with Twitter right now.'))
-            break
+
 
 def stream(domain, args, name='Rainbow Stream'):
     """
