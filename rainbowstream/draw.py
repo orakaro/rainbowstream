@@ -177,6 +177,14 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     try:
         text = 'RT @' + t['retweeted_status']['user']['screen_name'] + ': ' +\
             t['retweeted_status']['text']
+        # Display as a notification
+        target = t['retweeted_status']['user']['screen_name']
+        if all([target == c['original_name'], not noti]):
+            # Add to evens for 'notification' command
+            t['event'] = 'retweet'
+            c['events'].append(t)
+            notify_retweet(t)
+            return
     except:
         pass
 
@@ -314,6 +322,9 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     # Add spaces in begining of line if this is inside a notification
     if noti:
         formater = '\n  '.join(formater.split('\n'))
+        # Reformat
+        if formater.startswith('\n'):
+            formater = formater[1:]
 
     # Draw
     printNicely(formater)
@@ -586,6 +597,33 @@ def print_message(m):
     printNicely(formater)
 
 
+def notify_retweet(t):
+    """
+    Notify a retweet
+    """
+    source = t['user']
+    created_at = t['created_at']
+    # Format
+    source_user = cycle_color(source['name']) + \
+        color_func(c['NOTIFICATION']['source_nick'])(
+        ' @' + source['screen_name'])
+    notify = color_func(c['NOTIFICATION']['notify'])(
+        'retweeted your tweet')
+    date = parser.parse(created_at)
+    date = arrow.get(date).to('local')
+    lang, encode = locale.getdefaultlocale()
+    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = color_func(c['NOTIFICATION']['clock'])(clock)
+    meta = c['NOTIFY_FORMAT']
+    meta = source_user.join(meta.split('#source_user'))
+    meta = notify.join(meta.split('#notify'))
+    meta = clock.join(meta.split('#clock'))
+    # Output
+    printNicely('')
+    printNicely(meta)
+    draw(t=t['retweeted_status'], noti=True)
+
+
 def notify_favorite(e):
     """
     Notify a favorite event
@@ -601,13 +639,17 @@ def notify_favorite(e):
     source_user = cycle_color(source['name']) + \
         color_func(c['NOTIFICATION']['source_nick'])(
         ' @' + source['screen_name'])
-    notify = color_func(c['NOTIFICATION']['notify'])(' favorited your tweet ')
+    notify = color_func(c['NOTIFICATION']['notify'])(
+        'favorited your tweet')
     date = parser.parse(created_at)
     date = arrow.get(date).to('local')
     lang, encode = locale.getdefaultlocale()
     clock = arrow.get(date).to('local').humanize(locale=lang)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
-    meta = ' ' * 2 + source_user + notify + clock
+    meta = c['NOTIFY_FORMAT']
+    meta = source_user.join(meta.split('#source_user'))
+    meta = notify.join(meta.split('#notify'))
+    meta = clock.join(meta.split('#clock'))
     # Output
     printNicely('')
     printNicely(meta)
@@ -630,13 +672,16 @@ def notify_unfavorite(e):
         color_func(c['NOTIFICATION']['source_nick'])(
         ' @' + source['screen_name'])
     notify = color_func(c['NOTIFICATION']['notify'])(
-        ' unfavorited your tweet ')
+        'unfavorited your tweet')
     date = parser.parse(created_at)
     date = arrow.get(date).to('local')
     lang, encode = locale.getdefaultlocale()
     clock = arrow.get(date).to('local').humanize(locale=lang)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
-    meta = ' ' * 2 + source_user + notify + clock
+    meta = c['NOTIFY_FORMAT']
+    meta = source_user.join(meta.split('#source_user'))
+    meta = notify.join(meta.split('#notify'))
+    meta = clock.join(meta.split('#clock'))
     # Output
     printNicely('')
     printNicely(meta)
@@ -657,13 +702,17 @@ def notify_follow(e):
     source_user = cycle_color(source['name']) + \
         color_func(c['NOTIFICATION']['source_nick'])(
         ' @' + source['screen_name'])
-    notify = color_func(c['NOTIFICATION']['notify'])(' followed you ')
+    notify = color_func(c['NOTIFICATION']['notify'])(
+        'followed you')
     date = parser.parse(created_at)
     date = arrow.get(date).to('local')
     lang, encode = locale.getdefaultlocale()
     clock = arrow.get(date).to('local').humanize(locale=lang)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
-    meta = ' ' * 2 + source_user + notify + clock
+    meta = c['NOTIFY_FORMAT']
+    meta = source_user.join(meta.split('#source_user'))
+    meta = notify.join(meta.split('#notify'))
+    meta = clock.join(meta.split('#clock'))
     # Output
     printNicely('')
     printNicely(meta)
@@ -684,13 +733,17 @@ def notify_list_member_added(e):
     source_user = cycle_color(source['name']) + \
         color_func(c['NOTIFICATION']['source_nick'])(
         ' @' + source['screen_name'])
-    notify = color_func(c['NOTIFICATION']['notify'])(' added you to a list ')
+    notify = color_func(c['NOTIFICATION']['notify'])(
+        'added you to a list')
     date = parser.parse(created_at)
     date = arrow.get(date).to('local')
     lang, encode = locale.getdefaultlocale()
     clock = arrow.get(date).to('local').humanize(locale=lang)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
-    meta = ' ' * 2 + source_user + notify + clock
+    meta = c['NOTIFY_FORMAT']
+    meta = source_user.join(meta.split('#source_user'))
+    meta = notify.join(meta.split('#notify'))
+    meta = clock.join(meta.split('#clock'))
     # Output
     printNicely('')
     printNicely(meta)
@@ -713,13 +766,16 @@ def notify_list_member_removed(e):
         color_func(c['NOTIFICATION']['source_nick'])(
         ' @' + source['screen_name'])
     notify = color_func(c['NOTIFICATION']['notify'])(
-        ' removed you from a list ')
+        'removed you from a list')
     date = parser.parse(created_at)
     date = arrow.get(date).to('local')
     lang, encode = locale.getdefaultlocale()
     clock = arrow.get(date).to('local').humanize(locale=lang)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
-    meta = ' ' * 2 + source_user + notify + clock
+    meta = c['NOTIFY_FORMAT']
+    meta = source_user.join(meta.split('#source_user'))
+    meta = notify.join(meta.split('#notify'))
+    meta = clock.join(meta.split('#clock'))
     # Output
     printNicely('')
     printNicely(meta)
@@ -742,13 +798,16 @@ def notify_list_user_subscribed(e):
         color_func(c['NOTIFICATION']['source_nick'])(
         ' @' + source['screen_name'])
     notify = color_func(c['NOTIFICATION']['notify'])(
-        ' subscribed to your list ')
+        'subscribed to your list')
     date = parser.parse(created_at)
     date = arrow.get(date).to('local')
     lang, encode = locale.getdefaultlocale()
     clock = arrow.get(date).to('local').humanize(locale=lang)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
-    meta = ' ' * 2 + source_user + notify + clock
+    meta = c['NOTIFY_FORMAT']
+    meta = source_user.join(meta.split('#source_user'))
+    meta = notify.join(meta.split('#notify'))
+    meta = clock.join(meta.split('#clock'))
     # Output
     printNicely('')
     printNicely(meta)
@@ -771,13 +830,16 @@ def notify_list_user_unsubscribed(e):
         color_func(c['NOTIFICATION']['source_nick'])(
         ' @' + source['screen_name'])
     notify = color_func(c['NOTIFICATION']['notify'])(
-        ' unsubscribed from your list ')
+        'unsubscribed from your list')
     date = parser.parse(created_at)
     date = arrow.get(date).to('local')
     lang, encode = locale.getdefaultlocale()
     clock = arrow.get(date).to('local').humanize(locale=lang)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
-    meta = ' ' * 2 + source_user + notify + clock
+    meta = c['NOTIFY_FORMAT']
+    meta = source_user.join(meta.split('#source_user'))
+    meta = notify.join(meta.split('#notify'))
+    meta = clock.join(meta.split('#clock'))
     # Output
     printNicely('')
     printNicely(meta)
@@ -789,6 +851,7 @@ def print_event(e):
     Notify an event
     """
     event_dict = {
+        'retweet': notify_retweet,
         'favorite': notify_favorite,
         'unfavorite': notify_unfavorite,
         'follow': notify_follow,
@@ -940,7 +1003,8 @@ def print_list(group, noti=False):
         printNicely(line3)
         printNicely(line4)
 
-    printNicely('')
+    if not noti:
+        printNicely('')
 
 
 def show_calendar(month, date, rel):

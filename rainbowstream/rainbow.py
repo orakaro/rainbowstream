@@ -137,6 +137,8 @@ def init(args):
     g['events'] = []
     # Startup cmd
     g['cmd'] = ''
+    # Retweet of mine events
+    c['events'] = []
     # Semaphore init
     c['lock'] = False
     # Init tweet dict and message dict
@@ -202,6 +204,7 @@ def notification():
     """
     Show notifications
     """
+    g['events'] = g['events'] + c['events']
     if g['events']:
         for e in g['events']:
             print_event(e)

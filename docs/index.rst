@@ -327,6 +327,8 @@ You also can view or set a new value of every config key by ``config`` command (
 
 -  ``THREAD_MIN_WIDTH``: minimum width of a message frame.
 
+-  ``NOTIFY_FORMAT``: format of a notification.
+
 -  ``MESSAGES_DISPLAY``: default messages to display on 'inbox' or 'sent' command.
 
 -  ``TREND_MAX``: default trends to display on 'trend' command.

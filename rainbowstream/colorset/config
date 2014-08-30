@@ -28,6 +28,8 @@
     "THREAD_META_RIGHT" : "#clock (#id)",
     // 'thread' frame's minimum width
     "THREAD_MIN_WIDTH" : 20,
+    // 'Notification' format
+    "NOTIFY_FORMAT" : "  #source_user #notify #clock",
     // 'inbox','sent': default number of direct message
     "MESSAGES_DISPLAY" : 5,
     // 'trend': max trending topics
