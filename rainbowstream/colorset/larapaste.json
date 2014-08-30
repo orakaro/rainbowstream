@@ -37,6 +37,12 @@
         "keyword"         : "on_light_green"
     },
 
+    "NOTIFICATION":{
+        "source_nick"   : 37,
+        "notify"        : 202,
+        "clock"         : 184
+    },
+
     "MESSAGE" : {
         "partner"       : 37,
         "me"            : 37,

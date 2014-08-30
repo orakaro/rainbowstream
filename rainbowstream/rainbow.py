@@ -133,6 +133,8 @@ def init(args):
     g['themes'] = themes
     g['pause'] = False
     g['message_threads'] = {}
+    # Events
+    g['events'] = []
     # Startup cmd
     g['cmd'] = ''
     # Semaphore init
@@ -194,6 +196,18 @@ def home():
     for tweet in reversed(t.statuses.home_timeline(count=num)):
         draw(t=tweet)
     printNicely('')
+
+
+def notification():
+    """
+    Show notifications
+    """
+    if g['events']:
+        for e in g['events']:
+            print_event(e)
+        printNicely('')
+    else:
+        printNicely(magenta('Nothing at this time.'))
 
 
 def mentions():
@@ -1226,6 +1240,8 @@ def help_discover():
         light_green('trend JP Tokyo') + '.\n'
     usage += s * 2 + light_green('home') + ' will show your timeline. ' + \
         light_green('home 7') + ' will show 7 tweets.\n'
+    usage += s * 2 + \
+        light_green('notification') + ' will show your recent notification.\n'
     usage += s * 2 + light_green('mentions') + ' will show mentions timeline. ' + \
         light_green('mentions 7') + ' will show 7 mention tweets.\n'
     usage += s * 2 + light_green('whois @mdo') + ' will show profile  of ' + \
@@ -1535,6 +1551,7 @@ cmdset = [
     'switch',
     'trend',
     'home',
+    'notification',
     'view',
     'mentions',
     't',
@@ -1579,6 +1596,7 @@ funcset = [
     switch,
     trend,
     home,
+    notification,
     view,
     mentions,
     tweet,
@@ -1636,6 +1654,7 @@ def listen():
             ['public', 'mine'],  # switch
             [],  # trend
             [],  # home
+            [],  # notification
             ['@'],  # view
             [],  # mentions
             [],  # tweet
@@ -1825,6 +1844,9 @@ def stream(domain, args, name='Rainbow Stream'):
                 while c['lock']:
                     time.sleep(0.5)
                 print_message(tweet['direct_message'])
+            elif tweet.get('event'):
+                g['events'].append(tweet)
+                print_event(tweet)
     except TwitterHTTPError:
         printNicely('')
         printNicely(

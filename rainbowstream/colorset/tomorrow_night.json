@@ -37,6 +37,12 @@
         "keyword"         : "on_light_blue"
     },
 
+    "NOTIFICATION":{
+        "source_nick"   : 67,
+        "notify"        : 145,
+        "clock"         : 58
+    },
+
     "MESSAGE" : {
         "partner"       : 67,
         "me"            : 67,

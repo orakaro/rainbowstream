@@ -112,34 +112,27 @@ Here is full list of supported command:
 
 **Explore Commands**
 
--  ``trend`` will show global trending topics. ``trend US`` will show
-   trends in United States while ``trend JP Tokyo`` will show trends in
-   Tokyo/Japan.
+-  ``trend`` will show global trending topics. ``trend US`` will show trends in United States while ``trend JP Tokyo`` will show trends in Tokyo/Japan.
 
--  ``home`` will show your timeline. ``home 10`` will print exactly 10
-   tweets.
+-  ``home`` will show your timeline. ``home 10`` will print exactly 10 tweets.
 
--  ``mentions`` will show mentions timeline. ``mentions 7`` will show 7
-   mention tweets.
+-  ``notification`` will show your notification from the time you started RainbowStream.
+
+-  ``mentions`` will show mentions timeline. ``mentions 7`` will show 7 mention tweets.
 
 -  ``whois @dtvd88`` will show profile of @dtvd88.
 
--  ``view @mdo`` will show @mdo ’s timeline. ``view @dmo 9`` will print
-   exactly 9 tweets.
+-  ``view @mdo`` will show @mdo ’s timeline. ``view @dmo 9`` will print exactly 9 tweets.
 
--  ``s noah`` will search the word *‘noah’*. Result will come back with
-   highlight. Search can be performed with or without hashtag.
+-  ``s noah`` will search the word *‘noah’*. Result will come back with highlight. Search can be performed with or without hashtag.
 
 **Tweet Commands**
 
--  ``t the rainbow is god's promise to noah`` will tweet exactly *‘the
-   rainbow is god’s promise to noah’*.
+-  ``t the rainbow is god's promise to noah`` will tweet exactly *‘the rainbow is god’s promise to noah’*.
 
--  ``rt 12`` will retweet the tweet with *[id=12]*. You can see id of
-   each tweet beside the time.
+-  ``rt 12`` will retweet the tweet with *[id=12]*. You can see id of each tweet beside the time.
 
--  ``quote 12`` will quote the tweet with *[id=12]*. If no extra text is added,
-   the quote will be cancelled.
+-  ``quote 12`` will quote the tweet with *[id=12]*. If no extra text is added, the quote will be cancelled.
 
 -  ``allrt 12 20`` will list 20 newest retweets of the tweet with *[id=12]*. If the number of retweets is not specified, 5 newest retweets will be listed instead.
 
@@ -153,11 +146,9 @@ Here is full list of supported command:
 
 -  ``del 12`` will delete tweet with *[id=12]*.
 
--  ``show image 12`` will show the image in tweet with *[id=12]* in your
-   OS’s image viewer.
+-  ``show image 12`` will show the image in tweet with *[id=12]* in your OS’s image viewer.
 
--  ``open 12`` will open url in tweet with *[id=12]* in your
-   OS’s default browser.
+-  ``open 12`` will open url in tweet with *[id=12]* in your OS’s default browser.
 
 **Direct Messages Commands**
 
@@ -171,8 +162,7 @@ Here is full list of supported command:
 
 **Friends and followers Commands**
 
--  ``ls fl`` will list all your followers (people who are following
-   you).
+-  ``ls fl`` will list all your followers (people who are following you).
 
 -  ``ls fr`` will list all your friends (people who you are following).
 
@@ -220,21 +210,17 @@ Here is full list of supported command:
 
 **Switching Stream Commands**
 
--  ``switch public #AKB48`` will switch current stream to public stream
-   and track keyword ``AKB48``
+-  ``switch public #AKB48`` will switch current stream to public stream and track keyword ``AKB48``
 
--  ``switch public #AKB48 -f`` will do exactly as above but will ask you
-   to provide 2 list:
+-  ``switch public #AKB48 -f`` will do exactly as above but will ask you to provide 2 list:
 
    ``Only nicks`` decide what nicks will be include only.
 
    ``Ignore nicks``\ decide what nicks will be exclude.
 
--  ``switch public #AKB48 -d`` will apply filter to *ONLY\_LIST* and
-   *IGNORE\_LIST*. You can setup 2 list above at ``config.py``
+-  ``switch public #AKB48 -d`` will apply filter to *ONLY\_LIST* and *IGNORE\_LIST*. You can setup 2 list above at ``config.py``
 
--  ``switch mine`` will switch current stream to personal stream. ``-f``
-   and ``-d`` will work as well.
+-  ``switch mine`` will switch current stream to personal stream. ``-f`` and ``-d`` will work as well.
 
 **Smart shell**
 

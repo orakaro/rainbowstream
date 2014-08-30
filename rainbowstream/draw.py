@@ -145,7 +145,7 @@ def color_func(func_name):
     return globals()[func_name]
 
 
-def draw(t, keyword=None, humanize=True, fil=[], ig=[]):
+def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     """
     Draw the rainbow
     """
@@ -310,6 +310,10 @@ def draw(t, keyword=None, humanize=True, fil=[], ig=[]):
         formater = delimiter.join(formater.split(word))
     except:
         pass
+
+    # Add spaces in begining of line if this is inside a notification
+    if noti:
+        formater = '\n  '.join(formater.split('\n'))
 
     # Draw
     printNicely(formater)
@@ -582,6 +586,220 @@ def print_message(m):
     printNicely(formater)
 
 
+def notify_favorite(e):
+    """
+    Notify a favorite event
+    """
+    # Retrieve info
+    target = e['target']
+    if target['screen_name'] != c['original_name']:
+        return
+    source = e['source']
+    target_object = e['target_object']
+    created_at = e['created_at']
+    # Format
+    source_user = cycle_color(source['name']) + \
+        color_func(c['NOTIFICATION']['source_nick'])(
+        ' @' + source['screen_name'])
+    notify = color_func(c['NOTIFICATION']['notify'])(' favorited your tweet ')
+    date = parser.parse(created_at)
+    date = arrow.get(date).to('local')
+    lang, encode = locale.getdefaultlocale()
+    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = color_func(c['NOTIFICATION']['clock'])(clock)
+    meta = ' ' * 2 + source_user + notify + clock
+    # Output
+    printNicely('')
+    printNicely(meta)
+    draw(t=target_object, noti=True)
+
+
+def notify_unfavorite(e):
+    """
+    Notify a unfavorite event
+    """
+    # Retrieve info
+    target = e['target']
+    if target['screen_name'] != c['original_name']:
+        return
+    source = e['source']
+    target_object = e['target_object']
+    created_at = e['created_at']
+    # Format
+    source_user = cycle_color(source['name']) + \
+        color_func(c['NOTIFICATION']['source_nick'])(
+        ' @' + source['screen_name'])
+    notify = color_func(c['NOTIFICATION']['notify'])(
+        ' unfavorited your tweet ')
+    date = parser.parse(created_at)
+    date = arrow.get(date).to('local')
+    lang, encode = locale.getdefaultlocale()
+    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = color_func(c['NOTIFICATION']['clock'])(clock)
+    meta = ' ' * 2 + source_user + notify + clock
+    # Output
+    printNicely('')
+    printNicely(meta)
+    draw(t=target_object, noti=True)
+
+
+def notify_follow(e):
+    """
+    Notify a follow event
+    """
+    # Retrieve info
+    target = e['target']
+    if target['screen_name'] != c['original_name']:
+        return
+    source = e['source']
+    created_at = e['created_at']
+    # Format
+    source_user = cycle_color(source['name']) + \
+        color_func(c['NOTIFICATION']['source_nick'])(
+        ' @' + source['screen_name'])
+    notify = color_func(c['NOTIFICATION']['notify'])(' followed you ')
+    date = parser.parse(created_at)
+    date = arrow.get(date).to('local')
+    lang, encode = locale.getdefaultlocale()
+    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = color_func(c['NOTIFICATION']['clock'])(clock)
+    meta = ' ' * 2 + source_user + notify + clock
+    # Output
+    printNicely('')
+    printNicely(meta)
+
+
+def notify_list_member_added(e):
+    """
+    Notify a list_member_added event
+    """
+    # Retrieve info
+    target = e['target']
+    if target['screen_name'] != c['original_name']:
+        return
+    source = e['source']
+    target_object = [e['target_object']]  # list of Twitter list
+    created_at = e['created_at']
+    # Format
+    source_user = cycle_color(source['name']) + \
+        color_func(c['NOTIFICATION']['source_nick'])(
+        ' @' + source['screen_name'])
+    notify = color_func(c['NOTIFICATION']['notify'])(' added you to a list ')
+    date = parser.parse(created_at)
+    date = arrow.get(date).to('local')
+    lang, encode = locale.getdefaultlocale()
+    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = color_func(c['NOTIFICATION']['clock'])(clock)
+    meta = ' ' * 2 + source_user + notify + clock
+    # Output
+    printNicely('')
+    printNicely(meta)
+    print_list(target_object, noti=True)
+
+
+def notify_list_member_removed(e):
+    """
+    Notify a list_member_removed event
+    """
+    # Retrieve info
+    target = e['target']
+    if target['screen_name'] != c['original_name']:
+        return
+    source = e['source']
+    target_object = [e['target_object']]  # list of Twitter list
+    created_at = e['created_at']
+    # Format
+    source_user = cycle_color(source['name']) + \
+        color_func(c['NOTIFICATION']['source_nick'])(
+        ' @' + source['screen_name'])
+    notify = color_func(c['NOTIFICATION']['notify'])(
+        ' removed you from a list ')
+    date = parser.parse(created_at)
+    date = arrow.get(date).to('local')
+    lang, encode = locale.getdefaultlocale()
+    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = color_func(c['NOTIFICATION']['clock'])(clock)
+    meta = ' ' * 2 + source_user + notify + clock
+    # Output
+    printNicely('')
+    printNicely(meta)
+    print_list(target_object, noti=True)
+
+
+def notify_list_user_subscribed(e):
+    """
+    Notify a list_user_subscribed event
+    """
+    # Retrieve info
+    target = e['target']
+    if target['screen_name'] != c['original_name']:
+        return
+    source = e['source']
+    target_object = [e['target_object']]  # list of Twitter list
+    created_at = e['created_at']
+    # Format
+    source_user = cycle_color(source['name']) + \
+        color_func(c['NOTIFICATION']['source_nick'])(
+        ' @' + source['screen_name'])
+    notify = color_func(c['NOTIFICATION']['notify'])(
+        ' subscribed to your list ')
+    date = parser.parse(created_at)
+    date = arrow.get(date).to('local')
+    lang, encode = locale.getdefaultlocale()
+    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = color_func(c['NOTIFICATION']['clock'])(clock)
+    meta = ' ' * 2 + source_user + notify + clock
+    # Output
+    printNicely('')
+    printNicely(meta)
+    print_list(target_object, noti=True)
+
+
+def notify_list_user_unsubscribed(e):
+    """
+    Notify a list_user_unsubscribed event
+    """
+    # Retrieve info
+    target = e['target']
+    if target['screen_name'] != c['original_name']:
+        return
+    source = e['source']
+    target_object = [e['target_object']]  # list of Twitter list
+    created_at = e['created_at']
+    # Format
+    source_user = cycle_color(source['name']) + \
+        color_func(c['NOTIFICATION']['source_nick'])(
+        ' @' + source['screen_name'])
+    notify = color_func(c['NOTIFICATION']['notify'])(
+        ' unsubscribed from your list ')
+    date = parser.parse(created_at)
+    date = arrow.get(date).to('local')
+    lang, encode = locale.getdefaultlocale()
+    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = color_func(c['NOTIFICATION']['clock'])(clock)
+    meta = ' ' * 2 + source_user + notify + clock
+    # Output
+    printNicely('')
+    printNicely(meta)
+    print_list(target_object, noti=True)
+
+
+def print_event(e):
+    """
+    Notify an event
+    """
+    event_dict = {
+        'favorite': notify_favorite,
+        'unfavorite': notify_unfavorite,
+        'follow': notify_follow,
+        'list_member_added': notify_list_member_added,
+        'list_member_removed': notify_list_member_removed,
+        'list_user_subscribed': notify_list_user_subscribed,
+        'list_user_unsubscribed': notify_list_user_unsubscribed,
+    }
+    event_dict[e['event']](e)
+
+
 def show_profile(u):
     """
     Show a profile
@@ -680,7 +898,7 @@ def print_trends(trends):
     printNicely('')
 
 
-def print_list(group):
+def print_list(group, noti=False):
     """
     Display a list
     """
@@ -705,11 +923,15 @@ def print_list(group):
         clock = arrow.get(date).to('local').humanize(locale=lang)
         clock = 'Created at ' + color_func(c['GROUP']['clock'])(clock)
 
+        prefix = ' ' * 2
+        # Add spaces in begining of line if this is inside a notification
+        if noti:
+            prefix = ' ' * 2 + prefix
         # Create lines
-        line1 = ' ' * 2 + name + member + '  ' + subscriber
-        line2 = ' ' * 4 + description
-        line3 = ' ' * 4 + mode
-        line4 = ' ' * 4 + clock
+        line1 = prefix + name + member + '  ' + subscriber
+        line2 = prefix + ' ' * 2 + description
+        line3 = prefix + ' ' * 2 + mode
+        line4 = prefix + ' ' * 2 + clock
 
         # Display
         printNicely('')
