@@ -57,9 +57,7 @@
         },
         "MESSAGE": {
             "CLOCK_FORMAT" : "%Y/%m/%d %H:%M:%S",
-            "DISPLAY" : "\n  #sender_name #sender_nick #to #recipient_name #recipient_nick :\n  #clock message_id:#id\n  #message",
-            "THREAD_META_LEFT" : "[id:#id] #clock",
-            "THREAD_META_RIGHT" : "#clock [id:#id]"
+            "DISPLAY" : "\n  #sender_name #sender_nick #to #recipient_name #recipient_nick :\n  #clock message_id:#id\n  #message"
         }
     }
 }

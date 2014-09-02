@@ -1723,6 +1723,7 @@ def listen():
         try:
             # raw_input
             if g['prefix']:
+                # Only use PREFIX as a string with raw_input
                 line = raw_input(g['decorated_name'](g['PREFIX']))
             else:
                 line = raw_input()
@@ -1807,7 +1808,7 @@ def stream(domain, args, name='Rainbow Stream'):
                     light_green("h stream") + \
                     light_magenta(" for more details.")
                 printNicely(guide)
-                sys.stdout.write(g['decorated_name'](g['PREFIX']))
+                sys.stdout.write(g['decorated_name'](c['PREFIX']))
                 sys.stdout.flush()
                 StreamLock.release()
                 break
@@ -1835,10 +1836,10 @@ def stream(domain, args, name='Rainbow Stream'):
                 # the 1st character of that word
                 if current_buffer and g['cmd'] != current_buffer:
                     sys.stdout.write(
-                        g['decorated_name'](g['PREFIX']) + str2u(current_buffer))
+                        g['decorated_name'](c['PREFIX']) + str2u(current_buffer))
                     sys.stdout.flush()
                 elif not c['HIDE_PROMPT']:
-                    sys.stdout.write(g['decorated_name'](g['PREFIX']))
+                    sys.stdout.write(g['decorated_name'](c['PREFIX']))
                     sys.stdout.flush()
             elif tweet.get('direct_message'):
                 # Check the semaphore pause and lock (stream process only)
