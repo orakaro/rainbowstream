@@ -846,6 +846,13 @@ def notify_list_user_unsubscribed(e):
     print_list(target_object, noti=True)
 
 
+def nothing(e):
+    """
+    Do nothing for other event
+    """
+    return
+
+
 def print_event(e):
     """
     Notify an event
@@ -860,7 +867,7 @@ def print_event(e):
         'list_user_subscribed': notify_list_user_subscribed,
         'list_user_unsubscribed': notify_list_user_unsubscribed,
     }
-    event_dict[e['event']](e)
+    event_dict.get(e['event'],nothing)(e)
 
 
 def show_profile(u):
