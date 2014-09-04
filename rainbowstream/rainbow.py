@@ -7,6 +7,7 @@ import time
 import threading
 import requests
 import webbrowser
+import traceback
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
@@ -50,6 +51,11 @@ def parse_arguments():
         '-ig',
         '--ignore',
         help='Ignore specific screen_name.')
+    parser.add_argument(
+        '-dg',
+        '--debug',
+        action='store_true',
+        help='Run in debug mode.')
     parser.add_argument(
         '-iot',
         '--image-on-term',
@@ -108,6 +114,14 @@ def build_mute_dict(dict_data=False):
         return screen_name_list
 
 
+def debug_option():
+    """
+    Save traceback when run in debug mode
+    """
+    if g['debug']:
+        g['traceback'].append(traceback.format_exc())
+
+
 def init(args):
     """
     Init function
@@ -137,6 +151,9 @@ def init(args):
     g['events'] = []
     # Startup cmd
     g['cmd'] = ''
+    # Debug option
+    g['debug'] = args.debug
+    g['traceback'] = []
     # Retweet of mine events
     c['events'] = []
     # Semaphore init
@@ -239,7 +256,8 @@ def whois():
                 include_entities=False)
             show_profile(user)
         except:
-            printNicely(red('Omg no user.'))
+            debug_option()
+            printNicely(red('No user.'))
     else:
         printNicely(red('A name should begin with a \'@\''))
 
@@ -477,6 +495,7 @@ def show():
             img = Image.open(BytesIO(res.content))
             img.show()
     except:
+        debug_option()
         printNicely(red('Sorry I can\'t show this image.'))
 
 
@@ -499,6 +518,7 @@ def urlopen():
         for link in link_ary:
             webbrowser.open(link)
     except:
+        debug_option()
         printNicely(red('Sorry I can\'t open url in this tweet.'))
 
 
@@ -580,6 +600,7 @@ def thread():
             g['original_name'],
             g['full_name'])
     except Exception:
+        debug_option()
         printNicely(red('No such thread.'))
 
 
@@ -600,6 +621,7 @@ def message():
         else:
             printNicely(red('A name should begin with a \'@\''))
     except:
+        debug_option()
         printNicely(red('Sorry I can\'t understand.'))
 
 
@@ -708,6 +730,7 @@ def mute():
             else:
                 printNicely(red(rel))
         except:
+            debug_option()
             printNicely(red('Something is wrong, can not mute now :('))
     else:
         printNicely(red('A name should begin with a \'@\''))
@@ -906,6 +929,7 @@ def list_add(t):
             screen_name=user_name)
         printNicely(green('Added.'))
     except:
+        debug_option()
         printNicely(light_magenta('I\'m sorry we can not add him/her.'))
 
 
@@ -925,6 +949,7 @@ def list_remove(t):
             screen_name=user_name)
         printNicely(green('Gone.'))
     except:
+        debug_option()
         printNicely(light_magenta('I\'m sorry we can not remove him/her.'))
 
 
@@ -940,6 +965,7 @@ def list_subscribe(t):
             owner_screen_name=owner)
         printNicely(green('Done.'))
     except:
+        debug_option()
         printNicely(
             light_magenta('I\'m sorry you can not subscribe to this list.'))
 
@@ -956,6 +982,7 @@ def list_unsubscribe(t):
             owner_screen_name=owner)
         printNicely(green('Done.'))
     except:
+        debug_option()
         printNicely(
             light_magenta('I\'m sorry you can not unsubscribe to this list.'))
 
@@ -992,6 +1019,7 @@ def list_new(t):
             description=description)
         printNicely(green(name + ' list is created.'))
     except:
+        debug_option()
         printNicely(red('Oops something is wrong with Twitter :('))
 
 
@@ -1019,6 +1047,7 @@ def list_update(t):
                 description=description)
         printNicely(green(slug + ' list is updated.'))
     except:
+        debug_option()
         printNicely(red('Oops something is wrong with Twitter :('))
 
 
@@ -1033,6 +1062,7 @@ def list_delete(t):
             owner_screen_name=g['original_name'])
         printNicely(green(slug + ' list is deleted.'))
     except:
+        debug_option()
         printNicely(red('Oops something is wrong with Twitter :('))
 
 
@@ -1750,6 +1780,7 @@ def listen():
         except EOFError:
             printNicely('')
         except Exception:
+            debug_option()
             printNicely(red('OMG something is wrong with Twitter right now.'))
 
 

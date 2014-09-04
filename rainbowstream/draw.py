@@ -867,7 +867,7 @@ def print_event(e):
         'list_user_subscribed': notify_list_user_subscribed,
         'list_user_unsubscribed': notify_list_user_unsubscribed,
     }
-    event_dict.get(e['event'],nothing)(e)
+    event_dict.get(e['event'], nothing)(e)
 
 
 def show_profile(u):
