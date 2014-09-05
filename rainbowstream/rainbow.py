@@ -22,6 +22,7 @@ from .consumer import *
 from .interactive import *
 from .c_image import *
 from .py3patch import *
+from .emoji import *
 
 # Global values
 g = {}
@@ -136,6 +137,7 @@ def init(args):
     name = credential['name']
     if not get_config('PREFIX'):
         set_config('PREFIX', screen_name)
+    c['PREFIX'] = emojize(c['PREFIX'])
     g['PREFIX'] = u2str(c['PREFIX'])
     c['original_name'] = g['original_name'] = screen_name[1:]
     g['full_name'] = name

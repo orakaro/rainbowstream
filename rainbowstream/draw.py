@@ -15,6 +15,7 @@ from .c_image import *
 from .colors import *
 from .config import *
 from .py3patch import *
+from .emoji import *
 
 # Draw global variables
 dg = {}
@@ -316,6 +317,7 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
         delimiter = color_func(c['TWEET']['favorite_count'])(
             str(favorite_count).join(word.split('#fa_count')))
         formater = delimiter.join(formater.split(word))
+        formater = emojize(formater)
     except:
         pass
 
@@ -460,6 +462,7 @@ def print_right_message(m):
         word = [wo for wo in formater.split() if '#id' in wo][0]
         delimiter = color_func(c['MESSAGE']['id'])(id.join(word.split('#id')))
         formater = delimiter.join(formater.split(word))
+        formater = emojize(formater)
     except Exception:
         printNicely(red('Wrong format in config.'))
         return
@@ -524,6 +527,7 @@ def print_left_message(m):
         word = [wo for wo in formater.split() if '#id' in wo][0]
         delimiter = color_func(c['MESSAGE']['id'])(id.join(word.split('#id')))
         formater = delimiter.join(formater.split(word))
+        formater = emojize(formater)
     except Exception:
         printNicely(red('Wrong format in config.'))
         return
@@ -589,6 +593,7 @@ def print_message(m):
         word = [wo for wo in formater.split() if '#id' in wo][0]
         delimiter = color_func(c['MESSAGE']['id'])(id.join(word.split('#id')))
         formater = delimiter.join(formater.split(word))
+        formater = emojize(formater)
     except:
         printNicely(red('Wrong format in config.'))
         return
@@ -1054,6 +1059,7 @@ def format_quote(tweet):
         formater = c['QUOTE_FORMAT']
         formater = screen_name.join(formater.split('#owner'))
         formater = text.join(formater.split('#tweet'))
+        formater = emojize(formater)
         formater = u2str(formater)
     except:
         pass
