@@ -623,6 +623,7 @@ def notify_retweet(t):
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -655,6 +656,7 @@ def notify_favorite(e):
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -687,6 +689,7 @@ def notify_unfavorite(e):
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -718,6 +721,7 @@ def notify_follow(e):
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -749,6 +753,7 @@ def notify_list_member_added(e):
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -781,6 +786,7 @@ def notify_list_member_removed(e):
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -813,6 +819,7 @@ def notify_list_user_subscribed(e):
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -845,6 +852,7 @@ def notify_list_user_unsubscribed(e):
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -1052,8 +1060,8 @@ def format_quote(tweet):
         formater = c['QUOTE_FORMAT']
         formater = screen_name.join(formater.split('#owner'))
         formater = text.join(formater.split('#tweet'))
-        formater = emojize(formater)
         formater = u2str(formater)
+        formater = emojize(formater)
     except:
         pass
     # Highlight like a tweet
