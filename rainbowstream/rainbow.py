@@ -8,6 +8,7 @@ import threading
 import requests
 import webbrowser
 import traceback
+import pkg_resources
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
@@ -52,11 +53,6 @@ def parse_arguments():
         '-ig',
         '--ignore',
         help='Ignore specific screen_name.')
-    parser.add_argument(
-        '-dg',
-        '--debug',
-        action='store_true',
-        help='Run in debug mode.')
     parser.add_argument(
         '-iot',
         '--image-on-term',
@@ -123,6 +119,26 @@ def debug_option():
         g['traceback'].append(traceback.format_exc())
 
 
+def upgrade_center():
+    """
+    Check latest and notify to upgrade
+    """
+    try:
+        current = pkg_resources.get_distribution("rainbowstream").version 
+        url = 'https://raw.githubusercontent.com/DTVD/rainbowstream/master/setup.py'
+        readme = requests.get(url).content 
+        latest = readme.split("version = \'")[1].split("\'")[0]
+        if current != latest:
+            notice =  light_magenta('RainbowStream latest version is ') 
+            notice += light_green(latest)
+            notice += light_magenta(' while your current version is ')
+            notice += light_yellow(current) + '\n'
+            notice += light_magenta('You should upgrade with "pip install -U rainbowstream".')
+            printNicely(notice)
+    except:
+        pass
+
+
 def init(args):
     """
     Init function
@@ -130,6 +146,8 @@ def init(args):
     # Handle Ctrl C
     ctrl_c_handler = lambda signum, frame: quit()
     signal.signal(signal.SIGINT, ctrl_c_handler)
+    # Upgrade notify
+    upgrade_center()
     # Get name
     t = Twitter(auth=authen())
     credential = t.account.verify_credentials()
@@ -153,8 +171,8 @@ def init(args):
     g['events'] = []
     # Startup cmd
     g['cmd'] = ''
-    # Debug option
-    g['debug'] = args.debug
+    # Debug option default = True
+    g['debug'] = True
     g['traceback'] = []
     # Retweet of mine events
     c['events'] = []
