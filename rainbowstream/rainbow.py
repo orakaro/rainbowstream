@@ -124,16 +124,17 @@ def upgrade_center():
     Check latest and notify to upgrade
     """
     try:
-        current = pkg_resources.get_distribution("rainbowstream").version 
+        current = pkg_resources.get_distribution("rainbowstream").version
         url = 'https://raw.githubusercontent.com/DTVD/rainbowstream/master/setup.py'
-        readme = requests.get(url).content 
+        readme = requests.get(url).content
         latest = readme.split("version = \'")[1].split("\'")[0]
         if current != latest:
-            notice =  light_magenta('RainbowStream latest version is ') 
+            notice = light_magenta('RainbowStream latest version is ')
             notice += light_green(latest)
             notice += light_magenta(' while your current version is ')
             notice += light_yellow(current) + '\n'
-            notice += light_magenta('You should upgrade with "pip install -U rainbowstream".')
+            notice += light_magenta('You should upgrade with ')
+            notice += light_green('pip install -U rainbowstream')
             printNicely(notice)
     except:
         pass
