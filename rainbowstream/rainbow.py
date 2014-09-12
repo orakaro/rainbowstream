@@ -168,14 +168,12 @@ def init(args):
     g['themes'] = themes
     g['pause'] = False
     g['message_threads'] = {}
-    # Events
-    g['events'] = []
     # Startup cmd
     g['cmd'] = ''
     # Debug option default = True
     g['debug'] = True
     g['traceback'] = []
-    # Retweet of mine events
+    # Events
     c['events'] = []
     # Semaphore init
     c['lock'] = False
@@ -242,9 +240,8 @@ def notification():
     """
     Show notifications
     """
-    g['events'] = g['events'] + c['events']
-    if g['events']:
-        for e in g['events']:
+    if c['events']:
+        for e in c['events']:
             print_event(e)
         printNicely('')
     else:
@@ -1901,7 +1898,7 @@ def stream(domain, args, name='Rainbow Stream'):
                     time.sleep(0.5)
                 print_message(tweet['direct_message'])
             elif tweet.get('event'):
-                g['events'].append(tweet)
+                c['events'].append(tweet)
                 print_event(tweet)
     except TwitterHTTPError:
         printNicely('')
