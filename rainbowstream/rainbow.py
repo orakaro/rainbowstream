@@ -841,10 +841,10 @@ def report():
 
 def get_slug():
     """
-    Get Slug Decorator
+    Get slug
     """
     # Get list name
-    list_name = raw_input(light_magenta('Give me the list\'s name: '))
+    list_name = raw_input(light_magenta('Give me the list\'s name ("@owner/list_name"): '))
     # Get list name and owner
     try:
         owner, slug = list_name.split('/')
@@ -1166,13 +1166,47 @@ def switch():
                     g['original_name']))
             th.daemon = True
             th.start()
+        # Stream base on list
+        elif target == 'list':
+            owner, slug = get_slug()
+            # Force python 2 not redraw readline buffer
+            g['cmd'] = '/'.join([owner,slug])
+            printNicely(light_yellow('getting list members ...'))
+            # Get members
+            t = Twitter(auth=authen())
+            members = []
+            next_cursor = -1
+            while next_cursor != 0:
+                m = t.lists.members(
+                    slug=slug,
+                    owner_screen_name=owner,
+                    cursor=next_cursor,
+                    include_entities=False)
+                for u in m['users']:
+                    members.append('@' + u['screen_name'])
+                next_cursor = m['next_cursor']
+            printNicely(light_yellow('... done.'))
+            # Build thread filter array
+            args.filter = members
+            # Kill old thread
+            g['stream_stop'] = True
+            # Start new thread
+            th = threading.Thread(
+                target=stream,
+                args=(
+                    c['USER_DOMAIN'],
+                    args,
+                    slug))
+            th.daemon = True
+            th.start()
         printNicely('')
         if args.filter:
-            printNicely(cyan('Only: ' + str(args.filter)))
+            printNicely(cyan('Include: ' + str(len(args.filter))) + ' people.')
         if args.ignore:
-            printNicely(red('Ignore: ' + str(args.ignore)))
+            printNicely(red('Ignore: ' + str(len(args.ignore))) + ' people.')
         printNicely('')
-    except:
+    except Exception:
+        debug_option()
         printNicely(red('Sorry I can\'t understand.'))
 
 
@@ -1455,6 +1489,8 @@ def help_stream():
         ' filter will decide nicks will be EXCLUDE.\n'
     usage += s * 2 + light_green('switch mine -d') + \
         ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
+    usage += s * 2 + light_green('switch list') + \
+        ' will switch to a Twitter list\'s stream. You will be asked for list name\n'
     printNicely(usage)
 
 
@@ -1702,7 +1738,7 @@ def listen():
     d = dict(zip(
         cmdset,
         [
-            ['public', 'mine'],  # switch
+            ['public', 'mine', 'list'],  # switch
             [],  # trend
             [],  # home
             [],  # notification

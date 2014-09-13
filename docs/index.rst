@@ -222,6 +222,8 @@ Here is full list of supported command:
 
 -  ``switch mine`` will switch current stream to personal stream. ``-f`` and ``-d`` will work as well.
 
+-  ``switch list`` will switch to a Twitter list's stream. You will be asked for list name.
+
 **Smart shell**
 
 - Put anything to terminal, the app will try to eval and display result as a python interactive shell.
