@@ -1201,9 +1201,9 @@ def switch():
             th.start()
         printNicely('')
         if args.filter:
-            printNicely(cyan('Include: ' + str(len(args.filter))) + ' people.')
+            printNicely(cyan('Include: ' + str(len(args.filter)) + ' people.'))
         if args.ignore:
-            printNicely(red('Ignore: ' + str(len(args.ignore))) + ' people.')
+            printNicely(red('Ignore: ' + str(len(args.ignore)) + ' people.'))
         printNicely('')
     except Exception:
         debug_option()
