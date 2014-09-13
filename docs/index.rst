@@ -371,6 +371,9 @@ You also can view or set a new value of every config key by ``config`` command (
     + ``#recipient_name``: Message's recipient name
     + ``#recipient_nick``: Message's recipient screen name
 
+In every format, you can use unicode characters like ``\u2665``. 
+Mac users also can use emoji characters as well (Ex: ``::zap::``). 
+See `Emoji cheatsheet`_ for details.
 
 Development
 -----------
@@ -414,4 +417,4 @@ steps
 .. _clang unknown argument: http://kaspermunck.github.io/2014/03/fixing-clang-error/
 .. _Issue #10: https://github.com/DTVD/rainbowstream/issues/10
 .. _default config: https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/config
-
+.. _Emoji cheatsheet: http://www.emoji-cheat-sheet.com/

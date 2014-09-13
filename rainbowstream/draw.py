@@ -15,6 +15,7 @@ from .c_image import *
 from .colors import *
 from .config import *
 from .py3patch import *
+from .emoji import *
 
 # Draw global variables
 dg = {}
@@ -37,6 +38,7 @@ def start_cycle():
     """
     dg['cyc'] = init_cycle()
     dg['cache'] = {}
+    dg['humanize_unsupported'] = False
 
 
 def order_rainbow(s):
@@ -145,6 +147,33 @@ def color_func(func_name):
     return globals()[func_name]
 
 
+def fallback_humanize(date, fallback_format=None, use_fallback=False):
+    """
+    Format date with arrow and a fallback format
+    """
+    # Convert to local timezone
+    date = arrow.get(date).to('local')
+    # Set default fallback format
+    if not fallback_format:
+        fallback_format = '%Y/%m/%d %H:%M:%S'
+    # Determine using fallback format or not by a variable
+    if use_fallback:
+        return date.datetime.strftime(fallback_format)
+    try:
+        # Use Arrow's humanize function
+        lang, encode = locale.getdefaultlocale()
+        clock = date.humanize(locale=lang)
+    except:
+        # Notice at the 1st time only
+        if not dg['humanize_unsupported']:
+            dg['humanize_unsupported'] = True
+            printNicely(
+                light_magenta('Humanized date display method does not support your $LC_ALL.'))
+        # Fallback when LC_ALL is not supported
+        clock = date.datetime.strftime(fallback_format)
+    return clock
+
+
 def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     """
     Draw the rainbow
@@ -162,16 +191,11 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     retweet_count = t['retweet_count']
     favorite_count = t['favorite_count']
     date = parser.parse(created_at)
-    date = arrow.get(date).to('local')
-    if humanize:
-        lang, encode = locale.getdefaultlocale()
-        clock = arrow.get(date).to('local').humanize(locale=lang)
-    else:
-        try:
-            clock_format = c['FORMAT']['TWEET']['CLOCK_FORMAT']
-        except:
-            clock_format = '%Y/%m/%d %H:%M:%S'
-        clock = date.datetime.strftime(clock_format)
+    try:
+        clock_format = c['FORMAT']['TWEET']['CLOCK_FORMAT']
+    except:
+        clock_format = '%Y/%m/%d %H:%M:%S'
+    clock = fallback_humanize(date, clock_format, not humanize)
 
     # Pull extended retweet text
     try:
@@ -316,6 +340,7 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
         delimiter = color_func(c['TWEET']['favorite_count'])(
             str(favorite_count).join(word.split('#fa_count')))
         formater = delimiter.join(formater.split(word))
+        formater = emojize(formater)
     except:
         pass
 
@@ -460,6 +485,7 @@ def print_right_message(m):
         word = [wo for wo in formater.split() if '#id' in wo][0]
         delimiter = color_func(c['MESSAGE']['id'])(id.join(word.split('#id')))
         formater = delimiter.join(formater.split(word))
+        formater = emojize(formater)
     except Exception:
         printNicely(red('Wrong format in config.'))
         return
@@ -524,6 +550,7 @@ def print_left_message(m):
         word = [wo for wo in formater.split() if '#id' in wo][0]
         delimiter = color_func(c['MESSAGE']['id'])(id.join(word.split('#id')))
         formater = delimiter.join(formater.split(word))
+        formater = emojize(formater)
     except Exception:
         printNicely(red('Wrong format in config.'))
         return
@@ -589,6 +616,7 @@ def print_message(m):
         word = [wo for wo in formater.split() if '#id' in wo][0]
         delimiter = color_func(c['MESSAGE']['id'])(id.join(word.split('#id')))
         formater = delimiter.join(formater.split(word))
+        formater = emojize(formater)
     except:
         printNicely(red('Wrong format in config.'))
         return
@@ -610,14 +638,13 @@ def notify_retweet(t):
     notify = color_func(c['NOTIFICATION']['notify'])(
         'retweeted your tweet')
     date = parser.parse(created_at)
-    date = arrow.get(date).to('local')
-    lang, encode = locale.getdefaultlocale()
-    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = fallback_humanize(date)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
     meta = c['NOTIFY_FORMAT']
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -642,14 +669,13 @@ def notify_favorite(e):
     notify = color_func(c['NOTIFICATION']['notify'])(
         'favorited your tweet')
     date = parser.parse(created_at)
-    date = arrow.get(date).to('local')
-    lang, encode = locale.getdefaultlocale()
-    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = fallback_humanize(date)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
     meta = c['NOTIFY_FORMAT']
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -674,14 +700,13 @@ def notify_unfavorite(e):
     notify = color_func(c['NOTIFICATION']['notify'])(
         'unfavorited your tweet')
     date = parser.parse(created_at)
-    date = arrow.get(date).to('local')
-    lang, encode = locale.getdefaultlocale()
-    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = fallback_humanize(date)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
     meta = c['NOTIFY_FORMAT']
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -705,14 +730,13 @@ def notify_follow(e):
     notify = color_func(c['NOTIFICATION']['notify'])(
         'followed you')
     date = parser.parse(created_at)
-    date = arrow.get(date).to('local')
-    lang, encode = locale.getdefaultlocale()
-    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = fallback_humanize(date)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
     meta = c['NOTIFY_FORMAT']
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -736,14 +760,13 @@ def notify_list_member_added(e):
     notify = color_func(c['NOTIFICATION']['notify'])(
         'added you to a list')
     date = parser.parse(created_at)
-    date = arrow.get(date).to('local')
-    lang, encode = locale.getdefaultlocale()
-    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = fallback_humanize(date)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
     meta = c['NOTIFY_FORMAT']
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -768,14 +791,13 @@ def notify_list_member_removed(e):
     notify = color_func(c['NOTIFICATION']['notify'])(
         'removed you from a list')
     date = parser.parse(created_at)
-    date = arrow.get(date).to('local')
-    lang, encode = locale.getdefaultlocale()
-    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = fallback_humanize(date)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
     meta = c['NOTIFY_FORMAT']
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -800,14 +822,13 @@ def notify_list_user_subscribed(e):
     notify = color_func(c['NOTIFICATION']['notify'])(
         'subscribed to your list')
     date = parser.parse(created_at)
-    date = arrow.get(date).to('local')
-    lang, encode = locale.getdefaultlocale()
-    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = fallback_humanize(date)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
     meta = c['NOTIFY_FORMAT']
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
@@ -832,25 +853,17 @@ def notify_list_user_unsubscribed(e):
     notify = color_func(c['NOTIFICATION']['notify'])(
         'unsubscribed from your list')
     date = parser.parse(created_at)
-    date = arrow.get(date).to('local')
-    lang, encode = locale.getdefaultlocale()
-    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = fallback_humanize(date)
     clock = color_func(c['NOTIFICATION']['clock'])(clock)
     meta = c['NOTIFY_FORMAT']
     meta = source_user.join(meta.split('#source_user'))
     meta = notify.join(meta.split('#notify'))
     meta = clock.join(meta.split('#clock'))
+    meta = emojize(meta)
     # Output
     printNicely('')
     printNicely(meta)
     print_list(target_object, noti=True)
-
-
-def nothing(e):
-    """
-    Do nothing for other event
-    """
-    return
 
 
 def print_event(e):
@@ -867,7 +880,7 @@ def print_event(e):
         'list_user_subscribed': notify_list_user_subscribed,
         'list_user_unsubscribed': notify_list_user_unsubscribed,
     }
-    event_dict.get(e['event'], nothing)(e)
+    event_dict.get(e['event'], lambda *args: None)(e)
 
 
 def show_profile(u):
@@ -910,8 +923,7 @@ def show_profile(u):
     location = 'Location : ' + color_func(c['PROFILE']['location'])(location)
     url = 'URL : ' + (color_func(c['PROFILE']['url'])(url) if url else '')
     date = parser.parse(created_at)
-    lang, encode = locale.getdefaultlocale()
-    clock = arrow.get(date).to('local').humanize(locale=lang)
+    clock = fallback_humanize(date)
     clock = 'Join at ' + color_func(c['PROFILE']['clock'])(clock)
 
     # Format
@@ -989,8 +1001,7 @@ def print_list(group, noti=False):
         mode = color_func(c['GROUP']['mode'])('Type: ' + mode)
         created_at = grp['created_at']
         date = parser.parse(created_at)
-        lang, encode = locale.getdefaultlocale()
-        clock = arrow.get(date).to('local').humanize(locale=lang)
+        clock = fallback_humanize(date)
         clock = 'Created at ' + color_func(c['GROUP']['clock'])(clock)
 
         prefix = ' ' * 2
@@ -1055,6 +1066,7 @@ def format_quote(tweet):
         formater = screen_name.join(formater.split('#owner'))
         formater = text.join(formater.split('#tweet'))
         formater = u2str(formater)
+        formater = emojize(formater)
     except:
         pass
     # Highlight like a tweet
