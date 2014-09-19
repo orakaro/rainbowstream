@@ -161,7 +161,7 @@ def init(args):
     c['original_name'] = g['original_name'] = screen_name[1:]
     g['full_name'] = name
     g['decorated_name'] = lambda x: color_func(
-        c['DECORATED_NAME'])('[' + x + ']: ')
+        c['DECORATED_NAME'])('[' + x + ']: ', rl=True)
     # Theme init
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
@@ -366,7 +366,8 @@ def quote():
     if not formater:
         return
     # Get comment
-    prefix = light_magenta('Compose your ') + light_green('#comment: ')
+    prefix = light_magenta('Compose your ', rl=True) + \
+        light_green('#comment: ', rl=True)
     comment = raw_input(prefix)
     if comment:
         quote = comment.join(formater.split('#comment'))
@@ -844,7 +845,8 @@ def get_slug():
     Get slug
     """
     # Get list name
-    list_name = raw_input(light_magenta('Give me the list\'s name ("@owner/list_name"): '))
+    list_name = raw_input(
+        light_magenta('Give me the list\'s name ("@owner/list_name"): ', rl=True))
     # Get list name and owner
     try:
         owner, slug = list_name.split('/')
@@ -937,7 +939,10 @@ def list_add(t):
     """
     owner, slug = get_slug()
     # Add
-    user_name = raw_input(light_magenta('Give me name of the newbie: '))
+    user_name = raw_input(
+        light_magenta(
+            'Give me name of the newbie: ',
+            rl=True))
     if user_name.startswith('@'):
         user_name = user_name[1:]
     try:
@@ -957,7 +962,10 @@ def list_remove(t):
     """
     owner, slug = get_slug()
     # Remove
-    user_name = raw_input(light_magenta('Give me name of the unlucky one: '))
+    user_name = raw_input(
+        light_magenta(
+            'Give me name of the unlucky one: ',
+            rl=True))
     if user_name.startswith('@'):
         user_name = user_name[1:]
     try:
@@ -1027,9 +1035,15 @@ def list_new(t):
     """
     Create a new list
     """
-    name = raw_input(light_magenta('New list\'s name: '))
-    mode = raw_input(light_magenta('New list\'s mode (public/private): '))
-    description = raw_input(light_magenta('New list\'s description: '))
+    name = raw_input(light_magenta('New list\'s name: ', rl=True))
+    mode = raw_input(
+        light_magenta(
+            'New list\'s mode (public/private): ',
+            rl=True))
+    description = raw_input(
+        light_magenta(
+            'New list\'s description: ',
+            rl=True))
     try:
         t.lists.create(
             name=name,
@@ -1045,10 +1059,16 @@ def list_update(t):
     """
     Update a list
     """
-    slug = raw_input(light_magenta('Your list that you want to update: '))
-    name = raw_input(light_magenta('Update name (leave blank to unchange): '))
-    mode = raw_input(light_magenta('Update mode (public/private): '))
-    description = raw_input(light_magenta('Update description: '))
+    slug = raw_input(
+        light_magenta(
+            'Your list that you want to update: ',
+            rl=True))
+    name = raw_input(
+        light_magenta(
+            'Update name (leave blank to unchange): ',
+            rl=True))
+    mode = raw_input(light_magenta('Update mode (public/private): ', rl=True))
+    description = raw_input(light_magenta('Update description: ', rl=True))
     try:
         if name:
             t.lists.update(
@@ -1073,7 +1093,10 @@ def list_delete(t):
     """
     Delete a list
     """
-    slug = raw_input(light_magenta('Your list that you want to delete: '))
+    slug = raw_input(
+        light_magenta(
+            'Your list that you want to delete: ',
+            rl=True))
     try:
         t.lists.destroy(
             slug='-'.join(slug.split()),
@@ -1170,7 +1193,7 @@ def switch():
         elif target == 'list':
             owner, slug = get_slug()
             # Force python 2 not redraw readline buffer
-            g['cmd'] = '/'.join([owner,slug])
+            g['cmd'] = '/'.join([owner, slug])
             printNicely(light_yellow('getting list members ...'))
             # Get members
             t = Twitter(auth=authen())

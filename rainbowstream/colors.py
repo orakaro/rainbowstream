@@ -2,11 +2,12 @@ def basic_color(code):
     """
     16 colors supported
     """
-    def inner(text, bold=True):
+    def inner(text, rl=False):
         c = code
-        if bold:
-            c = "1;%s" % c
-        return "\033[%sm%s\033[0m" % (c, text)
+        if rl:
+            return "\001\033[%sm\002%s\001\033[0m\002" % (c, text)
+        else:
+            return "\033[%sm%s\033[0m" % (c, text)
     return inner
 
 
@@ -14,9 +15,12 @@ def term_color(code):
     """
     256 colors supported
     """
-    def inner(text):
+    def inner(text, rl=False):
         c = code
-        return "\033[38;5;%sm%s\033[0m" % (c, text)
+        if rl:
+            return "\001\033[38;5;%sm\002%s\001\033[0m\002" % (c, text)
+        else:
+            return "\033[38;5;%sm%s\033[0m" % (c, text)
     return inner
 
 
