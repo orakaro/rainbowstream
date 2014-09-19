@@ -373,8 +373,8 @@ You also can view or set a new value of every config key by ``config`` command (
     + ``#recipient_name``: Message's recipient name
     + ``#recipient_nick``: Message's recipient screen name
 
-In every format, you can use unicode characters like ``\u2665``. 
-Mac users also can use emoji characters as well (Ex: ``::zap::``). 
+In every format, you can use unicode characters like ``\u2665``.
+Mac users also can use emoji characters as well (Ex: ``::zap::``).
 See `Emoji cheatsheet`_ for details.
 
 Development
@@ -404,7 +404,6 @@ steps
        source venv/bin/activate
        pip install -e .
        which rainbowstream # /this-directory/venv/bin/rainbowstream
-       pip list | grep rainbowstream # rainbowstream (0.x.x, /this-directory)
        # Remove ~/.rainbow_oauth if exists
        rainbowstream # local version of rainbowstream
 

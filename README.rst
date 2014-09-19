@@ -182,7 +182,6 @@ steps
        source venv/bin/activate
        pip install -e .
        which rainbowstream # /this-directory/venv/bin/rainbowstream
-       pip list | grep rainbowstream # rainbowstream (0.x.x, /this-directory)
        # Remove ~/.rainbow_oauth if exists
        rainbowstream # local version of rainbowstream
 

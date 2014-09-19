@@ -3,6 +3,10 @@ def basic_color(code):
     16 colors supported
     """
     def inner(text, rl=False):
+        """
+        Every raw_input with color sequences should be called with
+        rl=True to avoid readline messed up the length calculation
+        """
         c = code
         if rl:
             return "\001\033[%sm\002%s\001\033[0m\002" % (c, text)
@@ -16,6 +20,10 @@ def term_color(code):
     256 colors supported
     """
     def inner(text, rl=False):
+        """
+        Every raw_input with color sequences should be called with
+        rl=True to avoid readline messed up the length calculation
+        """
         c = code
         if rl:
             return "\001\033[38;5;%sm\002%s\001\033[0m\002" % (c, text)

@@ -126,7 +126,7 @@ def upgrade_center():
     try:
         current = pkg_resources.get_distribution("rainbowstream").version
         url = 'https://raw.githubusercontent.com/DTVD/rainbowstream/master/setup.py'
-        readme = requests.get(url).content
+        readme = requests.get(url).text
         latest = readme.split("version = \'")[1].split("\'")[0]
         if current != latest:
             notice = light_magenta('RainbowStream latest version is ')
@@ -291,7 +291,8 @@ def view():
             num = int(g['stuff'].split()[1])
         except:
             num = c['HOME_TWEET_NUM']
-        for tweet in reversed(t.statuses.user_timeline(count=num, screen_name=user[1:])):
+        for tweet in reversed(
+                t.statuses.user_timeline(count=num, screen_name=user[1:])):
             draw(t=tweet)
         printNicely('')
     else:
