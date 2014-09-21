@@ -1862,6 +1862,21 @@ def listen():
             printNicely(red('OMG something is wrong with Twitter right now.'))
 
 
+def reconn_notice():
+    """
+    Notice when Hangup or Timeout
+    """
+    guide = light_magenta("You can use ") + \
+        light_green("switch") + \
+        light_magenta(" command to return to your stream.\n")
+    guide += light_magenta("Type ") + \
+        light_green("h stream") + \
+        light_magenta(" for more details.")
+    printNicely(guide)
+    sys.stdout.write(g['decorated_name'](c['PREFIX']))
+    sys.stdout.flush()
+
+
 def stream(domain, args, name='Rainbow Stream'):
     """
     Track the stream
@@ -1905,24 +1920,21 @@ def stream(domain, args, name='Rainbow Stream'):
             if tweet is None:
                 printNicely("-- None --")
             elif tweet is Timeout:
+                # Because the stream check for each 0.3s
+                # so we shouldn't output anything here
                 if(g['stream_stop']):
                     StreamLock.release()
                     break
             elif tweet is HeartbeatTimeout:
                 printNicely("-- Heartbeat Timeout --")
-                guide = light_magenta("You can use ") + \
-                    light_green("switch") + \
-                    light_magenta(" command to return to your stream.\n")
-                guide += light_magenta("Type ") + \
-                    light_green("h stream") + \
-                    light_magenta(" for more details.")
-                printNicely(guide)
-                sys.stdout.write(g['decorated_name'](c['PREFIX']))
-                sys.stdout.flush()
+                reconn_notice()
                 StreamLock.release()
                 break
             elif tweet is Hangup:
                 printNicely("-- Hangup --")
+                reconn_notice()
+                StreamLock.release()
+                break
             elif tweet.get('text'):
                 # Check the semaphore pause and lock (stream process only)
                 if g['pause']:
