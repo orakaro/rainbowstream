@@ -328,6 +328,7 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
         formater = nick.join(formater.split('#nick'))
         formater = fav.join(formater.split('#fav'))
         formater = tweet.join(formater.split('#tweet'))
+        formater = emojize(formater)
         # Change clock word
         word = [wo for wo in formater.split() if '#clock' in wo][0]
         delimiter = color_func(c['TWEET']['clock'])(
@@ -336,11 +337,6 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
         # Change id word
         word = [wo for wo in formater.split() if '#id' in wo][0]
         delimiter = color_func(c['TWEET']['id'])(id.join(word.split('#id')))
-        formater = delimiter.join(formater.split(word))
-        # Change client word
-        word = [wo for wo in formater.split() if '#client' in wo][0]
-        delimiter = color_func(c['TWEET']['client'])(
-            client.join(word.split('#client')))
         formater = delimiter.join(formater.split(word))
         # Change retweet count word
         word = [wo for wo in formater.split() if '#rt_count' in wo][0]
@@ -352,7 +348,11 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
         delimiter = color_func(c['TWEET']['favorite_count'])(
             str(favorite_count).join(word.split('#fa_count')))
         formater = delimiter.join(formater.split(word))
-        formater = emojize(formater)
+        # Change client word
+        word = [wo for wo in formater.split() if '#client' in wo][0]
+        delimiter = color_func(c['TWEET']['client'])(
+            client.join(word.split('#client')))
+        formater = delimiter.join(formater.split(word))
     except:
         pass
 
