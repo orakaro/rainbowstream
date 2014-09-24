@@ -27,6 +27,7 @@
         "nick"            : 64,
         "clock"           : 32,
         "id"              : 130,
+        "client"          : 23,
         "favorited"       : 64,
         "retweet_count"   : 64,
         "favorite_count"  : 124,

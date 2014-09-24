@@ -144,6 +144,8 @@ Here is full list of supported command:
 
 -  ``ufav 12`` will unfavorite tweet with *[id=12]*.
 
+-  ``share 12`` will copy tweet with *[id=12]* to your clipboard.
+
 -  ``del 12`` will delete tweet with *[id=12]*.
 
 -  ``show image 12`` will show the image in tweet with *[id=12]* in your OS’s image viewer.

@@ -482,6 +482,24 @@ def unfavorite():
     printNicely('')
 
 
+def share():
+    """
+    Copy url of a tweet to clipboard
+    """
+    t = Twitter(auth=authen())
+    try:
+        id = int(g['stuff'].split()[0])
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = c['tweet_dict'][id]
+    tweet = t.statuses.show(id=tid)
+    url = 'https://twitter.com/' + \
+        tweet['user']['screen_name'] + '/status/' + str(tid)
+    os.system("echo '%s' | pbcopy" % url)
+    printNicely(green('Copied tweet\'s url to clipboard.'))
+
+
 def delete():
     """
     Delete
@@ -1395,6 +1413,9 @@ def help_tweets():
         light_green('ufav 12 ') + ' will unfavorite tweet with ' + \
         light_yellow('[id=12]') + '.\n'
     usage += s * 2 + \
+        light_green('share 12 ') + ' will copy the url of the tweet with ' + \
+        light_yellow('[id=12]') + ' to your clipboard.\n'
+    usage += s * 2 + \
         light_green('del 12 ') + ' will delete tweet with ' + \
         light_yellow('[id=12]') + '.\n'
     usage += s * 2 + light_green('show image 12') + ' will show image in tweet with ' + \
@@ -1674,6 +1695,7 @@ cmdset = [
     'rep',
     'del',
     'ufav',
+    'share',
     's',
     'mes',
     'show',
@@ -1719,6 +1741,7 @@ funcset = [
     reply,
     delete,
     unfavorite,
+    share,
     search,
     message,
     show,
@@ -1777,6 +1800,7 @@ def listen():
             [],  # reply
             [],  # delete
             [],  # unfavorite
+            [],  # url
             ['#'],  # search
             ['@'],  # message
             ['image'],  # show image

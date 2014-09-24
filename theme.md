@@ -25,15 +25,18 @@ Examples are available in
     "DECORATED_NAME" : 198,
     "CYCLE_COLOR" :[198,57,166,50,179,74,112],
     "TWEET" : {
+        "mynick"          : 179,
         "nick"            : 112,
         "clock"           : 57,
         "id"              : 166,
+        "client"          : 74,
         "favorited"       : 50,
         "retweet_count"   : 50,
         "favorite_count"  : 198,
         "rt"              : 179,
         "link"            : 74,
         "hashtag"         : 198,
+        "mytweet"         : 179,
         "keyword"         : "on_light_green"
     },
 
@@ -46,8 +49,8 @@ Examples are available in
     "MESSAGE" : {
         "partner"       : 112,
         "me"            : 112,
-        "me_frame"      : 74,
         "partner_frame" : 198,
+        "me_frame"      : 74,
         "sender"        : 112,
         "recipient"     : 112,
         "to"            : 50,
@@ -144,6 +147,7 @@ Color reference can be found at
   * `nick` : color for other Twitter __username__.
   * `clock`: color for time of tweet.
   * `id`: color for tweet's id.
+  * `client`: color for used Twitter client.
   * `favorite`: color for the star symbol when a tweet is favorited by you.
   * `retweet_count`: color for retweets count.
   * `favorite_count`: color for favorites count.

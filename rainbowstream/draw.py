@@ -190,6 +190,7 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     favorited = t['favorited']
     retweet_count = t['retweet_count']
     favorite_count = t['favorite_count']
+    client = t['source']
     date = parser.parse(created_at)
     try:
         clock_format = c['FORMAT']['TWEET']['CLOCK_FORMAT']
@@ -214,6 +215,12 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
 
     # Unescape HTML character
     text = unescape(text)
+
+    # Get client name
+    try:
+        client = client.split('>')[-2].split('<')[0]
+    except:
+        client = None
 
     # Get expanded url
     try:
@@ -329,6 +336,11 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
         # Change id word
         word = [wo for wo in formater.split() if '#id' in wo][0]
         delimiter = color_func(c['TWEET']['id'])(id.join(word.split('#id')))
+        formater = delimiter.join(formater.split(word))
+        # Change client word
+        word = [wo for wo in formater.split() if '#client' in wo][0]
+        delimiter = color_func(c['TWEET']['client'])(
+            client.join(word.split('#client')))
         formater = delimiter.join(formater.split(word))
         # Change retweet count word
         word = [wo for wo in formater.split() if '#rt_count' in wo][0]
