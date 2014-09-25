@@ -49,6 +49,8 @@ def get_all_config():
         data.pop('ONLY_LIST', None)
         data.pop('IGNORE_LIST', None)
         data.pop('FORMAT', None)
+        data.pop('QUOTE_FORMAT', None)
+        data.pop('NOTIFY_FORMAT', None)
         return data
     except:
         return []

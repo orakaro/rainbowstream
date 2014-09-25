@@ -496,8 +496,12 @@ def share():
     tweet = t.statuses.show(id=tid)
     url = 'https://twitter.com/' + \
         tweet['user']['screen_name'] + '/status/' + str(tid)
-    os.system("echo '%s' | pbcopy" % url)
-    printNicely(green('Copied tweet\'s url to clipboard.'))
+    import platform
+    if platform.system().lower() == 'darwin':
+        os.system("echo '%s' | pbcopy" % url)
+        printNicely(green('Copied tweet\'s url to clipboard.'))
+    else:
+        printNicely('Direct link: ' + yellow(url))
 
 
 def delete():
