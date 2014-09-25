@@ -489,10 +489,10 @@ def share():
     t = Twitter(auth=authen())
     try:
         id = int(g['stuff'].split()[0])
+        tid = c['tweet_dict'][id]
     except:
-        printNicely(red('Sorry I can\'t understand.'))
+        printNicely(red('Tweet id is not valid.'))
         return
-    tid = c['tweet_dict'][id]
     tweet = t.statuses.show(id=tid)
     url = 'https://twitter.com/' + \
         tweet['user']['screen_name'] + '/status/' + str(tid)
@@ -1417,8 +1417,8 @@ def help_tweets():
         light_green('ufav 12 ') + ' will unfavorite tweet with ' + \
         light_yellow('[id=12]') + '.\n'
     usage += s * 2 + \
-        light_green('share 12 ') + ' will copy the url of the tweet with ' + \
-        light_yellow('[id=12]') + ' to your clipboard.\n'
+        light_green('share 12 ') + ' will get the direct link of the tweet with ' + \
+        light_yellow('[id=12]') + '.\n'
     usage += s * 2 + \
         light_green('del 12 ') + ' will delete tweet with ' + \
         light_yellow('[id=12]') + '.\n'
