@@ -144,7 +144,7 @@ Here is full list of supported command:
 
 -  ``ufav 12`` will unfavorite tweet with *[id=12]*.
 
--  ``share 12`` will copy tweet with *[id=12]* to your clipboard.
+-  ``share 12`` will copy link to tweet with *[id=12]* to your clipboard if you are on a Mac, or display it directly if you are on Linux.
 
 -  ``del 12`` will delete tweet with *[id=12]*.
 
