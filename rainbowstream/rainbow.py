@@ -1929,7 +1929,7 @@ def stream(domain, args, name='Rainbow Stream'):
     if name == g['PREFIX'][1:]:
         g['current_list'] = ''
     else:
-        g['current_list'] = name
+        g['current_list'] = name if name != 'Rainbow Stream' else 'public'
     # These arguments are optional:
     stream_args = dict(
         timeout=0.5,  # To check g['stream_stop'] after each 0.5 s
