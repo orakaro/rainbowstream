@@ -903,7 +903,7 @@ def list_home(t):
         owner_screen_name=owner,
         count=c['LIST_MAX'],
         include_entities=False)
-    for tweet in res:
+    for tweet in reversed(res):
         draw(t=tweet)
     printNicely('')
 
