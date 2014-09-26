@@ -220,9 +220,7 @@ Here is full list of supported command:
 
    ``Ignore nicks``\ decide what nicks will be exclude.
 
--  ``switch public #AKB48 -d`` will apply filter to *ONLY\_LIST* and *IGNORE\_LIST*. You can setup 2 list above at ``config.py``
-
--  ``switch mine`` will switch current stream to personal stream. ``-f`` and ``-d`` will work as well.
+-  ``switch mine`` will switch current stream to personal stream. ``-f`` will work as well.
 
 -  ``switch list`` will switch to a Twitter list's stream. You will be asked for list name.
 
@@ -339,9 +337,9 @@ You also can view or set a new value of every config key by ``config`` command (
 
 -  ``LIST_MAX``: default tweets to display on 'list home' command.
 
--  ``ONLY_LIST``: filter list on 'switch' command.
+-  ``ONLY_LIST``: filter list on 'switch' command. Eg: ["@fat","mdo"]
 
--  ``IGNORE_LIST``: ignore list on 'switch' command.
+-  ``IGNORE_LIST``: ignore list on 'switch' command. Eg: ["@fat"]
 
 -  ``HISTORY_FILENAME``: name of file which stores input history.
 

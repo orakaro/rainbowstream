@@ -183,6 +183,13 @@ def init(args):
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
     set_config('IMAGE_ON_TERM', str(c['IMAGE_ON_TERM']))
+    # Check type of ONLY_LIST and IGNORE_LIST
+    if not isinstance(c['ONLY_LIST'], list):
+        printNicely(red('ONLY_LIST is not a valid list value.'))
+        c['ONLY_LIST'] = []
+    if not isinstance(c['IGNORE_LIST'], list):
+        printNicely(red('IGNORE_LIST is not a valid list value.'))
+        c['IGNORE_LIST'] = []
     # Mute dict
     c['IGNORE_LIST'] += build_mute_dict()
 
@@ -1177,9 +1184,6 @@ def switch():
                 ignore = raw_input('Ignore nicks [Ex: @xxx,@yy]: ')
                 args.filter = filter(None, only.split(','))
                 args.ignore = filter(None, ignore.split(','))
-            elif g['stuff'].split()[-1] == '-d':
-                args.filter = c['ONLY_LIST']
-                args.ignore = c['IGNORE_LIST']
         except:
             printNicely(red('Sorry, wrong format.'))
             return
@@ -1536,8 +1540,6 @@ def help_stream():
         ' filter will decide nicks will be INCLUDE ONLY.\n'
     usage += s * 3 + light_yellow('Ignore nicks') + \
         ' filter will decide nicks will be EXCLUDE.\n'
-    usage += s * 2 + light_green('switch mine -d') + \
-        ' will use the config\'s ONLY_LIST and IGNORE_LIST.\n'
     usage += s * 2 + light_green('switch list') + \
         ' will switch to a Twitter list\'s stream. You will be asked for list name\n'
     printNicely(usage)
