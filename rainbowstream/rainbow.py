@@ -1220,7 +1220,7 @@ def switch():
         elif target == 'list':
             owner, slug = get_slug()
             # Force python 2 not redraw readline buffer
-            g['cmd'] = '/'.join([owner, slug])
+            g['PREFIX'] = g['cmd'] = '/'.join([owner, slug])
             printNicely(light_yellow('getting list members ...'))
             # Get members
             t = Twitter(auth=authen())
