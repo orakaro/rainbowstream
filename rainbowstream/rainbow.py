@@ -1195,6 +1195,8 @@ def switch():
             # Kill old thread
             g['stream_stop'] = True
             args.track_keywords = keyword
+            # Set prefix to origin name with public
+            g['PREFIX'] = '@' + g['original_name'] + '/public'
             # Start new thread
             th = threading.Thread(
                 target=stream,
@@ -1207,6 +1209,8 @@ def switch():
         elif target == 'mine':
             # Kill old thread
             g['stream_stop'] = True
+            # Set prefix to origin name
+            g['PREFIX'] = '@' + g['original_name']
             # Start new thread
             th = threading.Thread(
                 target=stream,
