@@ -162,6 +162,8 @@ def init(args):
     g['full_name'] = name
     g['decorated_name'] = lambda x: color_func(
         c['DECORATED_NAME'])('[' + x + ']: ', rl=True)
+    # Name of current list (if any)
+    g['current_list'] = ''
     # Theme init
     files = os.listdir(os.path.dirname(__file__) + '/colorset')
     themes = [f.split('.')[0] for f in files if f.split('.')[-1] == 'json']
@@ -1866,8 +1868,12 @@ def listen():
         try:
             # raw_input
             if g['prefix']:
+                # Set prefix with current tracked list (if any)
+                prefix = g['PREFIX']
+                if g['current_list'] != '':
+                    prefix += '/' + g['current_list']
                 # Only use PREFIX as a string with raw_input
-                line = raw_input(g['decorated_name'](g['PREFIX']))
+                line = raw_input(g['decorated_name'](prefix))
             else:
                 line = raw_input()
             # Save cmd to compare with readline buffer
@@ -1924,6 +1930,11 @@ def stream(domain, args, name='Rainbow Stream'):
     }
     if c['ASCII_ART']:
         ascii_art(art_dict[domain])
+    # Set name of current tracked list
+    if name == g['PREFIX'][1:]:
+        g['current_list'] = ''
+    else:
+        g['current_list'] = name if name != 'Rainbow Stream' else 'public'
     # These arguments are optional:
     stream_args = dict(
         timeout=0.5,  # To check g['stream_stop'] after each 0.5 s
