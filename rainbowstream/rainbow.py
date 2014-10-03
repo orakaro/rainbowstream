@@ -74,7 +74,7 @@ def parse_arguments():
     parser.add_argument(
         '-pt',
         '--proxy-type',
-        default='SOCKS4',
+        default='SOCKS5',
         help='Proxy type (HTTP, SOCKS4, SOCKS5; Default: SOCKS5).')
     return parser.parse_args()
 
