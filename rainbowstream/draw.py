@@ -7,6 +7,7 @@ import arrow
 import re
 import os
 
+from io import BytesIO
 from twitter.util import printNicely
 from functools import wraps
 from pyfiglet import figlet_format
