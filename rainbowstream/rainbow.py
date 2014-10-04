@@ -11,14 +11,13 @@ import traceback
 import pkg_resources
 import socks
 import socket
+import urllib
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
 from twitter.oauth import OAuth, read_token_file
 from twitter.oauth_dance import oauth_dance
 from twitter.util import printNicely
-
-from urllib import error
 
 from .draw import *
 from .colors import *
@@ -2044,7 +2043,7 @@ def fly():
     try:
         if args.proxy_host:
             # Setup proxy by monkeypatching the standard lib
-            # You might want to check https://github.com/Anorov/PySocks for further
+            # You might want to check https://github.com/Anorov/PySocks for
             # further info.
             if args.proxy_type.lower() == "socks5" or not args.proxy_type:
                 socks.set_default_proxy(socks.SOCKS5, args.proxy_host, int(args.proxy_port))
@@ -2064,7 +2063,7 @@ def fly():
         printNicely(magenta("Let's try again later."))
         save_history()
         sys.exit()
-    except (ConnectionRefusedError, socks.ProxyConnectionError, error.URLError):
+    except (ConnectionRefusedError, socks.ProxyConnectionError, urllib.error.URLError):
         printNicely(
             magenta("There seems to be a connection problem."))
         printNicely(
