@@ -11,8 +11,8 @@ import traceback
 import pkg_resources
 import socks
 import socket
-import urllib
 
+from io import BytesIO
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
 from twitter.oauth import OAuth, read_token_file
@@ -76,6 +76,31 @@ def parse_arguments():
         default='SOCKS5',
         help='Proxy type (HTTP, SOCKS4, SOCKS5; Default: SOCKS5).')
     return parser.parse_args()
+
+
+def proxy_connect(args):
+    """
+    Connect to specified proxy
+    """
+    if args.proxy_host:
+        # Setup proxy by monkeypatching the standard lib
+        if args.proxy_type.lower() == "socks5" or not args.proxy_type:
+            socks.set_default_proxy(
+                socks.SOCKS5, args.proxy_host,
+                int(args.proxy_port))
+        elif args.proxy_type.lower() == "http":
+            socks.set_default_proxy(
+                socks.HTTP, args.proxy_host,
+                int(args.proxy_port))
+        elif args.proxy_type.lower() == "socks4":
+            socks.set_default_proxy(
+                socks.SOCKS4, args.proxy_host,
+                int(args.proxy_port))
+        else:
+            printNicely(
+                magenta("Sorry, wrong proxy type specified! Aborting..."))
+            sys.exit()
+        socket.socket = socks.socksocket
 
 
 def authen():
@@ -2041,21 +2066,9 @@ def fly():
     # Initial
     args = parse_arguments()
     try:
-        if args.proxy_host:
-            # Setup proxy by monkeypatching the standard lib
-            # You might want to check https://github.com/Anorov/PySocks for
-            # further info.
-            if args.proxy_type.lower() == "socks5" or not args.proxy_type:
-                socks.set_default_proxy(socks.SOCKS5, args.proxy_host, int(args.proxy_port))
-            elif args.proxy_type.lower() == "http":
-                socks.set_default_proxy(socks.HTTP, args.proxy_host, int(args.proxy_port))
-            elif args.proxy_type.lower() == "socks4":
-                socks.set_default_proxy(socks.SOCKS4, args.proxy_host, int(args.proxy_port))
-            else:
-                printNicely(magenta("Sorry, wrong proxy type specified! Aborting..."))
-                sys.exit()
-            socket.socket = socks.socksocket
+        proxy_connect(args)
         init(args)
+    # Twitter API connection problem
     except TwitterHTTPError:
         printNicely('')
         printNicely(
@@ -2063,7 +2076,8 @@ def fly():
         printNicely(magenta("Let's try again later."))
         save_history()
         sys.exit()
-    except (ConnectionRefusedError, socks.ProxyConnectionError, urllib.error.URLError):
+    # Proxy connection problem
+    except (socks.ProxyConnectionError, URLError):
         printNicely(
             magenta("There seems to be a connection problem."))
         printNicely(

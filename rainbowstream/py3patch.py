@@ -1,17 +1,13 @@
 import sys
 
 # Library compatibility
-# StringIO module
-try:
-    from StringIO import StringIO, BytesIO
-except:
-    from io import StringIO, BytesIO
-
-# HTMLParser module
 if sys.version[0] == "2":
     from HTMLParser import HTMLParser
+    from urllib2 import URLError
 else:
     from html.parser import HTMLParser
+    from urllib.error import URLError
+
 unescape = HTMLParser().unescape
 # According to https://github.com/python/cpython/blob/master/Lib/html/parser.py#L547 ,
 # in python 3.5 maybe I should use
