@@ -9,12 +9,16 @@ import requests
 import webbrowser
 import traceback
 import pkg_resources
+import socks
+import socket
 
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.api import *
 from twitter.oauth import OAuth, read_token_file
 from twitter.oauth_dance import oauth_dance
 from twitter.util import printNicely
+
+from urllib import error
 
 from .draw import *
 from .colors import *
@@ -58,6 +62,20 @@ def parse_arguments():
         '--image-on-term',
         action='store_true',
         help='Display all image on terminal.')
+    parser.add_argument(
+        '-ph',
+        '--proxy-host',
+        help='Use HTTP/SOCKS proxy for network connections.')
+    parser.add_argument(
+        '-pp',
+        '--proxy-port',
+        default=8080,
+        help='HTTP/SOCKS proxy port (Default: 8080).')
+    parser.add_argument(
+        '-pt',
+        '--proxy-type',
+        default='SOCKS5',
+        help='Proxy type (HTTP, SOCKS4, SOCKS5; Default: SOCKS5).')
     return parser.parse_args()
 
 
@@ -2024,6 +2042,20 @@ def fly():
     # Initial
     args = parse_arguments()
     try:
+        if args.proxy_host:
+            # Setup proxy by monkeypatching the standard lib
+            # You might want to check https://github.com/Anorov/PySocks for further
+            # further info.
+            if args.proxy_type.lower() == "socks5" or not args.proxy_type:
+                socks.set_default_proxy(socks.SOCKS5, args.proxy_host, int(args.proxy_port))
+            elif args.proxy_type.lower() == "http":
+                socks.set_default_proxy(socks.HTTP, args.proxy_host, int(args.proxy_port))
+            elif args.proxy_type.lower() == "socks4":
+                socks.set_default_proxy(socks.SOCKS4, args.proxy_host, int(args.proxy_port))
+            else:
+                printNicely(magenta("Sorry, wrong proxy type specified! Aborting..."))
+                sys.exit()
+            socket.socket = socks.socksocket
         init(args)
     except TwitterHTTPError:
         printNicely('')
@@ -2032,6 +2064,14 @@ def fly():
         printNicely(magenta("Let's try again later."))
         save_history()
         sys.exit()
+    except (ConnectionRefusedError, socks.ProxyConnectionError, error.URLError):
+        printNicely(
+            magenta("There seems to be a connection problem."))
+        printNicely(
+            magenta("You might want to check your proxy settings (host, port and type)!"))
+        save_history()
+        sys.exit()
+
     # Spawn stream thread
     th = threading.Thread(
         target=stream,

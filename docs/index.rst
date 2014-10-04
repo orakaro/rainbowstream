@@ -97,6 +97,18 @@ In the first time you will be asked for authorization of Rainbow Stream
 app at Twitter. Just click the “Authorize access” button and paste PIN
 number to the terminal, the rainbow will start.
 
+You might want to use rainbowstream via an **HTTP/SOCKS proxy**. Proxy settings are
+provided as follows:
+
+.. code:: bash
+
+    rainbowstream --proxy-host localhost --proxy-port 1337 --proxy-type HTTP
+    # or using the short form:
+    rainbowstream -ph localhost -pp 1337 -pt HTTP
+
+Both ``--proxy-port`` and ``--proxy-type`` can be omitted. In this case default
+proxy port ``8080`` and default proxy type ``SOCKS5`` are used.
+
 The interactive mode
 ^^^^^^^^^^^^^^^^^^^^
 
