@@ -45,6 +45,8 @@
     "IMAGE_SHIFT" : 2,
     // Image max height
     "IMAGE_MAX_HEIGHT" : 90,
+    // Seconds to wait before displaying another tweet, will drop all tweets while waiting.
+    "STREAM_DELAY" : 0,
     // Stream config
     "USER_DOMAIN" : "userstream.twitter.com",
     "PUBLIC_DOMAIN" : "stream.twitter.com",

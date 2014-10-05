@@ -1997,6 +1997,7 @@ def stream(domain, args, name='Rainbow Stream'):
         # Block new stream until other one exits
         StreamLock.acquire()
         g['stream_stop'] = False
+        last_tweet_time = time.time()
         for tweet in tweet_iter:
             if tweet is None:
                 printNicely("-- None --")
@@ -2017,32 +2018,34 @@ def stream(domain, args, name='Rainbow Stream'):
                 StreamLock.release()
                 break
             elif tweet.get('text'):
-                # Check the semaphore pause and lock (stream process only)
-                if g['pause']:
-                    continue
-                while c['lock']:
-                    time.sleep(0.5)
-                # Draw the tweet
-                draw(
-                    t=tweet,
-                    keyword=args.track_keywords,
-                    humanize=False,
-                    fil=args.filter,
-                    ig=args.ignore,
-                )
-                # Current readline buffer
-                current_buffer = readline.get_line_buffer().strip()
-                # There is an unexpected behaviour in MacOSX readline + Python 2:
-                # after completely delete a word after typing it,
-                # somehow readline buffer still contains
-                # the 1st character of that word
-                if current_buffer and g['cmd'] != current_buffer:
-                    sys.stdout.write(
-                        g['decorated_name'](c['PREFIX']) + str2u(current_buffer))
-                    sys.stdout.flush()
-                elif not c['HIDE_PROMPT']:
-                    sys.stdout.write(g['decorated_name'](c['PREFIX']))
-                    sys.stdout.flush()
+                if time.time() - last_tweet_time >= get_config("STREAM_DELAY"):
+                  last_tweet_time = time.time()
+                  # Check the semaphore pause and lock (stream process only)
+                  if g['pause']:
+                      continue
+                  while c['lock']:
+                      time.sleep(0.5)
+                  # Draw the tweet
+                  draw(
+                      t=tweet,
+                      keyword=args.track_keywords,
+                      humanize=False,
+                      fil=args.filter,
+                      ig=args.ignore,
+                  )
+                  # Current readline buffer
+                  current_buffer = readline.get_line_buffer().strip()
+                  # There is an unexpected behaviour in MacOSX readline + Python 2:
+                  # after completely delete a word after typing it,
+                  # somehow readline buffer still contains
+                  # the 1st character of that word
+                  if current_buffer and g['cmd'] != current_buffer:
+                      sys.stdout.write(
+                          g['decorated_name'](c['PREFIX']) + str2u(current_buffer))
+                      sys.stdout.flush()
+                  elif not c['HIDE_PROMPT']:
+                      sys.stdout.write(g['decorated_name'](c['PREFIX']))
+                      sys.stdout.flush()
             elif tweet.get('direct_message'):
                 # Check the semaphore pause and lock (stream process only)
                 if g['pause']:
