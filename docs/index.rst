@@ -359,6 +359,8 @@ You also can view or set a new value of every config key by ``config`` command (
 
 -  ``IMAGE_MAX_HEIGHT``: max height of image in '-iot'/'--image-on-term' mode.
 
+-  ``STREAM_DELAY``: seconds to wait before displaying another tweet, will drop all tweets while waiting. This value can be used to slow down the stream.
+
 -  ``USER_DOMAIN``: user URL of Twitter Streaming API.
 
 -  ``PUBLIC_DOMAIN``: public URL of Twitter Streaming API.
