@@ -178,6 +178,8 @@ def upgrade_center():
             notice += light_magenta('You should upgrade with ')
             notice += light_green('pip install -U rainbowstream')
             printNicely(notice)
+        else:
+            printNicely(yellow('You are runnig latest ' + current + ' version.'))
     except:
         pass
 
@@ -1778,7 +1780,8 @@ cmdset = [
     'p',
     'r',
     'c',
-    'q'
+    'q',
+    'version',
 ]
 
 # Handle function set
@@ -1824,7 +1827,8 @@ funcset = [
     pause,
     replay,
     clear,
-    quit
+    quit,
+    upgrade_center,
 ]
 
 
