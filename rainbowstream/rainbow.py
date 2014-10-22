@@ -27,6 +27,7 @@ from .interactive import *
 from .c_image import *
 from .py3patch import *
 from .emoji import *
+from .util import printTwitterErrors
 
 # Global values
 g = {}
@@ -2058,10 +2059,11 @@ def stream(domain, args, name='Rainbow Stream'):
             elif tweet.get('event'):
                 c['events'].append(tweet)
                 print_event(tweet)
-    except TwitterHTTPError:
+    except TwitterHTTPError as e:
         printNicely('')
         printNicely(
             magenta("We have maximum connection problem with twitter'stream API right now :("))
+        printTwitterErrors(e)
 
 
 def fly():
@@ -2074,10 +2076,11 @@ def fly():
         proxy_connect(args)
         init(args)
     # Twitter API connection problem
-    except TwitterHTTPError:
+    except TwitterHTTPError as e:
         printNicely('')
         printNicely(
             magenta("We have connection problem with twitter'stream API right now :("))
+        printTwitterErrors(e)
         printNicely(magenta("Let's try again later."))
         save_history()
         sys.exit()
