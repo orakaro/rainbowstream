@@ -179,7 +179,7 @@ def upgrade_center():
             notice += light_green('pip install -U rainbowstream')
             printNicely(notice)
         else:
-            printNicely(yellow('You are runnig latest ' + current + ' version.'))
+            printNicely(yellow('You are running latest ' + current + ' version.'))
     except:
         pass
 
@@ -1907,6 +1907,7 @@ def listen():
             [],  # reconnect
             [],  # clear
             [],  # quit
+            [],  # version
         ]
     ))
     init_interactive_shell(d)
