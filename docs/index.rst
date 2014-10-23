@@ -268,6 +268,8 @@ Here is full list of supported command:
 
 -  ``c`` will clear the screen.
 
+-  ``v`` will show version info.
+
 -  ``q`` will quit.
 
 Theme customization

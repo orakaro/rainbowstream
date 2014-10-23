@@ -179,7 +179,10 @@ def upgrade_center():
             notice += light_green('pip install -U rainbowstream')
             printNicely(notice)
         else:
-            printNicely(yellow('You are running latest ' + current + ' version.'))
+            notice = light_yellow('You are running latest version (')
+            notice += light_green(current)
+            notice += light_yellow(')')
+            printNicely(notice)
     except:
         pass
 
@@ -1662,6 +1665,7 @@ def help():
     usage += s * 2 + light_green('p') + ' will pause the stream.\n'
     usage += s * 2 + light_green('r') + ' will unpause the stream.\n'
     usage += s * 2 + light_green('c') + ' will clear the screen.\n'
+    usage += s * 2 + light_green('v') + ' will show version info.\n'
     usage += s * 2 + light_green('q') + ' will quit.\n'
     # End
     usage += '\n'
@@ -1780,8 +1784,8 @@ cmdset = [
     'p',
     'r',
     'c',
+    'v',
     'q',
-    'version',
 ]
 
 # Handle function set
@@ -1827,8 +1831,8 @@ funcset = [
     pause,
     replay,
     clear,
-    quit,
     upgrade_center,
+    quit,
 ]
 
 
@@ -1906,8 +1910,8 @@ def listen():
             [],  # pause
             [],  # reconnect
             [],  # clear
-            [],  # quit
             [],  # version
+            [],  # quit
         ]
     ))
     init_interactive_shell(d)
