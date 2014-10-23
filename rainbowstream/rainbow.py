@@ -2073,6 +2073,8 @@ def stream(domain, args, name='Rainbow Stream'):
         printNicely(
             magenta("We have connection problem with twitter'stream API right now :("))
         detail_twitter_error(e)
+        sys.stdout.write(g['decorated_name'](c['PREFIX']))
+        sys.stdout.flush()
 
 
 def fly():
