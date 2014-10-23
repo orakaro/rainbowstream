@@ -4,14 +4,15 @@ from twitter.util import printNicely
 from .colors import *
 
 
-def printTwitterErrors(twitterException):
+def detail_twitter_error(twitterException):
     """
     Display Twitter Errors nicely
     """
     try:
         loadedJson = json.loads(twitterException.response_data)
         for m in loadedJson.get('errors', dict()):
-            printNicely(
-                magenta("Error " + str(m.get('code')) + ": " + m.get('message')))
+            info = "Error " + str(m.get('code')) + ": " + m.get('message')
+            printNicely(yellow(info))
     except ValueError:
-        printNicely(magenta("Error: " + twitterException.response_data))
+        info = "Error: " + twitterException.response_data
+        printNicely(yellow(info))
