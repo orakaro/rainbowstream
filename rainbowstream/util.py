@@ -26,18 +26,19 @@ def format_prefix(listname = '', keyword = ''):
     Format the custom prefix
     """
     formattedPrefix = c['PREFIX']
-    username = '@' + c['original_name']
+    owner = '@' + c['original_name']
     place = ''
     if keyword != '':
         place = '/public'
         keyword = '#' + keyword
 
     if listname != '':
-        username, place = listname.split('/')
+        owner, place = listname.split('/')
         place = "/" + place
 
-    formattedPrefix = formattedPrefix.replace("#username", username)
+    formattedPrefix = formattedPrefix.replace("#owner", owner)
     formattedPrefix = formattedPrefix.replace("#place", place)
     formattedPrefix = formattedPrefix.replace("#keyword", keyword)
+    formattedPrefix = formattedPrefix.replace("#me", '@' + c['original_name'])
 
     return formattedPrefix
