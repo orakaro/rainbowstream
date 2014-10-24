@@ -204,8 +204,8 @@ def init(args):
     name = credential['name']
     if not get_config('PREFIX'):
         set_config('PREFIX', screen_name)
-    g['PREFIX'] = u2str(emojize(c['PREFIX']))
     c['original_name'] = g['original_name'] = screen_name[1:]
+    g['PREFIX'] = u2str(emojize(format_prefix()))
     g['full_name'] = name
     g['decorated_name'] = lambda x: color_func(
         c['DECORATED_NAME'])('[' + x + ']: ', rl=True)
@@ -1243,7 +1243,7 @@ def switch():
             g['stream_stop'] = True
             args.track_keywords = keyword
             # Reset prefix
-            g['PREFIX'] = u2str(emojize(c['PREFIX']))
+            g['PREFIX'] = u2str(emojize(format_prefix(keyword = keyword)))
             # Start new thread
             th = threading.Thread(
                 target=stream,
@@ -1257,7 +1257,7 @@ def switch():
             # Kill old thread
             g['stream_stop'] = True
             # Reset prefix
-            g['PREFIX'] = u2str(emojize(c['PREFIX']))
+            g['PREFIX'] = u2str(emojize(format_prefix()))
             # Start new thread
             th = threading.Thread(
                 target=stream,
@@ -1271,7 +1271,8 @@ def switch():
         elif target == 'list':
             owner, slug = get_slug()
             # Force python 2 not redraw readline buffer
-            g['PREFIX'] = g['cmd'] = '/'.join([owner, slug])
+            listname = '/'.join([owner, slug])
+            g['PREFIX'] = g['cmd'] = u2str(emojize(format_prefix(listname = listname)))
             printNicely(light_yellow('getting list members ...'))
             # Get members
             t = Twitter(auth=authen())
