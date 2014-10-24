@@ -1409,7 +1409,7 @@ def config():
                 g['decorated_name'] = lambda x: color_func(
                     c['DECORATED_NAME'])('[' + x + ']: ')
             elif key == 'PREFIX':
-                g['PREFIX'] = u2str(emojize(c['PREFIX']))
+                g['PREFIX'] = u2str(emojize(format_prefix()))
             reload_config()
             printNicely(green('Updated successfully.'))
         except:
