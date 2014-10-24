@@ -323,7 +323,12 @@ You also can view or set a new value of every config key by ``config`` command (
 
 -  ``HIDE_PROMPT``: hide prompt after receiving a tweet or not.
 
--  ``PREFIX``: display string of prompt.
+-  ``PREFIX``: display formated string of prompt.
+
+    + ``#me``: Your username with '@'
+    + ``#place``: Current list name or public for public stream
+    + ``#owner``: Owner of the current list
+    + ``#keyword``: Keyword for a public stream
 
 -  ``SEARCH_TYPE``: search type in 'search' command ('mixed','recent','popular').
 
