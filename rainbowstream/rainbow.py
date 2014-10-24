@@ -204,8 +204,7 @@ def init(args):
     name = credential['name']
     if not get_config('PREFIX'):
         set_config('PREFIX', screen_name)
-    c['PREFIX'] = emojize(c['PREFIX'])
-    g['PREFIX'] = u2str(c['PREFIX'])
+    g['PREFIX'] = u2str(emojize(c['PREFIX']))
     c['original_name'] = g['original_name'] = screen_name[1:]
     g['full_name'] = name
     g['decorated_name'] = lambda x: color_func(
@@ -1964,7 +1963,7 @@ def reconn_notice():
         light_green("h stream") + \
         light_magenta(" for more details.")
     printNicely(guide)
-    sys.stdout.write(g['decorated_name'](c['PREFIX']))
+    sys.stdout.write(g['decorated_name'](g['PREFIX']))
     sys.stdout.flush()
 
 
@@ -2053,10 +2052,10 @@ def stream(domain, args, name='Rainbow Stream'):
                 # the 1st character of that word
                 if current_buffer and g['cmd'] != current_buffer:
                     sys.stdout.write(
-                        g['decorated_name'](c['PREFIX']) + str2u(current_buffer))
+                        g['decorated_name'](g['PREFIX']) + current_buffer)
                     sys.stdout.flush()
                 elif not c['HIDE_PROMPT']:
-                    sys.stdout.write(g['decorated_name'](c['PREFIX']))
+                    sys.stdout.write(g['decorated_name'](g['PREFIX']))
                     sys.stdout.flush()
             elif tweet.get('direct_message'):
                 # Check the semaphore pause and lock (stream process only)
@@ -2073,7 +2072,7 @@ def stream(domain, args, name='Rainbow Stream'):
         printNicely(
             magenta("We have connection problem with twitter'stream API right now :("))
         detail_twitter_error(e)
-        sys.stdout.write(g['decorated_name'](c['PREFIX']))
+        sys.stdout.write(g['decorated_name'](g['PREFIX']))
         sys.stdout.flush()
 
 
