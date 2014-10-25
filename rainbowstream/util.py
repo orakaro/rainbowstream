@@ -28,11 +28,11 @@ def format_prefix(listname = '', keyword = ''):
     formattedPrefix = c['PREFIX']
     owner = '@' + c['original_name']
     place = ''
-    if keyword != '':
+    if keyword:
         place = '/public'
         keyword = '#' + keyword
 
-    if listname != '':
+    if listname:
         owner, place = listname.split('/')
         place = "/" + place
 
