@@ -205,6 +205,7 @@ def init(args):
     if not get_config('PREFIX'):
         set_config('PREFIX', screen_name)
     c['original_name'] = g['original_name'] = screen_name[1:]
+    g['listname'] = g['keyword'] = ''
     g['PREFIX'] = u2str(emojize(format_prefix()))
     g['full_name'] = name
     g['decorated_name'] = lambda x: color_func(
@@ -1242,8 +1243,12 @@ def switch():
             # Kill old thread
             g['stream_stop'] = True
             args.track_keywords = keyword
+            # Set the variable to tracked keyword
+            # and reset the listname
+            g['keyword'] = keyword
+            g['listname'] = ''
             # Reset prefix
-            g['PREFIX'] = u2str(emojize(format_prefix(keyword = keyword)))
+            g['PREFIX'] = u2str(emojize(format_prefix(keyword = g['keyword'])))
             # Start new thread
             th = threading.Thread(
                 target=stream,
@@ -1256,6 +1261,8 @@ def switch():
         elif target == 'mine':
             # Kill old thread
             g['stream_stop'] = True
+            # Reset the tracked keyword and listname
+            g['keyword'] = g['listname'] = ''
             # Reset prefix
             g['PREFIX'] = u2str(emojize(format_prefix()))
             # Start new thread
@@ -1272,7 +1279,11 @@ def switch():
             owner, slug = get_slug()
             # Force python 2 not redraw readline buffer
             listname = '/'.join([owner, slug])
-            g['PREFIX'] = g['cmd'] = u2str(emojize(format_prefix(listname = listname)))
+            # Set the listname variable 
+            # and reset tracked keyword
+            g['listname'] = listname
+            g['keyword'] = ''
+            g['PREFIX'] = g['cmd'] = u2str(emojize(format_prefix(listname = g['listname'])))
             printNicely(light_yellow('getting list members ...'))
             # Get members
             t = Twitter(auth=authen())
@@ -1409,7 +1420,7 @@ def config():
                 g['decorated_name'] = lambda x: color_func(
                     c['DECORATED_NAME'])('[' + x + ']: ')
             elif key == 'PREFIX':
-                g['PREFIX'] = u2str(emojize(format_prefix()))
+                g['PREFIX'] = u2str(emojize(format_prefix(listname = g['listname'], keyword = g['keyword'])))
             reload_config()
             printNicely(green('Updated successfully.'))
         except:
