@@ -2,6 +2,7 @@ import json
 
 from twitter.util import printNicely
 from .colors import *
+from .config import *
 
 
 def detail_twitter_error(twitterException):
@@ -18,3 +19,26 @@ def detail_twitter_error(twitterException):
     except:
         info = "Error: " + twitterException.response_data.decode('utf8')
         printNicely(yellow(info))
+
+
+def format_prefix(listname = '', keyword = ''):
+    """
+    Format the custom prefix
+    """
+    formattedPrefix = c['PREFIX']
+    owner = '@' + c['original_name']
+    place = ''
+    if keyword:
+        place = '/public'
+        keyword = '#' + keyword
+
+    if listname:
+        owner, place = listname.split('/')
+        place = "/" + place
+
+    formattedPrefix = formattedPrefix.replace("#owner", owner)
+    formattedPrefix = formattedPrefix.replace("#place", place)
+    formattedPrefix = formattedPrefix.replace("#keyword", keyword)
+    formattedPrefix = formattedPrefix.replace("#me", '@' + c['original_name'])
+
+    return formattedPrefix
