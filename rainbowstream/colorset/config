@@ -10,7 +10,7 @@
     // Hide promt when receive a tweet
     "HIDE_PROMPT" : true,
     // Prefix
-    "PREFIX" : "",
+    "PREFIX" : "#owner#place#me#keyword",
     // 'search': search type ('mixed','recent','popular')
     "SEARCH_TYPE" : "mixed",
     // 'search': search max result, number over 100 will fallback to 100
