@@ -1,10 +1,10 @@
 Rainbow Stream
 --------------
 
-.. image:: http://img.shields.io/pypi/dm/rainbowstream.svg?style=flat
-   :target: https://pypi.python.org/pypi/rainbowstream
+.. image:: http://img.shields.io/pypi/l/rainbowstream.svg?style=flat-square
+   :target: https://github.com/DTVD/rainbowstream/blob/master/LICENSE.txt
 
-.. image:: http://img.shields.io/pypi/v/rainbowstream.svg?style=flat
+.. image:: http://img.shields.io/pypi/v/rainbowstream.svg?style=flat-square
    :target: https://pypi.python.org/pypi/rainbowstream
 
 Terminal-based Twitter Client. Realtime tweetstream, compose, search ,

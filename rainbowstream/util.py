@@ -45,9 +45,9 @@ def format_prefix(listname='', keyword=''):
         formattedPrefix = ''.join(formattedPrefix.split('#owner'))
         formattedPrefix = ''.join(formattedPrefix.split('#place'))
 
-    formattedPrefix = formattedPrefix.replace("#owner", owner)
-    formattedPrefix = formattedPrefix.replace("#place", place)
-    formattedPrefix = formattedPrefix.replace("#keyword", keyword)
-    formattedPrefix = formattedPrefix.replace("#me", '@' + c['original_name'])
+    formattedPrefix = formattedPrefix.replace('#owner', owner)
+    formattedPrefix = formattedPrefix.replace('#place', place)
+    formattedPrefix = formattedPrefix.replace('#keyword', keyword)
+    formattedPrefix = formattedPrefix.replace('#me', '@' + c['original_name'])
 
     return formattedPrefix

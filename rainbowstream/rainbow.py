@@ -99,7 +99,7 @@ def proxy_connect(args):
                 int(args.proxy_port))
         else:
             printNicely(
-                magenta("Sorry, wrong proxy type specified! Aborting..."))
+                magenta('Sorry, wrong proxy type specified! Aborting...'))
             sys.exit()
         socket.socket = socks.socksocket
 
@@ -115,7 +115,7 @@ def authen():
             'USERPROFILE',
             '')) + os.sep + '.rainbow_oauth'
     if not os.path.exists(twitter_credential):
-        oauth_dance("Rainbow Stream",
+        oauth_dance('Rainbow Stream',
                     CONSUMER_KEY,
                     CONSUMER_SECRET,
                     twitter_credential)
@@ -167,10 +167,10 @@ def upgrade_center():
     Check latest and notify to upgrade
     """
     try:
-        current = pkg_resources.get_distribution("rainbowstream").version
+        current = pkg_resources.get_distribution('rainbowstream').version
         url = 'https://raw.githubusercontent.com/DTVD/rainbowstream/master/setup.py'
         readme = requests.get(url).text
-        latest = readme.split("version = \'")[1].split("\'")[0]
+        latest = readme.split('version = \'')[1].split('\'')[0]
         if current != latest:
             notice = light_magenta('RainbowStream latest version is ')
             notice += light_green(latest)
@@ -1971,12 +1971,12 @@ def reconn_notice():
     """
     Notice when Hangup or Timeout
     """
-    guide = light_magenta("You can use ") + \
-        light_green("switch") + \
-        light_magenta(" command to return to your stream.\n")
-    guide += light_magenta("Type ") + \
-        light_green("h stream") + \
-        light_magenta(" for more details.")
+    guide = light_magenta('You can use ') + \
+        light_green('switch') + \
+        light_magenta(' command to return to your stream.\n')
+    guide += light_magenta('Type ') + \
+        light_green('h stream') + \
+        light_magenta(' for more details.')
     printNicely(guide)
     sys.stdout.write(g['decorated_name'](g['PREFIX']))
     sys.stdout.flush()
@@ -2024,7 +2024,7 @@ def stream(domain, args, name='Rainbow Stream'):
         last_tweet_time = time.time()
         for tweet in tweet_iter:
             if tweet is None:
-                printNicely("-- None --")
+                printNicely('-- None --')
             elif tweet is Timeout:
                 # Because the stream check for each 0.3s
                 # so we shouldn't output anything here
@@ -2032,12 +2032,12 @@ def stream(domain, args, name='Rainbow Stream'):
                     StreamLock.release()
                     break
             elif tweet is HeartbeatTimeout:
-                printNicely("-- Heartbeat Timeout --")
+                printNicely('-- Heartbeat Timeout --')
                 reconn_notice()
                 StreamLock.release()
                 break
             elif tweet is Hangup:
-                printNicely("-- Hangup --")
+                printNicely('-- Hangup --')
                 reconn_notice()
                 StreamLock.release()
                 break
@@ -2085,7 +2085,7 @@ def stream(domain, args, name='Rainbow Stream'):
     except TwitterHTTPError as e:
         printNicely('')
         printNicely(
-            magenta("We have connection problem with twitter'stream API right now :("))
+            magenta('We have connection problem with twitter stream API right now :('))
         detail_twitter_error(e)
         sys.stdout.write(g['decorated_name'](g['PREFIX']))
         sys.stdout.flush()
@@ -2104,16 +2104,16 @@ def fly():
     except TwitterHTTPError as e:
         printNicely('')
         printNicely(
-            magenta("We have connection problem with twitter'REST API right now :("))
+            magenta('We have connection problem with twitter REST API right now :('))
         detail_twitter_error(e)
         save_history()
         sys.exit()
     # Proxy connection problem
     except (socks.ProxyConnectionError, URLError):
         printNicely(
-            magenta("There seems to be a connection problem."))
+            magenta('There seems to be a connection problem.'))
         printNicely(
-            magenta("You might want to check your proxy settings (host, port and type)!"))
+            magenta('You might want to check your proxy settings (host, port and type)!'))
         save_history()
         sys.exit()
 
