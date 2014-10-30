@@ -325,10 +325,10 @@ You also can view or set a new value of every config key by ``config`` command (
 
 -  ``PREFIX``: display formated string of prompt.
 
-    + ``#me``: Your username with '@'
-    + ``#place``: Current list name or public for public stream
-    + ``#owner``: Owner of the current list
-    + ``#keyword``: Keyword for a public stream
+    + ``#me``: Your username with '@', only available in personal stream.
+    + ``#place``: List name, only available in list stream.
+    + ``#owner``: Owner of list name, only available in list stream.
+    + ``#keyword``: Keyword, only available on public stream.
 
 -  ``SEARCH_TYPE``: search type in 'search' command ('mixed','recent','popular').
 

@@ -202,8 +202,6 @@ def init(args):
     credential = t.account.verify_credentials()
     screen_name = '@' + credential['screen_name']
     name = credential['name']
-    if not get_config('PREFIX'):
-        set_config('PREFIX', screen_name)
     c['original_name'] = g['original_name'] = screen_name[1:]
     g['listname'] = g['keyword'] = ''
     g['PREFIX'] = u2str(emojize(format_prefix()))
@@ -1248,7 +1246,7 @@ def switch():
             g['keyword'] = keyword
             g['listname'] = ''
             # Reset prefix
-            g['PREFIX'] = u2str(emojize(format_prefix(keyword = g['keyword'])))
+            g['PREFIX'] = u2str(emojize(format_prefix(keyword=g['keyword'])))
             # Start new thread
             th = threading.Thread(
                 target=stream,
@@ -1279,11 +1277,13 @@ def switch():
             owner, slug = get_slug()
             # Force python 2 not redraw readline buffer
             listname = '/'.join([owner, slug])
-            # Set the listname variable 
+            # Set the listname variable
             # and reset tracked keyword
             g['listname'] = listname
             g['keyword'] = ''
-            g['PREFIX'] = g['cmd'] = u2str(emojize(format_prefix(listname = g['listname'])))
+            g['PREFIX'] = g['cmd'] = u2str(emojize(format_prefix(
+                listname=g['listname']
+            )))
             printNicely(light_yellow('getting list members ...'))
             # Get members
             t = Twitter(auth=authen())
@@ -1420,7 +1420,10 @@ def config():
                 g['decorated_name'] = lambda x: color_func(
                     c['DECORATED_NAME'])('[' + x + ']: ')
             elif key == 'PREFIX':
-                g['PREFIX'] = u2str(emojize(format_prefix(listname = g['listname'], keyword = g['keyword'])))
+                g['PREFIX'] = u2str(emojize(format_prefix(
+                    listname=g['listname'],
+                    keyword=g['keyword']
+                )))
             reload_config()
             printNicely(green('Updated successfully.'))
         except:

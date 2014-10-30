@@ -21,20 +21,29 @@ def detail_twitter_error(twitterException):
         printNicely(yellow(info))
 
 
-def format_prefix(listname = '', keyword = ''):
+def format_prefix(listname='', keyword=''):
     """
     Format the custom prefix
     """
     formattedPrefix = c['PREFIX']
     owner = '@' + c['original_name']
     place = ''
+    # Public stream
     if keyword:
-        place = '/public'
-        keyword = '#' + keyword
-
-    if listname:
+        formattedPrefix = ''.join(formattedPrefix.split('#owner'))
+        formattedPrefix = ''.join(formattedPrefix.split('#place'))
+        formattedPrefix = ''.join(formattedPrefix.split('#me'))
+    # List stream
+    elif listname:
+        formattedPrefix = ''.join(formattedPrefix.split('#keyword'))
+        formattedPrefix = ''.join(formattedPrefix.split('#me'))
         owner, place = listname.split('/')
-        place = "/" + place
+        place = '/' + place
+    # Personal stream
+    else:
+        formattedPrefix = ''.join(formattedPrefix.split('#keyword'))
+        formattedPrefix = ''.join(formattedPrefix.split('#owner'))
+        formattedPrefix = ''.join(formattedPrefix.split('#place'))
 
     formattedPrefix = formattedPrefix.replace("#owner", owner)
     formattedPrefix = formattedPrefix.replace("#place", place)
