@@ -154,7 +154,9 @@ Here is full list of supported command:
 
 -  ``conversation 12`` will show the chain of replies prior to the tweet with *[id=12]*.
 
--  ``rep 12 Really`` will reply *‘Really’* to the tweet with *[id=12]*.
+-  ``rep 12 Really`` will reply *‘Really’* to the owner of the tweet with *[id=12]*.
+
+-  ``repall 12 Really`` will reply *‘Really’* to all people in the tweet with *[id=12]*.
 
 -  ``fav 12`` will favorite the tweet with *[id=12]*.
 

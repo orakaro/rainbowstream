@@ -501,6 +501,27 @@ def reply():
     t.statuses.update(status=status, in_reply_to_status_id=tid)
 
 
+def reply_all():
+    """
+    Reply to all
+    """
+    t = Twitter(auth=authen())
+    try:
+        id = int(g['stuff'].split()[0])
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = c['tweet_dict'][id]
+    original_tweet = t.statuses.show(id=tid)
+    text = original_tweet['text']
+    owner = '@' + original_tweet['user']['screen_name']
+    nick_ary = ['@' + re.sub('[\W_]', '', w)
+                for w in text.split() if w.startswith('@')] + [owner]
+    status = ' '.join(g['stuff'].split()[1:])
+    status = ' '.join(nick_ary) + ' ' + str2u(status)
+    t.statuses.update(status=status, in_reply_to_status_id=tid)
+
+
 def favorite():
     """
     Favorite
@@ -1483,7 +1504,10 @@ def help_tweets():
     usage += s * 2 + light_green('conversation 12') + ' will show the chain of ' + \
         'replies prior to the tweet with ' + light_yellow('[id=12]') + '.\n'
     usage += s * 2 + light_green('rep 12 oops') + ' will reply "' + \
-        light_yellow('oops') + '" to tweet with ' + \
+        light_yellow('oops') + '" to the owner of the tweet with ' + \
+        light_yellow('[id=12]') + '.\n'
+    usage += s * 2 + light_green('repall 12 oops') + ' will reply "' + \
+        light_yellow('oops') + '" to all people in the tweet with ' + \
         light_yellow('[id=12]') + '.\n'
     usage += s * 2 + \
         light_green('fav 12 ') + ' will favorite the tweet with ' + \
@@ -1771,6 +1795,7 @@ cmdset = [
     'conversation',
     'fav',
     'rep',
+    'repall',
     'del',
     'ufav',
     'share',
@@ -1818,6 +1843,7 @@ funcset = [
     conversation,
     favorite,
     reply,
+    reply_all,
     delete,
     unfavorite,
     share,
@@ -1878,6 +1904,7 @@ def listen():
             [],  # conversation
             [],  # favorite
             [],  # reply
+            [],  # reply_all
             [],  # delete
             [],  # unfavorite
             [],  # url
@@ -2089,6 +2116,11 @@ def stream(domain, args, name='Rainbow Stream'):
         detail_twitter_error(e)
         sys.stdout.write(g['decorated_name'](g['PREFIX']))
         sys.stdout.flush()
+    except (URLError, ConnectionResetError):
+        printNicely(
+            magenta('There seems to be a connection problem.'))
+        save_history()
+        sys.exit()
 
 
 def fly():
