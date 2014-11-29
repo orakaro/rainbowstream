@@ -1314,7 +1314,10 @@ def switch():
             th.start()
         # Stream base on list
         elif target == 'list':
-            owner, slug = get_slug()
+            try:
+                owner, slug = check_slug(g['stuff'].split()[1])
+            except:
+                owner, slug = get_slug()
             # Force python 2 not redraw readline buffer
             listname = '/'.join([owner, slug])
             # Set the listname variable
