@@ -1,5 +1,4 @@
 import os
-
 import os.path
 import sys
 import signal
@@ -42,7 +41,6 @@ def parse_arguments():
     Parse the arguments
     """
     parser = argparse.ArgumentParser(description=__doc__ or "")
-
     parser.add_argument(
         '-s',
         '--stream',
