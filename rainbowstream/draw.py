@@ -937,7 +937,7 @@ def show_profile(u):
     url = 'URL : ' + (color_func(c['PROFILE']['url'])(url) if url else '')
     date = parser.parse(created_at)
     clock = fallback_humanize(date)
-    clock = 'Join at ' + color_func(c['PROFILE']['clock'])(clock)
+    clock = 'Joined ' + color_func(c['PROFILE']['clock'])(clock)
 
     # Format
     line1 = u"{u:>{uw}}".format(
