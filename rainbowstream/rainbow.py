@@ -1965,7 +1965,7 @@ def stream(domain, args, name='Rainbow Stream'):
     # The Logo
     art_dict = {
         c['USER_DOMAIN']: name,
-        c['PUBLIC_DOMAIN']: args.track_keywords,
+        c['PUBLIC_DOMAIN']: args.track_keywords or 'Global',
         c['SITE_DOMAIN']: name,
     }
     if c['ASCII_ART']:
@@ -2081,11 +2081,11 @@ def spawn_public_stream(args, keyword=None):
         if keyword[0] == '#':
             keyword = keyword[1:]
         args.track_keywords = keyword
-    # Set the variable to tracked keyword
-    g['keyword'] = keyword
-    g['listname'] = ''
-    # Reset prefix
+        g['keyword'] = keyword
+    else:
+        g['keyword'] = 'Global'
     g['PREFIX'] = u2str(emojize(format_prefix(keyword=g['keyword'])))
+    g['listname'] = ''
     # Start new thread
     th = threading.Thread(
         target=stream,
@@ -2104,7 +2104,7 @@ def spawn_list_stream(args, stuff=None):
         owner, slug = check_slug(stuff)
     except:
         owner, slug = get_slug()
-    
+
     # Force python 2 not redraw readline buffer
     listname = '/'.join([owner, slug])
     # Set the listname variable
@@ -2197,18 +2197,17 @@ def fly():
     target = args.stream.split()[0]
     if target == 'mine' :
         spawn_personal_stream(args)
-    else :
+    else:
         try:
             stuff = args.stream.split()[1]
-            spawn_dict = {
-                'public': spawn_public_stream,
-                'list': spawn_list_stream,
-            }
-            spawn_dict.get(target)(args, stuff)
         except:
-            printNicely(red('Wrong -s/--stream argument given. Loading your personal stream.'))
-            spawn_personal_stream(args)
-    
+            stuff = None
+        spawn_dict = {
+            'public': spawn_public_stream,
+            'list': spawn_list_stream,
+        }
+        spawn_dict.get(target)(args, stuff)
+
     # Start listen process
     time.sleep(0.5)
     g['reset'] = True
