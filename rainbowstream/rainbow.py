@@ -42,6 +42,11 @@ def parse_arguments():
     """
     parser = argparse.ArgumentParser(description=__doc__ or "")
     parser.add_argument(
+        '-s',
+        '--stream',
+	default="mine",
+        help='Default stream after program start. (Default: mine)')
+    parser.add_argument(
         '-to',
         '--timeout',
         help='Timeout for the stream (seconds).')
@@ -955,6 +960,20 @@ def get_slug():
             light_magenta('List name should follow "@owner/list_name" format.'))
         raise Exception('Wrong list name')
 
+def check_slug(list_name):
+    """
+    Check slug
+    """
+    # Get list name and owner
+    try:
+        owner, slug = list_name.split('/')
+        if slug.startswith('@'):
+            slug = slug[1:]
+        return owner, slug
+    except:
+        printNicely(
+            light_magenta('List name should follow "@owner/list_name" format.'))
+        raise Exception('Wrong list name')
 
 def show_lists(t):
     """
@@ -1295,7 +1314,10 @@ def switch():
             th.start()
         # Stream base on list
         elif target == 'list':
-            owner, slug = get_slug()
+            try:
+                owner, slug = check_slug(g['stuff'].split()[1])
+            except:
+                owner, slug = get_slug()
             # Force python 2 not redraw readline buffer
             listname = '/'.join([owner, slug])
             # Set the listname variable
@@ -2150,14 +2172,112 @@ def fly():
         sys.exit()
 
     # Spawn stream thread
-    th = threading.Thread(
-        target=stream,
-        args=(
-            c['USER_DOMAIN'],
-            args,
-            g['original_name']))
-    th.daemon = True
-    th.start()
+    target = args.stream.split()[0]
+    if target == 'public':
+        try:
+            keyword = args.stream.split()[1]
+            if keyword[0] == '#':
+                keyword = keyword[1:]
+            args.track_keywords = keyword
+            # Set the variable to tracked keyword
+            g['keyword'] = keyword
+            # Reset prefix
+            g['PREFIX'] = u2str(emojize(format_prefix(keyword=g['keyword'])))
+            # Start new thread
+            th = threading.Thread(
+                target=stream,
+                args=(
+                    c['PUBLIC_DOMAIN'],
+                    args))
+            th.daemon = True
+            th.start()
+        except:
+             printNicely(red('Public requires a keyword! Loading your personal stream.'))
+             # Start new thread
+             th = threading.Thread(
+                 target=stream,
+                 args=(
+                     c['USER_DOMAIN'],
+                     args,
+                     g['original_name']))
+             th.daemon = True
+             th.start()
+    elif target == "list":
+        try:
+            owner, slug = check_slug(args.stream.split()[1])
+            # Force python 2 not redraw readline buffer
+            listname = '/'.join([owner, slug])
+            # Set the listname variable
+            # and reset tracked keyword
+            g['listname'] = listname
+            g['keyword'] = ''
+            g['PREFIX'] = g['cmd'] = u2str(emojize(format_prefix(
+                listname=g['listname']
+            )))
+            printNicely(light_yellow('getting list members ...'))
+            # Get members
+            t = Twitter(auth=authen())
+            members = []
+            next_cursor = -1
+            while next_cursor != 0:
+                m = t.lists.members(
+                    slug=slug,
+                    owner_screen_name=owner,
+                    cursor=next_cursor,
+                    include_entities=False)
+                for u in m['users']:
+                    members.append('@' + u['screen_name'])
+                next_cursor = m['next_cursor']
+            printNicely(light_yellow('... done.'))
+            # Build thread filter array
+            args.filter = members
+            # Kill old thread
+            g['stream_stop'] = True
+            # Start new thread
+            th = threading.Thread(
+                target=stream,
+                args=(
+                    c['USER_DOMAIN'],
+                    args,
+                    slug))
+            th.daemon = True
+            th.start()
+            printNicely('')
+            if args.filter:
+                printNicely(cyan('Include: ' + str(len(args.filter)) + ' people.'))
+        except:
+             printNicely(red('List requieres a correct name of a list! Loading your personal stream.'))
+             # Start new thread
+             th = threading.Thread(
+                 target=stream,
+                 args=(
+                     c['USER_DOMAIN'],
+                     args,
+                     g['original_name']))
+             th.daemon = True
+             th.start()
+    elif target == "mine": 
+        # Start new thread
+        th = threading.Thread(
+            target=stream,
+            args=(
+                c['USER_DOMAIN'],
+                args,
+                g['original_name']))
+        th.daemon = True
+        th.start()
+    else: 
+        printNicely(red('Wrong -s/--stream argument given. Loading your personal stream.'))
+        # Start new thread
+        th = threading.Thread(
+            target=stream,
+            args=(
+                c['USER_DOMAIN'],
+                args,
+                g['original_name']))
+        th.daemon = True
+        th.start()
+
     # Start listen process
     time.sleep(0.5)
     g['reset'] = True
