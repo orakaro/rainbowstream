@@ -478,15 +478,39 @@ def conversation():
     thread_ref = []
     thread_ref.append(tweet)
     prev_tid = tweet['in_reply_to_status_id']
-    while prev_tid and limit:
-        limit -= 1
-        tweet = t.statuses.show(id=prev_tid)
-        prev_tid = tweet['in_reply_to_status_id']
-        thread_ref.append(tweet)
 
-    for tweet in reversed(thread_ref):
-        draw(t=tweet)
-    printNicely('')
+    if prev_tid == None:
+        # Search for replies
+        query = '@' + tweet['user']['screen_name']
+        result = t.search.tweets(q=query)['statuses']
+        reply_to_tid = tweet['id_str']
+        while (len(result) > 0):
+            lastTweet = result[len(result)-1]
+            for tweet in result:
+                in_reply_to_tid = tweet['in_reply_to_status_id_str']
+                match = reply_to_tid == in_reply_to_tid
+                if match:
+                  thread_ref.append(tweet)
+            result = t.search.tweets(q=query, max_id=lastTweet['id'])['statuses']
+
+        # Draw the first in the thread (original tweet)
+        draw(t=thread_ref[0])
+
+        # Subsequent tweets (replies) are in ASC order (latest first).
+        # We want them in DESC order (oldest first).
+        for tweet in reversed(thread_ref[1:len(thread_ref)]):
+          draw(t=tweet)
+        printNicely('')
+    else:
+        while prev_tid and limit:
+            limit -= 1
+            tweet = t.statuses.show(id=prev_tid)
+            prev_tid = tweet['in_reply_to_status_id']
+            thread_ref.append(tweet)
+
+        for tweet in reversed(thread_ref):
+            draw(t=tweet)
+        printNicely('')
 
 
 def reply():
@@ -1277,7 +1301,7 @@ def switch():
             return
         # Kill old thread
         g['stream_stop'] = True
-        try: 
+        try:
             stuff = g['stuff'].split()[1]
         except:
             stuff = None
