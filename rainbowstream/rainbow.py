@@ -528,7 +528,12 @@ def reply_all():
 
 def view_replies():
     """
-    View replies to a given status
+    View replies to a given status. Until Twitter releases a new API method
+    to grab replies to a status/tweet, this method will suffice.
+
+    This method executes a search against Twitter with the following
+    search term: to:screen_name. This will search for all tweets that were
+    addressed to screen_name (i.e. replies).
     """
     t = Twitter(auth=authen())
     try:
