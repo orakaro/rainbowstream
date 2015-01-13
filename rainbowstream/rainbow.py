@@ -478,7 +478,6 @@ def conversation():
     thread_ref = []
     thread_ref.append(tweet)
     prev_tid = tweet['in_reply_to_status_id']
-
     while prev_tid and limit:
         limit -= 1
         tweet = t.statuses.show(id=prev_tid)
