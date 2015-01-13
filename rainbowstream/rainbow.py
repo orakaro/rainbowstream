@@ -481,24 +481,27 @@ def conversation():
 
     if prev_tid == None:
         # Search for replies
-        query = '@' + tweet['user']['screen_name']
+        print 'Getting replies...'
+        query = 'to:@' + tweet['user']['screen_name']
         result = t.search.tweets(q=query)['statuses']
         reply_to_tid = tweet['id_str']
-        while (len(result) > 0):
-            lastTweet = result[len(result)-1]
+
+        while len(result) and limit:
+            limit -= 1
+
+            # Build a list of replies
             for tweet in result:
                 in_reply_to_tid = tweet['in_reply_to_status_id_str']
                 match = reply_to_tid == in_reply_to_tid
                 if match:
-                  thread_ref.append(tweet)
-            result = t.search.tweets(q=query, max_id=lastTweet['id'])['statuses']
+                  thread_ref.insert(0, tweet)
 
-        # Draw the first in the thread (original tweet)
-        draw(t=thread_ref[0])
+            # Grab next page of results
+            lastTweetId = result[len(result)-1]['id']
+            result = t.search.tweets(q=query, max_id=lastTweetId)['statuses']
 
-        # Subsequent tweets (replies) are in ASC order (latest first).
-        # We want them in DESC order (oldest first).
-        for tweet in reversed(thread_ref[1:len(thread_ref)]):
+        # Print entire conversation thread
+        for tweet in reversed(thread_ref):
           draw(t=tweet)
         printNicely('')
     else:
