@@ -482,7 +482,7 @@ def conversation():
     if prev_tid == None:
         # Search for replies
         print 'Getting replies...'
-        query = 'to:@' + tweet['user']['screen_name']
+        query = 'to:' + tweet['user']['screen_name']
         result = t.search.tweets(q=query)['statuses']
         reply_to_tid = tweet['id_str']
 
