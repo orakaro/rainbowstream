@@ -481,9 +481,8 @@ def conversation():
 
     if prev_tid == None:
         # Search for replies
-        print 'Getting replies...'
         query = 'to:' + tweet['user']['screen_name']
-        result = t.search.tweets(q=query)['statuses']
+        result = t.search.tweets(q=query, since_id=tweet['id'])['statuses']
         reply_to_tid = tweet['id_str']
 
         while len(result) and limit:
@@ -494,14 +493,14 @@ def conversation():
                 in_reply_to_tid = tweet['in_reply_to_status_id_str']
                 match = reply_to_tid == in_reply_to_tid
                 if match:
-                  thread_ref.insert(0, tweet)
+                  thread_ref.insert(1, tweet)
 
             # Grab next page of results
             lastTweetId = result[len(result)-1]['id']
             result = t.search.tweets(q=query, max_id=lastTweetId)['statuses']
 
         # Print entire conversation thread
-        for tweet in reversed(thread_ref):
+        for tweet in thread_ref:
           draw(t=tweet)
         printNicely('')
     else:
