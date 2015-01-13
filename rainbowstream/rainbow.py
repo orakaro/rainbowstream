@@ -479,40 +479,15 @@ def conversation():
     thread_ref.append(tweet)
     prev_tid = tweet['in_reply_to_status_id']
 
-    if prev_tid == None:
-        # Search for replies
-        query = 'to:' + tweet['user']['screen_name']
-        result = t.search.tweets(q=query, since_id=tweet['id'])['statuses']
-        reply_to_tid = tweet['id_str']
+    while prev_tid and limit:
+        limit -= 1
+        tweet = t.statuses.show(id=prev_tid)
+        prev_tid = tweet['in_reply_to_status_id']
+        thread_ref.append(tweet)
 
-        while len(result) and limit:
-            limit -= 1
-
-            # Build a list of replies
-            for tweet in result:
-                in_reply_to_tid = tweet['in_reply_to_status_id_str']
-                match = reply_to_tid == in_reply_to_tid
-                if match:
-                  thread_ref.insert(1, tweet)
-
-            # Grab next page of results
-            lastTweetId = result[len(result)-1]['id']
-            result = t.search.tweets(q=query, max_id=lastTweetId)['statuses']
-
-        # Print entire conversation thread
-        for tweet in thread_ref:
-          draw(t=tweet)
-        printNicely('')
-    else:
-        while prev_tid and limit:
-            limit -= 1
-            tweet = t.statuses.show(id=prev_tid)
-            prev_tid = tweet['in_reply_to_status_id']
-            thread_ref.append(tweet)
-
-        for tweet in reversed(thread_ref):
-            draw(t=tweet)
-        printNicely('')
+    for tweet in reversed(thread_ref):
+        draw(t=tweet)
+    printNicely('')
 
 
 def reply():
@@ -552,6 +527,45 @@ def reply_all():
     status = ' '.join(nick_ary) + ' ' + str2u(status)
     t.statuses.update(status=status, in_reply_to_status_id=tid)
 
+def view_replies():
+    """
+    View replies to a given status
+    """
+    t = Twitter(auth=authen())
+    try:
+        id = int(g['stuff'].split()[0])
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+        return
+    tid = c['tweet_dict'][id]
+    tweet = t.statuses.show(id=tid)
+    limit = c['CONVERSATION_MAX']
+    thread_ref = []
+    thread_ref.append(tweet)
+
+    # Search for replies
+    query = 'to:' + tweet['user']['screen_name']
+    result = t.search.tweets(q=query, since_id=tweet['id'])['statuses']
+    reply_to_tid = tweet['id_str']
+
+    while len(result) and limit:
+        limit -= 1
+
+        # Build a list of replies
+        for tweet in result:
+            in_reply_to_tid = tweet['in_reply_to_status_id_str']
+            match = reply_to_tid == in_reply_to_tid
+            if match:
+              thread_ref.insert(1, tweet)
+
+        # Grab next page of results
+        lastTweetId = result[len(result)-1]['id']
+        result = t.search.tweets(q=query, max_id=lastTweetId)['statuses']
+
+    # Print entire conversation thread
+    for tweet in thread_ref:
+      draw(t=tweet)
+    printNicely('')
 
 def favorite():
     """
@@ -1484,6 +1498,8 @@ def help_tweets():
     usage += s * 2 + light_green('repall 12 oops') + ' will reply "' + \
         light_yellow('oops') + '" to all people in the tweet with ' + \
         light_yellow('[id=12]') + '.\n'
+    usage += s * 2 + light_green('replies 12') + ' will show all replies to a' + \
+        ' tweet with ' + light_yellow('[id=12]') + '.\n'
     usage += s * 2 + \
         light_green('fav 12 ') + ' will favorite the tweet with ' + \
         light_yellow('[id=12]') + '.\n'
@@ -1771,6 +1787,7 @@ cmdset = [
     'fav',
     'rep',
     'repall',
+    'replies',
     'del',
     'ufav',
     'share',
@@ -1819,6 +1836,7 @@ funcset = [
     favorite,
     reply,
     reply_all,
+    view_replies,
     delete,
     unfavorite,
     share,
@@ -1880,6 +1898,7 @@ def listen():
             [],  # favorite
             [],  # reply
             [],  # reply_all
+            [],  # view_replies
             [],  # delete
             [],  # unfavorite
             [],  # url
