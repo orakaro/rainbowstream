@@ -324,7 +324,11 @@ def whois():
     Show profile of a specific user
     """
     t = Twitter(auth=authen())
-    screen_name = g['stuff'].split()[0]
+    try:
+        screen_name = g['stuff'].split()[0]
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+        return
     if screen_name.startswith('@'):
         try:
             user = t.users.show(
@@ -343,7 +347,11 @@ def view():
     Friend view
     """
     t = Twitter(auth=authen())
-    user = g['stuff'].split()[0]
+    try:
+        user = g['stuff'].split()[0]
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+        return
     if user[0] == '@':
         try:
             num = int(g['stuff'].split()[1])
@@ -364,6 +372,9 @@ def search():
     t = Twitter(auth=authen())
     # Setup query
     query = g['stuff'].strip()
+    if not query:
+        printNicely(red('Sorry I can\'t understand.'))
+        return
     type = c['SEARCH_TYPE']
     if type not in ['mixed', 'recent', 'popular']:
         type = 'mixed'
@@ -780,6 +791,7 @@ def ls():
         target = g['stuff'].split()[0]
     except:
         printNicely(red('Omg some syntax is wrong.'))
+        return
     # Init cursor
     d = {'fl': 'followers', 'fr': 'friends'}
     next_cursor = -1
