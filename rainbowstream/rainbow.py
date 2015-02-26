@@ -530,11 +530,14 @@ def reply_all():
     tid = c['tweet_dict'][id]
     original_tweet = t.statuses.show(id=tid)
     text = original_tweet['text']
-    owner = '@' + original_tweet['user']['screen_name']
-    nick_ary = ['@' + re.sub('[\W_]', '', w)
-                for w in text.split() if w.startswith('@')] + [owner]
+    nick_ary = [original_tweet['user']['screen_name']]
+    for user in tweet['entities']['user_mentions']:
+        if user['screen_name'] not in nick_ary:
+            nick_ary.append(user['screen_name'])
+    if g['original_name'] in nick_ary:
+        nick_ary.remove(g['original_name'])
     status = ' '.join(g['stuff'].split()[1:])
-    status = ' '.join(nick_ary) + ' ' + str2u(status)
+    status = ' '.join(['@' + nick for nick in nick_ary]) + ' ' + str2u(status)
     t.statuses.update(status=status, in_reply_to_status_id=tid)
 
 
