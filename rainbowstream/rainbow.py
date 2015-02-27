@@ -532,10 +532,9 @@ def reply_all():
     text = original_tweet['text']
     nick_ary = [original_tweet['user']['screen_name']]
     for user in tweet['entities']['user_mentions']:
-        if user['screen_name'] not in nick_ary:
+        if user['screen_name'] not in nick_ary \
+                and user['screen_name'] != g['original_name']:
             nick_ary.append(user['screen_name'])
-    if g['original_name'] in nick_ary:
-        nick_ary.remove(g['original_name'])
     status = ' '.join(g['stuff'].split()[1:])
     status = ' '.join(['@' + nick for nick in nick_ary]) + ' ' + str2u(status)
     t.statuses.update(status=status, in_reply_to_status_id=tid)
