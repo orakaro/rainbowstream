@@ -46,8 +46,9 @@ def get_all_config():
     Get all config
     """
     try:
+        data = get_default_config()
         path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
-        data = load_config(path)
+        data.update(load_config(path))
         # Hard to set from prompt
         data.pop('ONLY_LIST', None)
         data.pop('IGNORE_LIST', None)
@@ -59,14 +60,17 @@ def get_all_config():
         return []
 
 
-def get_default_config(key):
+def get_default_config(key=None):
     """
     Get default value of a config key
     """
     try:
         path = os.path.dirname(__file__) + '/colorset/config'
         data = load_config(path)
-        return data[key]
+        if key:
+            return data[key]
+        else:
+            return data
     except:
         raise Exception('This config key does not exist in default.')
 
@@ -140,9 +144,7 @@ def reload_config():
     try:
         rainbow_config = os.path.expanduser("~") + \
             os.sep + '.rainbow_config.json'
-        data = load_config(rainbow_config)
-        for d in data:
-            c[d] = data[d]
+        c.update(load_config(rainbow_config))
     except:
         raise Exception('Can not reload config file with wrong format.')
 
@@ -152,29 +154,21 @@ def init_config():
     Init configuration
     """
     # Load the initial config
-    config = os.path.dirname(__file__) + \
-        '/colorset/config'
     try:
-        data = load_config(config)
-        for d in data:
-            c[d] = data[d]
+        c.update(get_default_config())
     except:
         pass
     # Load user's config
     rainbow_config = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
     try:
-        data = load_config(rainbow_config)
-        for d in data:
-            c[d] = data[d]
+        c.update(load_config(rainbow_config))
     except (IOError, ValueError) as e:
         c['USER_JSON_ERROR'] = str(e)
     # Load default theme
     theme_file = os.path.dirname(__file__) + \
         '/colorset/' + c['THEME'] + '.json'
     try:
-        data = load_config(theme_file)
-        for d in data:
-            c[d] = data[d]
+        c.update(load_config(theme_file))
     except:
         pass
 
