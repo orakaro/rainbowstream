@@ -16,14 +16,6 @@ install_requires = [
     "PySocks"
 ]
 
-# Copy default config if not exists
-default = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
-if not os.path.isfile(default):
-    cmd = 'cp rainbowstream/colorset/config ' + default
-    os.system(cmd)
-    cmd = 'chmod 777 ' + default
-    os.system(cmd)
-
 # Setup
 setup(name='rainbowstream',
       version=version,

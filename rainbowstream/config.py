@@ -29,12 +29,15 @@ def load_config(filepath):
     """
     Load config from filepath
     """
-    with open(filepath) as f:
-        content = ''.join(f.readlines())
+    try:
+        with open(filepath) as f:
+            content = ''.join(f.readlines())
+    except IOError:
+        content = '{}'
+    match = comment_re.search(content)
+    while match:
+        content = content[:match.start()] + content[match.end():]
         match = comment_re.search(content)
-        while match:
-            content = content[:match.start()] + content[match.end():]
-            match = comment_re.search(content)
     return json.loads(content, object_pairs_hook=OrderedDict)
 
 
@@ -94,7 +97,7 @@ def set_config(key, value):
     try:
         data = load_config(path)
     except:
-        return
+        pass
     # Update config file
     if key in data:
         fixup(data, key, value)
@@ -103,7 +106,6 @@ def set_config(key, value):
     # Save
     with open(path, 'w') as out:
         json.dump(data, out, indent=4)
-    os.system('chmod 777 ' + path)
 
 
 def delete_config(key):
@@ -111,10 +113,11 @@ def delete_config(key):
     Delete a config key
     """
     path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
+    data = {}
     try:
         data = load_config(path)
     except:
-        raise Exception('Config file is messed up.')
+        pass
     # Drop key
     if key in data and key in c:
         data.pop(key)
@@ -128,7 +131,6 @@ def delete_config(key):
     # Save
     with open(path, 'w') as out:
         json.dump(data, out, indent=4)
-    os.system('chmod 777 ' + path)
 
 
 def reload_config():
