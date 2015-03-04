@@ -531,7 +531,7 @@ def reply_all():
     original_tweet = t.statuses.show(id=tid)
     text = original_tweet['text']
     nick_ary = [original_tweet['user']['screen_name']]
-    for user in tweet['entities']['user_mentions']:
+    for user in list(original_tweet['entities']['user_mentions']):
         if user['screen_name'] not in nick_ary \
                 and user['screen_name'] != g['original_name']:
             nick_ary.append(user['screen_name'])
