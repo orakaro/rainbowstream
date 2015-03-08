@@ -16,7 +16,7 @@ def call_c():
     sauce = join(dirname(__file__), 'image.c')
     if not exists(library) or getmtime(sauce) > getmtime(library):
         build = "cc -fPIC -shared -o %s %s" % (library, sauce)
-        assert os.system(build + " >/dev/null 2>&1") == 0
+        os.system(build + " >/dev/null 2>&1")
     image_c = ctypes.cdll.LoadLibrary(library)
     image_c.init()
     return image_c.rgb_to_ansi

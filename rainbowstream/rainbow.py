@@ -2079,7 +2079,7 @@ def stream(domain, args, name='Rainbow Stream'):
         detail_twitter_error(e)
         sys.stdout.write(g['decorated_name'](g['PREFIX']))
         sys.stdout.flush()
-    except (URLError, ConnectionResetError):
+    except (URLError):
         printNicely(
             magenta('There seems to be a connection problem.'))
         save_history()
