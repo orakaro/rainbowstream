@@ -161,7 +161,7 @@ Theme’s screenshot:
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/larapaste.png
    :alt: larapaste
 
-For detaile information, see `theme usage and customization`_.
+For detail information, see `theme usage and customization`_.
 
 
 Bug and feature requests
