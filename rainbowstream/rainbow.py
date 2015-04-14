@@ -1,5 +1,6 @@
 import os
 import os.path
+import re
 import sys
 import signal
 import argparse
@@ -643,13 +644,11 @@ def urlopen():
             return
         tid = c['tweet_dict'][int(g['stuff'])]
         tweet = t.statuses.show(id=tid)
-        link_prefix = ('http://', 'https://')
-        link_ary = [u for u in tweet['text'].split()
-                    if u.startswith(link_prefix)]
-        if not link_ary:
+        links = re.findall(r'https?\:\/\/t\.co\/[a-zA-Z0-9]{10}', tweet['text'])
+        if links is None:
             printNicely(light_magenta('No url here @.@!'))
             return
-        for link in link_ary:
+        for link in links:
             webbrowser.open(link)
     except:
         debug_option()
