@@ -31,6 +31,14 @@ def pixel_print(ansicolor):
     sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
 
 
+def block_print(lower, higher):
+    """
+    Print two pixels arranged above each other with Ansi color.
+    Abuses Unicode to print two pixels in the space of one terminal block.
+    """
+    sys.stdout.write('\033[38;5;%sm\033[48;5;%sm▄\033[0m' % (higher, lower))
+
+
 def image_to_display(path, start=None, length=None):
     """
     Display an image
@@ -50,12 +58,15 @@ def image_to_display(path, start=None, length=None):
     i = i.resize((width, height), Image.ANTIALIAS)
     height = min(height, c['IMAGE_MAX_HEIGHT'])
 
-    for y in xrange(height):
+    for real_y in xrange(height // 2):
         sys.stdout.write(' ' * start)
         for x in xrange(width):
-            p = i.getpixel((x, y))
-            r, g, b = p[:3]
-            pixel_print(rgb2short(r, g, b))
+            y = real_y * 2
+            p0 = i.getpixel((x, y))
+            p1 = i.getpixel((x, y+1))
+            r0, g0, b0 = p0[:3]
+            r1, g1, b1 = p1[:3]
+            block_print(rgb2short(r0, g0, b0), rgb2short(r1, g1, b1))
         sys.stdout.write('\n')
 
 
