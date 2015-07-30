@@ -54,7 +54,6 @@ def image_to_display(path, start=None, length=None):
     i.load()
     width = min(w, length)
     height = int(float(h) * (float(width) / float(w)))
-    height //= 2
     i = i.resize((width, height), Image.ANTIALIAS)
     height = min(height, c['IMAGE_MAX_HEIGHT'])
 
