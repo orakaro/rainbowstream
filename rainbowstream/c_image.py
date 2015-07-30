@@ -29,8 +29,13 @@ def pixel_print(pixel):
     Print a pixel with given Ansi color
     """
     r, g, b = pixel[:3]
-    ansicolor = rgb2short(r, g, b)
-    sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
+
+    if c['24BIT'] is True:
+        sys.stdout.write('\033[48;2;%d;%d;%dm \033[0m'
+                         % (r, g, b))
+    else:
+        ansicolor = rgb2short(r, g, b)
+        sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
 
 
 def block_print(higher, lower):
