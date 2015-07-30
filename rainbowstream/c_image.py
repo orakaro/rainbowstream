@@ -31,12 +31,21 @@ def pixel_print(ansicolor):
     sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
 
 
-def block_print(lower, higher):
+def block_print(higher, lower):
     """
     Print two pixels arranged above each other with Ansi color.
     Abuses Unicode to print two pixels in the space of one terminal block.
     """
-    sys.stdout.write('\033[38;5;%sm\033[48;5;%sm▄\033[0m' % (higher, lower))
+    r0, g0, b0 = lower[:3]
+    r1, g1, b1 = higher[:3]
+
+    if c['24BIT'] is True:
+        sys.stdout.write('\033[38;2;%d;%d;%dm\033[48;2;%d;%d;%dm▄\033[0m'
+                         % (r1, g1, b1, r0, g0, b0))
+    else:
+        i0 = rgb2short(r0, g0, b0)
+        i1 = rgb2short(r1, g1, b1)
+        sys.stdout.write('\033[38;5;%sm\033[48;5;%sm▄\033[0m' % (i1, i0))
 
 
 def image_to_display(path, start=None, length=None):
@@ -63,9 +72,7 @@ def image_to_display(path, start=None, length=None):
             y = real_y * 2
             p0 = i.getpixel((x, y))
             p1 = i.getpixel((x, y+1))
-            r0, g0, b0 = p0[:3]
-            r1, g1, b1 = p1[:3]
-            block_print(rgb2short(r0, g0, b0), rgb2short(r1, g1, b1))
+            block_print(p1, p0)
         sys.stdout.write('\n')
 
 

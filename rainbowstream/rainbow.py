@@ -68,6 +68,11 @@ def parse_arguments():
         action='store_true',
         help='Display all image on terminal.')
     parser.add_argument(
+        '-24',
+        '--color-24bit',
+        action='store_true',
+        help='Display images using 24bit color codes.')
+    parser.add_argument(
         '-ph',
         '--proxy-host',
         help='Use HTTP/SOCKS proxy for network connections.')
@@ -233,6 +238,7 @@ def init(args):
     c['message_dict'] = []
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
+    c['24BIT'] = args.color_24bit
     set_config('IMAGE_ON_TERM', str(c['IMAGE_ON_TERM']))
     # Check type of ONLY_LIST and IGNORE_LIST
     if not isinstance(c['ONLY_LIST'], list):
@@ -1291,7 +1297,7 @@ def switch():
             return
         # Kill old thread
         g['stream_stop'] = True
-        try: 
+        try:
             stuff = g['stuff'].split()[1]
         except:
             stuff = None
