@@ -71,27 +71,25 @@ def image_to_display(path, start=None, length=None):
     i.load()
     width = min(w, length)
     height = int(float(h) * (float(width) / float(w)))
-    if c['HIGHER_RESOLUTION'] is False:
-        height //= 2
     i = i.resize((width, height), Image.ANTIALIAS)
     height = min(height, c['IMAGE_MAX_HEIGHT'])
 
-    if c['HIGHER_RESOLUTION'] is True:
-        for real_y in xrange(height // 2):
-            sys.stdout.write(' ' * start)
-            for x in xrange(width):
-                y = real_y * 2
-                p0 = i.getpixel((x, y))
-                p1 = i.getpixel((x, y+1))
-                block_print(p1, p0)
-            sys.stdout.write('\n')
-    else:
-        for y in xrange(height):
-            sys.stdout.write(' ' * start)
-            for x in xrange(width):
-                p = i.getpixel((x, y))
-                pixel_print(p)
-            sys.stdout.write('\n')
+    for real_y in xrange(height // 2):
+        sys.stdout.write(' ' * start)
+        for x in xrange(width):
+            y = real_y * 2
+            p0 = i.getpixel((x, y))
+            p1 = i.getpixel((x, y+1))
+            block_print(p1, p0)
+        sys.stdout.write('\n')
+
+    # Old code for display one pixel on one terminal block
+    # for y in xrange(height):
+    #     sys.stdout.write(' ' * start)
+    #     for x in xrange(width):
+    #         p = i.getpixel((x, y))
+    #         pixel_print(p)
+    #     sys.stdout.write('\n')
 
 
 """

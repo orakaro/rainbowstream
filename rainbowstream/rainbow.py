@@ -73,11 +73,6 @@ def parse_arguments():
         action='store_true',
         help='Display images using 24bit color codes.')
     parser.add_argument(
-        '-hr',
-        '--higher-resolution',
-        action='store_true',
-        help='Display images in high(er) resolution.')
-    parser.add_argument(
         '-ph',
         '--proxy-host',
         help='Use HTTP/SOCKS proxy for network connections.')
@@ -246,9 +241,6 @@ def init(args):
     set_config('IMAGE_ON_TERM', str(c['IMAGE_ON_TERM']))
     # Use 24 bit color
     c['24BIT'] = args.color_24bit
-    # Print images using half height blocks
-    c['HIGHER_RESOLUTION'] = args.higher_resolution
-    set_config('HIGHER_RESOLUTION', str(c['HIGHER_RESOLUTION']))
     # Check type of ONLY_LIST and IGNORE_LIST
     if not isinstance(c['ONLY_LIST'], list):
         printNicely(red('ONLY_LIST is not a valid list value.'))
