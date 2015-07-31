@@ -651,14 +651,14 @@ def urlopen():
             return
         tid = c['tweet_dict'][int(g['stuff'])]
         tweet = t.statuses.show(id=tid)
-        link_prefix = ('http://', 'https://')
-        link_ary = [u for u in tweet['text'].split()
-                    if u.startswith(link_prefix)]
-        if not link_ary:
+        urls = tweet['entities']['urls']
+        if not urls:
             printNicely(light_magenta('No url here @.@!'))
             return
-        for link in link_ary:
-            webbrowser.open(link)
+        else:
+            for url in urls:
+                expanded_url = url['expanded_url'] 
+                webbrowser.open(expanded_url)
     except:
         debug_option()
         printNicely(red('Sorry I can\'t open url in this tweet.'))
@@ -1734,16 +1734,6 @@ def quit():
     sys.exit()
 
 
-def changelog_notify():
-    # For v1.2.8. Hardcoded here but will improve later
-    notice = light_yellow('Hey! RS just ')
-    notice += light_green('doubled ')
-    notice += light_yellow('pixels for higher image resolution. Upgrade and try')
-    notice += light_green(' -iot ')
-    notice += light_yellow('and you will like it for sure :)')
-    printNicely(notice)
-
-
 def reset():
     """
     Reset prefix of line
@@ -1753,8 +1743,6 @@ def reset():
             printNicely(red('Your ~/.rainbow_config.json is messed up:'))
             printNicely(red('>>> ' + c['USER_JSON_ERROR']))
             printNicely('')
-        if not g['using_latest']:
-            changelog_notify()
         printNicely(magenta('Need tips ? Type "h" and hit Enter key!'))
     g['reset'] = False
     try:

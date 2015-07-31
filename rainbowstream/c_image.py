@@ -83,14 +83,6 @@ def image_to_display(path, start=None, length=None):
             block_print(p1, p0)
         sys.stdout.write('\n')
 
-    # Old code for display one pixel on one terminal block
-    # for y in xrange(height):
-    #     sys.stdout.write(' ' * start)
-    #     for x in xrange(width):
-    #         p = i.getpixel((x, y))
-    #         pixel_print(p)
-    #     sys.stdout.write('\n')
-
 
 """
 For direct using purpose
