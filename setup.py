@@ -9,7 +9,7 @@ version = '1.2.7'
 install_requires = [
     "python-dateutil",
     "arrow",
-    "requests",
+    "requests==2.5.3",
     "pyfiglet",
     "twitter",
     "Pillow",

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from PIL import Image
 from os.path import join, dirname, getmtime, exists, expanduser
 from .config import *
