@@ -24,11 +24,35 @@ def call_c():
 rgb2short = call_c()
 
 
-def pixel_print(ansicolor):
+def pixel_print(pixel):
     """
     Print a pixel with given Ansi color
     """
-    sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
+    r, g, b = pixel[:3]
+
+    if c['24BIT'] is True:
+        sys.stdout.write('\033[48;2;%d;%d;%dm \033[0m'
+                         % (r, g, b))
+    else:
+        ansicolor = rgb2short(r, g, b)
+        sys.stdout.write('\033[48;5;%sm \033[0m' % (ansicolor))
+
+
+def block_print(higher, lower):
+    """
+    Print two pixels arranged above each other with Ansi color.
+    Abuses Unicode to print two pixels in the space of one terminal block.
+    """
+    r0, g0, b0 = lower[:3]
+    r1, g1, b1 = higher[:3]
+
+    if c['24BIT'] is True:
+        sys.stdout.write('\033[38;2;%d;%d;%dm\033[48;2;%d;%d;%dm▄\033[0m'
+                         % (r1, g1, b1, r0, g0, b0))
+    else:
+        i0 = rgb2short(r0, g0, b0)
+        i1 = rgb2short(r1, g1, b1)
+        sys.stdout.write('\033[38;5;%sm\033[48;5;%sm▄\033[0m' % (i1, i0))
 
 
 def image_to_display(path, start=None, length=None):
@@ -46,17 +70,27 @@ def image_to_display(path, start=None, length=None):
     i.load()
     width = min(w, length)
     height = int(float(h) * (float(width) / float(w)))
-    height //= 2
+    if c['HIGHER_RESOLUTION'] is False:
+        height //= 2
     i = i.resize((width, height), Image.ANTIALIAS)
     height = min(height, c['IMAGE_MAX_HEIGHT'])
 
-    for y in xrange(height):
-        sys.stdout.write(' ' * start)
-        for x in xrange(width):
-            p = i.getpixel((x, y))
-            r, g, b = p[:3]
-            pixel_print(rgb2short(r, g, b))
-        sys.stdout.write('\n')
+    if c['HIGHER_RESOLUTION'] is True:
+        for real_y in xrange(height // 2):
+            sys.stdout.write(' ' * start)
+            for x in xrange(width):
+                y = real_y * 2
+                p0 = i.getpixel((x, y))
+                p1 = i.getpixel((x, y+1))
+                block_print(p1, p0)
+            sys.stdout.write('\n')
+    else:
+        for y in xrange(height):
+            sys.stdout.write(' ' * start)
+            for x in xrange(width):
+                p = i.getpixel((x, y))
+                pixel_print(p)
+            sys.stdout.write('\n')
 
 
 """
