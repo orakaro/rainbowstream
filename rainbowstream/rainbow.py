@@ -1950,33 +1950,22 @@ def listen():
             # Save cmd to global variable and call process
             g['stuff'] = ' '.join(line.split()[1:])
             # Check tweet length
-            if check_tweet_length():
-                # Process the command
-                process(cmd)()
-                # Not re-display
-                if cmd in ['switch', 't', 'rt', 'rep']:
-                    g['prefix'] = False
-                else:
-                    g['prefix'] = True
+            # Process the command
+            process(cmd)()
+            # Not re-display
+            if cmd in ['switch', 't', 'rt', 'rep']:
+                g['prefix'] = False
+            else:
+                g['prefix'] = True
             # Release the semaphore lock
             c['lock'] = False
         except EOFError:
             printNicely('')
+        except TwitterHTTPError as e:
+            detail_twitter_error(e)
         except Exception:
             debug_option()
-            printNicely(red('OMG something is wrong with Twitter right now.'))
-
-
-def check_tweet_length():
-    """
-    Check tweet length (should be <= 140 chars)
-    """
-    length = len(g['stuff'])
-    if length <= 140:
-        return True
-
-    printNicely(red("Message is too long: %s chars" % length))
-    return False
+            printNicely(red('OMG something is wrong with Twitter API right now.'))
 
 
 def reconn_notice():
