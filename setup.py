@@ -3,7 +3,7 @@ import os
 import os.path
 
 # Bumped version
-version = '1.2.7'
+version = '1.2.8'
 
 # Require
 install_requires = [

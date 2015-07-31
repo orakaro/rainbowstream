@@ -181,7 +181,8 @@ def upgrade_center():
         url = 'https://raw.githubusercontent.com/DTVD/rainbowstream/master/setup.py'
         readme = requests.get(url).text
         latest = readme.split('version = \'')[1].split('\'')[0]
-        if current != latest:
+        g['using_latest'] = current == latest
+        if not g['using_latest']:
             notice = light_magenta('RainbowStream latest version is ')
             notice += light_green(latest)
             notice += light_magenta(' while your current version is ')
@@ -193,7 +194,7 @@ def upgrade_center():
             notice = light_yellow('You are running latest version (')
             notice += light_green(current)
             notice += light_yellow(')')
-            printNicely(notice)
+            notice += '\n'
     except:
         pass
 
@@ -1733,6 +1734,16 @@ def quit():
     sys.exit()
 
 
+def changelog_notify():
+    # For v1.2.8. Hardcoded here but will improve later
+    notice = light_yellow('Hey! RS just ')
+    notice += light_green('doubled ')
+    notice += light_yellow('pixels for higher image resolution. Upgrade and try')
+    notice += light_green(' -iot ')
+    notice += light_yellow('and you will like it for sure :)')
+    printNicely(notice)
+
+
 def reset():
     """
     Reset prefix of line
@@ -1742,6 +1753,8 @@ def reset():
             printNicely(red('Your ~/.rainbow_config.json is messed up:'))
             printNicely(red('>>> ' + c['USER_JSON_ERROR']))
             printNicely('')
+        if not g['using_latest']:
+            changelog_notify()
         printNicely(magenta('Need tips ? Type "h" and hit Enter key!'))
     g['reset'] = False
     try:
