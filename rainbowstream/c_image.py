@@ -79,7 +79,7 @@ def image_to_display(path, start=None, length=None):
         for x in xrange(width):
             y = real_y * 2
             p0 = i.getpixel((x, y))
-            p1 = i.getpixel((x, y+1))
+            p1 = i.getpixel((x, y + 1))
             block_print(p1, p0)
         sys.stdout.write('\n')
 

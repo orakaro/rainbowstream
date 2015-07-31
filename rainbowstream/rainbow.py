@@ -44,7 +44,7 @@ def parse_arguments():
     parser.add_argument(
         '-s',
         '--stream',
-	      default="mine",
+        default="mine",
         help='Default stream after program start. (Default: mine)')
     parser.add_argument(
         '-to',
@@ -657,7 +657,7 @@ def urlopen():
             return
         else:
             for url in urls:
-                expanded_url = url['expanded_url'] 
+                expanded_url = url['expanded_url']
                 webbrowser.open(expanded_url)
     except:
         debug_option()
@@ -2231,7 +2231,7 @@ def fly():
 
     # Spawn stream thread
     target = args.stream.split()[0]
-    if target == 'mine' :
+    if target == 'mine':
         spawn_personal_stream(args)
     else:
         try:
