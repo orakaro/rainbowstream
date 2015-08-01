@@ -44,7 +44,7 @@ def parse_arguments():
     parser.add_argument(
         '-s',
         '--stream',
-	      default="mine",
+        default="mine",
         help='Default stream after program start. (Default: mine)')
     parser.add_argument(
         '-to',
@@ -67,6 +67,11 @@ def parse_arguments():
         '--image-on-term',
         action='store_true',
         help='Display all image on terminal.')
+    parser.add_argument(
+        '-24',
+        '--color-24bit',
+        action='store_true',
+        help='Display images using 24bit color codes.')
     parser.add_argument(
         '-ph',
         '--proxy-host',
@@ -176,7 +181,8 @@ def upgrade_center():
         url = 'https://raw.githubusercontent.com/DTVD/rainbowstream/master/setup.py'
         readme = requests.get(url).text
         latest = readme.split('version = \'')[1].split('\'')[0]
-        if current != latest:
+        g['using_latest'] = current == latest
+        if not g['using_latest']:
             notice = light_magenta('RainbowStream latest version is ')
             notice += light_green(latest)
             notice += light_magenta(' while your current version is ')
@@ -188,7 +194,7 @@ def upgrade_center():
             notice = light_yellow('You are running latest version (')
             notice += light_green(current)
             notice += light_yellow(')')
-            printNicely(notice)
+            notice += '\n'
     except:
         pass
 
@@ -234,6 +240,8 @@ def init(args):
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
     set_config('IMAGE_ON_TERM', str(c['IMAGE_ON_TERM']))
+    # Use 24 bit color
+    c['24BIT'] = args.color_24bit
     # Check type of ONLY_LIST and IGNORE_LIST
     if not isinstance(c['ONLY_LIST'], list):
         printNicely(red('ONLY_LIST is not a valid list value.'))
@@ -643,14 +651,14 @@ def urlopen():
             return
         tid = c['tweet_dict'][int(g['stuff'])]
         tweet = t.statuses.show(id=tid)
-        link_prefix = ('http://', 'https://')
-        link_ary = [u for u in tweet['text'].split()
-                    if u.startswith(link_prefix)]
-        if not link_ary:
+        urls = tweet['entities']['urls']
+        if not urls:
             printNicely(light_magenta('No url here @.@!'))
             return
-        for link in link_ary:
-            webbrowser.open(link)
+        else:
+            for url in urls:
+                expanded_url = url['expanded_url']
+                webbrowser.open(expanded_url)
     except:
         debug_option()
         printNicely(red('Sorry I can\'t open url in this tweet.'))
@@ -1291,7 +1299,7 @@ def switch():
             return
         # Kill old thread
         g['stream_stop'] = True
-        try: 
+        try:
             stuff = g['stuff'].split()[1]
         except:
             stuff = None
@@ -1941,6 +1949,7 @@ def listen():
             c['lock'] = True
             # Save cmd to global variable and call process
             g['stuff'] = ' '.join(line.split()[1:])
+            # Check tweet length
             # Process the command
             process(cmd)()
             # Not re-display
@@ -1952,9 +1961,11 @@ def listen():
             c['lock'] = False
         except EOFError:
             printNicely('')
+        except TwitterHTTPError as e:
+            detail_twitter_error(e)
         except Exception:
             debug_option()
-            printNicely(red('OMG something is wrong with Twitter right now.'))
+            printNicely(red('OMG something is wrong with Twitter API right now.'))
 
 
 def reconn_notice():
@@ -2209,7 +2220,7 @@ def fly():
 
     # Spawn stream thread
     target = args.stream.split()[0]
-    if target == 'mine' :
+    if target == 'mine':
         spawn_personal_stream(args)
     else:
         try:
