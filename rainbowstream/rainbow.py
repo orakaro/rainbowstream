@@ -11,6 +11,7 @@ import traceback
 import pkg_resources
 import socks
 import socket
+import re
 
 from io import BytesIO
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
@@ -18,6 +19,8 @@ from twitter.api import *
 from twitter.oauth import OAuth, read_token_file
 from twitter.oauth_dance import oauth_dance
 from twitter.util import printNicely
+
+from pocket import Pocket
 
 from .draw import *
 from .colors import *
@@ -132,6 +135,35 @@ def authen():
         CONSUMER_SECRET)
 
 
+def pckt_authen():
+    """
+    Authenticate with Pocket OAuth
+    """
+    pocket_credential = os.environ.get(
+         'HOME',
+        os.environ.get(
+            'USERPROFILE',
+            '')) + os.sep + '.rainbow_pckt_oauth'
+
+    if not os.path.exists(pocket_credential):
+        request_token = Pocket.get_request_token(consumer_key=PCKT_CONSUMER_KEY)
+        auth_url = Pocket.get_auth_url(code=request_token, redirect_uri="/")
+        webbrowser.open(auth_url)
+        printNicely(green("*** Press [ENTER] after authorization ***"))
+        raw_input()
+        user_credentials = Pocket.get_credentials(consumer_key=PCKT_CONSUMER_KEY, code=request_token)
+        access_token = user_credentials['access_token']
+        f = open(pocket_credential, 'w')
+        f.write(access_token)
+        f.close()
+    else:
+        with open(pocket_credential, 'r') as f:
+            access_token = str(f.readlines()[0])
+            f.close()
+
+    return Pocket(PCKT_CONSUMER_KEY, access_token)
+
+
 def build_mute_dict(dict_data=False):
     """
     Build muting list
@@ -243,6 +275,8 @@ def init(args):
         c['IGNORE_LIST'] = []
     # Mute dict
     c['IGNORE_LIST'] += build_mute_dict()
+    # Pocket init
+    pckt = pckt_authen() if c['POCKET_SUPPORT'] else None
 
 
 def trend():
@@ -402,6 +436,54 @@ def tweet():
     """
     t = Twitter(auth=authen())
     t.statuses.update(status=g['stuff'])
+
+
+def pocket():
+    """
+    Add new link to Pocket along with tweet id
+    """
+    if not c['POCKET_SUPPORT']:
+        printNicely(red('Pocket isn\'t enabled.'))
+        return
+
+    # Get tweet infos
+    p = pckt_authen()
+
+    t = Twitter(auth=authen())
+    try:
+        id = int(g['stuff'].split()[0])
+        tid = c['tweet_dict'][id]
+    except:
+        printNicely(red('Sorry I can\'t understand.'))
+        return
+
+    tweet = t.statuses.show(id=tid)
+
+    if len(tweet['entities']['urls']) > 0:
+        url = tweet['entities']['urls'][0]['expanded_url']
+    else:
+        url = "https://twitter.com/" + \
+                tweet['user']['screen_name'] + '/status/' + str(tid)
+
+    # Add link to pocket
+    try:
+        p.add(title=re.sub(r'(http:\/\/\S+)', r'', tweet['text']),
+            url=url,
+            tweet_id=tid)
+    except:
+        printNicely(red('Something is wrong about your Pocket account,'+ \
+                        ' please restart Rainbowstream.'))
+        pocket_credential = os.environ.get(
+            'HOME',
+            os.environ.get(
+                'USERPROFILE',
+                '')) + os.sep + '.rainbow_pckt_oauth'
+        if os.path.exists(pocket_credential):
+            os.remove(pocket_credential)
+        return
+
+    printNicely(green('Pocketed !'))
+    printNicely('')
 
 
 def retweet():
@@ -1291,7 +1373,7 @@ def switch():
             return
         # Kill old thread
         g['stream_stop'] = True
-        try: 
+        try:
             stuff = g['stuff'].split()[1]
         except:
             stuff = None
@@ -1414,7 +1496,7 @@ def config():
             debug_option()
             printNicely(red('Just can not set the key.'))
     else:
-        printNicely(light_magenta('Sorry I can\'s understand.'))
+        printNicely(light_magenta('Sorry I can\'t understand.'))
 
 
 def help_discover():
@@ -1488,6 +1570,8 @@ def help_tweets():
         light_yellow('[id=12]') + ' in your OS\'s image viewer.\n'
     usage += s * 2 + light_green('open 12') + ' will open url in tweet with ' + \
         light_yellow('[id=12]') + ' in your OS\'s default browser.\n'
+    usage += s * 2 + light_green('pt 12') + '  will add tweet with ' + \
+        light_yellow('[id=12]') + ' in your Pocket list.\n'
     printNicely(usage)
 
 
@@ -1789,6 +1873,7 @@ cmdset = [
     'c',
     'v',
     'q',
+    'pt',
 ]
 
 # Handle function set
@@ -1837,6 +1922,7 @@ funcset = [
     clear,
     upgrade_center,
     quit,
+    pocket,
 ]
 
 
@@ -1917,6 +2003,7 @@ def listen():
             [],  # clear
             [],  # version
             [],  # quit
+            [],  # pocket
         ]
     ))
     init_interactive_shell(d)
