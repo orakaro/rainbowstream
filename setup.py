@@ -13,7 +13,8 @@ install_requires = [
     "pyfiglet",
     "twitter",
     "Pillow",
-    "PySocks"
+    "PySocks",
+    "pocket"
 ]
 
 # Copy default config if not exists
