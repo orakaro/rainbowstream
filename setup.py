@@ -3,13 +3,13 @@ import os
 import os.path
 
 # Bumped version
-version = '1.2.7'
+version = '1.3.0'
 
 # Require
 install_requires = [
     "python-dateutil",
     "arrow",
-    "requests",
+    "requests==2.5.3",
     "pyfiglet",
     "twitter",
     "Pillow",
