@@ -71,6 +71,17 @@ def image_to_display(path, start=None, length=None):
     i.load()
     width = min(w, length)
     height = int(float(h) * (float(width) / float(w)))
+
+    if c['IMAGE_RESIZE_TO_FIT'] is True:
+        # If it image won't fit in the terminal without scrolling shrink it
+        # Subtract 3 from rows so the tweet message fits in too.
+        h = 2 * (int(rows) - 3)
+        if height >= h:
+            width = int(float(width) * (float(h) / float(height)))
+            height = h
+    if (height <= 0) or (width <= 0):
+        raise ValueError("image has negative dimensions")
+
     i = i.resize((width, height), Image.ANTIALIAS)
     height = min(height, c['IMAGE_MAX_HEIGHT'])
 
