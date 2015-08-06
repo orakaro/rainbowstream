@@ -319,6 +319,8 @@ You also can view or set a new value of every config key by ``config`` command (
 
 -  ``IMAGE_ON_TERM``: display tweet's image directly on terminal.
 
+-  ``IMAGE_RESIZE_TO_FIT``: display tweet's image fit inside terminal view (width and height).
+
 -  ``THEME``: current theme.
 
 -  ``ASCII_ART``: diplay your twitter name by ascii art at stream begin or not.
