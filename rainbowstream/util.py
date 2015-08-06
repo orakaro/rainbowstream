@@ -9,12 +9,20 @@ def detail_twitter_error(twitterException):
     """
     Display Twitter Errors nicely
     """
-    data = twitterException.response_data
+    error_response = twitterException.response_data
     try:
-        for m in data.get('errors', dict()):
-            printNicely(yellow(m.get('message')))
-    except: 
-        printNicely(yellow(data))
+        if isinstance(error_response, bytes):
+            error_response = json.loads(error_response.decode('utf-8'))
+        elif isinstance(error_response, (str, unicode)):
+            error_response = json.loads(error_response)
+
+        for error in error_response.get('errors', {}):
+            error_code, message = error.get('code', ''), error.get('message', '')
+            info = "Error %s: %s" % (error_code, message)
+            printNicely(yellow(info))
+    except:
+        info = "Error: %r " % twitterException.response_data
+        printNicely(yellow(info))
 
 
 def format_prefix(listname='', keyword=''):
