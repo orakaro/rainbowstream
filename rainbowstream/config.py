@@ -79,7 +79,6 @@ def set_config(key, value):
     """
     Set a config key with specific value
     """
-
     # Modify value
     if value.isdigit():
         value = int(value)
