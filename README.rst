@@ -45,7 +45,7 @@ Use `virtualenv`_
 .. code:: bash
 
     virtualenv venv
-    # Python 3 users : use -p to specify your Python 3 localtion as below
+    # Python 3 users : use -p to specify your Python 3 location as below
     # virtualenv -p /usr/bin/python3 venv
     source venv/bin/activate
     pip install rainbowstream
