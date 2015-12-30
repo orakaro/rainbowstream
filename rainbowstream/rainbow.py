@@ -381,7 +381,7 @@ def view_my_tweets():
     """
     t = Twitter(auth=authen())
     try:
-        num = int(g['stuff'].split()[1])
+        num = int(g['stuff'])
     except:
         num = c['HOME_TWEET_NUM']
     for tweet in reversed(
