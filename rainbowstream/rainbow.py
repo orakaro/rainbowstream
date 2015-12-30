@@ -1507,6 +1507,8 @@ def help_tweets():
         light_green('share 12 ') + ' will get the direct link of the tweet with ' + \
         light_yellow('[id=12]') + '.\n'
     usage += s * 2 + \
+        light_green('mytw 2 ') + ' will show your last two tweets.\n'
+    usage += s * 2 + \
         light_green('del 12 ') + ' will delete tweet with ' + \
         light_yellow('[id=12]') + '.\n'
     usage += s * 2 + light_green('show image 12') + ' will show image in tweet with ' + \
