@@ -375,6 +375,21 @@ def view():
         printNicely(red('A name should begin with a \'@\''))
 
 
+def view_my_tweets():
+    """
+    Display user's recent tweets.
+    """
+    t = Twitter(auth=authen())
+    try:
+        num = int(g['stuff'].split()[1])
+    except:
+        num = c['HOME_TWEET_NUM']
+    for tweet in reversed(
+            t.statuses.home_timeline(count=num)):
+        draw(t=tweet)
+    printNicely('')
+
+
 def search():
     """
     Search
@@ -1764,6 +1779,7 @@ cmdset = [
     't',
     'rt',
     'quote',
+    'mytw',
     'allrt',
     'conversation',
     'fav',
@@ -1812,6 +1828,7 @@ funcset = [
     tweet,
     retweet,
     quote,
+    view_my_tweets,
     allretweet,
     conversation,
     favorite,
