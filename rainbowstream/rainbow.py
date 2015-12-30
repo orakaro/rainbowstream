@@ -385,7 +385,7 @@ def view_my_tweets():
     except:
         num = c['HOME_TWEET_NUM']
     for tweet in reversed(
-            t.statuses.home_timeline(count=num)):
+            t.statuses.user_timeline(count=num, screen_name=g['original_name'])):
         draw(t=tweet)
     printNicely('')
 
