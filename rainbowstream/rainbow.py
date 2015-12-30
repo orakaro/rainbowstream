@@ -1890,6 +1890,7 @@ def listen():
             [],  # tweet
             [],  # retweet
             [],  # quote
+            [],  # view_my_tweets
             [],  # allretweet
             [],  # conversation
             [],  # favorite
