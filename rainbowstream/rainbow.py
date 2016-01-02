@@ -1964,6 +1964,7 @@ def listen():
         except EOFError:
             printNicely('')
         except TwitterHTTPError as e:
+            ## The exceptions are the problem. 
             detail_twitter_error(e)
         except Exception:
             debug_option()
