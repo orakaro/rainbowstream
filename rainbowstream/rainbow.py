@@ -589,12 +589,8 @@ def share():
     Copy url of a tweet to clipboard
     """
     t = Twitter(auth=authen())
-    try:
-        id = int(g['stuff'].split()[0])
-        tid = c['tweet_dict'][id]
-    except:
-        printNicely(red('Tweet id is not valid.'))
-        return
+    id = int(g['stuff'].split()[0])
+    tid = c['tweet_dict'][id]
     tweet = t.statuses.show(id=tid)
     url = 'https://twitter.com/' + \
         tweet['user']['screen_name'] + '/status/' + str(tid)
@@ -628,7 +624,11 @@ def show():
     id = int(g['stuff'].split()[1])
     tid = c['tweet_dict'][id]
     tweet = t.statuses.show(id=tid)
-    media = tweet['entities']['media']
+    media = tweet['entities'].get('media')
+    # Does not work on all statuses that do not contain images.
+    if not media:
+        printNicely(light_magenta('No images to display. ;_;'))
+        return
     for m in media:
         res = requests.get(m['media_url'])
         img = Image.open(BytesIO(res.content))
