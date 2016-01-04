@@ -616,14 +616,9 @@ def delete():
     except:
         printNicely(red('Sorry I can\'t understand.'))
         return
-    try:
-        tid = c['tweet_dict'][id]
-        t.statuses.destroy(id=tid)
-        printNicely(green('Okay it\'s gone.'))
-    except TwitterHTTPError:
-        printNicely(red('That tweet does not belong to you.'))
-    except Exception:
-        printNicely(red('Invalid command.'))
+    tid = c['tweet_dict'][id]
+    t.statuses.destroy(id=tid)
+    printNicely(green('Okay it\'s gone.'))
 
 
 def show():
@@ -1958,7 +1953,13 @@ def listen():
             g['stuff'] = ' '.join(line.split()[1:])
             # Check tweet length
             # Process the command
-            process(cmd)()
+            try:
+                process(cmd)()
+            except TwitterHTTPError as e:
+                detail_twitter_error(e)
+            except Exception:
+                debug_option()
+                printNicely('Invalid command.')
             # Not re-display
             if cmd in ['switch', 't', 'rt', 'rep']:
                 g['prefix'] = False
@@ -1968,9 +1969,6 @@ def listen():
             c['lock'] = False
         except EOFError:
             printNicely('')
-        except TwitterHTTPError as e:
-            ## The exceptions are the problem. 
-            detail_twitter_error(e)
         except Exception:
             debug_option()
             printNicely(red('OMG something is wrong with Twitter API right now.'))
