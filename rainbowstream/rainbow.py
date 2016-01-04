@@ -616,9 +616,14 @@ def delete():
     except:
         printNicely(red('Sorry I can\'t understand.'))
         return
-    tid = c['tweet_dict'][id]
-    t.statuses.destroy(id=tid)
-    printNicely(green('Okay it\'s gone.'))
+    try:
+        tid = c['tweet_dict'][id]
+        t.statuses.destroy(id=tid)
+        printNicely(green('Okay it\'s gone.'))
+    except TwitterHTTPError:
+        printNicely(red('That tweet does not belong to you.'))
+    except Exception:
+        printNicely(red('Invalid command.'))
 
 
 def show():
