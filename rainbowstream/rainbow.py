@@ -1962,7 +1962,7 @@ def listen():
                 printNicely(yellow('Invalid command.'))
             except Exception:
                 debug_option()
-                printNicely(red('OMG something went wrong!'))
+                printNicely(red('OMG something went wrong with the Twitter API.'))
             # Not re-display
             if cmd in ['switch', 't', 'rt', 'rep']:
                 g['prefix'] = False
@@ -1974,7 +1974,7 @@ def listen():
             printNicely('')
         except Exception:
             debug_option()
-            printNicely(red('OMG something is wrong with Twitter API right now.'))
+            printNicely(red('OMG something went wrong.'))
 
 
 def reconn_notice():
