@@ -1957,9 +1957,12 @@ def listen():
                 process(cmd)()
             except TwitterHTTPError as e:
                 detail_twitter_error(e)
+            except AttributeError:
+                debug_option()
+                printNicely(yellow('Invalid command.'))
             except Exception:
                 debug_option()
-                printNicely('Invalid command.')
+                printNicely(red('OMG something went wrong!'))
             # Not re-display
             if cmd in ['switch', 't', 'rt', 'rep']:
                 g['prefix'] = False
