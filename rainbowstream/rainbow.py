@@ -1455,6 +1455,8 @@ def help_discover():
         light_green('trend JP Tokyo') + '.\n'
     usage += s * 2 + light_green('home') + ' will show your timeline. ' + \
         light_green('home 7') + ' will show 7 tweets.\n'
+    usage += s * 2 + light_green('me') + ' will show your latest tweets. ' + \
+        light_green('me 2') + ' will show your last 2 tweets.\n'
     usage += s * 2 + \
         light_green('notification') + ' will show your recent notification.\n'
     usage += s * 2 + light_green('mentions') + ' will show mentions timeline. ' + \
@@ -1506,8 +1508,6 @@ def help_tweets():
     usage += s * 2 + \
         light_green('share 12 ') + ' will get the direct link of the tweet with ' + \
         light_yellow('[id=12]') + '.\n'
-    usage += s * 2 + \
-        light_green('mytw 2 ') + ' will show your last two tweets.\n'
     usage += s * 2 + \
         light_green('del 12 ') + ' will delete tweet with ' + \
         light_yellow('[id=12]') + '.\n'
@@ -1781,7 +1781,7 @@ cmdset = [
     't',
     'rt',
     'quote',
-    'mytw',
+    'me',
     'allrt',
     'conversation',
     'fav',
