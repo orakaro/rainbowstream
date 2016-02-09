@@ -375,6 +375,21 @@ def view():
         printNicely(red('A name should begin with a \'@\''))
 
 
+def view_my_tweets():
+    """
+    Display user's recent tweets.
+    """
+    t = Twitter(auth=authen())
+    try:
+        num = int(g['stuff'])
+    except:
+        num = c['HOME_TWEET_NUM']
+    for tweet in reversed(
+            t.statuses.user_timeline(count=num, screen_name=g['original_name'])):
+        draw(t=tweet)
+    printNicely('')
+
+
 def search():
     """
     Search
@@ -1440,6 +1455,8 @@ def help_discover():
         light_green('trend JP Tokyo') + '.\n'
     usage += s * 2 + light_green('home') + ' will show your timeline. ' + \
         light_green('home 7') + ' will show 7 tweets.\n'
+    usage += s * 2 + light_green('me') + ' will show your latest tweets. ' + \
+        light_green('me 2') + ' will show your last 2 tweets.\n'
     usage += s * 2 + \
         light_green('notification') + ' will show your recent notification.\n'
     usage += s * 2 + light_green('mentions') + ' will show mentions timeline. ' + \
@@ -1764,6 +1781,7 @@ cmdset = [
     't',
     'rt',
     'quote',
+    'me',
     'allrt',
     'conversation',
     'fav',
@@ -1812,6 +1830,7 @@ funcset = [
     tweet,
     retweet,
     quote,
+    view_my_tweets,
     allretweet,
     conversation,
     favorite,
@@ -1873,6 +1892,7 @@ def listen():
             [],  # tweet
             [],  # retweet
             [],  # quote
+            [],  # view_my_tweets
             [],  # allretweet
             [],  # conversation
             [],  # favorite
