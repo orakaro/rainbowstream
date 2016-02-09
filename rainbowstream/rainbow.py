@@ -870,7 +870,7 @@ def mute():
             rel = t.mutes.users.create(screen_name=screen_name[1:])
             if isinstance(rel, dict):
                 printNicely(green(screen_name + ' is muted.'))
-                c['IGNORE_LIST'] += [unc(screen_name)]
+                c['IGNORE_LIST'] += [color_func(screen_name)]
                 c['IGNORE_LIST'] = list(set(c['IGNORE_LIST']))
             else:
                 printNicely(red(rel))
