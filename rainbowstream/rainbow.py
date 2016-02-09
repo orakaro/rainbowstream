@@ -239,11 +239,8 @@ def init(args):
     c['message_dict'] = []
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
-    set_config('IMAGE_ON_TERM', str(c['IMAGE_ON_TERM']))
     # Use 24 bit color
     c['24BIT'] = args.color_24bit
-    # Resize images based on the current terminal size
-    set_config('IMAGE_RESIZE_TO_FIT', str(c.get('IMAGE_RESIZE_TO_FIT', False)))
     # Check type of ONLY_LIST and IGNORE_LIST
     if not isinstance(c['ONLY_LIST'], list):
         printNicely(red('ONLY_LIST is not a valid list value.'))

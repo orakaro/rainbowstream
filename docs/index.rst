@@ -132,6 +132,8 @@ Here is full list of supported command:
 
 -  ``home`` will show your timeline. ``home 10`` will print exactly 10 tweets.
 
+-  ``me`` will show your latest tweets. ``me 2`` will show your last 2 tweets.
+
 -  ``notification`` will show your notification from the time you started RainbowStream.
 
 -  ``mentions`` will show mentions timeline. ``mentions 7`` will show 7 mention tweets.
