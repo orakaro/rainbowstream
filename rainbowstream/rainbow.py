@@ -1959,8 +1959,6 @@ def listen():
                 g['prefix'] = False
             else:
                 g['prefix'] = True
-            # Release the semaphore lock
-            c['lock'] = False
         except EOFError:
             printNicely('')
         except TwitterHTTPError as e:
@@ -1968,6 +1966,9 @@ def listen():
         except Exception:
             debug_option()
             printNicely(red('OMG something is wrong with Twitter API right now.'))
+        finally:
+            # Release the semaphore lock
+            c['lock'] = False
 
 
 def reconn_notice():
