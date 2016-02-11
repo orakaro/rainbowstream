@@ -189,12 +189,12 @@ def upgrade_center():
             notice += light_yellow(current) + '\n'
             notice += light_magenta('You should upgrade with ')
             notice += light_green('pip install -U rainbowstream')
-            printNicely(notice)
         else:
             notice = light_yellow('You are running latest version (')
             notice += light_green(current)
             notice += light_yellow(')')
             notice += '\n'
+        printNicely(notice)
     except:
         pass
 
