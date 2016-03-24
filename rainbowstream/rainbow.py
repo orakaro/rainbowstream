@@ -2010,7 +2010,7 @@ def stream(domain, args, name='Rainbow Stream'):
     # The Logo
     art_dict = {
         c['USER_DOMAIN']: name,
-        c['PUBLIC_DOMAIN']: args.track_keywords or 'Global',
+        c['PUBLIC_DOMAIN']: args.track_keywords or name or 'Global',
         c['SITE_DOMAIN']: name,
     }
     if c['ASCII_ART']:
@@ -2024,6 +2024,8 @@ def stream(domain, args, name='Rainbow Stream'):
     query_args = dict()
     if args.track_keywords:
         query_args['track'] = args.track_keywords
+    if args.filter_ids:
+        query_args['follow'] = args.filter_ids
     # Get stream
     stream = TwitterStream(
         auth=authen(),
@@ -2035,7 +2037,7 @@ def stream(domain, args, name='Rainbow Stream'):
         elif domain == c['SITE_DOMAIN']:
             tweet_iter = stream.site(**query_args)
         else:
-            if args.track_keywords:
+            if args.track_keywords or args.filter_ids:
                 tweet_iter = stream.statuses.filter(**query_args)
             else:
                 tweet_iter = stream.statuses.sample()
@@ -2122,6 +2124,7 @@ def spawn_public_stream(args, keyword=None):
     Spawn a new public stream
     """
     # Only set keyword if specified
+    args.filter_ids = ''
     if keyword:
         if keyword[0] == '#':
             keyword = keyword[1:]
@@ -2131,6 +2134,7 @@ def spawn_public_stream(args, keyword=None):
         g['keyword'] = 'Global'
     g['PREFIX'] = u2str(emojize(format_prefix(keyword=g['keyword'])))
     g['listname'] = ''
+
     # Start new thread
     th = threading.Thread(
         target=stream,
@@ -2162,7 +2166,7 @@ def spawn_list_stream(args, stuff=None):
     printNicely(light_yellow('getting list members ...'))
     # Get members
     t = Twitter(auth=authen())
-    members = []
+    members, member_ids = [], []
     next_cursor = -1
     while next_cursor != 0:
         m = t.lists.members(
@@ -2172,15 +2176,18 @@ def spawn_list_stream(args, stuff=None):
             include_entities=False)
         for u in m['users']:
             members.append('@' + u['screen_name'])
+            member_ids.append(u['id'])
         next_cursor = m['next_cursor']
     printNicely(light_yellow('... done.'))
     # Build thread filter array
     args.filter = members
+    args.filter_ids = ','.join([str(x) for x in member_ids])
+    
     # Start new thread
     th = threading.Thread(
         target=stream,
         args=(
-            c['USER_DOMAIN'],
+            c['PUBLIC_DOMAIN'],
             args,
             slug))
     th.daemon = True
@@ -2197,6 +2204,7 @@ def spawn_personal_stream(args, stuff=None):
     """
     Spawn a new personal stream
     """
+    args.filter_ids = ''
     # Reset the tracked keyword and listname
     g['keyword'] = g['listname'] = ''
     # Reset prefix
