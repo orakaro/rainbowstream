@@ -2017,7 +2017,7 @@ def stream(domain, args, name='Rainbow Stream'):
         ascii_art(art_dict.get(domain, name))
     # These arguments are optional:
     stream_args = dict(
-        timeout=0.5,  # To check g['stream_stop'] after each 0.5 s
+        timeout=0.25,  # To check g['stream_stop'] after each 0.5 s
         block=True,
         heartbeat_timeout=c['HEARTBEAT_TIMEOUT'] * 60)
     # Track keyword
@@ -2073,7 +2073,7 @@ def stream(domain, args, name='Rainbow Stream'):
                 if g['pause']:
                     continue
                 while c['lock']:
-                    time.sleep(0.5)
+                    time.sleep(0.25)
                 # Draw the tweet
                 draw(
                     t=tweet,
@@ -2083,7 +2083,7 @@ def stream(domain, args, name='Rainbow Stream'):
                     ig=args.ignore,
                 )
                 # Current readline buffer
-                current_buffer = readline.get_line_buffer().strip()
+                current_buffer = readline.get_line_buffer()
                 # There is an unexpected behaviour in MacOSX readline + Python 2:
                 # after completely delete a word after typing it,
                 # somehow readline buffer still contains
@@ -2100,7 +2100,7 @@ def stream(domain, args, name='Rainbow Stream'):
                 if g['pause']:
                     continue
                 while c['lock']:
-                    time.sleep(0.5)
+                    time.sleep(0.25)
                 print_message(tweet['direct_message'])
             elif tweet.get('event'):
                 c['events'].append(tweet)
@@ -2262,7 +2262,7 @@ def fly():
         spawn_dict.get(target)(args, stuff)
 
     # Start listen process
-    time.sleep(0.5)
+    time.sleep(0.25)
     g['reset'] = True
     g['prefix'] = True
     listen()
