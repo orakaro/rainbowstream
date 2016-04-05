@@ -2075,7 +2075,7 @@ def stream(domain, args, name='Rainbow Stream'):
                 while c['lock']:
                     time.sleep(0.25)
                 # Draw the tweet
-                draw(
+                did_draw = draw(
                     t=tweet,
                     keyword=args.track_keywords,
                     humanize=False,
@@ -2088,7 +2088,7 @@ def stream(domain, args, name='Rainbow Stream'):
                 # after completely delete a word after typing it,
                 # somehow readline buffer still contains
                 # the 1st character of that word
-                if current_buffer and g['cmd'] != current_buffer:
+                if current_buffer and g['cmd'] != current_buffer and did_draw:
                     sys.stdout.write(
                         g['decorated_name'](g['PREFIX']) + current_buffer)
                     sys.stdout.flush()
