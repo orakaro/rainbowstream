@@ -17,6 +17,7 @@ from .colors import *
 from .config import *
 from .py3patch import *
 from .emoji import *
+from .util import draw_iterm_image
 
 # Draw global variables
 dg = {}
@@ -372,7 +373,10 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
         for mu in media_url:
             try:
                 response = requests.get(mu)
-                image_to_display(BytesIO(response.content))
+                if c['IMAGE_ON_ITERM']:
+                    draw_iterm_image(response.content)
+                else:
+                    image_to_display(BytesIO(response.content))
             except Exception:
                 printNicely(red('Sorry, image link is broken'))
 
@@ -971,7 +975,10 @@ def show_profile(u):
     if c['IMAGE_ON_TERM']:
         try:
             response = requests.get(profile_image_url)
-            image_to_display(BytesIO(response.content))
+            if c['IMAGE_ON_ITERM']:
+                draw_iterm_image(response.content)
+            else:
+                image_to_display(BytesIO(response.content))
         except:
             pass
     else:

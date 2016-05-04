@@ -3,6 +3,8 @@
     "HEARTBEAT_TIMEOUT" : 120,
     // Image on term
     "IMAGE_ON_TERM" : false,
+    // iTerm Beta Inline Image Support (2.9+ only)
+    "IMAGE_ON_ITERM" : false,
     // Resize image to fit on terminal view
     "IMAGE_RESIZE_TO_FIT" : false,
     // Themes
