@@ -7,7 +7,7 @@ Rainbow Stream
 .. image:: http://img.shields.io/pypi/v/rainbowstream.svg?style=flat-square
    :target: https://pypi.python.org/pypi/rainbowstream
 
-Terminal-based Twitter Client. Realtime tweetstream, compose, search ,
+Terminal-based Twitter Client. Realtime tweetstream, compose, search,
 favorite … and much more fun directly from terminal.
 
 This package is built on the top of `Python Twitter Tool`_ and `Twitter API`_,
