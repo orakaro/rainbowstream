@@ -60,6 +60,12 @@ For debian-based distros, these can be installed with
 
     sudo apt-get install python-dev libjpeg-dev libfreetype6 libfreetype6-dev zlib1g-dev
 
+For CentOS:
+
+.. code:: bash
+
+    sudo yum install python-devel libjpeg-devel
+
 Besides, Mac OSX Maverick with Xcode 5.1 has a well-known `clang unknown argument`_ problem with
 the ``Pillow`` package installation - a dependency of this app.
 If you are in this case, I recommend taking a look at `Issue #10`_ and let me know if this workaround doesn't work for you.
