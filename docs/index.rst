@@ -421,7 +421,7 @@ steps
 -  `Create your own Twitter Application`_
 -  Get your Twitter application’s API key and secret
 -  Fork github's repo and clone in your system.
--  Create a file ``consumer.py`` in ```rainbowstream```_ folder with
+-  Create a file ``consumer.py`` in `rainbowstream`_ folder with
    following content
 
    .. code:: python
@@ -443,8 +443,11 @@ steps
        # Remove ~/.rainbow_oauth if exists
        rainbowstream # local version of rainbowstream
 
+.. _Python Twitter Tool: http://mike.verdone.ca/twitter/
+.. _Twitter API: https://dev.twitter.com/docs/api/1.1
 .. _Create your own Twitter Application: https://apps.twitter.com/app/new
-.. _``rainbowstream``: https://github.com/DTVD/rainbowstream/tree/master/rainbowstream
+.. _Create your own Pocket Application: https://getpocket.com/developer/apps/new
+.. _rainbowstream: https://github.com/DTVD/rainbowstream/tree/master/rainbowstream
 .. _Python Twitter Tool: http://mike.verdone.ca/twitter/
 .. _Twitter API: https://dev.twitter.com/docs/api/1.1
 .. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
@@ -455,4 +458,3 @@ steps
 .. _Issue #10: https://github.com/DTVD/rainbowstream/issues/10
 .. _default config: https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/config
 .. _Emoji cheatsheet: http://www.emoji-cheat-sheet.com/
-.. _Pocket API: http://getpocket.com/developer/docs/overview

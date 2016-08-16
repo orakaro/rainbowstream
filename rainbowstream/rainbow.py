@@ -465,7 +465,8 @@ def pocket():
     Add new link to Pocket along with tweet id
     """
     if not c['POCKET_SUPPORT']:
-        printNicely(red('Pocket isn\'t enabled.'))
+        printNicely(yellow('Pocket isn\'t enabled.'))
+        printNicely(yellow('You need to "config POCKET_SUPPORT = true"'))
         return
 
     # Get tweet infos
