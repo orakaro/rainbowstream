@@ -172,6 +172,8 @@ Here is full list of supported command:
 
 -  ``open 12`` will open url in tweet with *[id=12]* in your OS’s default browser.
 
+-  ``pt 12`` will add tweet with *[id=12]* in your Pocket list.
+
 **Direct Messages Commands**
 
 -  ``inbox`` will show inbox messages. ``inbox 7`` will show newest 7 messages.
@@ -404,6 +406,8 @@ You also can view or set a new value of every config key by ``config`` command (
     + ``#recipient_name``: Message's recipient name
     + ``#recipient_nick``: Message's recipient screen name
 
+- ``POCKET_SUPPORT`` : enable Pocket support.
+
 In every format, you can use unicode characters like ``\u2665``.
 Mac users also can use emoji characters as well (Ex: ``::zap::``).
 See `Emoji cheatsheet`_ for details.
@@ -425,6 +429,7 @@ steps
        # Consumer information
        CONSUMER_KEY = 'APIKey' # Your Twitter application's API key
        CONSUMER_SECRET = 'APISecret' # Your Twitter application's API secret
+       PCKT_CONSUMER_KEY = 'PocketAPIKey' # Your Pocket application's API key
 
 -  Use pip to install in local
 
@@ -450,3 +455,4 @@ steps
 .. _Issue #10: https://github.com/DTVD/rainbowstream/issues/10
 .. _default config: https://github.com/DTVD/rainbowstream/blob/master/rainbowstream/colorset/config
 .. _Emoji cheatsheet: http://www.emoji-cheat-sheet.com/
+.. _Pocket API: http://getpocket.com/developer/docs/overview

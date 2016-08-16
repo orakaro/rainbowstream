@@ -19,7 +19,8 @@ install_requires = [
     "pyfiglet",
     "twitter",
     "Pillow",
-    "PySocks"
+    "PySocks",
+    "pocket"
 ]
 
 # Default user (considers non virtualenv method)
