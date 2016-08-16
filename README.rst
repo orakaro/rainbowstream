@@ -182,8 +182,10 @@ Development
 If you want to build a runnable version yourself, follow these simple
 steps
 
--  `Create your own Twitter Application`_
+- `Create your own Twitter Application`_
 -  Get your Twitter application’s API key and secret
+- `Create your own Pocket Application`_ (platform: Web)
+-  Get your Pocket application’s key
 -  Fork this repo and clone in your system.
 -  Create a file ``consumer.py`` in `rainbowstream`_ folder with
    following content
@@ -193,6 +195,7 @@ steps
        # Consumer information
        CONSUMER_KEY = 'APIKey' # Your Twitter application's API key
        CONSUMER_SECRET = 'APISecret' # Your Twitter application's API secret
+       PCKT_CONSUMER_KEY = 'PocketAPIKey' # Your Pocket application's API key
 
 -  Use pip to install in local
 
@@ -219,7 +222,7 @@ Rainbow Stream are released under an MIT License. See LICENSE.txt for
 details
 
 
-.. _Python Twitter Tool: http://mike.verdone.ca/twitter/
+.. _python twitter tool: http://mike.verdone.ca/twitter/
 .. _Twitter API: https://dev.twitter.com/docs/api/1.1
 .. _create an issue: https://github.com/DTVD/rainbowstream/issues/new
 .. _@dtvd88: https://twitter.com/dtvd88
@@ -229,6 +232,7 @@ details
 .. _config guide: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _Create your own Twitter Application: https://apps.twitter.com/app/new
+.. _Create your own Pocket Application: https://getpocket.com/developer/apps/new
 .. _rainbowstream: https://github.com/DTVD/rainbowstream/tree/master/rainbowstream
 .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
 .. _config management: http://rainbowstream.readthedocs.org/en/latest/#config-explanation
