@@ -1389,8 +1389,8 @@ def switch():
                 printNicely(light_magenta(guide))
                 only = raw_input('Only nicks [Ex: @xxx,@yy]: ')
                 ignore = raw_input('Ignore nicks [Ex: @xxx,@yy]: ')
-                args.filter = filter(None, only.split(','))
-                args.ignore = filter(None, ignore.split(','))
+                args.filter = list(filter(None, only.split(',')))
+                args.ignore = list(filter(None, ignore.split(',')))
         except:
             printNicely(red('Sorry, wrong format.'))
             return
