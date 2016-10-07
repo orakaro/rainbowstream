@@ -1088,7 +1088,6 @@ def format_quote(tweet):
         formater = c['QUOTE_FORMAT']
         formater = screen_name.join(formater.split('#owner'))
         formater = text.join(formater.split('#tweet'))
-        formater = u2str(formater)
         formater = emojize(formater)
     except:
         pass
