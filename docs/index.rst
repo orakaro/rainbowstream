@@ -351,8 +351,9 @@ You also can view or set a new value of every config key by ``config`` command (
 -  ``QUOTE_FORMAT``: format when quote a tweet
 
     + ``#comment``: Your own comment about the tweet
-    + ``#owner``: owner's username with '@'
+    + ``#owner``: owner's username *without* '@'
     + ``#tweet``: original tweet
+    + ``#tid``: the tweet id on Twitter
 
 -  ``THREAD_META_LEFT``: format for meta information of messages from partner which is display in the left of screen.
 

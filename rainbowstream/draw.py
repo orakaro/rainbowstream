@@ -1073,8 +1073,10 @@ def format_quote(tweet):
     Quoting format
     """
     # Retrieve info
-    screen_name = '@' + tweet['user']['screen_name']
-    text = tweet['text']
+    screen_name = str( tweet['user']['screen_name'] )
+    text        = str( tweet['text'] )
+    tid         = str( tweet['id'] )
+
     # Validate quote format
     if '#owner' not in c['QUOTE_FORMAT']:
         printNicely(light_magenta('Quote should contains #owner'))
@@ -1082,12 +1084,16 @@ def format_quote(tweet):
     if '#comment' not in c['QUOTE_FORMAT']:
         printNicely(light_magenta('Quote format should have #comment'))
         return False
+
     # Build formater
     formater = ''
     try:
         formater = c['QUOTE_FORMAT']
-        formater = screen_name.join(formater.split('#owner'))
-        formater = text.join(formater.split('#tweet'))
+
+        formater = formater.replace('#owner', screen_name)
+        formater = formater.replace('#tweet', text)
+        formater = formater.replace('#tid',   tid)
+
         formater = emojize(formater)
     except:
         pass
