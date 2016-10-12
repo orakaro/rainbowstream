@@ -1073,8 +1073,8 @@ def format_quote(tweet):
     Quoting format
     """
     # Retrieve info
-    screen_name = str( tweet['user']['screen_name'] )
-    text        = str( tweet['text'] )
+    screen_name = tweet['user']['screen_name']
+    text        = tweet['text']
     tid         = str( tweet['id'] )
 
     # Validate quote format
