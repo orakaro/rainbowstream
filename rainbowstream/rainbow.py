@@ -54,6 +54,11 @@ def parse_arguments():
         '--timeout',
         help='Timeout for the stream (seconds).')
     parser.add_argument(
+        '-rc',
+        '--reconnect',
+        action='store_true',
+        help='Automatically reconnect on Hangups an timeouts.')
+    parser.add_argument(
         '-tt',
         '--track-keywords',
         help='Search the stream for specific text.')
@@ -271,6 +276,8 @@ def init(args):
     c['message_dict'] = []
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
+    # Auto-reconnect
+    c['AUTO_RECONNECT'] = args.reconnect
     # Use 24 bit color
     c['24BIT'] = args.color_24bit
     # Check type of ONLY_LIST and IGNORE_LIST
@@ -2097,7 +2104,9 @@ def stream(domain, args, name='Rainbow Stream'):
     """
     reconnect = True
     while reconnect:
-        reconnect = stream_aux(domain, args, name)
+        # Only reconnect if stream_aux ends due to a reconnectable event
+        # AND the configuration allows it.
+        reconnect = stream_aux(domain, args, name) and c['AUTO_RECONNECT']
 
 def stream_aux(domain, args, name):
     """
