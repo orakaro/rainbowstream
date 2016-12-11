@@ -938,8 +938,9 @@ def ls():
         # 300 users means 15 calls to the related API. The rate limit is 15
         # calls per 15mn periods (see Twitter documentation).
         if ( number_of_users % 300 == 0 ):
-            printNicely( '(waiting 16mn for rate limits reasons...)' )
-            time.sleep(16*60)
+            printNicely(light_yellow( 'We reached the limit of Twitter API.' ))
+            printNicely(light_yellow( 'You may need to wait about 15 minutes.' ))
+            break
 
     printNicely('All: ' + str(number_of_users) + ' ' + d[target] + '.')
 
