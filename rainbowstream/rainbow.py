@@ -618,7 +618,12 @@ def reply():
     tid = c['tweet_dict'][id]
     user = t.statuses.show(id=tid)['user']['screen_name']
     status = ' '.join(g['stuff'].split()[1:])
-    status = '@' + user + ' ' + str2u(status)
+    # don't include own username for tweet chains
+    # for details see issue https://github.com/DTVD/rainbowstream/issues/163
+    if user == g['original_name']:
+        status = str2u(status)
+    else:
+        status = '@' + user + ' ' + str2u(status)
     t.statuses.update(status=status, in_reply_to_status_id=tid)
 
 
