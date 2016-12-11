@@ -903,24 +903,40 @@ def ls():
     d = {'fl': 'followers', 'fr': 'friends'}
     next_cursor = -1
     rel = {}
+
+    printNicely('All ' + d[target] + ':')
+
     # Cursor loop
+    number_of_users = 0
     while next_cursor != 0:
+
         list = getattr(t, d[target]).list(
             screen_name=name,
             cursor=next_cursor,
             skip_status=True,
             include_entities=False,
         )
-        for u in list['users']:
-            rel[u['name']] = '@' + u['screen_name']
-        next_cursor = list['next_cursor']
-    # Print out result
-    printNicely('All: ' + str(len(rel)) + ' ' + d[target] + '.')
-    for name in rel:
-        user = '  ' + cycle_color(name)
-        user += color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
-        printNicely(user)
 
+        for u in list['users']:
+
+            number_of_users += 1
+
+            # Print out result
+            printNicely(   '  '                                               \
+                         + cycle_color( u['name'] )                           \
+                         + color_func(c['TWEET']['nick'])(    ' @'            \
+                                                           + u['screen_name'] \
+                                                           + ' ' ) )
+
+        next_cursor = list['next_cursor']
+
+        # 300 users means 15 calls to the related API. The rate limit is 15
+        # calls per 15mn periods (see Twitter documentation).
+        if ( number_of_users % 300 == 0 ):
+            printNicely( '(waiting 16mn for rate limits reasons...)' )
+            time.sleep(16*60)
+
+    printNicely('All: ' + str(number_of_users) + ' ' + d[target] + '.')
 
 def follow():
     """
