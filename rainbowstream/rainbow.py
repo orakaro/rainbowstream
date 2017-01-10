@@ -19,6 +19,7 @@ from twitter.api import *
 from twitter.oauth import OAuth, read_token_file
 from twitter.oauth_dance import oauth_dance
 from twitter.util import printNicely
+from subprocess import call
 
 from pocket import Pocket
 
@@ -733,12 +734,14 @@ def show():
         id = int(g['stuff'].split()[1])
         tid = c['tweet_dict'][id]
         tweet = t.statuses.show(id=tid)
-        media = tweet['entities']['media']
+        media = tweet['extended_entities']['media']
         for m in media:
-            res = requests.get(m['media_url'])
-            img = Image.open(BytesIO(res.content))
-            img.show()
-    except:
+            print m['type']
+            if m['type'] == 'photo':
+                call([c['PHOTO_VIEWER_COMMAND'], m['media_url']])
+            else:
+                call([c['VIDEO_VIEWER_COMMAND'], m['video_info']['variants'][0]['url'] ])
+    except Exception as e:
         debug_option()
         printNicely(red('Sorry I can\'t show this image.'))
 

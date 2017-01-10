@@ -49,6 +49,10 @@
     "IMAGE_MAX_HEIGHT" : 90,
     // Seconds to wait before displaying another tweet, will drop all tweets while waiting.
     "STREAM_DELAY" : 0,
+    // Set command for photo viewer, default is feh
+    "PHOTO_VIEWER_COMMAND": "feh",
+    // Set command for video viewer, default is mpv
+    "VIDEO_VIEWER_COMMAND": "mpv",
     // Stream config
     "USER_DOMAIN" : "userstream.twitter.com",
     "PUBLIC_DOMAIN" : "stream.twitter.com",
