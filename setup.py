@@ -20,7 +20,8 @@ install_requires = [
     "twitter",
     "Pillow",
     "PySocks",
-    "pocket"
+    "pocket",
+    "twitter-text-python"
 ]
 
 # Default user (considers non virtualenv method)

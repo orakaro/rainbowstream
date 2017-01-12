@@ -19,6 +19,8 @@ from twitter.api import *
 from twitter.oauth import OAuth, read_token_file
 from twitter.oauth_dance import oauth_dance
 from twitter.util import printNicely
+from ttp import ttp
+from subprocess import call
 
 from pocket import Pocket
 
@@ -753,14 +755,14 @@ def urlopen():
             return
         tid = c['tweet_dict'][int(g['stuff'])]
         tweet = t.statuses.show(id=tid)
-        urls = tweet['entities']['urls']
+        # get url from entities. If it's not found get url from parsed tweet
+        urls = tweet['entities']['urls'] or ttp.Parser().parse(tweet).urls
         if not urls:
             printNicely(light_magenta('No url here @.@!'))
-            return
         else:
             for url in urls:
-                expanded_url = url['expanded_url']
-                webbrowser.open(expanded_url)
+                expanded_url = url['expanded_url'] or url
+                call([c['BROWSER'],expanded_url])
     except:
         debug_option()
         printNicely(red('Sorry I can\'t open url in this tweet.'))
