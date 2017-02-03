@@ -7,15 +7,15 @@ Rainbow Stream
 .. image:: http://img.shields.io/pypi/v/rainbowstream.svg?style=flat-square
    :target: https://pypi.python.org/pypi/rainbowstream
 
-Terminal-based Twitter Client. Realtime tweetstream, compose, search,
-favorite … and much more fun directly from terminal.
+Terminal-based Twitter Client.  Real-time tweetstream, compose, search, favorite,
+and much more fun directly from terminal.
 
-This package is built on the top of `Python Twitter Tool`_ and `Twitter API`_,
-can run on Python 2.7.x and 3.x .
+This package is built on the `Python Twitter Tools`_ and the `Twitter API`_, and runs
+on Python (2.7.x and 3.x).
 
-Home page : http://www.rainbowstream.org/
+Home page: http://www.rainbowstream.org/
 
-Source code : https://github.com/DTVD/rainbowstream
+Source code: https://github.com/DTVD/rainbowstream
 
 Showcase
 --------
@@ -23,29 +23,28 @@ Showcase
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/rs.gif
    :alt: gif
 
-Install
--------
+Installation
+------------
 
-The quick way
+The Quick Way
 ^^^^^^^^^^^^^
 
-You will need Python and pip (2.7.x or 3.x).
+System Python (2.7.x or 3.x)
 
 .. code:: bash
 
     sudo pip install rainbowstream
     # Python 3 users: sudo pip3 install rainbowstream
 
-
-The recommended way
+The Recommended Way
 ^^^^^^^^^^^^^^^^^^^
 
-Use `virtualenv`_
+`virtualenv`_
 
 .. code:: bash
 
     virtualenv venv
-    # Python 3 users : use -p to specify your Python 3 location as below
+    # Python 3 users : use -p to specify your Python 3 location:
     # virtualenv -p /usr/bin/python3 venv
     source venv/bin/activate
     pip install rainbowstream
@@ -53,8 +52,9 @@ Use `virtualenv`_
 Troubleshooting
 ^^^^^^^^^^^^^^^
 
-If you use Linux, you might need to install some packages if you haven't already.
-For debian-based distros, these can be installed with
+Some additional libraries may need to be installed on linux.
+
+For Debian-based distros:
 
 .. code:: bash
 
@@ -66,86 +66,78 @@ For CentOS:
 
     sudo yum install python-devel libjpeg-devel
 
-Besides, Mac OSX Maverick with Xcode 5.1 has a well-known `clang unknown argument`_ problem with
-the ``Pillow`` package installation - a dependency of this app.
-If you are in this case, I recommend taking a look at `Issue #10`_ and let me know if this workaround doesn't work for you.
+Mac OSX Maverick with Xcode 5.1 has a well-known `clang unknown argument`_
+problem with the installation of the ``Pillow`` package—a dependency of this
+app.  Take a look at `Issue #10`_ and let me know if the workaround doesn't work
+for you.
 
 .. code:: bash
 
     export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
 
-If installation in *the quick way* doesn't work:
+If *The Quick Way* doesn't work, then:
 
 -  ``sudo pip uninstall rainbowstream``
--  use the *virtualenv way* above
--  `create an issue`_ and provide:
-
-  + Your OS
-  + Your Python version
+-  Use the *The Recommended Way*
+-  `Create an issue`_ and provide:
+    - Your OS
+    - Your Python version
 
 Usage
 -----
 
-The stream
+The Stream
 ^^^^^^^^^^
 
-Just type
+Just type ``rainbowstream`` to see your stream.
 
-.. code:: bash
-
-    rainbowstream
-
-and see your stream.
-
-I shipped a feature which can display **tweet's images directly on terminal**.
-You can try it with:
+You can now **display tweeted images directly on the terminal**!  Try it with:
 
 .. code:: bash
 
     rainbowstream -iot # Or rainbowstream --image-on-term
 
-You also can change the config key ``IMAGE_ON_TERM`` to ``True`` inside the app
-to enable above feature,
-change ``IMAGE_SHIFT`` to set image's margin (relative to your terminal's width)
-or ``IMAGE_MAX_HEIGHT`` to control max height of every image.
-(see `config management`_ section).
+Set ``IMAGE_ON_TERM`` to ``True`` in your config to to enable above feature,
+change ``IMAGE_SHIFT`` to set image's margin (relative to your terminal's
+width), and ``IMAGE_MAX_HEIGHT`` to control max height of every image (see
+`Config Management`_).
 
-In the first time you will be asked for authorization of Rainbow Stream
-app at Twitter. Just click the “Authorize access” button and paste PIN
-number to the terminal, the rainbow will start.
+You will be asked for authorization on Twitter the first time you run Rainbow
+Stream.  Just click the "Authorize access" button, paste PIN number to the
+terminal, and the rainbow will start.
 
-You might want to use rainbowstream via an **HTTP/SOCKS proxy**. Proxy settings are
-provided as follows:
+You might want to use Rainbow Stream with an **HTTP/SOCKS proxy**.  Proxy
+settings are specified as follows:
 
 .. code:: bash
 
     rainbowstream --proxy-host localhost --proxy-port 1337 --proxy-type HTTP
-    # or using the short form:
+    # or the short form:
     rainbowstream -ph localhost -pp 1337 -pt HTTP
 
-Both ``--proxy-port`` and ``--proxy-type`` can be omitted. In this case default
-proxy port ``8080`` and default proxy type ``SOCKS5`` are used.
+Both ``--proxy-port`` and ``--proxy-type`` are optional.  The default proxy port
+is ``8080`` and the default proxy type is ``SOCKS5``.
 
-The interactive mode
-^^^^^^^^^^^^^^^^^^^^
+Interactive Mode
+^^^^^^^^^^^^^^^^
 
-While your personal stream is continued, you are also ready to tweet,
-search, reply, retweet… directly from console. Simply type “h” and hit
-the Enter key to see the help.
+While your personal stream is continued, you are also ready to tweet, search,
+reply, retweet, etc. directly from your console.  Simply type ``h`` and hit the
+Enter key to see the help.
 
-Input is in interactive mode. It means that you can use arrow key to
-move up and down history, tab-autocomplete or 2 tab to view available
-suggestion. Input history from previous run is available as well.
+Input is in interactive mode.  It means that you can use the arrow keys to move
+up and down through the history, tab-autocomplete or double-tab to view
+available suggestions.  Input history from previous run is also available.
 
-Available commands are listed in `Read The Docs`_.
+`Read the docs`_ for available commands.
 
-Theme customization
+Theme Customization
 ^^^^^^^^^^^^^^^^^^^
 
-Rainbow Stream is shipped with some default themes.
-You can either change theme by ``theme`` command or create your favorite one.
+Rainbow Stream is shipped with some default themes.  You can switch themes with
+the ``theme`` command.  You can also customize themes as you please.
 
-Theme’s screenshot:
+Theme screenshots:
 
 - Monokai
 
@@ -167,28 +159,26 @@ Theme’s screenshot:
 .. figure:: https://raw.githubusercontent.com/DTVD/rainbowstream/master/screenshot/themes/larapaste.png
    :alt: larapaste
 
-For detail information, see `theme usage and customization`_.
+See `Theme Usage and Customization`_ for detailed information.
 
 
-Bug and feature requests
+Bug and Feature Requests
 ------------------------
 
-Found a bug or a feature request ?
-Please `create an issue`_ or contact me at `@dtvd88`_
+Found a bug or a feature request?  Please `create an issue`_ or contact me at
+`@dtvd88`_.
 
 Development
 -----------
 
-If you want to build a runnable version yourself, follow these simple
-steps
+If you want to build a runnable version yourself, follow these simple steps:
 
 - `Create your own Twitter Application`_
 -  Get your Twitter application’s API key and secret
 - `Create your own Pocket Application`_ (platform: Web)
 -  Get your Pocket application’s key
--  Fork this repo and clone in your system.
--  Create a file ``consumer.py`` in `rainbowstream`_ folder with
-   following content
+-  Fork this repo and ``git clone`` it
+-  Create a ``consumer.py`` file in the `rainbowstream`_ directory containing:
 
    .. code:: python
 
@@ -197,7 +187,7 @@ steps
        CONSUMER_SECRET = 'APISecret' # Your Twitter application's API secret
        PCKT_CONSUMER_KEY = 'PocketAPIKey' # Your Pocket application's API key
 
--  Use pip to install in local
+-  Use pip to install it locally
 
    .. code:: bash
 
@@ -206,35 +196,35 @@ steps
        source venv/bin/activate
        pip install -e .
        which rainbowstream # /this-directory/venv/bin/rainbowstream
-       # Remove ~/.rainbow_oauth if exists
+       # Remove ~/.rainbow_oauth if it exists
        rainbowstream # local version of rainbowstream
 
 
 Contributing
 ------------
-I appreciate any help and support. Feel free to `fork`_ and `create a pull request`_.
-You will be listed as contributor.
+
+I appreciate any help and support.  Feel free to `fork`_ and `create a pull
+request`_.  You will be listed as a contributor.
 
 License
 -------
 
-Rainbow Stream are released under an MIT License. See LICENSE.txt for
-details
+Rainbow Stream is released under an MIT License.  See LICENSE.txt for details.
 
 
-.. _python twitter tool: http://mike.verdone.ca/twitter/
+.. _Python Twitter Tools: http://mike.verdone.ca/twitter/
 .. _Twitter API: https://dev.twitter.com/docs/api/1.1
-.. _create an issue: https://github.com/DTVD/rainbowstream/issues/new
+.. _Create an issue: https://github.com/DTVD/rainbowstream/issues/new
 .. _@dtvd88: https://twitter.com/dtvd88
 .. _fork: https://github.com/DTVD/rainbowstream/fork
 .. _create a pull request: https://github.com/DTVD/rainbowstream/compare/
-.. _Read The Docs: http://rainbowstream.readthedocs.org/en/latest/
+.. _Read the docs: http://rainbowstream.readthedocs.org/en/latest/
 .. _config guide: https://github.com/DTVD/rainbowstream/blob/master/theme.md
-.. _theme usage and customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
+.. _Theme Usage and Customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _Create your own Twitter Application: https://apps.twitter.com/app/new
 .. _Create your own Pocket Application: https://getpocket.com/developer/apps/new
 .. _rainbowstream: https://github.com/DTVD/rainbowstream/tree/master/rainbowstream
 .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
-.. _config management: http://rainbowstream.readthedocs.org/en/latest/#config-explanation
+.. _Config Management: http://rainbowstream.readthedocs.org/en/latest/#config-explanation
 .. _clang unknown argument: http://kaspermunck.github.io/2014/03/fixing-clang-error/
 .. _Issue #10: https://github.com/DTVD/rainbowstream/issues/10
