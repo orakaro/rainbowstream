@@ -689,12 +689,8 @@ def share():
     Copy url of a tweet to clipboard
     """
     t = Twitter(auth=authen())
-    try:
-        id = int(g['stuff'].split()[0])
-        tid = c['tweet_dict'][id]
-    except:
-        printNicely(red('Tweet id is not valid.'))
-        return
+    id = int(g['stuff'].split()[0])
+    tid = c['tweet_dict'][id]
     tweet = t.statuses.show(id=tid)
     url = 'https://twitter.com/' + \
         tweet['user']['screen_name'] + '/status/' + str(tid)
@@ -711,11 +707,7 @@ def delete():
     Delete
     """
     t = Twitter(auth=authen())
-    try:
-        id = int(g['stuff'].split()[0])
-    except:
-        printNicely(red('Sorry I can\'t understand.'))
-        return
+    id = int(g['stuff'].split()[0])
     tid = c['tweet_dict'][id]
     t.statuses.destroy(id=tid)
     printNicely(green('Okay it\'s gone.'))
@@ -726,21 +718,21 @@ def show():
     Show image
     """
     t = Twitter(auth=authen())
-    try:
-        target = g['stuff'].split()[0]
-        if target != 'image':
-            return
-        id = int(g['stuff'].split()[1])
-        tid = c['tweet_dict'][id]
-        tweet = t.statuses.show(id=tid)
-        media = tweet['entities']['media']
-        for m in media:
-            res = requests.get(m['media_url'])
-            img = Image.open(BytesIO(res.content))
-            img.show()
-    except:
-        debug_option()
-        printNicely(red('Sorry I can\'t show this image.'))
+    target = g['stuff'].split()[0]
+    if target != 'image':
+        return
+    id = int(g['stuff'].split()[1])
+    tid = c['tweet_dict'][id]
+    tweet = t.statuses.show(id=tid)
+    media = tweet['entities'].get('media')
+    # Does not work on all statuses that do not contain images.
+    if not media:
+        printNicely(light_magenta('No images to display. ;_;'))
+        return
+    for m in media:
+        res = requests.get(m['media_url'])
+        img = Image.open(BytesIO(res.content))
+        img.show()
 
 
 def urlopen():
@@ -748,22 +740,18 @@ def urlopen():
     Open url
     """
     t = Twitter(auth=authen())
-    try:
-        if not g['stuff'].isdigit():
-            return
-        tid = c['tweet_dict'][int(g['stuff'])]
-        tweet = t.statuses.show(id=tid)
-        urls = tweet['entities']['urls']
-        if not urls:
-            printNicely(light_magenta('No url here @.@!'))
-            return
-        else:
-            for url in urls:
-                expanded_url = url['expanded_url']
-                webbrowser.open(expanded_url)
-    except:
-        debug_option()
-        printNicely(red('Sorry I can\'t open url in this tweet.'))
+    if not g['stuff'].isdigit():
+        return
+    tid = c['tweet_dict'][int(g['stuff'])]
+    tweet = t.statuses.show(id=tid)
+    urls = tweet['entities']['urls']
+    if not urls:
+        printNicely(light_magenta('No url here @.@!'))
+        return
+    else:
+        for url in urls:
+            expanded_url = url['expanded_url']
+            webbrowser.open(expanded_url)
 
 
 def inbox():
@@ -843,7 +831,7 @@ def thread():
             g['message_threads'][thread_id],
             g['original_name'],
             g['full_name'])
-    except Exception:
+    except:
         debug_option()
         printNicely(red('No such thread.'))
 
@@ -2080,7 +2068,13 @@ def listen():
             g['stuff'] = ' '.join(line.split()[1:])
             # Check tweet length
             # Process the command
-            process(cmd)()
+            try:
+                process(cmd)()
+            except TwitterHTTPError as e:
+                detail_twitter_error(e)
+            except Exception:
+                debug_option()
+                printNicely(red('Invalid command.'))
             # Not re-display
             if cmd in ['switch', 't', 'rt', 'rep']:
                 g['prefix'] = False
@@ -2088,8 +2082,6 @@ def listen():
                 g['prefix'] = True
         except EOFError:
             printNicely('')
-        except TwitterHTTPError as e:
-            detail_twitter_error(e)
         except Exception:
             debug_option()
             printNicely(red('OMG something is wrong with Twitter API right now.'))
