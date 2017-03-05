@@ -100,9 +100,13 @@ def set_config(key, value):
         fixup(data, key, value)
     else:
         data[key] = value
-    # Save
-    with open(path, 'w') as out:
-        json.dump(data, out, indent=4)
+
+    with open(path, 'r+') as out:
+        saved_data = json.load(out)
+        saved_data.update({
+            key: value
+        })
+        json.dump(saved_data, out, indent=4)
     os.system('chmod 777 ' + path)
 
 
