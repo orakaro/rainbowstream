@@ -723,47 +723,82 @@ def delete():
 
 def show():
     """
-    Show image
+    Show something in the tweet
     """
     t = Twitter(auth=authen())
     try:
         target = g['stuff'].split()[0]
-        if target != 'image':
-            return
+
         id = int(g['stuff'].split()[1])
-        tid = c['tweet_dict'][id]
+        tid  = c['tweet_dict'][id]
         tweet = t.statuses.show(id=tid)
-        media = tweet['entities']['media']
-        for m in media:
-            res = requests.get(m['media_url'])
-            img = Image.open(BytesIO(res.content))
-            img.show()
+
+        if target in [ 'image' ]:
+            show_image( tweet )
+        if target in [ 'url', 'urls', 'link', 'links' ]:
+            show_url( tweet )
+
+        return
+
     except:
         debug_option()
-        printNicely(red('Sorry I can\'t show this image.'))
+        printNicely(red('Sorry I can\'t show this.'))
 
 
-def urlopen():
+def show_image(tweet):
+    """
+    Show image
+    """
+
+    media = tweet['entities']['media']
+
+    for m in media:
+        res = requests.get(m['media_url'])
+        img = Image.open(BytesIO(res.content))
+        img.show()
+
+
+def show_url(tweet):
     """
     Open url
     """
+
+    urls = tweet['entities']['urls']
+
+    if not urls:
+        printNicely(light_magenta('No url here @.@!'))
+        return
+    else:
+        for url in urls:
+            expanded_url = url['expanded_url']
+            webbrowser.open(expanded_url)
+
+
+def tweetopen():
+    """
+    Open tweet in browser
+    """
+
     t = Twitter(auth=authen())
+
     try:
         if not g['stuff'].isdigit():
             return
-        tid = c['tweet_dict'][int(g['stuff'])]
+
+        tid   = c['tweet_dict'][int(g['stuff'])]
         tweet = t.statuses.show(id=tid)
-        urls = tweet['entities']['urls']
-        if not urls:
-            printNicely(light_magenta('No url here @.@!'))
-            return
-        else:
-            for url in urls:
-                expanded_url = url['expanded_url']
-                webbrowser.open(expanded_url)
+        owner = tweet['user']['screen_name']
+
+        # Compute tweet URL
+        url = 'https://twitter.com/{owner}/status/{tid}' \
+                .format( owner = owner,
+                         tid   = tid )
+
+        webbrowser.open(url)
+
     except:
         debug_option()
-        printNicely(red('Sorry I can\'t open url in this tweet.'))
+        printNicely(red('Sorry I can\'t open this tweet.'))
 
 
 def inbox():
@@ -1947,7 +1982,7 @@ funcset = [
     search,
     message,
     show,
-    urlopen,
+    tweetopen,
     ls,
     inbox,
     thread,
@@ -2009,7 +2044,7 @@ def listen():
             [],  # url
             ['#'],  # search
             ['@'],  # message
-            ['image'],  # show image
+            ['image', 'url'],  # show image, show url
             [''],  # open url
             ['fl', 'fr'],  # list
             [],  # inbox
