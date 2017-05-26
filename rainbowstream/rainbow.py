@@ -11,6 +11,7 @@ import traceback
 import pkg_resources
 import socks
 import socket
+import re
 
 from io import BytesIO
 from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
@@ -410,9 +411,33 @@ def tweet():
     """
     Tweet
     """
-    t = Twitter(auth=authen())
-    t.statuses.update(status=g['stuff'])
+    # Regex to check if tweet contains '--i' pattern
+    pattern = r'(.*) \-\-\i\ (.+)'
+    m = re.match(pattern, g['stuff'])
 
+    if m is None:
+        # text only tweet
+        t = Twitter(auth=authen())
+        t.statuses.update(status=g['stuff'])
+    else:
+        # A tweet with media items
+        body = m.group(1)
+        imagePaths = m.group(2)
+
+        # Generating image ids
+        imageIds = []
+        for impath in imagePaths.split(','):
+            imagedata = open(impath, 'rb').read()
+
+            # upload media
+            t_up = Twitter(domain='upload.twitter.com',
+                            auth=authen())
+            img_id = t_up.media.upload(media=imagedata)["media_id_string"]
+            imageIds.append(img_id)
+
+        # send your tweet with the list of media ids:
+        t = Twitter(auth=authen())
+        t.statuses.update(status=body, media_ids=",".join(imageIds))        
 
 def retweet():
     """
@@ -1463,7 +1488,9 @@ def help_tweets():
     usage = '\n'
     usage += s + grey(u'\u266A' + ' Tweets \n')
     usage += s * 2 + light_green('t oops ') + \
-        'will tweet "' + light_yellow('oops') + '" immediately.\n'
+        'will tweet "' + light_yellow('oops') + '" immediately.\n' + \
+         s * 3 + ' Optionally you can add --i <img1path>[,<img2path>,...] argument, e.g:\n' + \
+         s * 3 + light_yellow(' t This tweet has images --i /path/to/test1.png,relative_test.jpg') + '\n'
     usage += s * 2 + \
         light_green('rt 12 ') + ' will retweet to tweet with ' + \
         light_yellow('[id=12]') + '.\n'
