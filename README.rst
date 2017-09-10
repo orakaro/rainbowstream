@@ -13,7 +13,7 @@ and much more fun directly from terminal.
 This package is built on the `Python Twitter Tools`_ and the `Twitter API`_, and runs
 on Python (2.7.x and 3.x).
 
-Home page: http://www.rainbowstream.org/
+Home page: https://github.com/orakaro/rainbowstream
 
 Source code: https://github.com/DTVD/rainbowstream
 
