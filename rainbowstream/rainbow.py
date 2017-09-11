@@ -593,11 +593,11 @@ def conversation():
     limit = c['CONVERSATION_MAX']
     thread_ref = []
     thread_ref.append(tweet)
-    prev_tid = tweet['in_reply_to_status_id']
+    prev_tid = tweet['in_reply_to_status_id'] or tweet.get('quoted_status_id')
     while prev_tid and limit:
         limit -= 1
         tweet = t.statuses.show(id=prev_tid)
-        prev_tid = tweet['in_reply_to_status_id']
+        prev_tid = tweet['in_reply_to_status_id'] or tweet.get('quoted_status_id')
         thread_ref.append(tweet)
 
     for tweet in reversed(thread_ref):
