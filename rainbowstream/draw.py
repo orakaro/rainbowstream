@@ -185,6 +185,7 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     # Retrieve tweet
     tid = t['id']
     text = t['text']
+    quoted_status = ''
     screen_name = t['user']['screen_name']
     name = t['user']['name']
     created_at = t['created_at']
@@ -214,9 +215,17 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     except:
         pass
 
+    # Pull quoted status
+    try:
+        quoted_status = '  ++++++++++++ \n' +\
+                '   ' + t['quoted_status']['user']['name'] + ' @' + t['quoted_status']['user']['screen_name'] + '\n ' +\
+            '  ' + t['quoted_status']['text'] + '\n   +++++++++++ \n'
+        quoted_status = unescape(quoted_status)
+    except:
+        pass
+
     # Unescape HTML character
     text = unescape(text)
-
     # Get client name
     try:
         client = client.split('>')[-2].split('<')[0]
@@ -332,6 +341,7 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
         formater = nick.join(formater.split('#nick'))
         formater = fav.join(formater.split('#fav'))
         formater = tweet.join(formater.split('#tweet'))
+        formater = color_func(c['TWEET']['quoted_status'])(quoted_status).join(formater.split('#quoted_status'))
         formater = emojize(formater)
         # Change clock word
         word = [wo for wo in formater.split() if '#clock' in wo][0]
@@ -370,14 +380,19 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     # Draw
     printNicely(formater)
 
+
     # Display Image
-    if c['IMAGE_ON_TERM'] and media_url:
-        for mu in media_url:
-            try:
-                response = requests.get(mu)
-                image_to_display(BytesIO(response.content))
-            except Exception:
-                printNicely(red('Sorry, image link is broken'))
+    if media_url:
+        if c['IMAGE_ON_TERM']:
+            for mu in media_url:
+                try:
+                    response = requests.get(mu)
+                    image_to_display(BytesIO(response.content))
+                except Exception as e:
+                    print e
+                    printNicely(red('Sorry, image link is broken'))
+        else:
+            printNicely(red(' Image available'))
 
 
 def print_threads(d):

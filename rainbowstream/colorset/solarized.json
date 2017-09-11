@@ -31,6 +31,7 @@
         "favorited"       : 64,
         "retweet_count"   : 64,
         "favorite_count"  : 124,
+        "quoted_status"   : "red",
         "rt"              : 66,
         "link"            : 23,
         "hashtag"         : 64,
