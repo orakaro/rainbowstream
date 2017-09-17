@@ -106,7 +106,7 @@ def set_conf():
     set_config("HISTORY_FILENAME", "/home/" + user + "/.local/share/rainbow.hist")
 
 
-if not get_config("HISTORY_FILENAME"):
+if get_config("HISTORY_FILENAME") == "":
     set_conf()
 
 

@@ -42,10 +42,11 @@
     "ONLY_LIST" : [],
     "IGNORE_LIST" : [],
     // Autocomplete history file name
-    // This key is commented out, because it is added only in raibow.py, in the set_conf() function.
+    // This key is empty, because it is added only in rainbow.py, in the set_conf() function.
     //      This is because the $USER part of the value has to be generated during runtime;
     //      Unfortunately this is impossible during setup.py, as editing the config requires config.py.
-    // "HISTORY_FILENAME" : "/home/$USER/.local/share/rainbow.hist",
+    //      The actual default value of this is "/home/$USER/.local/share/rainbow.hist"
+    "HISTORY_FILENAME" : "",
     // Image margin
     "IMAGE_SHIFT" : 2,
     // Image max height
