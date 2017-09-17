@@ -92,6 +92,24 @@ def parse_arguments():
     return parser.parse_args()
 
 
+def set_conf():
+    """
+    sets the default value for HISTORY_FILENAME, "/home/$USER/.local/share/rainbow.hist".
+
+    This function should only get executed on the first run of rainbowstream.
+    It is executed, if the key HISTORY_FILENAME doesn't exist in .rainbow_config.json.
+
+    If you want to execute a function which should only be executed on the first run of
+    rainbowstream, this is a good place.
+    """
+    user = os.getenv("USER")
+    set_config("HISTORY_FILENAME", "/home/" + user + "/.local/share/rainbow.hist")
+
+
+if not get_config("HISTORY_FILENAME"):
+    set_conf()
+
+
 def proxy_connect(args):
     """
     Connect to specified proxy
