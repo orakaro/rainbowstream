@@ -9,7 +9,7 @@ else:
     from shlex import quote
 
 # Bumped version
-version = '1.3.6'
+version = '1.3.7'
 
 # Require
 install_requires = [

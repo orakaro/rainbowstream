@@ -618,7 +618,12 @@ def reply():
     tid = c['tweet_dict'][id]
     user = t.statuses.show(id=tid)['user']['screen_name']
     status = ' '.join(g['stuff'].split()[1:])
-    status = '@' + user + ' ' + str2u(status)
+    # don't include own username for tweet chains
+    # for details see issue https://github.com/DTVD/rainbowstream/issues/163
+    if user == g['original_name']:
+        status = str2u(status)
+    else:
+        status = '@' + user + ' ' + str2u(status)
     t.statuses.update(status=status, in_reply_to_status_id=tid)
 
 
@@ -903,24 +908,41 @@ def ls():
     d = {'fl': 'followers', 'fr': 'friends'}
     next_cursor = -1
     rel = {}
+
+    printNicely('All ' + d[target] + ':')
+
     # Cursor loop
+    number_of_users = 0
     while next_cursor != 0:
+
         list = getattr(t, d[target]).list(
             screen_name=name,
             cursor=next_cursor,
             skip_status=True,
             include_entities=False,
         )
-        for u in list['users']:
-            rel[u['name']] = '@' + u['screen_name']
-        next_cursor = list['next_cursor']
-    # Print out result
-    printNicely('All: ' + str(len(rel)) + ' ' + d[target] + '.')
-    for name in rel:
-        user = '  ' + cycle_color(name)
-        user += color_func(c['TWEET']['nick'])(' ' + rel[name] + ' ')
-        printNicely(user)
 
+        for u in list['users']:
+
+            number_of_users += 1
+
+            # Print out result
+            printNicely(   '  '                                               \
+                         + cycle_color( u['name'] )                           \
+                         + color_func(c['TWEET']['nick'])(    ' @'            \
+                                                           + u['screen_name'] \
+                                                           + ' ' ) )
+
+        next_cursor = list['next_cursor']
+
+        # 300 users means 15 calls to the related API. The rate limit is 15
+        # calls per 15mn periods (see Twitter documentation).
+        if ( number_of_users % 300 == 0 ):
+            printNicely(light_yellow( 'We reached the limit of Twitter API.' ))
+            printNicely(light_yellow( 'You may need to wait about 15 minutes.' ))
+            break
+
+    printNicely('All: ' + str(number_of_users) + ' ' + d[target] + '.')
 
 def follow():
     """
