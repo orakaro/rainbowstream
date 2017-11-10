@@ -330,7 +330,7 @@ def home():
     num = c['HOME_TWEET_NUM']
     if g['stuff'].isdigit():
         num = int(g['stuff'])
-    for tweet in reversed(t.statuses.home_timeline(count=num)):
+    for tweet in reversed(t.statuses.home_timeline(count=num, tweet_mode='extended')):
         draw(t=tweet)
     printNicely('')
 
@@ -399,7 +399,7 @@ def view():
         except:
             num = c['HOME_TWEET_NUM']
         for tweet in reversed(
-                t.statuses.user_timeline(count=num, screen_name=user[1:])):
+                t.statuses.user_timeline(count=num, screen_name=user[1:], tweet_mode='extended')):
             draw(t=tweet)
         printNicely('')
     else:
@@ -416,7 +416,7 @@ def view_my_tweets():
     except:
         num = c['HOME_TWEET_NUM']
     for tweet in reversed(
-            t.statuses.user_timeline(count=num, screen_name=g['original_name'])):
+            t.statuses.user_timeline(count=num, screen_name=g['original_name'], tweet_mode='extended')):
         draw(t=tweet)
     printNicely('')
 
