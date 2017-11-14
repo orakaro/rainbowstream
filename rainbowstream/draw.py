@@ -175,6 +175,23 @@ def fallback_humanize(date, fallback_format=None, use_fallback=False):
     return clock
 
 
+def get_full_text(t):
+    """Handle RTs and extended tweets to always display all the available text"""
+
+    if t.get('retweeted_status'):
+        rt_status = t['retweeted_status']
+        if rt_status.get('extended_tweet'):
+            elem = rt_status['extended_tweet']
+        else:
+            elem = rt_status
+        rt_text = elem.get('full_text', elem.get('text'))
+        t['full_text'] = 'RT @' + rt_status['user']['screen_name'] + ': ' + rt_text
+    elif t.get('extended_tweet'):
+        t['full_text'] = t['extended_tweet']['full_text']
+
+    return t.get('full_text', t.get('text'))
+
+
 def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     """
     Draw the rainbow
@@ -184,7 +201,8 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
 
     # Retrieve tweet
     tid = t['id']
-    text = t.get('full_text', t.get('text'))
+
+    text = get_full_text(t)
     screen_name = t['user']['screen_name']
     name = t['user']['name']
     created_at = t['created_at']
@@ -201,8 +219,6 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
 
     # Pull extended retweet text
     try:
-        text = 'RT @' + t['retweeted_status']['user']['screen_name'] + ': ' +\
-            t['retweeted_status']['text']
         # Display as a notification
         target = t['retweeted_status']['user']['screen_name']
         if all([target == c['original_name'], not noti]):
@@ -1067,7 +1083,7 @@ def format_quote(tweet):
     """
     # Retrieve info
     screen_name = tweet['user']['screen_name']
-    text        = tweet['text']
+    text = get_full_text(t)
     tid         = str( tweet['id'] )
 
     # Validate quote format
