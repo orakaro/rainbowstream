@@ -355,7 +355,7 @@ def mentions():
     num = c['HOME_TWEET_NUM']
     if g['stuff'].isdigit():
         num = int(g['stuff'])
-    for tweet in reversed(t.statuses.mentions_timeline(count=num)):
+    for tweet in reversed(t.statuses.mentions_timeline(count=num, tweet_mode='extended')):
         draw(t=tweet)
     printNicely('')
 
@@ -535,7 +535,7 @@ def quote():
         printNicely(red('Sorry I can\'t understand.'))
         return
     tid = c['tweet_dict'][id]
-    tweet = t.statuses.show(id=tid)
+    tweet = t.statuses.show(id=tid, tweet_mode='extended')
     # Get formater
     formater = format_quote(tweet)
     if not formater:
@@ -569,7 +569,7 @@ def allretweet():
     except:
         num = c['RETWEETS_SHOW_NUM']
     # Get result and display
-    rt_ary = t.statuses.retweets(id=tid, count=num)
+    rt_ary = t.statuses.retweets(id=tid, count=num, tweet_mode='extended')
     if not rt_ary:
         printNicely(magenta('This tweet has no retweet.'))
         return
@@ -589,14 +589,14 @@ def conversation():
         printNicely(red('Sorry I can\'t understand.'))
         return
     tid = c['tweet_dict'][id]
-    tweet = t.statuses.show(id=tid)
+    tweet = t.statuses.show(id=tid, tweet_mode='extended')
     limit = c['CONVERSATION_MAX']
     thread_ref = []
     thread_ref.append(tweet)
     prev_tid = tweet['in_reply_to_status_id']
     while prev_tid and limit:
         limit -= 1
-        tweet = t.statuses.show(id=prev_tid)
+        tweet = t.statuses.show(id=prev_tid, tweet_mode='extended')
         prev_tid = tweet['in_reply_to_status_id']
         thread_ref.append(tweet)
 
@@ -663,7 +663,7 @@ def favorite():
     tid = c['tweet_dict'][id]
     t.favorites.create(_id=tid, include_entities=False)
     printNicely(green('Favorited.'))
-    draw(t.statuses.show(id=tid))
+    draw(t.statuses.show(id=tid, tweet_mode='extended'))
     printNicely('')
 
 
@@ -680,7 +680,7 @@ def unfavorite():
     tid = c['tweet_dict'][id]
     t.favorites.destroy(_id=tid)
     printNicely(green('Okay it\'s unfavorited.'))
-    draw(t.statuses.show(id=tid))
+    draw(t.statuses.show(id=tid, tweet_mode='extended'))
     printNicely('')
 
 
@@ -695,7 +695,7 @@ def share():
     except:
         printNicely(red('Tweet id is not valid.'))
         return
-    tweet = t.statuses.show(id=tid)
+    tweet = t.statuses.show(id=tid, tweet_mode='extended')
     url = 'https://twitter.com/' + \
         tweet['user']['screen_name'] + '/status/' + str(tid)
     import platform
