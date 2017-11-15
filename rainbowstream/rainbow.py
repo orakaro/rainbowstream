@@ -440,7 +440,8 @@ def search():
     rel = t.search.tweets(
         q=query,
         type=type,
-        count=count
+        count=count,
+        tweet_mode='extended'
     )['statuses']
     # Return results
     if rel:
