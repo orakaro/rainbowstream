@@ -1083,7 +1083,7 @@ def format_quote(tweet):
     """
     # Retrieve info
     screen_name = tweet['user']['screen_name']
-    text = get_full_text(t)
+    text = get_full_text(tweet)
     tid         = str( tweet['id'] )
 
     # Validate quote format
