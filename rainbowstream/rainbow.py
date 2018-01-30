@@ -330,7 +330,10 @@ def home():
     num = c['HOME_TWEET_NUM']
     if g['stuff'].isdigit():
         num = int(g['stuff'])
-    for tweet in reversed(t.statuses.home_timeline(count=num, tweet_mode='extended')):
+    kwargs = {'count': num}
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+        kwargs['tweet_mode'] = 'extended'
+    for tweet in reversed(t.statuses.home_timeline(**kwargs)):
         draw(t=tweet)
     printNicely('')
 
@@ -355,7 +358,10 @@ def mentions():
     num = c['HOME_TWEET_NUM']
     if g['stuff'].isdigit():
         num = int(g['stuff'])
-    for tweet in reversed(t.statuses.mentions_timeline(count=num, tweet_mode='extended')):
+    kwargs = {'count': num}
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+	   kwargs['tweet_mode'] = 'extended'
+    for tweet in reversed(t.statuses.mentions_timeline(**kwargs)):
         draw(t=tweet)
     printNicely('')
 
@@ -398,8 +404,10 @@ def view():
             num = int(g['stuff'].split()[1])
         except:
             num = c['HOME_TWEET_NUM']
-        for tweet in reversed(
-                t.statuses.user_timeline(count=num, screen_name=user[1:], tweet_mode='extended')):
+        kwargs = {'count': num, 'screen_name': user[1:]}
+        if not c.get('DISABLE_EXTENDED_TWEETS'):
+            kwargs['tweet_mode'] = 'extended'
+        for tweet in reversed(t.statuses.user_timeline(**kwargs)):
             draw(t=tweet)
         printNicely('')
     else:
@@ -415,8 +423,11 @@ def view_my_tweets():
         num = int(g['stuff'])
     except:
         num = c['HOME_TWEET_NUM']
+    kwargs = {'count': num, 'screen_name': g['original_name']}
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+        kwargs['tweet_mode'] = 'extended'
     for tweet in reversed(
-            t.statuses.user_timeline(count=num, screen_name=g['original_name'], tweet_mode='extended')):
+            t.statuses.user_timeline(**kwargs)):
         draw(t=tweet)
     printNicely('')
 
@@ -436,13 +447,15 @@ def search():
         type = 'mixed'
     max_record = c['SEARCH_MAX_RECORD']
     count = min(max_record, 100)
+    kwargs = {
+        'q': query,
+        'type': type,
+        'count': count,
+    }
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+        kwargs['tweet_mode'] = 'extended'
     # Perform search
-    rel = t.search.tweets(
-        q=query,
-        type=type,
-        count=count,
-        tweet_mode='extended'
-    )['statuses']
+    rel = t.search.tweets(**kwargs)['statuses']
     # Return results
     if rel:
         printNicely('Newest tweets:')
@@ -536,7 +549,10 @@ def quote():
         printNicely(red('Sorry I can\'t understand.'))
         return
     tid = c['tweet_dict'][id]
-    tweet = t.statuses.show(id=tid, tweet_mode='extended')
+    kwargs = {'id': tid}
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+        kwargs['tweet_mode'] = 'extended'
+    tweet = t.statuses.show(**kwargs)
     # Get formater
     formater = format_quote(tweet)
     if not formater:
@@ -570,7 +586,10 @@ def allretweet():
     except:
         num = c['RETWEETS_SHOW_NUM']
     # Get result and display
-    rt_ary = t.statuses.retweets(id=tid, count=num, tweet_mode='extended')
+    kwargs = {'id': tid, 'count': num}
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+        kwargs['tweet_mode'] = 'extended'
+    rt_ary = t.statuses.retweets(**kwargs)
     if not rt_ary:
         printNicely(magenta('This tweet has no retweet.'))
         return
@@ -590,14 +609,18 @@ def conversation():
         printNicely(red('Sorry I can\'t understand.'))
         return
     tid = c['tweet_dict'][id]
-    tweet = t.statuses.show(id=tid, tweet_mode='extended')
+    kwargs = {'id': tid}
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+        kwargs['tweet_mode'] = 'extended'
+    tweet = t.statuses.show(**kwargs)
     limit = c['CONVERSATION_MAX']
     thread_ref = []
     thread_ref.append(tweet)
     prev_tid = tweet['in_reply_to_status_id']
     while prev_tid and limit:
         limit -= 1
-        tweet = t.statuses.show(id=prev_tid, tweet_mode='extended')
+        kwargs['id'] = prev_tid
+        tweet = t.statuses.show(**kwargs)
         prev_tid = tweet['in_reply_to_status_id']
         thread_ref.append(tweet)
 
@@ -664,7 +687,10 @@ def favorite():
     tid = c['tweet_dict'][id]
     t.favorites.create(_id=tid, include_entities=False)
     printNicely(green('Favorited.'))
-    draw(t.statuses.show(id=tid, tweet_mode='extended'))
+    kwargs = {'id': tid}
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+        kwargs['tweet_mode'] = 'extended'
+    draw(t.statuses.show(**kwargs))
     printNicely('')
 
 
@@ -681,7 +707,10 @@ def unfavorite():
     tid = c['tweet_dict'][id]
     t.favorites.destroy(_id=tid)
     printNicely(green('Okay it\'s unfavorited.'))
-    draw(t.statuses.show(id=tid, tweet_mode='extended'))
+    kwargs = {'id': tid}
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+        kwargs['tweet_mode'] = 'extended'
+    draw(t.statuses.show(**kwargs))
     printNicely('')
 
 
@@ -696,7 +725,10 @@ def share():
     except:
         printNicely(red('Tweet id is not valid.'))
         return
-    tweet = t.statuses.show(id=tid, tweet_mode='extended')
+    kwargs = {'id': tid}
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+        kwargs['tweet_mode'] = 'extended'
+    tweet = t.statuses.show(**kwargs)
     url = 'https://twitter.com/' + \
         tweet['user']['screen_name'] + '/status/' + str(tid)
     import platform
