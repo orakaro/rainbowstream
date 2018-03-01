@@ -3,26 +3,34 @@ from PIL import Image
 from os.path import join, dirname, getmtime, exists, expanduser
 from .config import *
 from .py3patch import *
+from .util import get_terminal_size
 
 import ctypes
 import sys
 import os
+import platform
 
+from rainbowstream_image import rgb_to_ansi
 
-def call_c():
-    """
-    Call the C program for converting RGB to Ansi colors
-    """
-    library = expanduser('~/.image.so')
-    sauce = join(dirname(__file__), 'image.c')
-    if not exists(library) or getmtime(sauce) > getmtime(library):
-        build = "cc -fPIC -shared -o %s %s" % (library, sauce)
-        os.system(build + " >/dev/null 2>&1")
-    image_c = ctypes.cdll.LoadLibrary(library)
-    image_c.init()
-    return image_c.rgb_to_ansi
+# def call_c():
+#     """
+#     Call the C program for converting RGB to Ansi colors
+#     """
+#     if platform.system() == 'Windows':
+#         pass
+#         # library = f'{get_python_lib()}\image.cp36-win32.pyd'
+#         # image_c = ctypes.cdll.LoadLibrary(library)
+#     else:
+#         library = expanduser('~/.image.so')
+#         sauce = join(dirname(__file__), 'image.c')
+#         if not exists(library) or getmtime(sauce) > getmtime(library):
+#             build = "cc -fPIC -shared -o %s %s" % (library, sauce)
+#             os.system(build + " >/dev/null 2>&1")
+#         image_c = ctypes.cdll.LoadLibrary(library)
+#     image_c.init()
+#     return image_c.rgb_to_ansi
 
-rgb2short = call_c()
+rgb2short = rgb_to_ansi
 
 
 def pixel_print(pixel):
@@ -60,7 +68,7 @@ def image_to_display(path, start=None, length=None):
     """
     Display an image
     """
-    rows, columns = os.popen('stty size', 'r').read().split()
+    rows, columns = get_terminal_size()
     if not start:
         start = c['IMAGE_SHIFT']
     if not length:

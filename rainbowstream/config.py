@@ -103,7 +103,7 @@ def set_config(key, value):
     # Save
     with open(path, 'w') as out:
         json.dump(data, out, indent=4)
-    os.system('chmod 777 ' + path)
+    os.chmod(path, 0o777)
 
 
 def delete_config(key):
@@ -128,7 +128,7 @@ def delete_config(key):
     # Save
     with open(path, 'w') as out:
         json.dump(data, out, indent=4)
-    os.system('chmod 777 ' + path)
+    os.chmod(path, 0o777)
 
 
 def reload_config():
