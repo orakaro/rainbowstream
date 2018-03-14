@@ -1,4 +1,6 @@
 {
+    // Turn to 'true' in order to disable extended tweets display (legacy mode)
+    "DISABLE_EXTENDED_TWEETS" : false,
     // After 120 minutes, the stream will automatically hangup
     "HEARTBEAT_TIMEOUT" : 120,
     // Image on term

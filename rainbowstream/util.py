@@ -13,7 +13,7 @@ def detail_twitter_error(twitterException):
     try:
         for m in data.get('errors', dict()):
             printNicely(yellow(m.get('message')))
-    except: 
+    except:
         printNicely(yellow(data))
 
 
@@ -47,3 +47,12 @@ def format_prefix(listname='', keyword=''):
     formattedPrefix = formattedPrefix.replace('#me', '@' + c['original_name'])
 
     return formattedPrefix
+
+
+def add_tweetmode_parameter(kwargs):
+    """
+    Add support for extended mode to Twitter API calls unless explicitly stated in config
+    """
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+        kwargs['tweet_mode'] = 'extended'
+    return kwargs
