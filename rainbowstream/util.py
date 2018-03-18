@@ -16,7 +16,7 @@ def detail_twitter_error(twitterException):
     try:
         for m in data.get('errors', dict()):
             printNicely(yellow(m.get('message')))
-    except: 
+    except:
         printNicely(yellow(data))
 
 
@@ -57,3 +57,12 @@ def get_terminal_size():
         return shutil.get_terminal_size()
     else:
         return os.popen('stty size', 'r').read().split()
+
+
+def add_tweetmode_parameter(kwargs):
+    """
+    Add support for extended mode to Twitter API calls unless explicitly stated in config
+    """
+    if not c.get('DISABLE_EXTENDED_TWEETS'):
+        kwargs['tweet_mode'] = 'extended'
+    return kwargs
