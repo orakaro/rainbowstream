@@ -13,6 +13,14 @@ comment_re = re.compile(
 # Config dictionary
 c = {}
 
+def user_filepath():
+    """
+    Determine the user's config file location
+    """
+    if 'RAINBOW_CONFIG' in os.environ:
+        return os.environ['RAINBOW_CONFIG']
+
+    return os.path.expanduser("~") + os.sep + '.rainbow_config.json'
 
 def fixup(adict, k, v):
     """
@@ -43,7 +51,7 @@ def get_all_config():
     Get all config
     """
     try:
-        path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
+        path = user_filepath()
         data = load_config(path)
         # Hard to set from prompt
         data.pop('ONLY_LIST', None)
@@ -89,7 +97,7 @@ def set_config(key, value):
     # Update global config
     c[key] = value
     # Load current user config
-    path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
+    path = user_filepath()
     data = {}
     try:
         data = load_config(path)
@@ -110,7 +118,7 @@ def delete_config(key):
     """
     Delete a config key
     """
-    path = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
+    path = user_filepath()
     try:
         data = load_config(path)
     except:
@@ -136,8 +144,7 @@ def reload_config():
     Reload config
     """
     try:
-        rainbow_config = os.path.expanduser("~") + \
-            os.sep + '.rainbow_config.json'
+        rainbow_config = user_filepath()
         data = load_config(rainbow_config)
         for d in data:
             c[d] = data[d]
@@ -159,7 +166,7 @@ def init_config():
     except:
         pass
     # Load user's config
-    rainbow_config = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
+    rainbow_config = user_filepath()
     try:
         data = load_config(rainbow_config)
         for d in data:
