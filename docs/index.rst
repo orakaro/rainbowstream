@@ -113,6 +113,16 @@ provided as follows:
 Both ``--proxy-port`` and ``--proxy-type`` can be omitted. In this case default
 proxy port ``8080`` and default proxy type ``SOCKS5`` are used.
 
+If you would like to specify an alternate location for storing the OAuth credential files for both twitter and pocket you can do so with the ``--twitter-auth`` and ``--pocket-auth`` settings. This is also useful if you wish to have multiple accounts for rainbowstream. Specify a location as follows:
+
+.. code:: bash
+
+    rainbowstream --twitter-auth /path/to/twitter_oauth
+    # or using the short form:
+    rainbowstream -ta /path/to/twitter_oauth
+
+If the oauth file doesn't exist at the location you specified then a new one will be created and you'll be required to autenticate with Twitter again.
+
 The interactive mode
 ^^^^^^^^^^^^^^^^^^^^
 
