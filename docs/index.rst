@@ -315,9 +315,11 @@ For detaile information, see `theme usage and customization`_.
 Config explanation
 ^^^^^^^^^^^^^^^^^^
 
-Rainbow Stream has a custom config file located at ``~/.rainbow_config.json`` which will be loaded **after** its `default config`_. You are free to change anything on your custom config, but if you messed up with JSON format, the app would still works fine. Simply overwrite your custom config withe the `default config`_ to solve format problems.
+Rainbow Stream has a custom config file located at ``~/.rainbow_config.json`` which will be loaded **after** its `default config`_. You are free to change anything on your custom config. If you mess up the JSON format the app will still work but you'll need to overwrite your custom config with the `default config`_ to solve format problems.
 
-You also can view or set a new value of every config key by ``config`` command (See **Interactive mode** section above).
+If you would like to specify a different location for your custom config you can set the ``RAINBOW_CONFIG`` environment variable to the location of your custom config.
+
+You also can view or set a new value of every config key with the ``config`` command (See **Interactive mode** section above).
 
 -  ``HEARTBEAT_TIMEOUT``: after this timeout (count by minutes), the stream will automatically hangup.
 
