@@ -15,7 +15,7 @@ on Python (2.7.x and 3.x).
 
 Home page: https://github.com/orakaro/rainbowstream
 
-Source code: https://github.com/DTVD/rainbowstream
+Source code: https://github.com/orakaro/rainbowstream
 
 Showcase
 --------
