@@ -9,7 +9,7 @@ else:
     from shlex import quote
 
 # Bumped version
-version = '1.3.9'
+version = '1.4.0'
 
 # Require
 install_requires = [
@@ -53,6 +53,8 @@ setup(name='rainbowstream',
           "Programming Language :: Python :: 3.3",
           "Programming Language :: Python :: 3.4",
           "Programming Language :: Python :: 3.5",
+          "Programming Language :: Python :: 3.6",
+          "Programming Language :: Python :: 3.7",
           "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: CGI Tools/Libraries",
           "Topic :: Utilities",
           "License :: OSI Approved :: MIT License",
