@@ -1,3 +1,10 @@
+A Note about Twitter API Change
+--------------
+
+Sadly Twitter **is not suppering** Stream API anymore, and RainbowStream need extra work to switch over to Polling Strategy, with careful concern about RateLimit. Detail explaination here: https://github.com/orakaro/rainbowstream/issues/271
+
+If you want a client with a set of nice command but **without stream function**, go ahead with following instructions.
+
 Rainbow Stream
 --------------
 
