@@ -226,7 +226,7 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
             t['event'] = 'retweet'
             c['events'].append(t)
             notify_retweet(t)
-            return
+            return True
     except:
         pass
 
@@ -266,9 +266,9 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     fil = list(set((fil or []) + c['ONLY_LIST']))
     ig = list(set((ig or []) + c['IGNORE_LIST']))
     if fil and screen_name not in fil:
-        return
+        return False
     if ig and screen_name in ig:
-        return
+        return False
 
     # Get rainbow id
     if tid not in c['tweet_dict']:
@@ -394,6 +394,7 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
                 image_to_display(BytesIO(response.content))
             except Exception:
                 printNicely(red('Sorry, image link is broken'))
+    return True
 
 
 def print_threads(d):
