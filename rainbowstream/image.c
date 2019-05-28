@@ -3,6 +3,9 @@
  * https://github.com/jart/fabulous/blob/master/fabulous/_xterm256.c
  * I make a slightly change to fit my module here
  */
+ 
+#include <Python.h>
+ 
 typedef struct {
         int r;
         int g;
@@ -18,6 +21,7 @@ rgb_t BASIC16[] =
         { 255, 255, 255 } };
 rgb_t COLOR_TABLE[256];
 
+/* __declspec(dllexport) */
 
 rgb_t ansi_to_rgb(int xcolor)
 {
@@ -35,6 +39,32 @@ rgb_t ansi_to_rgb(int xcolor)
   return res;
 }
 
+// int rgb_to_ansi(int r, int g, int b)
+PyObject *
+rgb_to_ansi(PyObject *self, PyObject *args)
+{
+    int r, g, b;
+    
+    if (!PyArg_ParseTuple(args, "iii", &r, &g, &b)) {
+        return NULL;
+    }
+    
+    int best_match = 0;
+    int smallest_distance = 1000000000;
+    int c, d;
+    for (c = 16; c < 256; c++) {
+        d = (COLOR_TABLE[c].r - r)*(COLOR_TABLE[c].r - r) +
+        (COLOR_TABLE[c].g - g)*(COLOR_TABLE[c].g - g) +
+        (COLOR_TABLE[c].b - b)*(COLOR_TABLE[c].b - b);
+        if (d < smallest_distance) {
+            smallest_distance = d;
+            best_match = c;
+        }
+    }
+    
+    return Py_BuildValue("i", best_match);
+}
+
 int init()
 {
   int c;
@@ -44,19 +74,31 @@ int init()
   return 0;
 }
 
-int rgb_to_ansi(int r, int g, int b)
-{
-  int best_match = 0;
-  int smallest_distance = 1000000000;
-  int c, d;
-  for (c = 16; c < 256; c++) {
-    d = (COLOR_TABLE[c].r - r)*(COLOR_TABLE[c].r - r) +
-        (COLOR_TABLE[c].g - g)*(COLOR_TABLE[c].g - g) +
-        (COLOR_TABLE[c].b - b)*(COLOR_TABLE[c].b - b);
-    if (d < smallest_distance) {
-      smallest_distance = d;
-      best_match = c;
+static PyMethodDef ImageMethods[] = {
+    {"rgb_to_ansi",  (PyCFunction) rgb_to_ansi, METH_VARARGS, "Convert RGB to ANSI"},
+    {NULL, NULL, 0, NULL}        /* Sentinel */
+};
+
+static struct PyModuleDef ImageModule = {
+    PyModuleDef_HEAD_INIT,
+    "rainbowstream_image",   /* name of module */
+    NULL,  /* module documentation, may be NULL */
+    -1,       /* size of per-interpreter state of the module,
+                 or -1 if the module keeps state in global variables. */
+    ImageMethods
+};
+
+PyMODINIT_FUNC
+PyInit_rainbowstream_image(void)
+{     
+    PyObject *m;
+    
+    m = PyModule_Create(&ImageModule);
+    if (m == NULL) {
+        return NULL;
     }
-  }
-  return best_match;
+    
+    init();
+    
+    return m;
 }

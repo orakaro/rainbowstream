@@ -1761,7 +1761,7 @@ def help():
     Help
     """
     s = ' ' * 2
-    h, w = os.popen('stty size', 'r').read().split()
+    h, w = get_terminal_size()
     # Start
     usage = '\n'
     usage += s + 'Hi boss! I\'m ready to serve you right now!\n'

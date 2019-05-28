@@ -2,6 +2,7 @@ from PIL import Image
 from functools import partial
 from .config import *
 from .py3patch import *
+from .util import get_terminal_size
 
 import sys
 import os
@@ -339,7 +340,7 @@ def image_to_display(path, start=None, length=None):
     """
     Display an image
     """
-    rows, columns = os.popen('stty size', 'r').read().split()
+    rows, columns = get_terminal_size()
     if not start:
         start = IMAGE_SHIFT
     if not length:

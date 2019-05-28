@@ -1,4 +1,7 @@
 import json
+import shutil
+import platform
+import os
 
 from twitter.util import printNicely
 from .colors import *
@@ -47,6 +50,13 @@ def format_prefix(listname='', keyword=''):
     formattedPrefix = formattedPrefix.replace('#me', '@' + c['original_name'])
 
     return formattedPrefix
+
+
+def get_terminal_size():
+    if platform.system() == 'Windows':
+        return shutil.get_terminal_size()
+    else:
+        return os.popen('stty size', 'r').read().split()
 
 
 def add_tweetmode_parameter(kwargs):

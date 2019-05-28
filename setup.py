@@ -1,7 +1,14 @@
-from setuptools import setup, find_packages
+# from setuptools import setup, find_packages
+from distutils.core import setup, Extension
+from setuptools import find_packages
 import os
 import os.path
 import sys
+import platform
+from shutil import copy, chown
+import getpass
+
+image_ext = Extension('rainbowstream_image', sources=['rainbowstream/image.c'])
 
 if sys.version[0] == "2":
     from pipes import quote
@@ -20,22 +27,20 @@ install_requires = [
     "twitter",
     "Pillow",
     "PySocks",
-    "pocket"
+    "pocket",
+    "pyreadline"
 ]
 
 # Default user (considers non virtualenv method)
-user = os.environ.get('SUDO_USER', os.environ.get('USER', None))
+user = os.environ.get('SUDO_USER', os.environ.get('USER', getpass.getuser()))
 
 # Copy default config if not exists
 default = os.path.expanduser("~") + os.sep + '.rainbow_config.json'
 if not os.path.isfile(default):
-    cmd = 'cp rainbowstream/colorset/config ' + default
-    os.system(cmd)
-    if user:
-        cmd = 'chown ' + quote(user) + ' ' + default
-        os.system(cmd)
-    cmd = 'chmod 777 ' + default
-    os.system(cmd)
+    copy('rainbowstream/colorset/config', default)
+    if platform.system() != 'Windows' and user:
+        chown(default, quote(user))
+    os.chmod(default, 0o777)
 
 # Setup
 setup(name='rainbowstream',
@@ -68,6 +73,7 @@ setup(name='rainbowstream',
       include_package_data=True,
       zip_safe=True,
       install_requires=install_requires,
+      ext_modules=[image_ext],
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]

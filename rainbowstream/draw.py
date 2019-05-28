@@ -17,6 +17,7 @@ from .colors import *
 from .config import *
 from .py3patch import *
 from .emoji import *
+from .util import get_terminal_size
 
 # Draw global variables
 dg = {}
@@ -446,7 +447,7 @@ def print_thread(partner, me_nick, me_name):
     me_name = cycle_color(me_name)
     left = ' ' * margin + partner_name + ' ' + partner_nick
     right = me_name + ' ' + me_screen_name + ' ' * margin
-    h, w = os.popen('stty size', 'r').read().split()
+    h, w = get_terminal_size()
     w = int(w)
     line = '{}{}{}'.format(
         left, ' ' * (w - left_size - right_size - 2 * margin), right)
@@ -465,7 +466,7 @@ def print_right_message(m):
     """
     Print a message on the right of screen
     """
-    h, w = os.popen('stty size', 'r').read().split()
+    h, w = get_terminal_size()
     w = int(w)
     frame_width = w // 3 - dg['frame_margin']
     frame_width = max(c['THREAD_MIN_WIDTH'], frame_width)
@@ -530,7 +531,7 @@ def print_left_message(m):
     """
     Print a message on the left of screen
     """
-    h, w = os.popen('stty size', 'r').read().split()
+    h, w = get_terminal_size()
     w = int(w)
     frame_width = w // 3 - dg['frame_margin']
     frame_width = max(c['THREAD_MIN_WIDTH'], frame_width)
