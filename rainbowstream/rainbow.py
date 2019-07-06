@@ -54,6 +54,11 @@ def parse_arguments():
         '--timeout',
         help='Timeout for the stream (seconds).')
     parser.add_argument(
+        '-rc',
+        '--reconnect',
+        action='store_true',
+        help='Automatically reconnect on Hangups an timeouts.')
+    parser.add_argument(
         '-tt',
         '--track-keywords',
         help='Search the stream for specific text.')
@@ -271,6 +276,8 @@ def init(args):
     c['message_dict'] = []
     # Image on term
     c['IMAGE_ON_TERM'] = args.image_on_term
+    # Auto-reconnect
+    c['AUTO_RECONNECT'] = args.reconnect
     # Use 24 bit color
     c['24BIT'] = args.color_24bit
     # Check type of ONLY_LIST and IGNORE_LIST
@@ -2137,6 +2144,16 @@ def reconn_notice():
 
 def stream(domain, args, name='Rainbow Stream'):
     """
+    Maintains connection to the stream.
+    """
+    reconnect = True
+    while reconnect:
+        # Only reconnect if stream_aux ends due to a reconnectable event
+        # AND the configuration allows it.
+        reconnect = stream_aux(domain, args, name) and c['AUTO_RECONNECT']
+
+def stream_aux(domain, args, name):
+    """
     Track the stream
     """
     # The Logo
@@ -2147,6 +2164,7 @@ def stream(domain, args, name='Rainbow Stream'):
     }
     if c['ASCII_ART']:
         ascii_art(art_dict.get(domain, name))
+    reconnect_due_to_HangupOrTimeout = False
     # These arguments are optional:
     stream_args = dict(
         timeout=0.5,  # To check g['stream_stop'] after each 0.5 s
@@ -2187,11 +2205,13 @@ def stream(domain, args, name='Rainbow Stream'):
             elif tweet is HeartbeatTimeout:
                 printNicely('-- Heartbeat Timeout --')
                 reconn_notice()
+                reconnect_due_to_HangupOrTimeout = True
                 StreamLock.release()
                 break
             elif tweet is Hangup:
                 printNicely('-- Hangup --')
                 reconn_notice()
+                reconnect_due_to_HangupOrTimeout = True
                 StreamLock.release()
                 break
             elif tweet.get('text'):
@@ -2247,6 +2267,7 @@ def stream(domain, args, name='Rainbow Stream'):
             magenta('There seems to be a connection problem.'))
         save_history()
         sys.exit()
+    return reconnect_due_to_HangupOrTimeout
 
 
 def spawn_public_stream(args, keyword=None):
