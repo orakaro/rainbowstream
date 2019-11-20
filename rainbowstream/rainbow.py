@@ -322,6 +322,25 @@ def trend():
                     print_trends(trends)
 
 
+def poll():
+    """
+    Fetch stream based on since_id
+    """
+    t = Twitter(auth=authen())
+
+    num = c['HOME_TWEET_NUM']
+    kwargs = {'count': num}
+
+    if 'since_id' in g:
+        kwargs['since_id'] = g['since_id']
+
+    kwargs = add_tweetmode_parameter(kwargs)
+    result = t.statuses.home_timeline(**kwargs)
+    g['since_id'] = result[0]
+    for tweet in reversed(result):
+        draw(t=tweet)
+    printNicely('')
+
 def home():
     """
     Home
@@ -2156,98 +2175,11 @@ def stream(domain, args, name='Rainbow Stream'):
     query_args = dict()
     if args.track_keywords:
         query_args['track'] = args.track_keywords
-    # Get stream
-    stream = TwitterStream(
-        auth=authen(),
-        domain=domain,
-        **stream_args)
-    try:
-        if domain == c['USER_DOMAIN']:
-            tweet_iter = stream.user(**query_args)
-        elif domain == c['SITE_DOMAIN']:
-            tweet_iter = stream.site(**query_args)
-        else:
-            if args.track_keywords:
-                tweet_iter = stream.statuses.filter(**query_args)
-            else:
-                tweet_iter = stream.statuses.sample()
-        # Block new stream until other one exits
-        StreamLock.acquire()
-        g['stream_stop'] = False
-        last_tweet_time = time.time()
-        for tweet in tweet_iter:
-            if tweet is None:
-                printNicely('-- None --')
-            elif tweet is Timeout:
-                # Because the stream check for each 0.3s
-                # so we shouldn't output anything here
-                if(g['stream_stop']):
-                    StreamLock.release()
-                    break
-            elif tweet is HeartbeatTimeout:
-                printNicely('-- Heartbeat Timeout --')
-                reconn_notice()
-                StreamLock.release()
-                break
-            elif tweet is Hangup:
-                printNicely('-- Hangup --')
-                reconn_notice()
-                StreamLock.release()
-                break
-            elif tweet.get('text'):
-                # Slow down the stream by STREAM_DELAY config key
-                if time.time() - last_tweet_time < c['STREAM_DELAY']:
-                    continue
-                last_tweet_time = time.time()
-                # Check the semaphore pause and lock (stream process only)
-                if g['pause']:
-                    continue
-                while c['lock']:
-                    time.sleep(0.5)
-                # Draw the tweet
-                draw(
-                    t=tweet,
-                    keyword=args.track_keywords,
-                    humanize=False,
-                    fil=args.filter,
-                    ig=args.ignore,
-                )
-                # Current readline buffer
-                current_buffer = readline.get_line_buffer().strip()
-                # There is an unexpected behaviour in MacOSX readline + Python 2:
-                # after completely delete a word after typing it,
-                # somehow readline buffer still contains
-                # the 1st character of that word
-                if current_buffer and g['cmd'] != current_buffer:
-                    sys.stdout.write(
-                        g['decorated_name'](g['PREFIX']) + current_buffer)
-                    sys.stdout.flush()
-                elif not c['HIDE_PROMPT']:
-                    sys.stdout.write(g['decorated_name'](g['PREFIX']))
-                    sys.stdout.flush()
-            elif tweet.get('direct_message'):
-                # Check the semaphore pause and lock (stream process only)
-                if g['pause']:
-                    continue
-                while c['lock']:
-                    time.sleep(0.5)
-                print_message(tweet['direct_message'])
-            elif tweet.get('event'):
-                c['events'].append(tweet)
-                print_event(tweet)
-    except TwitterHTTPError as e:
-        printNicely('')
-        printNicely(
-            magenta('We have connection problem with twitter stream API right now :('))
-        detail_twitter_error(e)
-        sys.stdout.write(g['decorated_name'](g['PREFIX']))
-        sys.stdout.flush()
-    except (URLError):
-        printNicely(
-            magenta('There seems to be a connection problem.'))
-        save_history()
-        sys.exit()
 
+    polling_time = 90
+    while True:
+        time.sleep(polling_time)
+        poll()
 
 def spawn_public_stream(args, keyword=None):
     """
