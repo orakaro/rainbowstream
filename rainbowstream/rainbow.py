@@ -838,8 +838,8 @@ def inbox():
     # Get inbox messages
     messages = t.direct_messages.events.list()['events']
     messages = list(map(map_message, messages))
-    inbox = filter(inboxFilter, messages)
-    sent = filter(inboxFilter, messages)
+    inbox = list(filter(inboxFilter, messages))
+    sent = list(filter(inboxFilter, messages))
 
     d = {}
     uniq_inbox = list(set(

@@ -425,7 +425,7 @@ def print_thread(partner, me_nick, me_name):
     """
     # Sort messages by time
     messages = dg['thread'][partner]
-    messages.sort(key=lambda x: parser.parse(x['created_at']))
+    messages.sort(key=lambda x: int(x['created_at']))
     # Use legacy display on non-ascii text message
     ms = [m['text'] for m in messages]
     ums = [m for m in ms if not all(ord(c) < 128 for c in m)]
@@ -597,10 +597,10 @@ def print_message(m):
     """
     # Retrieve message
     sender_screen_name = '@' + m['sender_screen_name']
-    sender_name = m['sender']['name']
+    sender_name = m['sender_name']
     text = unescape(m['text'])
     recipient_screen_name = '@' + m['recipient_screen_name']
-    recipient_name = m['recipient']['name']
+    recipient_name = m['recipient_name']
     mid = m['id']
     date = parser.parse(m['created_at'])
     date = arrow.get(date).to('local').datetime
