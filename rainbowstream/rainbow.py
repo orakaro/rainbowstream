@@ -336,7 +336,8 @@ def poll():
 
     kwargs = add_tweetmode_parameter(kwargs)
     result = t.statuses.home_timeline(**kwargs)
-    g['since_id'] = result[0]
+    if result:
+        g['since_id'] = result[0]['id']
     for tweet in reversed(result):
         draw(t=tweet)
     printNicely('')
@@ -815,45 +816,17 @@ def inbox():
     num = c['MESSAGES_DISPLAY']
     if g['stuff'].isdigit():
         num = g['stuff']
+
+    def inboxFilter(message):
+        return message['sender_screen_name'] == g['original_name']
+    def sentFilter(message):
+        return message['recipient_screen_name'] == g['original_name']
+
     # Get inbox messages
-    cur_page = 1
-    inbox = []
-    while num > 20:
-        inbox = inbox + t.direct_messages(
-            count=20,
-            page=cur_page,
-            include_entities=False,
-            skip_status=False
-        )
-        num -= 20
-        cur_page += 1
-    inbox = inbox + t.direct_messages(
-        count=num,
-        page=cur_page,
-        include_entities=False,
-        skip_status=False
-    )
-    # Get sent messages
-    num = c['MESSAGES_DISPLAY']
-    if g['stuff'].isdigit():
-        num = g['stuff']
-    cur_page = 1
-    sent = []
-    while num > 20:
-        sent = sent + t.direct_messages.sent(
-            count=20,
-            page=cur_page,
-            include_entities=False,
-            skip_status=False
-        )
-        num -= 20
-        cur_page += 1
-    sent = sent + t.direct_messages.sent(
-        count=num,
-        page=cur_page,
-        include_entities=False,
-        skip_status=False
-    )
+    messages = []
+    messages = messages + t.direct_messages.events.list()['events']
+    inbox = filter(inboxFilter, messages)
+    sent = filter(inboxFilter, messages)
 
     d = {}
     uniq_inbox = list(set(
