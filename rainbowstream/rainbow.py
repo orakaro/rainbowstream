@@ -245,6 +245,7 @@ def init(args):
     credential = t.account.verify_credentials()
     screen_name = '@' + credential['screen_name']
     name = credential['name']
+    g['id_str'] = credential['id_str']
     c['original_name'] = g['original_name'] = screen_name[1:]
     g['listname'] = g['keyword'] = ''
     g['PREFIX'] = u2str(emojize(format_prefix()))
@@ -818,22 +819,34 @@ def inbox():
         num = g['stuff']
 
     def inboxFilter(message):
-        return message['sender_screen_name'] == g['original_name']
+        return message['message_create']['sender_id'] == g['id_str']
     def sentFilter(message):
-        return message['recipient_screen_name'] == g['original_name']
+        return message['message_create']['target']['recipient_id'] == g['id_str']
+
+    def map_message(message):
+        message_create = message['message_create']
+        sender = t.users.show(id=int(message_create['sender_id']),include_entities=False)
+        recipient = t.users.show(id=int(message_create['target']['recipient_id']),include_entities=False)
+        message['sender_screen_name'] = sender['screen_name']
+        message['sender_name'] = sender['name']
+        message['recipient_screen_name'] = recipient['screen_name']
+        message['recipient_name'] = recipient['name']
+        message['text'] = message['message_create']['message_data']['text']
+        message['created_at'] = message['created_timestamp']
+        return message
 
     # Get inbox messages
-    messages = []
-    messages = messages + t.direct_messages.events.list()['events']
+    messages = t.direct_messages.events.list()['events']
+    messages = list(map(map_message, messages))
     inbox = filter(inboxFilter, messages)
     sent = filter(inboxFilter, messages)
 
     d = {}
     uniq_inbox = list(set(
-        [(m['sender_screen_name'], m['sender']['name']) for m in inbox]
+        [(m['sender_screen_name'], m['sender_name']) for m in inbox]
     ))
     uniq_sent = list(set(
-        [(m['recipient_screen_name'], m['recipient']['name']) for m in sent]
+        [(m['recipient_screen_name'], m['recipient_name']) for m in sent]
     ))
     for partner in uniq_inbox:
         inbox_ary = [m for m in inbox if m['sender_screen_name'] == partner[0]]
