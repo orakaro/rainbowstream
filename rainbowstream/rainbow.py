@@ -1493,7 +1493,7 @@ def theme():
             # Redefine decorated_name
             g['decorated_name'] = lambda x: color_func(
                 c['DECORATED_NAME'])(
-                '[' + x + ']: ')
+                '[' + x + ']: ', rl=True)
             printNicely(green('Theme changed.'))
         except:
             printNicely(red('No such theme exists.'))
@@ -1556,7 +1556,7 @@ def config():
             if key == 'THEME':
                 c['THEME'] = reload_theme(value, c['THEME'])
                 g['decorated_name'] = lambda x: color_func(
-                    c['DECORATED_NAME'])('[' + x + ']: ')
+                    c['DECORATED_NAME'])('[' + x + ']: ', rl=True)
             elif key == 'PREFIX':
                 g['PREFIX'] = u2str(emojize(format_prefix(
                     listname=g['listname'],
