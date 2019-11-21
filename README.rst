@@ -1,9 +1,9 @@
 A Note about Twitter API Change
---------------
+-------------------------------
 
-Sadly Twitter **is not supporting** Stream API anymore, and RainbowStream need extra work to switch over to Polling Strategy, with careful concern about RateLimit. Detail explaination here: https://github.com/orakaro/rainbowstream/issues/271
+Head up! As Twitter **discontinues supporting** Stream API, RainbowStream's stream function has been stopped working for a long time. But here is a good new, from version 1.5.0 we switched to a Polling Strategy that using the `home` command to check for every 90 seconds. Notes that rate limit for `home` command itseld is 15 times per 15 minutes, so don't abuse it too much to leave space for the polling stream :)
 
-If you want a client with a set of nice command but **without stream function**, go ahead with following instructions.
+If you are interested in detail: https://github.com/orakaro/rainbowstream/issues/271
 
 Rainbow Stream
 --------------

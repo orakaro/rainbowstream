@@ -68,6 +68,7 @@ setup(name='rainbowstream',
       include_package_data=True,
       zip_safe=True,
       install_requires=install_requires,
+      long_description_content_type='text/markdown',
       entry_points="""
       # -*- Entry points: -*-
       [console_scripts]
