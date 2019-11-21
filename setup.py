@@ -15,7 +15,7 @@ version = '1.5.0'
 install_requires = [
     "python-dateutil",
     "arrow",
-    "requests==2.5.3",
+    "requests==2.20.0",
     "pyfiglet",
     "twitter",
     "Pillow",
