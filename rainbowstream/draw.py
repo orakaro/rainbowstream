@@ -487,8 +487,7 @@ def print_right_message(m):
         printNicely(screen_line)
     printNicely(dotline)
     # Format clock
-    date = parser.parse(m['created_at'])
-    date = arrow.get(date).to('local').datetime
+    date = arrow.get(int(m['created_at'])/1000).to('local').datetime # Read Unixtime in miliseconds
     clock_format = '%Y/%m/%d %H:%M:%S'
     try:
         clock_format = c['FORMAT']['MESSAGE']['CLOCK_FORMAT']
