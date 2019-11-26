@@ -89,6 +89,16 @@ def parse_arguments():
         '--proxy-type',
         default='SOCKS5',
         help='Proxy type (HTTP, SOCKS4, SOCKS5; Default: SOCKS5).')
+    parser.add_argument(
+        '-ta',
+        '--twitter-auth',
+        default=os.environ.get('HOME', os.environ.get('USERPROFILE', '')) + os.sep + '.rainbow_oauth',
+        help='Specify which OAuth profile to use for twitter. Default: ~/.rainbow_oauth.')
+    parser.add_argument(
+        '-pa',
+        '--pocket-auth',
+        default=os.environ.get('HOME', os.environ.get('USERPROFILE', '')) + os.sep + '.rainbow_pckt_oauth',
+        help='Specify which OAuth profile to use for pocket. Default: ~/.rainbow_pckt_oauth.')
     return parser.parse_args()
 
 
@@ -122,11 +132,7 @@ def authen():
     Authenticate with Twitter OAuth
     """
     # When using rainbow stream you must authorize.
-    twitter_credential = os.environ.get(
-        'HOME',
-        os.environ.get(
-            'USERPROFILE',
-            '')) + os.sep + '.rainbow_oauth'
+    twitter_credential = g['twitter_oauth_path']
     if not os.path.exists(twitter_credential):
         oauth_dance('Rainbow Stream',
                     CONSUMER_KEY,
@@ -144,12 +150,7 @@ def pckt_authen():
     """
     Authenticate with Pocket OAuth
     """
-    pocket_credential = os.environ.get(
-         'HOME',
-        os.environ.get(
-            'USERPROFILE',
-            '')) + os.sep + '.rainbow_pckt_oauth'
-
+    pocket_credential = g['pocket_oauth_path']
     if not os.path.exists(pocket_credential):
         request_token = Pocket.get_request_token(consumer_key=PCKT_CONSUMER_KEY)
         auth_url = Pocket.get_auth_url(code=request_token, redirect_uri="/")
@@ -238,6 +239,9 @@ def init(args):
     # Handle Ctrl C
     ctrl_c_handler = lambda signum, frame: quit()
     signal.signal(signal.SIGINT, ctrl_c_handler)
+    # Set OAuth file path (needs to happen before authen is called)
+    g['twitter_oauth_path'] = args.twitter_auth
+    g['pocket_oauth_path'] = args.pocket_auth
     # Upgrade notify
     upgrade_center()
     # Get name
