@@ -341,7 +341,8 @@ def poll():
         g['since_id'] = result[0]['id']
     for tweet in reversed(result):
         draw(t=tweet)
-    printNicely('')
+    if result:
+        printNicely('')
 
 def home():
     """
