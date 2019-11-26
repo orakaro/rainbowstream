@@ -476,7 +476,7 @@ def search():
     # Return results
     if rel:
         printNicely('Newest tweets:')
-        for i in reversed(xrange(count)):
+        for i in reversed(xrange(min(len(rel), count))):
             draw(t=rel[i], keyword=query)
         printNicely('')
     else:
