@@ -373,6 +373,9 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
         delimiter = color_func(c['TWEET']['client'])(
             client.join(word.split('#client')))
         formater = delimiter.join(formater.split(word))
+        # Change permalink word
+        permalink = 'https://twitter.com/' + screen_name.lstrip('@ ') + '/status/' + str(tid)
+        formater = permalink.join(formater.split('#permalink'))
     except:
         pass
 
