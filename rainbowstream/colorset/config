@@ -1,4 +1,6 @@
 {
+    //Time in seconds between each automatic poll. Most Twitter accounts have a limit of 15 requests each 15 minutes. If in doubt, set it to 90 or more. 
+    "POLLING_TIME" : 90,
     // Turn to 'true' in order to disable extended tweets display (legacy mode)
     "DISABLE_EXTENDED_TWEETS" : false,
     // After 120 minutes, the stream will automatically hangup

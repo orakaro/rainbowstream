@@ -2167,7 +2167,7 @@ def stream(domain, args, name='Rainbow Stream'):
     if args.track_keywords:
         query_args['track'] = args.track_keywords
 
-    polling_time = 90
+    polling_time = c['POLLING_TIME']
     while True:
         time.sleep(polling_time)
         poll()
