@@ -82,18 +82,47 @@ def image_to_display(path, start=None, length=None):
     if (height <= 0) or (width <= 0):
         raise ValueError("image has negative dimensions")
 
-    i = i.resize((width, height), Image.ANTIALIAS)
     height = min(height, c['IMAGE_MAX_HEIGHT'])
 
-    for real_y in xrange(height // 2):
-        sys.stdout.write(' ' * start)
-        for x in xrange(width):
-            y = real_y * 2
-            p0 = i.getpixel((x, y))
-            p1 = i.getpixel((x, y + 1))
-            block_print(p1, p0)
-        sys.stdout.write('\n')
+    # Sixel
+    if c['IMAGE_ON_TERM'] == 'sixel':
+        import fcntl, struct, termios
+        from io import BytesIO
+        from libsixel import sixel_dither_new, sixel_dither_initialize, sixel_encode, sixel_output_new, SIXEL_PIXELFORMAT_RGBA8888
+        from resizeimage import resizeimage
 
+        # FIXME: rows and columns are gotten a second time. Maybe use this at 
+        # the begining of function instead of the call to stty size
+        farg = struct.pack("HHHH", 0, 0, 0, 0)
+        fd_stdout = sys.stdout.fileno()
+        fretint = fcntl.ioctl(fd_stdout, termios.TIOCGWINSZ, farg)
+        rows, columns, xpixels, ypixels = struct.unpack("HHHH", fretint)
+        max_width_pixels = width * (xpixels // columns)
+        max_height_pixels = height * (ypixels // rows)
+
+        # FIXME: This way is preferable to avoid an addition dependency, but it doesn't work correctly
+        # i = i.resize((max_width_pixels, max_height_pixels), Image.ANTIALIAS)
+        i = resizeimage.resize_thumbnail(i, [max_width_pixels, max_height_pixels])
+
+        sixel = BytesIO()
+        dither = sixel_dither_new(256)
+        sixel_dither_initialize(dither, i.tobytes(), i.width, i.height, SIXEL_PIXELFORMAT_RGBA8888)
+        sixel_encode(i.tobytes(), i.width, i.height, 1, dither, 
+                sixel_output_new(lambda imgdata, sixel: sixel.write(imgdata), sixel))
+        sys.stdout.write('%s%s' % (' ' * start, sixel.getvalue().decode('ascii')))
+
+    # SGR
+    else:
+        i = i.resize((width, height), Image.ANTIALIAS)
+
+        for real_y in xrange(height // 2):
+            sys.stdout.write(' ' * start)
+            for x in xrange(width):
+                y = real_y * 2
+                p0 = i.getpixel((x, y))
+                p1 = i.getpixel((x, y + 1))
+                block_print(p1, p0)
+            sys.stdout.write('\n')
 
 """
 For direct using purpose
