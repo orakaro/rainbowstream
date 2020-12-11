@@ -20,7 +20,9 @@ install_requires = [
     "twitter",
     "Pillow",
     "PySocks",
-    "pocket"
+    "pocket",
+    "libsixel-python",
+    "resize-image"
 ]
 
 # Default user (considers non virtualenv method)
