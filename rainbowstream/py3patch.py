@@ -4,16 +4,11 @@ import sys
 if sys.version[0] == "2":
     from HTMLParser import HTMLParser
     from urllib2 import URLError
+    unescape = HTMLParser().unescape
 else:
     from html.parser import HTMLParser
     from urllib.error import URLError
-
-unescape = HTMLParser().unescape
-# According to https://github.com/python/cpython/blob/master/Lib/html/parser.py#L547 ,
-# in python 3.5 maybe I should use
-# from html import unescape
-# but it is a far-future story:)
-
+    from html import unescape
 
 # Function compatibility
 # xrange, raw_input, map ,unicde
