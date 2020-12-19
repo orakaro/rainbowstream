@@ -5,8 +5,14 @@ if sys.version[0] == "2":
     from HTMLParser import HTMLParser
     from urllib2 import URLError
 else:
-    from html.parser import HTMLParser
+# from html.parser import HTMLParser
     from urllib.error import URLError
+if sys.version_info[0] >= 3:
+    import html
+else:
+    from six.moves import html_parser
+
+html = html_parser.HTMLParser()
 
 unescape = HTMLParser().unescape
 # According to https://github.com/python/cpython/blob/master/Lib/html/parser.py#L547 ,
