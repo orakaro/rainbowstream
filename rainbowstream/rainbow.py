@@ -407,12 +407,30 @@ def search():
         printNicely(magenta('I\'m afraid there is no result'))
 
 
+def upload_twitter_media(image_paths):
+    """
+        Upload media and images to wtiter using their api
+    """
+    image_ids = []
+    for image_path in image_paths:
+        image_path = image_path.strip()
+        image_data = open(image_path, 'rb').read()
+
+        # upload media_ids
+        t_up = Twitter(domain='upload.twitter.com',
+                        auth=authen())
+        img_id = t_up.media.upload(media=image_data)["media_id_string"]
+        image_ids.append(img_id)
+
+    return image_ids
+
+
 def tweet():
     """
     Tweet
     """
     # Regex to check if tweet contains '--i' pattern
-    pattern = r'(.*) \-\-\i\ (.+)'
+    pattern = r'(.*) \-\-i\ (.+)'
     m = re.match(pattern, g['stuff'])
 
     if m is None:
@@ -422,18 +440,17 @@ def tweet():
     else:
         # A tweet with media items
         body = m.group(1)
-        imagePaths = m.group(2)
-
+        image_paths = m.group(2)
+        image_paths = image_paths.split(",")
         # Generating image ids
-        imageIds = []
-        for impath in imagePaths.split(','):
-            imagedata = open(impath, 'rb').read()
-
-            # upload media
-            t_up = Twitter(domain='upload.twitter.com',
-                            auth=authen())
-            img_id = t_up.media.upload(media=imagedata)["media_id_string"]
-            imageIds.append(img_id)
+        printNicely("Uploading media ...")
+        try:
+            imageIds = upload_twitter_media(image_paths)
+        except Exception as e:
+            printNicely(red("Error occured while uploading media!"))
+            printNicely(red(e))
+            return
+        printNicely(green("uploading images done! tweeting ..."))
 
         # send your tweet with the list of media ids:
         t = Twitter(auth=authen())
