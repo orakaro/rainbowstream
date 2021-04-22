@@ -414,6 +414,7 @@ def upload_twitter_media(image_paths):
     image_ids = []
     for image_path in image_paths:
         image_path = image_path.strip()
+        image_path = os.path.expanduser(image_path)
         image_data = open(image_path, 'rb').read()
 
         # upload media_ids
