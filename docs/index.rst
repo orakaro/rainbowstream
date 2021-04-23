@@ -339,7 +339,7 @@ You also can view or set a new value of every config key with the ``config`` com
 
 -  ``THEME``: current theme.
 
--  ``ASCII_ART``: diplay your twitter name by ascii art at stream begin or not.
+-  ``ASCII_ART``: display your twitter name by ascii art at stream begin or not.
 
 -  ``HIDE_PROMPT``: hide prompt after receiving a tweet or not.
 

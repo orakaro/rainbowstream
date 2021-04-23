@@ -69,7 +69,7 @@ def read_history():
     Read history file
     """
     try:
-        readline.read_history_file(c['HISTORY_FILENAME'])
+        readline.read_history_file(os.path.expanduser(c['HISTORY_FILENAME']))
     except:
         pass
 
@@ -79,7 +79,7 @@ def save_history():
     Save history to file
     """
     try:
-        readline.write_history_file(c['HISTORY_FILENAME'])
+        readline.write_history_file(os.path.expanduser(c['HISTORY_FILENAME']))
     except:
         pass
 
