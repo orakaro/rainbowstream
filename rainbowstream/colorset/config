@@ -51,6 +51,8 @@
     "IMAGE_MAX_HEIGHT" : 90,
     // Seconds to wait before displaying another tweet, will drop all tweets while waiting.
     "STREAM_DELAY" : 0,
+    // Set default browser for open link, default is w3m
+    "BROWSER": "w3m",
     // Stream config
     "USER_DOMAIN" : "userstream.twitter.com",
     "PUBLIC_DOMAIN" : "stream.twitter.com",
