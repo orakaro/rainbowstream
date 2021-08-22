@@ -104,7 +104,7 @@ You can now **display tweeted images directly on the terminal**!  Try it with:
 
     rainbowstream -iot # Or rainbowstream --image-on-term
 
-Set ``IMAGE_ON_TERM`` to ``True`` in your config to to enable above feature,
+Set ``IMAGE_ON_TERM`` to ``True`` in your config to enable above feature,
 change ``IMAGE_SHIFT`` to set image's margin (relative to your terminal's
 width), and ``IMAGE_MAX_HEIGHT`` to control max height of every image (see
 `Config Management`_).
