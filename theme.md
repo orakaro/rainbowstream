@@ -1,11 +1,11 @@
 ## Available themes
-#### Monokai
+#### Monokai (`monokai`)
 ![Monokai](./screenshot/themes/Monokai.png)
-#### Solarized
+#### Solarized (`solarized`)
 ![Solarized](./screenshot/themes/Solarized.png)
-#### Tomorrow Night
+#### Tomorrow Night (`tomorrow_night`)
 ![Solarized](./screenshot/themes/TomorrowNight.png)
-#### Larapaste
+#### Larapaste (`larapaste`)
 ![Solarized](./screenshot/themes/larapaste.png)
 
 ## Customization
