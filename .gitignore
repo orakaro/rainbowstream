@@ -69,8 +69,6 @@ docs/_build/
 # Virtualenv
 /venv*
 
-# History completer
-completer.hist
-
 # Consumer
 rainbowstream/consumer.py
+
