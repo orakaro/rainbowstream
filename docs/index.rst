@@ -331,6 +331,8 @@ If you would like to specify a different location for your custom config you can
 
 You also can view or set a new value of every config key with the ``config`` command (See **Interactive mode** section above).
 
+-  ``POLLING_TIME``: Time in seconds between each automatic poll. Most Twitter accounts have a limit of 15 requests each 15 minutes. If in doubt, set it to 90 or more.
+
 -  ``HEARTBEAT_TIMEOUT``: after this timeout (count by minutes), the stream will automatically hangup.
 
 -  ``IMAGE_ON_TERM``: display tweet's image directly on terminal.
