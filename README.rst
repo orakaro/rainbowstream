@@ -1,10 +1,3 @@
-A Note about Twitter API Change
--------------------------------
-
-Heads-up! As Twitter **discontinues supporting** Stream API, RainbowStream's stream function has been stopped working for a long time. But here is a good new, from version 1.5.0 we **switched to a Polling Strategy** that using the `home` command to check for every 90 seconds. Notes that rate limit for `home` command itself is 15 times per 15 minutes, so don't abuse it too much to leave space for the polling stream :)
-
-If you are interested in detail: https://github.com/orakaro/rainbowstream/issues/271
-
 Rainbow Stream
 --------------
 
@@ -14,15 +7,7 @@ Rainbow Stream
 .. image:: http://img.shields.io/pypi/v/rainbowstream.svg?style=flat-square
    :target: https://pypi.python.org/pypi/rainbowstream
 
-Terminal-based Twitter Client.  Real-time tweetstream, compose, search, favorite,
-and much more fun directly from terminal.
-
-This package is built on the `Python Twitter Tools`_ and the `Twitter API`_, and runs
-on Python (2.7.x and 3.x).
-
-Home page: https://github.com/orakaro/rainbowstream
-
-Source code: https://github.com/orakaro/rainbowstream
+Terminal-based full-fledged Twitter client, built upon `Python Twitter Tools`.
 
 Showcase
 --------
@@ -33,59 +18,51 @@ Showcase
 Installation
 ------------
 
-The Quick Way
-^^^^^^^^^^^^^
-
-System Python (2.7.x or 3.x)
-
-.. code:: bash
-
-    sudo pip install rainbowstream
-    # Python 3 users: sudo pip3 install rainbowstream
-
-The Recommended Way
+Direct installation
 ^^^^^^^^^^^^^^^^^^^
 
-`virtualenv`_
+.. code:: bash
+
+    sudo pip3 install rainbowstream
+
+Virtualenv (Recommended)
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: bash
 
-    virtualenv venv
-    # Python 3 users : use -p to specify your Python 3 location:
-    # virtualenv -p /usr/bin/python3 venv
+    virtualenv -p /usr/bin/python3 venv
     source venv/bin/activate
     pip install rainbowstream
 
-Troubleshooting
-^^^^^^^^^^^^^^^
+Installation Troubleshooting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If you run into dependency issues, you may want to install additional libraries
 
-Some additional libraries may need to be installed on linux.
-
-For Debian-based distros:
+Debian-based distros:
 
 .. code:: bash
 
     sudo apt-get install python-dev libjpeg-dev libfreetype6 libfreetype6-dev zlib1g-dev
 
-For CentOS:
+CentOS:
 
 .. code:: bash
 
     sudo yum install python-devel libjpeg-devel
 
-Mac OSX Maverick with Xcode 5.1 has a well-known `clang unknown argument`_
-problem with the installation of the ``Pillow`` package—a dependency of this
-app.  Take a look at `Issue #10`_ and let me know if the workaround doesn't work
-for you.
+Mac OSX 
+Mac has a `clang unknown argument`_
+problem with the ``Pillow`` package—a dependency of this
+app.  Please see the workaround in `Issue #10`_
 
 .. code:: bash
 
     export ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future
 
-If *The Quick Way* doesn't work, then:
+If you still experience issues:
 
 -  ``sudo pip uninstall rainbowstream``
--  Use the *The Recommended Way*
+-  Use the *virtualenv installation*
 -  `Create an issue`_ and provide:
     - Your OS
     - Your Python version
@@ -96,22 +73,19 @@ Usage
 The Stream
 ^^^^^^^^^^
 
-Just type ``rainbowstream`` to see your stream.
+Simply run ``rainbowstream`` to start the application, or enjoy its ASCII images with ``rainbowstream -iot`` or set ``IMAGE_ON_TERM`` to ``True`` in your config.
 
-You can now **display tweeted images directly on the terminal**!  Try it with:
+If your terminal supports 24-bit colors, run ``rainbowstream -p24`` instead to utilize 24 bit ASCII images.
 
-.. code:: bash
+If your terminal supports sixel, ie. wezterm or MLTerm, change the ``IMAGE_ON_TERM`` config to ``sixel`` and enjoy high-quality images.
 
-    rainbowstream -iot # Or rainbowstream --image-on-term
-
-Set ``IMAGE_ON_TERM`` to ``True`` in your config to to enable above feature,
-change ``IMAGE_SHIFT`` to set image's margin (relative to your terminal's
-width), and ``IMAGE_MAX_HEIGHT`` to control max height of every image (see
+You might want to change ``IMAGE_SHIFT`` to set the image's margin (relative to your terminal's
+width), and ``IMAGE_MAX_HEIGHT`` to control the max height of every image (see
 `Config Management`_).
 
-You will be asked for authorization on Twitter the first time you run Rainbow
-Stream.  Just click the "Authorize access" button, paste PIN number to the
-terminal, and the rainbow will start.
+You will be asked for Twitter authorization the first time you run Rainbow
+Stream.  Just click the "Authorize access" button, paste the PIN to the
+terminal, and the application will start.
 
 You might want to use Rainbow Stream with an **HTTP/SOCKS proxy**.  Proxy
 settings are specified as follows:
@@ -128,13 +102,13 @@ is ``8080`` and the default proxy type is ``SOCKS5``.
 Interactive Mode
 ^^^^^^^^^^^^^^^^
 
-While your personal stream is continued, you are also ready to tweet, search,
+While your stream is continued, you are also ready to tweet, search,
 reply, retweet, etc. directly from your console.  Simply type ``h`` and hit the
 Enter key to see the help.
 
 Input is in interactive mode.  It means that you can use the arrow keys to move
-up and down through the history, tab-autocomplete or double-tab to view
-available suggestions.  Input history from previous run is also available.
+up and down through the history, tab-autocomplete, or double-tab to view
+available suggestions.  Input history from the previous run is also available.
 
 `Read the docs`_ for available commands.
 
@@ -168,24 +142,28 @@ Theme screenshots:
 
 See `Theme Usage and Customization`_ for detailed information.
 
+A Note about Twitter API Change
+-------------------------------
+
+Since Twitter discontinued supporting Stream API, RainbowStream is now using a [Polling Strategy](https://github.com/orakaro/rainbowstream/issues/271) that utilizes the `home` command to poll for your tweets every 90 seconds. This `home` command is rate limited by 15 times per 15 minutes, so don't run it too frequently to leave space for the polling stream.
 
 Bug and Feature Requests
 ------------------------
 
 Found a bug or a feature request?  Please `create an issue`_ or contact me at
-`@dtvd88`_.
+`@orakaro`_.
 
 Development
 -----------
 
 If you want to build a runnable version yourself, follow these simple steps:
 
-- `Create your own Twitter Application`_
+- `Create your Twitter Application`_
 -  Get your Twitter application’s API key and secret
 - `Create your own Pocket Application`_ (platform: Web)
 -  Get your Pocket application’s key
 -  Fork this repo and ``git clone`` it
--  Create a ``consumer.py`` file in the `rainbowstream`_ directory containing:
+-  Create a ``consumer.py`` file in the `rainbowstream` directory containing:
 
    .. code:: python
 
@@ -211,7 +189,7 @@ Contributing
 ------------
 
 I appreciate any help and support.  Feel free to `fork`_ and `create a pull
-request`_.  You will be listed as a contributor.
+request`_. 
 
 License
 -------
@@ -222,16 +200,14 @@ Rainbow Stream is released under an MIT License.  See LICENSE.txt for details.
 .. _Python Twitter Tools: http://mike.verdone.ca/twitter/
 .. _Twitter API: https://dev.twitter.com/docs/api/1.1
 .. _Create an issue: https://github.com/DTVD/rainbowstream/issues/new
-.. _@dtvd88: https://twitter.com/dtvd88
+.. _@orakaro: https://twitter.com/dtvd88
 .. _fork: https://github.com/DTVD/rainbowstream/fork
 .. _create a pull request: https://github.com/DTVD/rainbowstream/compare/
 .. _Read the docs: http://rainbowstream.readthedocs.org/en/latest/
 .. _config guide: https://github.com/DTVD/rainbowstream/blob/master/theme.md
 .. _Theme Usage and Customization: https://github.com/DTVD/rainbowstream/blob/master/theme.md
-.. _Create your own Twitter Application: https://apps.twitter.com/app/new
+.. _Create your Twitter Application: https://apps.twitter.com/app/new
 .. _Create your own Pocket Application: https://getpocket.com/developer/apps/new
-.. _rainbowstream: https://github.com/DTVD/rainbowstream/tree/master/rainbowstream
-.. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
 .. _Config Management: http://rainbowstream.readthedocs.org/en/latest/#config-explanation
 .. _clang unknown argument: http://kaspermunck.github.io/2014/03/fixing-clang-error/
 .. _Issue #10: https://github.com/DTVD/rainbowstream/issues/10
