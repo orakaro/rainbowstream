@@ -289,8 +289,9 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     if favorited:
         fav = color_func(c['TWEET']['favorited'])(u'\u2605')
 
-    tweet = text.split(' ')
-    tweet = [x for x in tweet if x != '']
+    tweet = list()
+    for s in [x.replace('\n', '\n\0').split('\0') for x in text.split(' ')]:
+        tweet.extend(filter(lambda x: x != '', s))
     # Replace url
     if expanded_url:
         for index in xrange(len(expanded_url)):
@@ -331,7 +332,7 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
                  ]
     # Highlight keyword
     tweet = ' '.join(tweet)
-    tweet = '\n  '.join(tweet.split('\n'))
+    tweet = tweet.replace('\n', '\n ')
     if keyword:
         roj = re.search(keyword, tweet, re.IGNORECASE)
         if roj:
