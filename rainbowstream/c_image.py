@@ -84,12 +84,9 @@ def image_to_display(path, start=None, length=None):
 
     height = min(height, c['IMAGE_MAX_HEIGHT'])
 
-    # Sixel
-    if c['IMAGE_ON_TERM'] == 'sixel':
-        import fcntl, struct, termios
-        from io import BytesIO
-        from libsixel import sixel_dither_new, sixel_dither_initialize, sixel_encode, sixel_output_new, SIXEL_PIXELFORMAT_RGBA8888
-        from resizeimage import resizeimage
+    if c['IMAGE_ON_TERM']:  # If it is either 'sixel' or True
+        import fcntl, struct, termios   # Moved up because max_*_pixels is needed
+                                        # for both sixel and kitty 
 
         # FIXME: rows and columns are gotten a second time. Maybe use this at 
         # the begining of function instead of the call to stty size
@@ -99,6 +96,21 @@ def image_to_display(path, start=None, length=None):
         rows, columns, xpixels, ypixels = struct.unpack("HHHH", fretint)
         max_width_pixels = width * (xpixels // columns)
         max_height_pixels = height * (ypixels // rows)
+
+
+    # Kitty
+    if c['IMAGE_ON_TERM'] and os.environ['TERM'] == 'xterm-kitty':
+        from pixcat import Image as Image2
+    
+        pic = Image2(path)
+        pic = pic.resize(max_w=max_width_pixels, max_h=max_height_pixels)
+        pic.show(align='center')
+
+    # Sixel
+    elif c['IMAGE_ON_TERM'] == 'sixel':
+        from io import BytesIO
+        from libsixel import sixel_dither_new, sixel_dither_initialize, sixel_encode, sixel_output_new, SIXEL_PIXELFORMAT_RGBA8888
+        from resizeimage import resizeimage
 
         # FIXME: This way is preferable to avoid an addition dependency, but it doesn't work correctly
         # i = i.resize((max_width_pixels, max_height_pixels), Image.ANTIALIAS)

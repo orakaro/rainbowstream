@@ -22,7 +22,8 @@ install_requires = [
     "PySocks",
     "pocket",
     "libsixel-python",
-    "resize-image"
+    "resize-image",
+    "pixcat"
 ]
 
 # Default user (considers non virtualenv method)
