@@ -254,7 +254,7 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     # Get media
     try:
         media_url = []
-        media = t['entities']['media']
+        media = t['extended_entities']['media']
         for m in media:
             media_url.append(m['media_url'])
     except:
@@ -387,13 +387,16 @@ def draw(t, keyword=None, humanize=True, noti=False, fil=[], ig=[]):
     printNicely(formater)
 
     # Display Image
-    if c['IMAGE_ON_TERM'] and media_url:
-        for mu in media_url:
-            try:
-                response = requests.get(mu)
-                image_to_display(BytesIO(response.content))
-            except Exception:
-                printNicely(red('Sorry, image link is broken'))
+    if media_url:
+        if c['IMAGE_ON_TERM']:
+            for mu in media_url:
+                try:
+                    response = requests.get(mu)
+                    image_to_display(BytesIO(response.content))
+                except Exception:
+                    printNicely(red('Sorry, image link is broken'))
+        else:
+            printNicely(red(' Media available'))
 
 
 def print_threads(d):
