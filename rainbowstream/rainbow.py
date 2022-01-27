@@ -617,6 +617,7 @@ def quote():
     tweet = t.statuses.show(**kwargs)
     # Get formater
     formater = format_quote(tweet)
+    attachment_url = "https://twitter.com/" + tweet['user']['screen_name'] + "/status/" + str(tweet['id'])
     if not formater:
         return
     # Get comment
@@ -625,7 +626,7 @@ def quote():
     comment = raw_input(prefix)
     if comment:
         quote = comment.join(formater.split('#comment'))
-        t.statuses.update(status=quote)
+        t.statuses.update(status=quote, attachment_url=attachment_url, tweet_mode='extended')
     else:
         printNicely(light_magenta('No text added.'))
 

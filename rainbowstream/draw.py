@@ -1086,9 +1086,6 @@ def format_quote(tweet):
     tid         = str( tweet['id'] )
 
     # Validate quote format
-    if '#owner' not in c['QUOTE_FORMAT']:
-        printNicely(light_magenta('Quote should contains #owner'))
-        return False
     if '#comment' not in c['QUOTE_FORMAT']:
         printNicely(light_magenta('Quote format should have #comment'))
         return False
