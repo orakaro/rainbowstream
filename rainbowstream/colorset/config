@@ -28,7 +28,7 @@
     // 'conversation': max tweet in a thread
     "CONVERSATION_MAX" : 30,
     // 'quote' format
-    "QUOTE_FORMAT" : "#comment https://twitter.com/#owner/status/#tid",
+    "QUOTE_FORMAT" : "#comment twitter.com/#owner/status/#tid",
     // 'thread' meta format
     "THREAD_META_LEFT" : "(#id) #clock",
     "THREAD_META_RIGHT" : "#clock (#id)",
