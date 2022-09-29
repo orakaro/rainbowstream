@@ -56,10 +56,23 @@ def block_print(higher, lower):
         sys.stdout.write('\033[38;5;%sm\033[48;5;%sm▄\033[0m' % (i1, i0))
 
 
+def imgcat_display(path):
+    """
+    Display an image using imgcat iterm integration
+    """
+    body = path.read()
+    size = len(body)
+    payload = b64encode(body).decode()
+    print("\033]1337;File=inline=1;size=%i:%s\a\n" % (size, payload))
+
 def image_to_display(path, start=None, length=None):
     """
     Display an image
     """
+    if c['IMAGE_ON_TERM'] == 'imgcat':
+        imgcat_display(path)
+        return
+
     rows, columns = os.popen('stty size', 'r').read().split()
     if not start:
         start = c['IMAGE_SHIFT']
